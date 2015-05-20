@@ -6,7 +6,7 @@
  * It is assumed that we are persisting String data only, dates should there be represented using
  * millisecond Strings, a utility function (see millisToDate) is provided for convenience.
  */
-define('appworks-storage', ['appworks-core'], function (aw) {
+function AppWorksStorage(aw) {
     'use strict';
 
     // private variables
@@ -168,4 +168,4 @@ define('appworks-storage', ['appworks-core'], function (aw) {
     };
 
     return awStorage;
-});
+}

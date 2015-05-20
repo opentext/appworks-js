@@ -1,5 +1,5 @@
 // define the AMD module
-define('appworks-comms', ['appworks-core'], function (aw) {
+function AppWorksComms(aw) {
     'use strict';
 
     // module definition
@@ -147,4 +147,4 @@ define('appworks-comms', ['appworks-core'], function (aw) {
     };
 
     return awComms;
-});
+}

@@ -1,5 +1,5 @@
 // define the AMD module
-define('appworks-core', ['appworks-cache', 'appworks-comms'], function (awCache, awComms) {
+function AppWorksCore() {
     'use strict';
 
     // private variables
@@ -266,4 +266,4 @@ define('appworks-core', ['appworks-cache', 'appworks-comms'], function (awCache,
     };
 
     return aw;
-});
+}
