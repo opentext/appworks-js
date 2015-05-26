@@ -13,20 +13,8 @@ To build the compressed, minified appworks.js source, open up your terminal at t
 
 This will install of the dependencies required to build the library.
 
-To build appworksjs  (defaults to build for iOS devices):
+To build appworks-js
 
 ````grunt````
-
-To build for android
-
-````grunt android````
-
-To build for blackberry
-
-````grunt blackberry````
-
-To build for ios
-
-````grunt ios````
 
 The final file can be found in ````dist/appworks.min.js````
