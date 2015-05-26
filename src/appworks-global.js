@@ -3,12 +3,13 @@
 
     var aw = AppWorksCore();
 
-    // add appworks plugins
-    aw.storage = AppWorksStorage(aw);
-    aw.cache = AppWorksCache(aw);
-    aw.comms = AppWorksComms(aw);
-
     document.addEventListener('deviceready', function () {
+
+        // add appworks plugins
+        aw.storage = AppWorksStorage(aw);
+        aw.cache = AppWorksCache(aw);
+        aw.comms = AppWorksComms(aw);
+
         // add cordova plugins to mask calls
         aw.accelerometer = global.navigator.accelerometer;
         aw.battery = global.navigator.battery;

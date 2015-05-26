@@ -163,6 +163,60 @@ function AppWorksStorage(aw) {
          */
         millisToDate: function (millisString) {
             return new Date(parseInt(millisString, 10));
+        },
+        /**
+         * store a file on the device securely.
+         * usage example:
+         *
+         *      appworks.storage.storeFile('file.png', 'http://i.imgur.com/DLunVNs.jpg', onSuccess, onError);
+         *
+         *      function onSuccess() {}
+         *      function onError() {}
+         *
+         * @param filename - the name to store the file on the device as
+         * @param downloadUri - the url to download the file from
+         * @param onSuccess - a success handler to run when the execution completes successfully
+         * @param onError - an error handler to run when the execution encounters an error
+         */
+        storeFile: function (filename, downloadUri, onSuccess, onError) {
+
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileTransfer, errorHandler);
+
+            function fileTransfer() {
+                var ft = new FileTransfer(),
+                    uri = encodeURI(downloadUri),
+                    fileUrl = 'cdvfile://localhost/persistent/' + filename;
+
+                return ft.download(uri, fileUrl, onSuccess, onError);
+            }
+
+            function errorHandler(e) {
+                var msg = '';
+
+                switch (e.code) {
+                    case FileError.QUOTA_EXCEEDED_ERR:
+                        msg = 'QUOTA_EXCEEDED_ERR';
+                        break;
+                    case FileError.NOT_FOUND_ERR:
+                        msg = 'NOT_FOUND_ERR';
+                        break;
+                    case FileError.SECURITY_ERR:
+                        msg = 'SECURITY_ERR';
+                        break;
+                    case FileError.INVALID_MODIFICATION_ERR:
+                        msg = 'INVALID_MODIFICATION_ERR';
+                        break;
+                    case FileError.INVALID_STATE_ERR:
+                        msg = 'INVALID_STATE_ERR';
+                        break;
+                    default:
+                        msg = 'Unknown Error';
+                        break;
+                }
+
+                alert('Error: ' + msg);
+            }
+
         }
 
     };
