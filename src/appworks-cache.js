@@ -130,6 +130,21 @@ function AppWorksCache(aw) {
         isItemInCache: function (cacheRequest, callback) {
             var req = createCacheRequestString('isItemInCache', cacheRequest);
             AppWorks.blackberryCommunication(req, callback);
+        },
+        /**
+         * cache an item using the localstorage cache on the device. cache will be cleared when the app is closed.
+         * @param key - the key to store the item under
+         * @param value - the data to store
+         */
+        setItem: function (key, value) {
+            return window.localStorage.setItem(key, value);
+        },
+        /**
+         * return a previously cached object
+         * @param key - the key the item was stored under
+         */
+        getItem: function (key) {
+            return window.localStorage.getItem(key);
         }
     };
 

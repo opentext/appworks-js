@@ -30,6 +30,33 @@ function AppWorksStorage(aw) {
         }, (options || {})));
     }
 
+    function errorHandler(e) {
+        var msg = '';
+
+        switch (e.code) {
+            case FileError.QUOTA_EXCEEDED_ERR:
+                msg = 'QUOTA_EXCEEDED_ERR';
+                break;
+            case FileError.NOT_FOUND_ERR:
+                msg = 'NOT_FOUND_ERR';
+                break;
+            case FileError.SECURITY_ERR:
+                msg = 'SECURITY_ERR';
+                break;
+            case FileError.INVALID_MODIFICATION_ERR:
+                msg = 'INVALID_MODIFICATION_ERR';
+                break;
+            case FileError.INVALID_STATE_ERR:
+                msg = 'INVALID_STATE_ERR';
+                break;
+            default:
+                msg = 'Unknown Error';
+                break;
+        }
+
+        alert('Error: ' + msg);
+    }
+
     var awStorage = {
         /**
          * Add some JSON to the device store, this operation will automatically overwrite
@@ -170,55 +197,83 @@ function AppWorksStorage(aw) {
          *
          *      appworks.storage.storeFile('file.png', 'http://i.imgur.com/DLunVNs.jpg', onSuccess, onError);
          *
-         *      function onSuccess() {}
-         *      function onError() {}
+         *      function onSuccess(entry) {}
+         *      function onError(err) {}
          *
          * @param filename - the name to store the file on the device as
          * @param downloadUri - the url to download the file from
          * @param onSuccess - a success handler to run when the execution completes successfully
          * @param onError - an error handler to run when the execution encounters an error
+         * @param options - an options object to set headers and params on the request
          */
-        storeFile: function (filename, downloadUri, onSuccess, onError) {
+        storeFile: function (filename, downloadUrl, onSuccess, onError, options) {
 
             window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileTransfer, errorHandler);
 
             function fileTransfer() {
                 var ft = new FileTransfer(),
-                    uri = encodeURI(downloadUri),
+                    uri = encodeURI(downloadUrl),
                     fileUrl = 'cdvfile://localhost/persistent/' + filename;
 
-                return ft.download(uri, fileUrl, onSuccess, onError);
+                return ft.download(uri, fileUrl, onSuccess, onError, options);
             }
 
-            function errorHandler(e) {
-                var msg = '';
+        },
+        /**
+         * retrieve a file that has been stored on the device and upload it to a device
+         *
+         * usage example:
+         *
+         *      appworks.storage.getFile('file.png', 'http://my-content-server/nodes', onSuccess, onError);
+         *
+         *      function onSuccess(entry) {}
+         *      function onError(err) {}
+         *
+         * @param filename - the name of the file to retrieve from the device storage
+         * @param uploadUrl - the url of the server to receive the file
+         * @param onSuccess - a success handler to run when the execution completes successfully
+         * @param onError - an error handler to run when the execution encounters an error
+         * @param options - an options object to set headers and params on the request
+         */
+        uploadFile: function (filename, uploadUrl, onSuccess, onError, options) {
 
-                switch (e.code) {
-                    case FileError.QUOTA_EXCEEDED_ERR:
-                        msg = 'QUOTA_EXCEEDED_ERR';
-                        break;
-                    case FileError.NOT_FOUND_ERR:
-                        msg = 'NOT_FOUND_ERR';
-                        break;
-                    case FileError.SECURITY_ERR:
-                        msg = 'SECURITY_ERR';
-                        break;
-                    case FileError.INVALID_MODIFICATION_ERR:
-                        msg = 'INVALID_MODIFICATION_ERR';
-                        break;
-                    case FileError.INVALID_STATE_ERR:
-                        msg = 'INVALID_STATE_ERR';
-                        break;
-                    default:
-                        msg = 'Unknown Error';
-                        break;
-                }
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileTransfer, errorHandler);
 
-                alert('Error: ' + msg);
+            function fileTransfer() {
+                var ft = new FileTransfer(),
+                    url = encodeURI(uploadUrl),
+                    fileUrl = 'cdvfile://localhost/persistent/' + filename;
+
+                return ft.upload(fileUrl, url, onSuccess, onError, options);
+            }
+        },
+        /**
+         * retrieve a file that has been stored previously on the device as a base 64 string
+         * @param filename - the name of the file stored
+         * @param callback - a function to execute with the base 64 string representation of the file
+         */
+        getFile: function (filename, callback) {
+
+            var fileUrl = 'cdvfile://localhost/persistent/' + filename;
+
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemHandler, errorHandler);
+
+            function fileSystemHandler(fileSystem) {
+                fileSystem.root.getFile(filename, null, fileHandler, errorHandler);
             }
 
+            function fileHandler(entry) {
+                entry.file(readAsDataUrl, errorHandler);
+            }
+
+            function readAsDataUrl(file) {
+                var reader = new FileReader();
+                reader.onloadend = function (evt) {
+                    callback(evt.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
         }
-
     };
 
     return awStorage;
