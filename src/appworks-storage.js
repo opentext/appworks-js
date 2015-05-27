@@ -254,8 +254,6 @@ function AppWorksStorage(aw) {
          */
         getFile: function (filename, callback) {
 
-            var fileUrl = 'cdvfile://localhost/persistent/' + filename;
-
             window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemHandler, errorHandler);
 
             function fileSystemHandler(fileSystem) {
