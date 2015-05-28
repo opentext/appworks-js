@@ -143,8 +143,8 @@ function AppWorksCache(aw) {
          * return a previously cached object
          * @param key - the key the item was stored under
          */
-        getItem: function (key) {
-            return window.localStorage.getItem(key);
+        getItem: function (key, callback) {
+            callback(window.localStorage.getItem(key));
         }
     };
 

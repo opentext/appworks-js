@@ -162,11 +162,11 @@ function AppWorksStorage(aw) {
          */
         getStorageRequest: function (dataType, app, id, dataObj) {
             if (app === null) {
-                throw new Error("app cannot be null");
+                throw new Error('app cannot be null');
             }
 
             if (dataType === null) {
-                throw new Error("dataType cannot be null");
+                throw new Error('dataType cannot be null');
             }
 
             var baseReq = {
@@ -252,7 +252,7 @@ function AppWorksStorage(aw) {
          * @param filename - the name of the file stored
          * @param callback - a function to execute with the base 64 string representation of the file
          */
-        getFile: function (filename, callback) {
+        getFile: function (filename, callback, errorCallback) {
 
             window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemHandler, errorHandler);
 
@@ -261,7 +261,7 @@ function AppWorksStorage(aw) {
             }
 
             function fileHandler(entry) {
-                entry.file(readAsDataUrl, errorHandler);
+                entry.file(readAsDataUrl, errorCallback);
             }
 
             function readAsDataUrl(file) {
