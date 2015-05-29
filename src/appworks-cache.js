@@ -13,6 +13,33 @@ function AppWorksCache(aw) {
         });
     }
 
+    function errorHandler(e) {
+        var msg = '';
+
+        switch (e.code) {
+            case FileError.QUOTA_EXCEEDED_ERR:
+                msg = 'QUOTA_EXCEEDED_ERR';
+                break;
+            case FileError.NOT_FOUND_ERR:
+                msg = 'NOT_FOUND_ERR';
+                break;
+            case FileError.SECURITY_ERR:
+                msg = 'SECURITY_ERR';
+                break;
+            case FileError.INVALID_MODIFICATION_ERR:
+                msg = 'INVALID_MODIFICATION_ERR';
+                break;
+            case FileError.INVALID_STATE_ERR:
+                msg = 'INVALID_STATE_ERR';
+                break;
+            default:
+                msg = 'Unknown Error';
+                break;
+        }
+
+        alert('Error: ' + msg);
+    }
+
     // module definition
     var awCache = {
         /**
@@ -136,15 +163,43 @@ function AppWorksCache(aw) {
          * @param key - the key to store the item under
          * @param value - the data to store
          */
-        setItem: function (key, value) {
-            return window.localStorage.setItem(key, value);
+        setItem: function (key, value, options) {
+            options = options || {};
+
+            var expiry = options['expiry'] || (new Date().getTime() + (24 * 24 * 60 * 1000)),
+                data = JSON.stringify({value: value, expires: expiry});
+
+            return window.localStorage.setItem(key, data);
         },
         /**
-         * return a previously cached object
+         * return a cached item
          * @param key - the key the item was stored under
+         * @param callback - a function to evaluate the retrieved item
          */
         getItem: function (key, callback) {
-            callback(window.localStorage.getItem(key));
+            var data = JSON.parse(window.localStorage.getItem(key));
+            // if item exists and has not expired, execute the callback on the value
+            // otherwise, remove the item from the cache and execute the callback on null
+            if (data && data.expires > new Date().getTime()) {
+                callback(data.value);
+            } else {
+                console.log('item does not exist or has expired.');
+                window.localStorage.removeItem(key);
+                callback(null);
+            }
+        },
+        /**
+         * remove an item by key from the cache
+         * @param key
+         */
+        removeItem: function (key) {
+            return window.localStorage.removeItem(key);
+        },
+        /**
+         * clear all items from the cache
+         */
+        clear: function () {
+            return window.localStorage.clear();
         }
     };
 
