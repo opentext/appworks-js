@@ -252,9 +252,16 @@ function AppWorksStorage(aw) {
          * @param filename - the name of the file stored
          * @param callback - a function to execute with the base 64 string representation of the file
          */
-        getFile: function (filename, callback, errorCallback) {
+        getFile: function (filename, callback, errorCallback, options) {
 
-            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemHandler, errorHandler);
+            options = options || {};
+            options.fileSystem = options.fileSystem || LocalFileSystem.PERSISTENT;
+
+            if (options.resolveLocalFileSystemURL) {
+                window.resolveLocalFileSystemURL(filename, fileHandler, errorCallback);
+            } else {
+                window.requestFileSystem(options.fileSystem, 0, fileSystemHandler, errorHandler);
+            }
 
             function fileSystemHandler(fileSystem) {
                 fileSystem.root.getFile(filename, null, fileHandler, errorHandler);

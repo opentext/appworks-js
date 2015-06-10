@@ -262,7 +262,50 @@ function AppWorksCore() {
         selectFilePath: function (callback) {
             var req = createRequestString('selectFilePath');
             this.blackberryCommunication(req, callback);
+        },
+        camera: {
+            /**
+             * open the device camera to take a picture. takes a success callback, error callback, and options parameter
+             * for options such as quality, save location, and more. by default, success callback will take the dataUrl
+             * of the image as a parameter.
+             * @param callback
+             * @param errorCallback
+             * @param options
+             */
+            takePicture: function (callback, errorCallback, options) {
+                options = options || {
+                    destinationType: Camera.DestinationType.FILE_URI,
+                    encodingType: Camera.EncodingType.JPEG,
+                    mediaType: Camera.MediaType.ALLMEDIA,
+                    correctOrientation: true,
+                    saveToPhotoAlbum: true
+                };
+
+                navigator.camera.getPicture(((aw.storage && onCameraSuccess) || callback), errorCallback, options);
+
+                function onCameraSuccess(fileUrl) {
+                    var options = {
+                        fileSystem: LocalFileSystem.TEMPORARY,
+                        resolveLocalFileSystemURL: true
+                    };
+                    aw.storage.getFile(fileUrl, callback, errorCallback, options);
+                }
+            },
+            chooseFromLibrary: function (callback, errorCallback, options) {
+                options = options || {sourceType: Camera.PictureSourceType.PHOTOLIBRARY};
+
+                navigator.camera.getPicture(((aw.storage && onCameraSuccess) || callback), errorCallback, options);
+
+                function onCameraSuccess(fileUrl) {
+                    var options = {
+                        fileSystem: LocalFileSystem.TEMPORARY,
+                        resolveLocalFileSystemURL: true
+                    };
+                    aw.storage.getFile(fileUrl, callback, errorCallback, options);
+                }
+            }
         }
+
     };
 
     return aw;
