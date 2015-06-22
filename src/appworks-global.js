@@ -9,6 +9,7 @@
         aw.storage = AppWorksStorage(aw);
         aw.cache = AppWorksCache(aw);
         aw.comms = AppWorksComms(aw);
+        aw.offline = AppWorksOffline(aw);
 
         // add cordova plugins to mask calls
         aw.accelerometer = global.navigator.accelerometer;

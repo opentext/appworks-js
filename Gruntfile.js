@@ -29,6 +29,7 @@ module.exports = function (grunt) {
                     'src/appworks-cache.js',
                     'src/appworks-comms.js',
                     'src/appworks-storage.js',
+                    'src/appworks-offline.js',
                     'src/appworks-global.js'
                 ],
                 // the location of the resulting JS file
