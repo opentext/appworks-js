@@ -305,7 +305,6 @@ function AppWorksCore() {
                 }
             }
         }
-
     };
 
     return aw;

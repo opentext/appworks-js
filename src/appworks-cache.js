@@ -162,11 +162,12 @@ function AppWorksCache(aw) {
          * cache an item using the localstorage cache on the device. cache will be cleared when the app is closed.
          * @param key - the key to store the item under
          * @param value - the data to store
+         * @param options - an options hash provided to set an expiration date on items. defaults to 24 hours.
          */
         setItem: function (key, value, options) {
             options = options || {};
 
-            var expiry = options['expiry'] || (new Date().getTime() + (24 * 24 * 60 * 1000)),
+            var expiry = options['expiry'] || (new Date().getTime() + (86400000)),
                 data = JSON.stringify({value: value, expires: expiry});
 
             return window.localStorage.setItem(key, data);
@@ -183,7 +184,7 @@ function AppWorksCache(aw) {
             if (data && data.expires > new Date().getTime()) {
                 callback(data.value);
             } else {
-                console.log('item does not exist or has expired.');
+                // item does not exist or has expired
                 window.localStorage.removeItem(key);
                 callback(null);
             }

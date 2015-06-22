@@ -2,9 +2,9 @@
     'use strict';
 
     var aw = AppWorksCore();
+    document.addEventListener('deviceready', bindModules);
 
-    document.addEventListener('deviceready', function () {
-
+    function bindModules() {
         // add appworks plugins
         aw.storage = AppWorksStorage(aw);
         aw.cache = AppWorksCache(aw);
@@ -22,7 +22,7 @@
         aw.getStorageUpdates = global.navigator.getStorageUpdates;
 
         global.appworks = aw;
-    });
+    }
 
     global.appworks = aw;
 
