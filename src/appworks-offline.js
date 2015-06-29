@@ -1,7 +1,7 @@
 function AppWorksOffline(aw) {
     'use strict';
 
-    // device is online by default. add identifier to global appworks object
+    // add identifier to global appworks object
     aw.network = {
         online: 'onLine' in navigator && navigator.onLine,
         offline: 'onLine' in navigator && !navigator.onLine
@@ -40,7 +40,6 @@ function AppWorksOffline(aw) {
 
     function sendQueuedRequests() {
         if (aw.network.online) {
-            console.log('sending');
             getStoredRequests(onGetStoredRequests);
         }
 
@@ -78,12 +77,9 @@ function AppWorksOffline(aw) {
         var event;
             xhr = new XMLHttpRequest();
 
-        console.log('making request...', req.id);
-
         xhr.addEventListener('load', function () {
             var response = {detail: {data: xhr.response, status: xhr.status}};
             if (xhr.status === 200) {
-                console.log(xhr.readyState, xhr.status, req.id);
                 event = new CustomEvent(req.id, response);
                 event.data = xhr.response;
                 document.dispatchEvent(event);
@@ -125,7 +121,7 @@ function AppWorksOffline(aw) {
          *
          * @param url
          * @param options
-         * @returns {{success: successFn, error: errorFn}}
+         * @returns {{success: successFn, error: errorFn, then: promiseFn}}
          */
         queue: function (url, options) {
 
