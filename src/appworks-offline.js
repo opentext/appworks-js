@@ -2,25 +2,26 @@ function AppWorksOffline(aw) {
     'use strict';
 
     // device is online by default. add identifier to global appworks object
-    aw.network = {online: true, offline: false};
+    aw.network = {
+        online: 'onLine' in navigator && navigator.onLine,
+        offline: 'onLine' in navigator && !navigator.onLine
+    };
     // watch for online event and send all requests queued while device was offline.
     document.addEventListener('online', sendQueuedRequests);
     // watch for online event and set global identifier
     document.addEventListener('online', networkOnline);
     // watch for offline event and set global identifier
     document.addEventListener('offline', networkOffline);
-    // watch for DOMContentLoaded and send all queued requests
-    document.addEventListener('DOMContentLoaded', sendQueuedRequests);
 
     var xhr = new XMLHttpRequest(),
-        CACHE_ID = '_storedRequests';
+        CACHE_REQUESTS_ID = '_storedRequests';
 
     function networkOnline() {
         aw.network = aw.network || {};
         aw.network.online = true;
         aw.network.offline = false;
-        // put a buffer of time between when the network says it is online to ensure that we can make requests
-        setTimeout(sendQueuedRequests, 1000);
+        //// put a buffer of time between when the network says it is online to ensure that we can make requests
+        setTimeout(sendQueuedRequests, 2000);
     }
 
     function networkOffline() {
@@ -29,18 +30,27 @@ function AppWorksOffline(aw) {
         aw.network.offline = true;
     }
 
+    function getStoredRequests(callback) {
+        aw.cache.getItem(CACHE_REQUESTS_ID, callback);
+    }
+
+    function clearQueue() {
+        aw.cache.removeItem(CACHE_REQUESTS_ID);
+    }
+
     function sendQueuedRequests() {
         if (aw.network.online) {
-            aw.cache.getItem(CACHE_ID, onGetStoredRequests);
+            console.log('sending');
+            getStoredRequests(onGetStoredRequests);
         }
 
         function onGetStoredRequests(storedRequests) {
             if (storedRequests) {
-                for (var i = 0; i < storedRequests.length; i += 1) {
+                for (var i = storedRequests.length - 1; i >= 0; i -= 1) {
                     makeRequest(storedRequests[i]);
                 }
                 // clear the queue
-                aw.cache.removeItem(CACHE_ID);
+                clearQueue();
             }
         }
     }
@@ -66,36 +76,57 @@ function AppWorksOffline(aw) {
 
     function makeRequest(req) {
         var event;
-        xhr = new XMLHttpRequest();
+            xhr = new XMLHttpRequest();
 
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                event = new CustomEvent(req.id, {detail: {data: xhr.response, status: xhr.status}});
+        console.log('making request...', req.id);
+
+        xhr.addEventListener('load', function () {
+            var response = {detail: {data: xhr.response, status: xhr.status}};
+            if (xhr.status === 200) {
+                console.log(xhr.readyState, xhr.status, req.id);
+                event = new CustomEvent(req.id, response);
+                event.data = xhr.response;
+                document.dispatchEvent(event);
+            } else if (xhr.status !== 200) {
+                event = new CustomEvent(req.id + '__error', response);
                 event.data = xhr.response;
                 document.dispatchEvent(event);
             }
-        };
+        });
         xhr.open(req.options.method, req.url, true);
         setRequestHeaders(req.options);
         xhr.send(req.data || null);
     }
 
+    function registerEventHandler(eventName, handler) {
+        return document.addEventListener(eventName, handler);
+    }
+
+    function removeEventHandler(eventName, handler) {
+        return document.removeEventListener(eventName, handler);
+    }
+
     var awOffline = {
 
-        registerEventHandler: function (eventName, handler) {
-            document.addEventListener(eventName, handler);
-        },
-        registerForAllEvents: function (handler) {
-            aw.cache.getItem(CACHE_ID, onGetStoredRequests);
-
-            function onGetStoredRequests(storedRequests) {
-                if (storedRequests) {
-                    for (var i = 0; i < storedRequests.length; i += 1) {
-                        document.addEventListener(storedRequests[i].id, handler);
-                    }
-                }
-            }
-        },
+        registerEventHandler: registerEventHandler,
+        removeEventHandler: removeEventHandler,
+        flush: sendQueuedRequests,
+        queuedRequests: getStoredRequests,
+        id: String.random,
+        /**
+         * example:
+         *  var headers = {},
+         *      options = {method: 'GET', eventListener: 'myEventListener', headers: headers};
+         *
+         *  appworks.offline.queue('http://thecatapi.com/api/images/get', options)
+         *          .success(function (data) {})
+         *          .error(function (err) {});
+         *
+         *
+         * @param url
+         * @param options
+         * @returns {{success: successFn, error: errorFn}}
+         */
         queue: function (url, options) {
 
             var requestId = options['eventListener'] || String.random(),
@@ -105,17 +136,15 @@ function AppWorksOffline(aw) {
 
             if (aw.network.offline) {
                 // we are offline, store the request to be made later
-                aw.cache.getItem(CACHE_ID, onGetStoredRequests);
-            } else {
-                // we are online, fire the request now
-                makeRequest(request);
+                aw.cache.getItem(CACHE_REQUESTS_ID, onGetStoredRequests);
             }
 
             function onGetStoredRequests(storedRequests) {
                 if (storedRequests && findRequestById(storedRequests, request.id) === -1) {
                     storedRequests.push(request);
+                    aw.cache.setItem(CACHE_REQUESTS_ID, storedRequests);
                 } else {
-                    aw.cache.setItem(CACHE_ID, [request]);
+                    aw.cache.setItem(CACHE_REQUESTS_ID, [request]);
                 }
             }
 
@@ -124,6 +153,34 @@ function AppWorksOffline(aw) {
                 options['eventListener'] = options['eventListener'] || requestId;
                 options['method'] = options['method'] || 'GET';
                 options['headers'] = options['headers'] || {};
+            }
+
+            function successFn(handler) {
+                // pass callback to event that will be fired when the request is made
+                registerEventHandler(requestId, handler);
+
+                if (aw.network.online) {
+                    makeRequest(request);
+                }
+
+                return {
+                    error: errorFn
+                };
+            }
+
+            function errorFn(errorHandler) {
+                registerEventHandler(requestId + '__error', errorHandler);
+            }
+
+            function promiseFn(successHandler, errorHandler) {
+                successFn(successHandler);
+                errorFn(errorHandler);
+            }
+
+            return {
+                success: successFn,
+                error: errorFn,
+                then: promiseFn
             }
 
         }
