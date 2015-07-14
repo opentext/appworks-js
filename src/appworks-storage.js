@@ -220,11 +220,11 @@ function AppWorksStorage(aw) {
 
         },
         /**
-         * retrieve a file that has been stored on the device and upload it to a device
+         * retrieve a file that has been stored on the device and upload it to a server
          *
          * usage example:
          *
-         *      appworks.storage.getFile('file.png', 'http://my-content-server/nodes', onSuccess, onError);
+         *      appworks.storage.upload('file.png', 'http://my-content-server/nodes', onSuccess, onError);
          *
          *      function onSuccess(entry) {}
          *      function onError(err) {}
@@ -251,6 +251,8 @@ function AppWorksStorage(aw) {
          * retrieve a file that has been stored previously on the device as a base 64 string
          * @param filename - the name of the file stored
          * @param callback - a function to execute with the base 64 string representation of the file
+         * @param errorCallback - a function to execute when the process encounters an error
+         * @param options - an options object to set the type of storage (temporary or persistent)
          */
         getFile: function (filename, callback, errorCallback, options) {
 

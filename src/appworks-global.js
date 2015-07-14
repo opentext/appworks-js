@@ -13,6 +13,7 @@
 
         // add cordova plugins to mask calls
         aw.accelerometer = global.navigator.accelerometer;
+        aw.notification = global.navigator.notification;
         aw.battery = global.navigator.battery;
         aw.cancelVibration = global.navigator.cancelVibration;
         aw.compass = global.navigator.compass;
