@@ -5,7 +5,9 @@ module.exports = function (grunt) {
 
         pkg: grunt.file.readJSON('package.json'),
 
-        clean: ['src/appworks.js'],
+        // keep the src file intact for development purposes
+        //clean: ['src/appworks.js'],
+        clean: ['tmp'],
 
         uglify: {
             options: {
@@ -30,6 +32,7 @@ module.exports = function (grunt) {
                     'src/appworks-comms.js',
                     'src/appworks-storage.js',
                     'src/appworks-offline.js',
+                    'src/appworks-notifications.js',
                     'src/appworks-global.js'
                 ],
                 // the location of the resulting JS file

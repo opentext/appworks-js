@@ -10,17 +10,14 @@
         aw.cache = AppWorksCache(aw);
         aw.comms = AppWorksComms(aw);
         aw.offline = AppWorksOffline(aw);
+        aw.notifications = AppWorksNotifications(aw);
 
         // error checking
         if (!global.cordova) {
             throw new Error('cordova not found. deviceready should not have been fired but it was');
         }
-        if (!global.cordova.plugins) {
-            throw new Error('cordova plugins now found. make sure the plugins are available.');
-        }
         // add cordova plugins to mask calls
         aw.accelerometer = global.navigator.accelerometer;
-        aw.notification = global.cordova.plugins.notification.local;
         aw.battery = global.navigator.battery;
         aw.cancelVibration = global.navigator.cancelVibration;
         aw.compass = global.navigator.compass;
