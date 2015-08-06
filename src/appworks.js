@@ -1173,7 +1173,7 @@ function AppWorksNotifications(aw) {
     }
 
     function off() {
-        notifications = [];
+        clear();
         websocket.onmessage = null;
     }
 
