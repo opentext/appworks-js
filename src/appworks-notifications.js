@@ -8,6 +8,9 @@ function AppWorksNotifications(aw) {
         websocket = new WebSocket(wsFull, wsProtocol),
         notifications = [];
 
+    // notifications enabled by default
+    on();
+
     function onNotification(message) {
         // TODO determine if this notification is intended for this app
         notifications.push(message.data);
