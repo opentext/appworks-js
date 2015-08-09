@@ -1,6 +1,8 @@
 function AppWorksNotifications(aw) {
     'use strict';
 
+    var self = this;
+
     var wsProtocol = 'appworks',
         wsHost =  '127.0.0.1',
         wsPort = '9000',
@@ -14,6 +16,10 @@ function AppWorksNotifications(aw) {
     function onNotification(message) {
         // TODO determine if this notification is intended for this app
         notifications.push(message.data);
+        // execute the user defined callback
+        if (self.onmessage) {
+            self.onmessage(message);
+        }
     }
 
     function get() {
