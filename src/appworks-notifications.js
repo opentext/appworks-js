@@ -17,7 +17,7 @@ function AppWorksNotifications(aw) {
         notifications.push(message.data);
         // execute the user defined callback
         if (userCallback) {
-            userCallback(message);
+            userCallback(message.data);
         }
     }
 
