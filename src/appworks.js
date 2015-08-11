@@ -1153,7 +1153,8 @@ function AppWorksNotifications(aw) {
         wsPort = '9000',
         wsFull = 'ws://' + wsHost + ':' + wsPort,
         websocket = new WebSocket(wsFull, wsProtocol),
-        notifications = [];
+        notifications = [],
+        userCallback;
 
     // notifications enabled by default
     on();
@@ -1161,6 +1162,14 @@ function AppWorksNotifications(aw) {
     function onNotification(message) {
         // TODO determine if this notification is intended for this app
         notifications.push(message.data);
+        // execute the user defined callback
+        if (userCallback) {
+            userCallback(message);
+        }
+    }
+
+    function registerUserCallback(callback) {
+        userCallback = callback;
     }
 
     function get() {
@@ -1184,7 +1193,8 @@ function AppWorksNotifications(aw) {
         get: get,
         clear: clear,
         on: on,
-        off: off
+        off: off,
+        handler: registerUserCallback
     };
 
     return awNotifications;
