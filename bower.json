@@ -1,0 +1,23 @@
+{
+  "name": "appworksjs",
+  "version": "0.0.1",
+  "authors": [
+    "Jason Ibrahim <jibrahim@opentext.com>"
+  ],
+  "description": "opentext mobile js library for secure storage, offline capability, device technology and more.",
+  "main": "dist/appworks.js",
+  "keywords": [
+    "opentext",
+    "appworks",
+    "javascript"
+  ],
+  "license": "C",
+  "homepage": "http://awg-docs.appworks.dev",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
