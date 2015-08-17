@@ -58,6 +58,7 @@ function AppWorksComms(aw) {
             }
 
         },
+        /*jslint evil: true */
         callMethodFromComms: function (methodName, data) {
             // form a String for eval using the supplied function name and
             // optional data

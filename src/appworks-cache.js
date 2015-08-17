@@ -167,7 +167,7 @@ function AppWorksCache(aw) {
         setItem: function (key, value, options) {
             options = options || {};
 
-            var expiry = options['expiry'] || (new Date().getTime() + (86400000)),
+            var expiry = options.expiry || (new Date().getTime() + (86400000)),
                 data = JSON.stringify({value: value, expires: expiry});
 
             return window.localStorage.setItem(key, data);

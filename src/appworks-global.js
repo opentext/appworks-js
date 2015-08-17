@@ -1,16 +1,16 @@
 (function (global) {
     'use strict';
 
-    var aw = AppWorksCore();
+    var aw = new AppWorksCore();
     document.addEventListener('deviceready', bindModules);
 
     function bindModules() {
         // add appworks plugins
-        aw.storage = AppWorksStorage(aw);
-        aw.cache = AppWorksCache(aw);
-        aw.comms = AppWorksComms(aw);
-        aw.offline = AppWorksOffline(aw);
-        aw.notifications = AppWorksNotifications(aw);
+        aw.storage = new AppWorksStorage(aw);
+        aw.cache = new AppWorksCache(aw);
+        aw.comms = new AppWorksComms(aw);
+        aw.offline = new AppWorksOffline(aw);
+        aw.notifications = new AppWorksNotifications(aw);
 
         // error checking
         if (!global.cordova) {

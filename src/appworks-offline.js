@@ -125,7 +125,7 @@ function AppWorksOffline(aw) {
          */
         queue: function (url, options) {
 
-            var requestId = options['eventListener'] || String.random(),
+            var requestId = options.eventListener || String.random(),
                 request = {id: requestId, url: url, options: options};
 
             setOptions();
@@ -146,9 +146,9 @@ function AppWorksOffline(aw) {
 
             function setOptions() {
                 options = options || {};
-                options['eventListener'] = options['eventListener'] || requestId;
-                options['method'] = options['method'] || 'GET';
-                options['headers'] = options['headers'] || {};
+                options.eventListener = options.eventListener || requestId;
+                options.method = options.method || 'GET';
+                options.headers = options.headers || {};
             }
 
             function successFn(handler) {
@@ -177,7 +177,7 @@ function AppWorksOffline(aw) {
                 success: successFn,
                 error: errorFn,
                 then: promiseFn
-            }
+            };
 
         }
     };

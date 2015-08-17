@@ -9,12 +9,21 @@ module.exports = function (grunt) {
         //clean: ['src/appworks.js'],
         clean: ['tmp'],
 
+        jshint: {
+            files: ['Gruntfile.js', 'src/*.js', 'test/**/*.js'],
+            options: {
+                globals: {
+                    angular: true
+                }
+            }
+        },
+
         uglify: {
             options: {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> copyright OpenText Inc */\n'
             },
             build: {
-                src: 'src/appworks.js',
+                src: 'dist/appworks.js',
                 dest: 'dist/appworks.min.js'
             }
         },
@@ -36,7 +45,7 @@ module.exports = function (grunt) {
                     'src/appworks-global.js'
                 ],
                 // the location of the resulting JS file
-                dest: 'src/appworks.js'
+                dest: 'dist/appworks.js'
             }
         },
         // this task moves all files that get installed by npm into a local "lib" directory
@@ -54,6 +63,7 @@ module.exports = function (grunt) {
     });
 
     // external tasks
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
@@ -65,7 +75,7 @@ module.exports = function (grunt) {
     // then copy all dependencies from node_modules to the "lib" directory",
     // concatenate all of our dependencies from "lib" into a single file in a particular order in "src/appworks.js",
     // compress that concatenated file into a single appworks.min.js distribution in the "dist" directory
-    grunt.registerTask('default', ['compress']);
+    grunt.registerTask('default', ['jshint', 'compress']);
     // clean up task: concatenate assets, compress, then clean project
     grunt.registerTask('compress', ['concat', 'uglify', 'clean']);
 };

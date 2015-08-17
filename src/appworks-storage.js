@@ -17,9 +17,9 @@ function AppWorksStorage(aw) {
     function createStorageRequestString(action, data, options) {
 
         function merge(obj1, obj2) {
-            var finalobj={};
-            for(var _obj in obj1) finalobj[_obj ] = obj1[_obj];
-            for(var _obj in obj2) finalobj[_obj ] = obj2[_obj];
+            var finalobj={}, _obj;
+            for(_obj in obj1) finalobj[_obj ] = obj1[_obj];
+            for(_obj in obj2) finalobj[_obj ] = obj2[_obj];
             return finalobj;
         }
 
@@ -174,7 +174,7 @@ function AppWorksStorage(aw) {
                 dataType: dataType
             };
 
-            if (id != null) {
+            if (id !== null) {
                 baseReq.id = id;
             }
 

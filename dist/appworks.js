@@ -16,7 +16,7 @@ function AppWorksCore() {
     String.random = function () {
         var length = 16;
         return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1);
-    }
+    };
 
     // module definition
     var aw = {
@@ -483,7 +483,7 @@ function AppWorksCache(aw) {
         setItem: function (key, value, options) {
             options = options || {};
 
-            var expiry = options['expiry'] || (new Date().getTime() + (86400000)),
+            var expiry = options.expiry || (new Date().getTime() + (86400000)),
                 data = JSON.stringify({value: value, expires: expiry});
 
             return window.localStorage.setItem(key, data);
@@ -582,6 +582,7 @@ function AppWorksComms(aw) {
             }
 
         },
+        /*jslint evil: true */
         callMethodFromComms: function (methodName, data) {
             // form a String for eval using the supplied function name and
             // optional data
@@ -691,9 +692,9 @@ function AppWorksStorage(aw) {
     function createStorageRequestString(action, data, options) {
 
         function merge(obj1, obj2) {
-            var finalobj={};
-            for(var _obj in obj1) finalobj[_obj ] = obj1[_obj];
-            for(var _obj in obj2) finalobj[_obj ] = obj2[_obj];
+            var finalobj={}, _obj;
+            for(_obj in obj1) finalobj[_obj ] = obj1[_obj];
+            for(_obj in obj2) finalobj[_obj ] = obj2[_obj];
             return finalobj;
         }
 
@@ -848,7 +849,7 @@ function AppWorksStorage(aw) {
                 dataType: dataType
             };
 
-            if (id != null) {
+            if (id !== null) {
                 baseReq.id = id;
             }
 
@@ -1086,7 +1087,7 @@ function AppWorksOffline(aw) {
          */
         queue: function (url, options) {
 
-            var requestId = options['eventListener'] || String.random(),
+            var requestId = options.eventListener || String.random(),
                 request = {id: requestId, url: url, options: options};
 
             setOptions();
@@ -1107,9 +1108,9 @@ function AppWorksOffline(aw) {
 
             function setOptions() {
                 options = options || {};
-                options['eventListener'] = options['eventListener'] || requestId;
-                options['method'] = options['method'] || 'GET';
-                options['headers'] = options['headers'] || {};
+                options.eventListener = options.eventListener || requestId;
+                options.method = options.method || 'GET';
+                options.headers = options.headers || {};
             }
 
             function successFn(handler) {
@@ -1138,7 +1139,7 @@ function AppWorksOffline(aw) {
                 success: successFn,
                 error: errorFn,
                 then: promiseFn
-            }
+            };
 
         }
     };
@@ -1202,16 +1203,16 @@ function AppWorksNotifications(aw) {
 (function (global) {
     'use strict';
 
-    var aw = AppWorksCore();
+    var aw = new AppWorksCore();
     document.addEventListener('deviceready', bindModules);
 
     function bindModules() {
         // add appworks plugins
-        aw.storage = AppWorksStorage(aw);
-        aw.cache = AppWorksCache(aw);
-        aw.comms = AppWorksComms(aw);
-        aw.offline = AppWorksOffline(aw);
-        aw.notifications = AppWorksNotifications(aw);
+        aw.storage = new AppWorksStorage(aw);
+        aw.cache = new AppWorksCache(aw);
+        aw.comms = new AppWorksComms(aw);
+        aw.offline = new AppWorksOffline(aw);
+        aw.notifications = new AppWorksNotifications(aw);
 
         // error checking
         if (!global.cordova) {
