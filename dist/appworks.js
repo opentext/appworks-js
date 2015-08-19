@@ -488,6 +488,9 @@ function AppWorksCache(aw) {
 
             return window.localStorage.setItem(key, data);
         },
+        setObj: function (key, value, options) {
+            return this.setItem(key, JSON.stringify(value), options);
+        },
         /**
          * return a cached item
          * @param key - the key the item was stored under
@@ -498,11 +501,17 @@ function AppWorksCache(aw) {
             // if item exists and has not expired, execute the callback on the value
             // otherwise, remove the item from the cache and execute the callback on null
             if (data && data.expires > new Date().getTime()) {
-                callback(data.value);
-            } else {
-                // item does not exist or has expired
-                window.localStorage.removeItem(key);
-                callback(null);
+                return callback ? callback(data.value) : data.value;
+            }
+            // item does not exist or has expired
+            window.localStorage.removeItem(key);
+            return callback ? callback(null) : null;
+        },
+        getObj: function (key, callback) {
+            var item = this.getItem(key);
+            if (item) {
+                item = JSON.parse(item);
+                return callback ? callback(item) : item;
             }
         },
         /**
@@ -511,6 +520,9 @@ function AppWorksCache(aw) {
          */
         removeItem: function (key) {
             return window.localStorage.removeItem(key);
+        },
+        removeObj: function (key) {
+            return self.removeItem(key);
         },
         /**
          * clear all items from the cache
@@ -1204,12 +1216,12 @@ function AppWorksNotifications(aw) {
     'use strict';
 
     var aw = new AppWorksCore();
-    document.addEventListener('deviceready', bindModules);
+    aw.cache = new AppWorksCache(aw);
+    document.addEventListener('deviceready', bindDependentModules);
 
-    function bindModules() {
+    function bindDependentModules() {
         // add appworks plugins
         aw.storage = new AppWorksStorage(aw);
-        aw.cache = new AppWorksCache(aw);
         aw.comms = new AppWorksComms(aw);
         aw.offline = new AppWorksOffline(aw);
         aw.notifications = new AppWorksNotifications(aw);

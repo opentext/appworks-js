@@ -2,12 +2,12 @@
     'use strict';
 
     var aw = new AppWorksCore();
-    document.addEventListener('deviceready', bindModules);
+    aw.cache = new AppWorksCache(aw);
+    document.addEventListener('deviceready', bindDependentModules);
 
-    function bindModules() {
+    function bindDependentModules() {
         // add appworks plugins
         aw.storage = new AppWorksStorage(aw);
-        aw.cache = new AppWorksCache(aw);
         aw.comms = new AppWorksComms(aw);
         aw.offline = new AppWorksOffline(aw);
         aw.notifications = new AppWorksNotifications(aw);
