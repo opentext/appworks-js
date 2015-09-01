@@ -1240,6 +1240,7 @@ function AppWorksNotifications(aw) {
         aw.device = global.navigator.device;
         aw.globalization = global.navigator.globalization;
         aw.getStorageUpdates = global.navigator.getStorageUpdates;
+        aw.geolocation = global.navigator.geolocation;
 
         global.appworks = aw;
     }
