@@ -13,12 +13,29 @@ function AppWorksNotifications(aw) {
     on();
 
     function onNotification(message) {
+        var notification = JSON.parse(message.data);
+        if (notification['appworksjs.stopListening']) {
+            return off();
+        }
+        if (notification['appworksjs.auth']) {
+            return bindGlobalAuthObject(notification['appworksjs.auth']);
+        }
         // TODO determine if this notification is intended for this app
-        notifications.push(message.data);
+        notifications.push(notification);
         // execute the user defined callback
         if (userCallback) {
-            userCallback(message.data);
+            userCallback(notification);
         }
+    }
+
+    function bindGlobalAuthObject(auth) {
+        var event = new CustomEvent('appworksjs.auth');
+        window.otagtoken = auth.otagtoken;
+        window.otdsticket = auth.otdsticket;
+        window.gatewayUrl = auth.gatewayUrl;
+        aw.auth = auth;
+        event.data = auth;
+        document.dispatchEvent(event);
     }
 
     function registerUserCallback(callback) {
