@@ -36,6 +36,7 @@ module.exports = function (grunt) {
             dist: {
                 // the files to concatenate
                 src: [
+                    'src/appworks-auth.js',
                     'src/appworks-core.js',
                     'src/appworks-cache.js',
                     'src/appworks-comms.js',

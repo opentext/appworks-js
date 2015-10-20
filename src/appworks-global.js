@@ -10,7 +10,8 @@
         aw.storage = new AppWorksStorage(aw);
         aw.comms = new AppWorksComms(aw);
         aw.offline = new AppWorksOffline(aw);
-        aw.notifications = new AppWorksNotifications(aw);
+        aw.auth = new AppWorksAuth(aw);
+        aw.notifications = new AppWorksNotifications(aw, aw.auth);
 
         // error checking
         if (!global.cordova) {

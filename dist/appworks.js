@@ -1,3 +1,44 @@
+function AppWorksAuth() {
+    'use strict';
+
+    var authObject;
+
+    function bindGlobalAuthObject(auth) {
+        var event = new CustomEvent('appworksjs.auth');
+        window.otagtoken = auth.otagtoken;
+        window.otdsticket = auth.otdsticket;
+        window.gatewayUrl = auth.gatewayUrl;
+        authObject = auth;
+        event.data = auth;
+        document.dispatchEvent(event);
+    }
+
+    function getAuthObject() {
+        return authObject;
+    }
+
+    function authenticate() {
+        if (cordova) {
+            cordova.exec(onAuthenticationSuccess, onAuthenticationError, 'authenticateCordovaController', 'reAuthenticate');
+        } else {
+            console.error('Cordova must be loaded before authenticating');
+        }
+    }
+
+    function onAuthenticationSuccess(data) {
+        console.log(data);
+    }
+
+    function onAuthenticationError(err) {
+        console.log(err);
+    }
+
+    return {
+        bindGlobalAuthObject: bindGlobalAuthObject,
+        getAuth: getAuthObject,
+        authenticate: authenticate
+    };
+}
 // define the AMD module
 function AppWorksCore() {
     'use strict';
@@ -1158,7 +1199,7 @@ function AppWorksOffline(aw) {
 
     return awOffline;
 }
-function AppWorksNotifications(aw) {
+function AppWorksNotifications(aw, awAuth) {
     'use strict';
 
     var wsProtocol = 'appworks',
@@ -1178,7 +1219,10 @@ function AppWorksNotifications(aw) {
             return off();
         }
         if (notification['appworksjs.auth']) {
-            return bindGlobalAuthObject(notification['appworksjs.auth']);
+            if (window.appworks && window.appworks.auth) {
+                return window.appworks.auth.bindGlobalAuthObject(notification['appworksjs.auth']);
+            }
+            return awAuth.bindGlobalAuthObject(notification['appworksjs.auth']);
         }
         // TODO determine if this notification is intended for this app
         notifications.push(notification);
@@ -1186,16 +1230,6 @@ function AppWorksNotifications(aw) {
         if (userCallback) {
             userCallback(notification);
         }
-    }
-
-    function bindGlobalAuthObject(auth) {
-        var event = new CustomEvent('appworksjs.auth');
-        window.otagtoken = auth.otagtoken;
-        window.otdsticket = auth.otdsticket;
-        window.gatewayUrl = auth.gatewayUrl;
-        aw.auth = auth;
-        event.data = auth;
-        document.dispatchEvent(event);
     }
 
     function registerUserCallback(callback) {
@@ -1241,7 +1275,8 @@ function AppWorksNotifications(aw) {
         aw.storage = new AppWorksStorage(aw);
         aw.comms = new AppWorksComms(aw);
         aw.offline = new AppWorksOffline(aw);
-        aw.notifications = new AppWorksNotifications(aw);
+        aw.auth = new AppWorksAuth(aw);
+        aw.notifications = new AppWorksNotifications(aw, aw.auth);
 
         // error checking
         if (!global.cordova) {

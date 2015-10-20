@@ -1,4 +1,4 @@
-function AppWorksNotifications(aw) {
+function AppWorksNotifications(aw, awAuth) {
     'use strict';
 
     var wsProtocol = 'appworks',
@@ -18,7 +18,10 @@ function AppWorksNotifications(aw) {
             return off();
         }
         if (notification['appworksjs.auth']) {
-            return bindGlobalAuthObject(notification['appworksjs.auth']);
+            if (window.appworks && window.appworks.auth) {
+                return window.appworks.auth.bindGlobalAuthObject(notification['appworksjs.auth']);
+            }
+            return awAuth.bindGlobalAuthObject(notification['appworksjs.auth']);
         }
         // TODO determine if this notification is intended for this app
         notifications.push(notification);
@@ -26,16 +29,6 @@ function AppWorksNotifications(aw) {
         if (userCallback) {
             userCallback(notification);
         }
-    }
-
-    function bindGlobalAuthObject(auth) {
-        var event = new CustomEvent('appworksjs.auth');
-        window.otagtoken = auth.otagtoken;
-        window.otdsticket = auth.otdsticket;
-        window.gatewayUrl = auth.gatewayUrl;
-        aw.auth = auth;
-        event.data = auth;
-        document.dispatchEvent(event);
     }
 
     function registerUserCallback(callback) {
