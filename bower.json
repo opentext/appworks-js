@@ -11,8 +11,8 @@
     "appworks",
     "javascript"
   ],
-  "license": "C",
-  "homepage": "http://awg-docs.appworks.dev",
+  "license": "See README.md",
+  "homepage": "https://developer.opentext.com",
   "ignore": [
     "**/.*",
     "node_modules",
