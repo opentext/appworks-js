@@ -1,3 +1,4 @@
+// Copyright (c) 2015 Open Text SA or Open Text ULC (in Canada). All rights reserved.
 module.exports = function (grunt) {
 
     // Project configuration.
