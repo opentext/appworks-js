@@ -59,3 +59,5 @@ In no event and under no legal theory, whether in tort (including negligence), c
 ## END OF TERMS AND CONDITIONS
 
 For community support, please refer to [https://developer.opentext.com](https://developer.opentext.com).
+
+Copyright © 2015 Open Text SA or Open Text ULC (in Canada). All rights reserved.
