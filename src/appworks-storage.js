@@ -208,7 +208,7 @@ function AppWorksStorage(aw) {
          */
         storeFile: function (filename, downloadUrl, onSuccess, onError, options) {
 
-            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileTransfer, errorHandler);
+            window.requestFileSystem(cordova.file.documentsDirectory, 0, fileTransfer, errorHandler);
 
             function fileTransfer() {
                 var ft = new FileTransfer(),
