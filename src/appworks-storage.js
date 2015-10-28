@@ -217,9 +217,10 @@ function AppWorksStorage(aw) {
                     directory = cordova.file.documentsDirectory,
                     fileUrl;
 
-                if (useSharedDocumentUrl) {
-                    console.log(window.appworks.auth.getAuth());
-                    directory = window.appworks.auth.getAuth().sharedDocumentUrl + '/';
+                if (useSharedDocumentUrl && window.appworks && window.appworks.auth) {
+                    if (window.appworks.auth.getAuth().sharedDocumentUrl) {
+                        directory = window.appworks.auth.getAuth().sharedDocumentUrl + '/';
+                    }
                 }
 
                 fileUrl = directory + filename;
@@ -255,9 +256,10 @@ function AppWorksStorage(aw) {
                     directory = cordova.file.documentsDirectory,
                     fileUrl;
 
-                if (useSharedDocumentUrl) {
-                    console.log(window.appworks.auth.getAuth());
-                    directory = window.appworks.auth.getAuth().sharedDocumentUrl + '/';
+                if (useSharedDocumentUrl && window.appworks && window.appworks.auth) {
+                    if (window.appworks.auth.getAuth().sharedDocumentUrl) {
+                        directory = window.appworks.auth.getAuth().sharedDocumentUrl + '/';
+                    }
                 }
 
                 fileUrl = directory + filename;
