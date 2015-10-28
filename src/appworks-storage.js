@@ -235,15 +235,23 @@ function AppWorksStorage(aw) {
          * @param onError - an error handler to run when the execution encounters an error
          * @param options - an options object to set headers and params on the request
          */
-        uploadFile: function (filename, uploadUrl, onSuccess, onError, options) {
+        uploadFile: function (filename, uploadUrl, onSuccess, onError, options, useSharedDocumentUrl) {
 
             window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileTransfer, errorHandler);
 
             function fileTransfer() {
                 var ft = new FileTransfer(),
                     url = encodeURI(uploadUrl),
-                    //fileUrl = 'cdvfile://localhost/persistent/' + filename;
-                    fileUrl = cordova.file.documentsDirectory + filename;
+                    directory = cordova.file.documentsDirectory,
+                    fileUrl;
+
+                if (useSharedDocumentUrl && window.appworks && window.appworks.auth) {
+                    if (window.appworks.auth.getAuth().sharedDocumentUrl) {
+                        directory = window.appworks.auth.getAuth().sharedDocumentUrl;
+                    }
+                }
+
+                fileUrl = directory + filename;
 
                 return ft.upload(fileUrl, url, onSuccess, onError, options);
             }
