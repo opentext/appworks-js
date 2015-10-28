@@ -934,14 +934,22 @@ function AppWorksStorage(aw) {
          * @param onError - an error handler to run when the execution encounters an error
          * @param options - an options object to set headers and params on the request
          */
-        storeFile: function (filename, downloadUrl, onSuccess, onError, options) {
+        storeFile: function (filename, downloadUrl, onSuccess, onError, options, useSharedDocumentUrl) {
 
             window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileTransfer, errorHandler);
 
             function fileTransfer() {
                 var ft = new FileTransfer(),
                     uri = encodeURI(downloadUrl),
-                    fileUrl = 'cdvfile://localhost/persistent/' + filename;
+                    directory = cordova.file.documentsDirectory,
+                    fileUrl;
+
+                if (useSharedDocumentUrl) {
+                    console.log(window.appworks.auth.getAuth());
+                    directory = window.appworks.auth.getAuth().sharedDocumentUrl + '/';
+                }
+
+                fileUrl = directory + filename;
 
                 return ft.download(uri, fileUrl, onSuccess, onError, false, options);
             }
