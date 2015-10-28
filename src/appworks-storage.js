@@ -208,7 +208,7 @@ function AppWorksStorage(aw) {
          */
         storeFile: function (filename, downloadUrl, onSuccess, onError, options) {
 
-            window.requestFileSystem(cordova.file.documentsDirectory, 0, fileTransfer, errorHandler);
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileTransfer, errorHandler);
 
             function fileTransfer() {
                 var ft = new FileTransfer(),
@@ -242,7 +242,8 @@ function AppWorksStorage(aw) {
             function fileTransfer() {
                 var ft = new FileTransfer(),
                     url = encodeURI(uploadUrl),
-                    fileUrl = 'cdvfile://localhost/persistent/' + filename;
+                    //fileUrl = 'cdvfile://localhost/persistent/' + filename;
+                    fileUrl = cordova.file.documentsDirectory + filename;
 
                 return ft.upload(fileUrl, url, onSuccess, onError, options);
             }
