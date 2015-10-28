@@ -933,6 +933,7 @@ function AppWorksStorage(aw) {
          * @param onSuccess - a success handler to run when the execution completes successfully
          * @param onError - an error handler to run when the execution encounters an error
          * @param options - an options object to set headers and params on the request
+         * @param useSharedDocumentUrl - boolean flag, if set to true will store the file in a shared container that can be accessed by other apps
          */
         storeFile: function (filename, downloadUrl, onSuccess, onError, options, useSharedDocumentUrl) {
 
@@ -970,6 +971,7 @@ function AppWorksStorage(aw) {
          * @param onSuccess - a success handler to run when the execution completes successfully
          * @param onError - an error handler to run when the execution encounters an error
          * @param options - an options object to set headers and params on the request
+         * @param useSharedDocumentUrl - boolean flag, if set to true will store the file in a shared container that can be accessed by other apps
          */
         uploadFile: function (filename, uploadUrl, onSuccess, onError, options, useSharedDocumentUrl) {
 
