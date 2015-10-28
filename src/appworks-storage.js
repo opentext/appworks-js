@@ -215,7 +215,7 @@ function AppWorksStorage(aw) {
                     uri = encodeURI(downloadUrl),
                     fileUrl = 'cdvfile://localhost/persistent/' + filename;
 
-                return ft.download(uri, fileUrl, onSuccess, onError, options);
+                return ft.download(uri, fileUrl, onSuccess, onError, false, options);
             }
 
         },
