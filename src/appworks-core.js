@@ -279,7 +279,7 @@ function AppWorksCore() {
              */
             takePicture: function (callback, errorCallback, options) {
                 options = options || {
-                    destinationType: Camera.DestinationType.FILE_URI,
+                    destinationType: Camera.DestinationType.NATIVE_URI,
                     encodingType: Camera.EncodingType.JPEG,
                     mediaType: Camera.MediaType.ALLMEDIA,
                     correctOrientation: true,
