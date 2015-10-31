@@ -327,15 +327,16 @@ function AppWorksCore() {
                     saveToPhotoAlbum: true
                 };
 
-                navigator.camera.getPicture(((aw.storage && onCameraSuccess) || callback), errorCallback, options);
+                //navigator.camera.getPicture(((aw.storage && onCameraSuccess) || callback), errorCallback, options);
+                navigator.camera.getPicture(callback, errorCallback, options);
 
-                function onCameraSuccess(fileUrl) {
-                    var options = {
-                        fileSystem: LocalFileSystem.TEMPORARY,
-                        resolveLocalFileSystemURL: true
-                    };
-                    aw.storage.getFile(fileUrl, callback, errorCallback, options);
-                }
+                //function onCameraSuccess(fileUrl) {
+                //    var options = {
+                //        fileSystem: LocalFileSystem.TEMPORARY,
+                //        resolveLocalFileSystemURL: true
+                //    };
+                //    aw.storage.getFile(fileUrl, callback, errorCallback, options);
+                //}
             },
             chooseFromLibrary: function (callback, errorCallback, options) {
                 options = options || {sourceType: Camera.PictureSourceType.PHOTOLIBRARY};
