@@ -1042,7 +1042,65 @@ function AppWorksOffline(aw) {
     document.addEventListener('offline', networkOffline);
 
     var xhr = new XMLHttpRequest(),
-        CACHE_REQUESTS_ID = '_storedRequests';
+        CACHE_REQUESTS_ID = '_storedRequests',
+        DEFERRED_QUEUE_ID = '__awjsDeferredQueue',
+        deferredQueue = [];
+
+    // deferred event processing
+
+    initDeferredQueue();
+
+    function defer(identifier, args, eventListener) {
+        var deferred;
+
+        if (identifier && args && eventListener) {
+            deferred = {
+                identifier: identifier,
+                args: JSON.stringify(args),
+                eventListener: eventListener,
+                online: function () {
+                    var evt = createEvent(deferred.identifier, {
+                        identifier: deferred.identifier,
+                        args: JSON.parse(deferred.args),
+                        eventListener: deferred.eventListener
+                    });
+                    document.dispatchEvent(evt);
+                }
+            };
+
+            // push event onto deferred queue to be processed when the device comes back online
+            deferredQueue.push(deferred);
+            aw.cache.setItem(DEFERRED_QUEUE_ID, deferredQueue);
+        } else {
+            throw new Error('Arguments must include identifier, args, and eventListener');
+        }
+
+    }
+
+    // load the deferred queue into memory or create a queue if one does not exist
+    function initDeferredQueue() {
+        aw.cache.getItem(DEFERRED_QUEUE_ID, function (queue) {
+            if (queue) {
+                deferredQueue = queue;
+            } else {
+                aw.cache.setItem(DEFERRED_QUEUE_ID, deferredQueue);
+            }
+        });
+        // process pending events
+        processDeferredQueue();
+        // watch for the online event to process events that were deferred while the device was offline
+        document.addEventListener('online', processDeferredQueue);
+    }
+
+    function processDeferredQueue() {
+        aw.cache.getItem(DEFERRED_QUEUE_ID, function (queue) {
+            if (queue) {
+                queue.forEach(function (event) {
+                    event.online();
+                });
+            }
+        });
+    }
 
     function networkOnline() {
         aw.network = aw.network || {};
@@ -1130,6 +1188,10 @@ function AppWorksOffline(aw) {
         return document.removeEventListener(eventName, handler);
     }
 
+    function createEvent(name, data) {
+        return new CustomEvent(name, {detail: {data: data}});
+    }
+
     var awOffline = {
 
         registerEventHandler: registerEventHandler,
@@ -1137,6 +1199,7 @@ function AppWorksOffline(aw) {
         flush: sendQueuedRequests,
         queuedRequests: getStoredRequests,
         id: String.random,
+        defer: defer,
         /**
          * example:
          *  var headers = {},
