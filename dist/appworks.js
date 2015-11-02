@@ -320,36 +320,28 @@ function AppWorksCore() {
              */
             takePicture: function (callback, errorCallback, options) {
                 options = options || {
-                    destinationType: Camera.DestinationType.NATIVE_URI,
-                    encodingType: Camera.EncodingType.JPEG,
-                    mediaType: Camera.MediaType.ALLMEDIA,
-                    correctOrientation: true,
-                    saveToPhotoAlbum: true
-                };
+                        destinationType: Camera.DestinationType.NATIVE_URI,
+                        sourceType: Camera.PictureSourceType.CAMERA,
+                        encodingType: Camera.EncodingType.JPEG,
+                        mediaType: Camera.MediaType.ALLMEDIA,
+                        correctOrientation: true,
+                        saveToPhotoAlbum: true
+                    };
 
-                //navigator.camera.getPicture(((aw.storage && onCameraSuccess) || callback), errorCallback, options);
                 navigator.camera.getPicture(callback, errorCallback, options);
 
-                //function onCameraSuccess(fileUrl) {
-                //    var options = {
-                //        fileSystem: LocalFileSystem.TEMPORARY,
-                //        resolveLocalFileSystemURL: true
-                //    };
-                //    aw.storage.getFile(fileUrl, callback, errorCallback, options);
-                //}
             },
             chooseFromLibrary: function (callback, errorCallback, options) {
-                options = options || {sourceType: Camera.PictureSourceType.PHOTOLIBRARY};
-
-                navigator.camera.getPicture(((aw.storage && onCameraSuccess) || callback), errorCallback, options);
-
-                function onCameraSuccess(fileUrl) {
-                    var options = {
-                        fileSystem: LocalFileSystem.TEMPORARY,
-                        resolveLocalFileSystemURL: true
+                options = options || {
+                        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                        destinationType: Camera.DestinationType.NATIVE_URI
                     };
-                    aw.storage.getFile(fileUrl, callback, errorCallback, options);
-                }
+
+                // ensure source type is library in case different options get passed in
+                options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
+
+                navigator.camera.getPicture(callback, errorCallback, options);
+
             }
         }
     };
