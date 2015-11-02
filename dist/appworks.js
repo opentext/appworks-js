@@ -1056,10 +1056,9 @@ function AppWorksOffline(aw) {
         if (identifier && args && eventListener) {
             deferred = {
                 identifier: identifier,
-                args: JSON.stringify(args),
+                args: JSON.stringify(Array.prototype.slice.call(args)),
                 eventListener: eventListener
             };
-
             // push event onto deferred queue to be processed when the device comes back online
             deferredQueue.push(deferred);
             aw.cache.setItem(DEFERRED_QUEUE_ID, deferredQueue);
@@ -1085,25 +1084,25 @@ function AppWorksOffline(aw) {
     }
 
     function processDeferredQueue() {
-        console.log('Processing deferred queue...');
         // provide a buffer of time for other objects to get instantiated
         setTimeout(function () {
+            console.log('Processing deferred queue...');
             aw.cache.getItem(DEFERRED_QUEUE_ID, function (queue) {
                 if (queue) {
                     queue.forEach(function (deferred) {
-                        console.log(deferred);
-                        var evt = createEvent(deferred.identifier, {
-                            identifier: deferred.identifier,
-                            args: JSON.parse(deferred.args),
-                            eventListener: deferred.eventListener
-                        });
+                        var data = {
+                                identifier: deferred.identifier,
+                                args: JSON.parse(deferred.args),
+                                eventListener: deferred.eventListener
+                            },
+                            evt = createEvent(deferred.eventListener, {detail: data});
                         document.dispatchEvent(evt);
                     });
                     deferredQueue = [];
                     aw.cache.setItem(DEFERRED_QUEUE_ID, deferredQueue);
                 }
             });
-        }, 10000);
+        }, 1000);
     }
 
     function networkOnline() {
