@@ -1057,15 +1057,7 @@ function AppWorksOffline(aw) {
             deferred = {
                 identifier: identifier,
                 args: JSON.stringify(args),
-                eventListener: eventListener,
-                online: function () {
-                    var evt = createEvent(deferred.identifier, {
-                        identifier: deferred.identifier,
-                        args: JSON.parse(deferred.args),
-                        eventListener: deferred.eventListener
-                    });
-                    document.dispatchEvent(evt);
-                }
+                eventListener: eventListener
             };
 
             // push event onto deferred queue to be processed when the device comes back online
@@ -1095,8 +1087,13 @@ function AppWorksOffline(aw) {
     function processDeferredQueue() {
         aw.cache.getItem(DEFERRED_QUEUE_ID, function (queue) {
             if (queue) {
-                queue.forEach(function (event) {
-                    event.online();
+                queue.forEach(function (deferred) {
+                    var evt = createEvent(deferred.identifier, {
+                        identifier: deferred.identifier,
+                        args: JSON.parse(deferred.args),
+                        eventListener: deferred.eventListener
+                    });
+                    document.dispatchEvent(evt);
                 });
             }
         });
