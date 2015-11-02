@@ -74,7 +74,7 @@ function AppWorksOffline(aw) {
                     aw.cache.setItem(DEFERRED_QUEUE_ID, deferredQueue);
                 }
             });
-        }, 1000);
+        }, 5000);
     }
 
     function networkOnline() {
