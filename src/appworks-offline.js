@@ -57,9 +57,11 @@ function AppWorksOffline(aw) {
     }
 
     function processDeferredQueue() {
+        console.log('Processing deferred queue...');
         aw.cache.getItem(DEFERRED_QUEUE_ID, function (queue) {
             if (queue) {
                 queue.forEach(function (deferred) {
+                    console.log(deferred);
                     var evt = createEvent(deferred.identifier, {
                         identifier: deferred.identifier,
                         args: JSON.parse(deferred.args),
@@ -67,6 +69,8 @@ function AppWorksOffline(aw) {
                     });
                     document.dispatchEvent(evt);
                 });
+                deferredQueue = [];
+                aw.cache.setItem(DEFERRED_QUEUE_ID, deferredQueue);
             }
         });
     }
