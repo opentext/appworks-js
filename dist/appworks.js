@@ -1084,6 +1084,7 @@ function AppWorksOffline(aw) {
     }
 
     function processDeferredQueue() {
+        var timeBetweenEvents = 500;
         // provide a buffer of time for other objects to get instantiated
         setTimeout(function () {
             console.log('Processing deferred queue...');
@@ -1096,13 +1097,17 @@ function AppWorksOffline(aw) {
                                 eventListener: deferred.eventListener
                             },
                             evt = createEvent(deferred.eventListener, {detail: data});
-                        document.dispatchEvent(evt);
+                        // allow each event to get processed in order by adding a time buffer between the dispatch
+                        setTimeout(function () {
+                            document.dispatchEvent(evt);
+                        }, timeBetweenEvents);
+                        timeBetweenEvents += timeBetweenEvents;
                     });
                     deferredQueue = [];
                     aw.cache.setItem(DEFERRED_QUEUE_ID, deferredQueue);
                 }
             });
-        }, 5000);
+        }, 7000);
     }
 
     function networkOnline() {
