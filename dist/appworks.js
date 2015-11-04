@@ -1050,14 +1050,15 @@ function AppWorksOffline(aw) {
 
     initDeferredQueue();
 
-    function defer(identifier, args, eventListener) {
+    function defer(identifier, args, eventListener, timeBuffer) {
         var deferred;
 
         if (identifier && args && eventListener) {
             deferred = {
                 identifier: identifier,
                 args: JSON.stringify(Array.prototype.slice.call(args)),
-                eventListener: eventListener
+                eventListener: eventListener,
+                timeBuffer: timeBuffer
             };
             // push event onto deferred queue to be processed when the device comes back online
             deferredQueue.push(deferred);
@@ -1083,6 +1084,10 @@ function AppWorksOffline(aw) {
         document.addEventListener('online', processDeferredQueue);
     }
 
+    function getDeferredQueue() {
+        return deferredQueue;
+    }
+
     function processDeferredQueue() {
         var timeBetweenEvents = 500;
         // provide a buffer of time for other objects to get instantiated
@@ -1098,6 +1103,7 @@ function AppWorksOffline(aw) {
                             },
                             evt = createEvent(deferred.eventListener, {detail: data});
                         // allow each event to get processed in order by adding a time buffer between the dispatch
+                        timeBetweenEvents = deferred.timeBuffer || timeBetweenEvents;
                         setTimeout(function () {
                             document.dispatchEvent(evt);
                         }, timeBetweenEvents);
@@ -1208,6 +1214,7 @@ function AppWorksOffline(aw) {
         queuedRequests: getStoredRequests,
         id: String.random,
         defer: defer,
+        deferredQueue: getDeferredQueue,
         /**
          * example:
          *  var headers = {},
