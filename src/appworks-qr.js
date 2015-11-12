@@ -27,7 +27,17 @@ function AppWorksQR() {
         if (cordova) {
             cordova.exec(successFn, onQRError, 'qrReaderCordovaPlugin', 'qrInvoke');
         } else {
-            console.error('Cordova must be loaded before authenticating');
+            console.error('Cordova must be loaded');
+        }
+        return deferred.promise;
+    }
+
+    function rename(source, fileName, successFn) {
+        var deferred = qrPromise.defer();
+        if (cordova) {
+            cordova.exec(successFn, onQRError, 'qrReaderCordovaPlugin', 'rename', [source, fileName]);
+        } else {
+            console.error('Cordova must be loaded');
         }
         return deferred.promise;
     }
@@ -41,6 +51,7 @@ function AppWorksQR() {
     }
 
     return {
-        qrInvoke: qrInvoke
+        qrInvoke: qrInvoke,
+        rename: rename
     };
 }
