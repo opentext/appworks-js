@@ -1,6 +1,4 @@
-function AppworksFileOpen()
-{
-    console.log("in AppworksFileOpen");
+function AppworksFileOpen() {
     'use strict';
 
     // args is an array consisting of [path, filename]

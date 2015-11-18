@@ -12,6 +12,9 @@
         aw.offline = new AppWorksOffline(aw);
         aw.auth = new AppWorksAuth(aw);
         aw.notifications = new AppWorksNotifications(aw, aw.auth);
+        aw.qr = new AppWorksQR(aw);
+        aw.file = new AppworksFileOpen(aw);
+
 
         // error checking
         if (!global.cordova) {

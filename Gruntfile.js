@@ -37,6 +37,7 @@ module.exports = function (grunt) {
                 // the files to concatenate
                 src: [
                     'src/appworks-qr.js',
+                    'src/appworks-fileOpen.js',
                     'src/appworks-auth.js',
                     'src/appworks-core.js',
                     'src/appworks-cache.js',
