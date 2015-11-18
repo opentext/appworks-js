@@ -14,6 +14,76 @@ If you are deploying an app to the gateway, the gateway will automatically add a
 
 ----
 
+## API
+
+### Plugin
+All plugins have the following type definition:
+
+````ts   
+abstract class AWPlugin {
+    successHandler: () => void;
+    errorHandler: () => void;
+    /**
+     * Base plugin class. Constructor takes in a success function and error function to be executed upon
+     * return from call to native layer
+     * @param successHandler - the function to be executed when the native call succeeds. passes an object as arg
+     * @param errorHandler - the function to be executed when the native call fails. passes an object as arg.
+     */
+    constructor(successHandler: any, errorHandler: any) {
+        this.successHandler = successHandler;
+        this.errorHandler = errorHandler;
+    }
+}
+````
+This means that whenever creating a new Plugin object, you must initialize it with your success and error callbacks.
+When the call to the native layer succeeds or fails, your handler will get executed. If you require a new callback
+to be executed, create a new object. Plugin objects extend AWPlugin and are listed below, under the subcategory Plugin.
+
+For example:
+
+````js
+var camera = new Appworks.AWCamera(onPluginSuccess, onPluginFail);
+
+function onSuccess(data) {
+    console.log(data);
+    // do something with data
+}
+
+function onFail(err) {
+    console.log(err);
+}
+
+camera.takePicture();
+````
+
+
+#### Auth
+The Auth plugin allows you to seamlessly authenticate against your backend. Useful for refreshing tokens and gaining
+access rights to make api calls against the gateway.
+
+````js
+var auth = new Appworks.Auth(
+    function (data) {
+        // got the response, now make backend api calls
+        var response = data.data;
+        $.ajax({
+            method: 'POST',
+            url: response.gatewayUrl + '/v1/content/nodes/1234/children',
+            headers: { otcsticket: response.addtl.otcsticket },
+            data: { foo: bar }
+        });
+    },
+    function (err) {
+        // could not complete authentication request
+        console.log(err);
+    }
+);
+    
+$('#click-me').click(function () {
+    auth.authenticate();
+});
+````
+
 ## Build
 To build the compressed, minified appworks.js source and the uncompressed, commented code, open up your terminal at the appworksjs directory and type in the following commands
 
