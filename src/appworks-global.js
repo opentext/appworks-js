@@ -2,17 +2,16 @@
     'use strict';
 
     var aw = new AppWorksCore();
+    // add appworks plugins
     aw.cache = new AppWorksCache(aw);
+    aw.storage = new AppWorksStorage(aw);
+    aw.comms = new AppWorksComms(aw);
+    aw.offline = new AppWorksOffline(aw);
+    aw.auth = new AppWorksAuth(aw);
+    aw.notifications = new AppWorksNotifications(aw, aw.auth);
     document.addEventListener('deviceready', bindDependentModules);
 
     function bindDependentModules() {
-        // add appworks plugins
-        aw.storage = new AppWorksStorage(aw);
-        aw.comms = new AppWorksComms(aw);
-        aw.offline = new AppWorksOffline(aw);
-        aw.auth = new AppWorksAuth(aw);
-        aw.notifications = new AppWorksNotifications(aw, aw.auth);
-
         // error checking
         if (!global.cordova) {
             throw new Error('cordova not found. deviceready should not have been fired but it was');

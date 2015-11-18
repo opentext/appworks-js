@@ -60,6 +60,18 @@ module.exports = function (grunt) {
                     }
                 ]
             }
+        },
+        typescript: {
+            base: {
+                src: ['src/*.ts', 'src/*.d.ts', 'typings/**/*.d.ts', 'typings/**/**/*.d.ts'],
+                dest: 'dist',
+                options: {
+                    module: 'amd', //or commonjs
+                    target: 'es5', //or es3
+                    sourceMap: true,
+                    declaration: true
+                }
+            }
         }
     });
 
@@ -70,6 +82,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-run');
+    grunt.loadNpmTasks('grunt-typescript');
 
     // Default task.
     // first build all of the cordova js files by running a shell script,
