@@ -45,6 +45,14 @@ var Appworks;
         AWCamera.prototype.getPicture = function (cameraSuccess, cameraError, cameraOptions) {
             navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
         };
+        AWCamera.prototype.openGallery = function (options) {
+            var _this = this;
+            options = options || {
+                destinationType: Camera.DestinationType.NATIVE_URI
+            };
+            options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
+            this.getPicture((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+        };
         AWCamera.prototype.takePicture = function (options) {
             var _this = this;
             options = options || {
@@ -55,14 +63,6 @@ var Appworks;
                 saveToPhotoAlbum: true
             };
             options.sourceType = Camera.PictureSourceType.CAMERA;
-            this.getPicture((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
-        };
-        AWCamera.prototype.openGallery = function (options) {
-            var _this = this;
-            options = options || {
-                destinationType: Camera.DestinationType.NATIVE_URI
-            };
-            options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
             this.getPicture((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
         };
         return AWCamera;
@@ -105,5 +105,15 @@ var Appworks;
         return QRReader;
     })(AWPlugin);
     Appworks.QRReader = QRReader;
+    var Storage = (function (_super) {
+        __extends(Storage, _super);
+        function Storage() {
+            _super.apply(this, arguments);
+        }
+        Storage.prototype.store = function (url, filename, options) {
+        };
+        return Storage;
+    })(AWPlugin);
+    Appworks.Storage = Storage;
 })(Appworks || (Appworks = {}));
 //# sourceMappingURL=appworks.js.map

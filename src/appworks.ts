@@ -34,6 +34,13 @@ module Appworks {
                    cameraOptions?: CameraOptions) {
             navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
         }
+        openGallery(options: any) {
+            options = options || {
+                    destinationType: Camera.DestinationType.NATIVE_URI
+                };
+            options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
+            this.getPicture((() => this.successHandler)(), (() => this.errorHandler)(), options);
+        }
         takePicture(options: any) {
             options = options || {
                     destinationType: Camera.DestinationType.NATIVE_URI,
@@ -43,13 +50,6 @@ module Appworks {
                     saveToPhotoAlbum: true
                 };
             options.sourceType = Camera.PictureSourceType.CAMERA;
-            this.getPicture((() => this.successHandler)(), (() => this.errorHandler)(), options);
-        }
-        openGallery(options: any) {
-            options = options || {
-                    destinationType: Camera.DestinationType.NATIVE_URI
-                };
-            options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
             this.getPicture((() => this.successHandler)(), (() => this.errorHandler)(), options);
         }
     }
@@ -71,6 +71,11 @@ module Appworks {
         }
         rename() {
             cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWQRCodeReader', 'rename');
+        }
+    }
+    export class Storage extends AWPlugin {
+        store(url, filename, options) {
+
         }
     }
 }

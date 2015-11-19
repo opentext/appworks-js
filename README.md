@@ -61,7 +61,6 @@ function onFail(err) {
 camera.takePicture();
 ````
 
-
 #### Auth
 The Auth plugin allows you to seamlessly authenticate against your backend. Useful for refreshing tokens and gaining
 access rights to make api calls against the gateway.
@@ -98,10 +97,130 @@ $('#click-me').click(function () {
     auth.authenticate();
 });
 ````
+#### Finder
+The Finder plugin allows you to browse and open files stored on the device inside of the OpenText Mobile container.
+Files browsing can be done directly inside of your app. Files can be opened in third party iOS apps installed on the
+device.
+
+##### Methods:
+````
+open(path, filename)
+````
+open a file in another iOS app installed on the device
+- <b>path</b>: the path to the file you would like to open
+- <b>filename</b>: the name of the file you would like to open
+
+````
+openDirect(filename)
+open a file in another iOS app installed on the device
+- filename is the name of the file you would like to open at the application root
+````
+open a file in another iOS app installed on the device
+- <b>filename</b>: the name of the file you would like to open at the application root
+
+````
+list(path)
+````
+show the contents of a directory within the OpenText Mobile app container
+- <b>path</b>: the name of the directory you would like to see the contents of
+
+##### Example:
+````js
+var openFile = function (filename) {
+    var finder = new Appworks.Finder(showFile, showFileError),
+
+    function showFile(data) {
+        console.log(data);
+    }
+    
+    function showFileError(err) {
+        console.log(err);
+    }
+
+    finder.open('/', filename);
+};
+
+var listDirectory = function (path) {
+    var finder = new Appworks.Finder(showContents, showDirectoryError);
+
+    function showContents(directory) {
+        console.log(directory);
+        // returns an array containing each item in the directory specified by @path
+        
+        // try to open file now
+        openFile('/', directory[1].filename);
+    }
+    
+    function showDirectoryError(err) {
+        console.log(err);
+    }
+
+    finder.list('/');
+};
+
+listDirectory();
+````
 
 #### QRReader
+The QRReader plugin allows you to scan a QR code using the device camera.
+
+##### Methods:
+````
+scan()
+````
+opens the device camera to scan a qr code. when the qr code is recognized, it is processed automatically. returns
+the data encoded by the qr code to the callback initialized upon instance creation.
+
+##### Example:
+````js
+var scanQRCode = function () {
+    var qrScanner = new Appworks.QRReader(onScan, onScanErr),
+        qrScanResult;
+
+    function onScan(data) {
+        qrScanResult = data;
+    }
+    
+    function onScanErr(err) {
+        console.log(err);
+    }
+    
+    qrScanner.scan();
+};
+````
 
 #### Camera
+Access the device camera to take photos, or select photos from the device gallery.
+
+##### Methods:
+````
+takePicture(options)
+````
+use the device camera to take a photo. returns the uri specified by options - default is the native uri to the location
+on the device.
+- <b>options</b>: 
+a 
+    <a href="http://docs.phonegap.com/en/edge/cordova_camera_camera.md.html#cameraOptions" target="_blank">
+        CameraOptions
+    </a> 
+object. See apache cordova 
+<a href="http://docs.phonegap.com/en/edge/cordova_camera_camera.md.html#cameraOptions">
+    documentation
+</a>
+
+````
+openGallery(options)
+````
+open the device gallery to select a photo. returns the uri specified by options - default is the native uri to the location
+on the device.
+- <b>options</b>: a 
+<a href="http://docs.phonegap.com/en/edge/cordova_camera_camera.md.html#cameraOptions" target="_blank">
+CameraOptions
+</a> 
+object. 
+See apache cordova <a href="http://docs.phonegap.com/en/edge/cordova_camera_camera.md.html#cameraOptions">
+documentation</a>
+
 
 ## Build
 To build the compressed, minified appworks.js source and the uncompressed, commented code, open up your terminal at the appworksjs directory and type in the following commands
