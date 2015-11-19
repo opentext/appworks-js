@@ -1,5 +1,7 @@
 /// <reference path="../typings/cordova/cordova.d.ts"/>
 /// <reference path="../typings/cordova/plugins/Camera.d.ts"/>
+/// <reference path="../typings/cordova/plugins/FileTransfer.d.ts"/>
+/// <reference path="../typings/cordova/plugins/FileSystem.d.ts"/>
 
 abstract class AWPlugin {
     successHandler: () => void;
@@ -20,14 +22,6 @@ module Appworks {
     export class Auth extends AWPlugin {
         authenticate() {
             cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWAuth', 'authenticate');
-        }
-    }
-    export class QRReader extends AWPlugin {
-        scan() {
-            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWQRCodeReader', 'scan');
-        }
-        rename() {
-            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWQRCodeReader', 'rename');
         }
     }
     export class AWCamera extends AWPlugin implements Camera {
@@ -57,6 +51,26 @@ module Appworks {
                 };
             options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
             this.getPicture((() => this.successHandler)(), (() => this.errorHandler)(), options);
+        }
+    }
+    export class Finder extends AWPlugin {
+        open(path, filename) {
+            var args = [path, filename];
+            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWFinder', 'open', args);
+        }
+        openDirect(filename) {
+            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWFinder', 'openDirect', [filename]);
+        }
+        list(path) {
+            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWFinder', 'list', [path]);
+        }
+    }
+    export class QRReader extends AWPlugin {
+        scan() {
+            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWQRCodeReader', 'scan');
+        }
+        rename() {
+            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWQRCodeReader', 'rename');
         }
     }
 }

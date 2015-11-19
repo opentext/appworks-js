@@ -1,20 +1,25 @@
-# appworksjs
+# appworksJS
 
-----
-## What is appworksjs?
+## What is appworksJS?
 
-appworksjs is a javascript library for building feature rich, hybrid enterprise apps utilizing on device technology while leveraging the power of the OpenText EIM stack.
+appworksJS is a javascript library for building feature rich, hybrid enterprise apps utilizing on device technology while leveraging the power of the OpenText EIM stack.
 
-## Usage
-You can find the production files in the `dist` directory. To use them, simply include them in your project and include a `<script>` tag in your html to reference them.
+## Installation
 
-If you are deploying an app to the gateway, the gateway will automatically add appworks.min.js to the root of your project, so make sure your script tag looks like this:
+#### With bower:
+
+````shell
+bower install --save appworks-js
+````
+
+You can find the production files in the `dist` directory.
+
+#### Auto install:
+If you are deploying an app to the gateway, the gateway will automatically add appworks.min.js to the root of your project. If you opt to use the bundled file make sure your script tag looks like this:
 
 `<script src="appworks.min.js"></script>`
 
-----
-
-## API
+## Usage API and Examples
 
 ### Plugin
 All plugins have the following type definition:
@@ -61,6 +66,16 @@ camera.takePicture();
 The Auth plugin allows you to seamlessly authenticate against your backend. Useful for refreshing tokens and gaining
 access rights to make api calls against the gateway.
 
+##### Methods:
+
+````
+authenticate()
+````
+Makes a call against the gateway /auth endpoint. Returns the response to the callback registered
+upon creation of the instance
+
+##### Example:
+
 ````js
 var auth = new Appworks.Auth(
     function (data) {
@@ -83,6 +98,10 @@ $('#click-me').click(function () {
     auth.authenticate();
 });
 ````
+
+#### QRReader
+
+#### Camera
 
 ## Build
 To build the compressed, minified appworks.js source and the uncompressed, commented code, open up your terminal at the appworksjs directory and type in the following commands
