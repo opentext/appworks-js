@@ -105,15 +105,57 @@ var Appworks;
         return QRReader;
     })(AWPlugin);
     Appworks.QRReader = QRReader;
-    var Storage = (function (_super) {
-        __extends(Storage, _super);
-        function Storage() {
+    var SecureStorage = (function (_super) {
+        __extends(SecureStorage, _super);
+        function SecureStorage() {
             _super.apply(this, arguments);
         }
-        Storage.prototype.store = function (url, filename, options) {
+        SecureStorage.prototype.getSharedDocumentUrl = function (callback, errorCallback) {
+            var auth = new Appworks.Auth(function (response) {
+                callback(response.sharedDocumentUrl + '/');
+            }, errorCallback);
+            auth.authenticate();
         };
-        return Storage;
+        SecureStorage.prototype.store = function (url, filename, options) {
+            var _this = this;
+            options = options || {};
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileTransferHandler, (function () { return _this.errorHandler; })());
+            function fileTransferHandler() {
+                var _this = this;
+                var transfer = new FileTransfer(), directory = cordova.file.documentsDirectory;
+                if (options.useSharedDocumentUrl) {
+                    this.getSharedDocumentUrl(function (sharedDirectory) {
+                        var _this = this;
+                        transfer.download(encodeURI(url), sharedDirectory + filename, (function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), false, options);
+                    }, (function () { return _this.errorHandler; })());
+                }
+                else {
+                    return transfer.download(encodeURI(url), directory + filename, (function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), false, options);
+                }
+            }
+        };
+        // TODO use directory names and shared document url to access files
+        SecureStorage.prototype.retrieve = function (filename, options) {
+            var _this = this;
+            options = options || {};
+            options.fileSystem = options.fileSystem || LocalFileSystem.PERSISTENT;
+            if (options.resolveLocalFileSystemURI) {
+                window.resolveLocalFileSystemURI(filename, fileHandler, (function () { return _this.errorHandler; })());
+            }
+            else {
+                window.requestFileSystem(options.fileSystem, 0, fileSystemHandler, (function () { return _this.errorHandler; })());
+            }
+            function fileSystemHandler(fileSystem) {
+                var _this = this;
+                fileSystem.root.getFile(filename, null, fileHandler, (function () { return _this.errorHandler; })());
+            }
+            function fileHandler(entry) {
+                var _this = this;
+                entry.file((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })());
+            }
+        };
+        return SecureStorage;
     })(AWPlugin);
-    Appworks.Storage = Storage;
+    Appworks.SecureStorage = SecureStorage;
 })(Appworks || (Appworks = {}));
 //# sourceMappingURL=appworks.js.map

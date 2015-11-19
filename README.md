@@ -47,7 +47,7 @@ to be executed, create a new object. Plugin objects extend AWPlugin and are list
 For example:
 
 ````js
-var camera = new Appworks.AWCamera(onPluginSuccess, onPluginFail);
+var camera = new Appworks.AWCamera(onSuccess, onFail);
 
 function onSuccess(data) {
     console.log(data);
@@ -112,8 +112,6 @@ open a file in another iOS app installed on the device
 
 ````
 openDirect(filename)
-open a file in another iOS app installed on the device
-- filename is the name of the file you would like to open at the application root
 ````
 open a file in another iOS app installed on the device
 - <b>filename</b>: the name of the file you would like to open at the application root
@@ -220,6 +218,18 @@ CameraOptions
 object. 
 See apache cordova <a href="http://docs.phonegap.com/en/edge/cordova_camera_camera.md.html#cameraOptions">
 documentation</a>
+
+#### SecureStorage
+The SecureStorage Plugin allows you to store and retrieve files on the device using AES 256-bit encryption.
+
+##### Methods:
+````
+store(url, filename, options)
+````
+
+````
+retrieve(filename, options)
+````
 
 
 ## Build

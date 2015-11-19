@@ -3,6 +3,8 @@
 /// <reference path="../typings/cordova/plugins/FileTransfer.d.ts"/>
 /// <reference path="../typings/cordova/plugins/FileSystem.d.ts"/>
 
+declare var LocalFileSystem;
+
 abstract class AWPlugin {
     successHandler: () => void;
     errorHandler: () => void;
@@ -73,9 +75,68 @@ module Appworks {
             cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWQRCodeReader', 'rename');
         }
     }
-    export class Storage extends AWPlugin {
-        store(url, filename, options) {
+    export class SecureStorage extends AWPlugin {
 
+        private getSharedDocumentUrl(callback, errorCallback) {
+            var auth = new Appworks.Auth(
+                    function (response) {
+                        callback(response.sharedDocumentUrl + '/');
+                    },
+                    errorCallback
+                );
+            auth.authenticate();
+        }
+
+        store(url, filename, options) {
+            options = options || {};
+
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileTransferHandler, (() => this.errorHandler)());
+
+            function fileTransferHandler() {
+                var transfer = new FileTransfer(),
+                    directory = cordova.file.documentsDirectory;
+
+                if (options.useSharedDocumentUrl) {
+                    this.getSharedDocumentUrl(function (sharedDirectory) {
+                        transfer.download(
+                            encodeURI(url),
+                            sharedDirectory + filename,
+                            (() => this.successHandler)(),
+                            (() => this.errorHandler)(),
+                            false,
+                            options
+                        );
+                    }, (() => this.errorHandler)());
+                } else {
+                    return transfer.download(
+                        encodeURI(url),
+                        directory + filename,
+                        (() => this.successHandler)(),
+                        (() => this.errorHandler)(),
+                        false,
+                        options
+                    );
+                }
+            }
+        }
+        // TODO use directory names and shared document url to access files
+        retrieve(filename, options) {
+            options = options || {};
+            options.fileSystem = options.fileSystem || LocalFileSystem.PERSISTENT;
+
+            if (options.resolveLocalFileSystemURI) {
+                window.resolveLocalFileSystemURI(filename, fileHandler, (() => this.errorHandler)());
+            } else {
+                window.requestFileSystem(options.fileSystem, 0, fileSystemHandler, (() => this.errorHandler)());
+            }
+
+            function fileSystemHandler(fileSystem) {
+                fileSystem.root.getFile(filename, null, fileHandler, (() => this.errorHandler)());
+            }
+
+            function fileHandler(entry) {
+                entry.file((() => this.successHandler)(), (() => this.errorHandler)());
+            }
         }
     }
 }
