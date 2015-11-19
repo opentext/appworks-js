@@ -52,7 +52,9 @@ module Appworks {
             this.getPicture((() => this.successHandler)(), (() => this.errorHandler)(), options);
         }
         openGallery(options: any) {
-            options = options || {};
+            options = options || {
+                    destinationType: Camera.DestinationType.NATIVE_URI
+                };
             options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
             this.getPicture((() => this.successHandler)(), (() => this.errorHandler)(), options);
         }

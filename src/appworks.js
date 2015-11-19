@@ -73,7 +73,9 @@ var Appworks;
         };
         AWCamera.prototype.openGallery = function (options) {
             var _this = this;
-            options = options || {};
+            options = options || {
+                destinationType: Camera.DestinationType.NATIVE_URI
+            };
             options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
             this.getPicture((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
         };
