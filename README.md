@@ -232,6 +232,8 @@ store a file securely.
 - <b>filename</b>: the path to the file to be stored. may be a directory structure.
 - <b>options</b>: optional options to pass with your request. currently supports headers.
 
+##### Example:
+
 ````js
 var self = this;
 
@@ -261,6 +263,8 @@ retrieve(filename, options)
 - <b>filename</b>: the name of the file to be retrieved. may be a directory structure. note this is not the nativeURL,
 but the same path that was supplied to ````store()````.
 - <b>options</b>: optional options to pass with your request.
+
+##### Example:
 
 ````js
 var self = this;
@@ -301,6 +305,8 @@ download a file from a remote url and store it on the device
 - <b>shared</b>: a boolean flag. when set, the file will be downloaded to a shared container where it may be accessed
 by third party applications
 
+##### Example:
+
 ````js
 var self = this;
 function downloadFile () {
@@ -329,6 +335,8 @@ upload a file from the device to another location
 - <b>shared</b>: a boolean flag. when set, the file will be uploaded from a shared container where it may be accessed
 by third party applications
 
+##### Example:
+
 ````js
 var self = this;
 function uploadFile () {
@@ -352,20 +360,6 @@ define a callback to be executed whenever upload or download progress is made
 abort()
 ````
 abort the current transfer.
-
-````js
-var self = this;
-function downloadFile() {
-    var fileTransfer = new Appworks.AWFileTransfer(showFile, errorHandler);
-
-    function showFile(file) {
-        console.log(file);
-        self.downloadedFile = file.nativeURL;
-    }
-
-    fileTransfer.download('http://thecatapi.com/api/images/get', 'file.jpg');
-};
-````
 
 ## Build
 To build the compressed, minified appworks.js source and the uncompressed, commented code, open up your terminal at the appworksjs directory and type in the following commands
