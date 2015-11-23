@@ -4,10 +4,9 @@
 /// <reference path="../typings/cordova/plugins/FileSystem.d.ts"/>
 
 declare var LocalFileSystem;
-
 abstract class AWPlugin {
-    successHandler: () => void;
-    errorHandler: () => void;
+    successHandler: (data?: any) => void;
+    errorHandler: (data?: any) => void;
     /**
      * Base plugin class. Constructor takes in a success function and error function to be executed upon
      * return from call to native layer
@@ -21,6 +20,7 @@ abstract class AWPlugin {
 }
 
 module Appworks {
+    var idCounter = 0;
     export class Auth extends AWPlugin {
         authenticate() {
             cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWAuth', 'authenticate');
@@ -77,66 +77,89 @@ module Appworks {
     }
     export class SecureStorage extends AWPlugin {
 
-        private getSharedDocumentUrl(callback, errorCallback) {
-            var auth = new Appworks.Auth(
-                    function (response) {
-                        callback(response.sharedDocumentUrl + '/');
-                    },
-                    errorCallback
-                );
-            auth.authenticate();
-        }
+        seqNo = ++idCounter;
 
-        store(url, filename, options) {
-            options = options || {};
+        onprogress = null;
 
-            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileTransferHandler, (() => this.errorHandler)());
+        store(url, target, options) {
+            var args = [url, target, false, this.seqNo, options && options.headers],
+                completionHandler = () => this.successHandler,
+                progressHandler = this.onprogress,
+                progress;
 
-            function fileTransferHandler() {
-                var transfer = new FileTransfer(),
-                    directory = cordova.file.documentsDirectory;
+            function newProgressEvent(result) {
+                var pe = new ProgressEvent(null);
+                pe.lengthComputable = result.lengthComputable;
+                pe.loaded = result.loaded;
+                pe.total = result.total;
+                return pe;
+            }
 
-                if (options.useSharedDocumentUrl) {
-                    this.getSharedDocumentUrl(function (sharedDirectory) {
-                        transfer.download(
-                            encodeURI(url),
-                            sharedDirectory + filename,
-                            (() => this.successHandler)(),
-                            (() => this.errorHandler)(),
-                            false,
-                            options
-                        );
-                    }, (() => this.errorHandler)());
+            progress = function(result) {
+                if (typeof result.lengthComputable != "undefined") {
+                    if (progressHandler) {
+                        progressHandler(newProgressEvent(result));
+                    }
                 } else {
-                    return transfer.download(
-                        encodeURI(url),
-                        directory + filename,
-                        (() => this.successHandler)(),
-                        (() => this.errorHandler)(),
-                        false,
-                        options
-                    );
+                    if (completionHandler) {
+                        completionHandler()(result);
+                    }
                 }
-            }
+            };
+            cordova.exec(
+                progress,
+                (() => this.errorHandler)(),
+                'AWSecureStorage',
+                'store',
+                args
+            );
         }
-        // TODO use directory names and shared document url to access files
         retrieve(filename, options) {
-            options = options || {};
-            options.fileSystem = options.fileSystem || LocalFileSystem.PERSISTENT;
+            var args = [filename, options];
+            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWSecureStorage', 'retrieve', args);
+        }
+    }
+    export class AWFileTransfer extends AWPlugin implements FileTransfer {
 
-            if (options.resolveLocalFileSystemURI) {
-                window.resolveLocalFileSystemURI(filename, fileHandler, (() => this.errorHandler)());
+        fileTransfer = new FileTransfer();
+
+        abort() {
+            this.fileTransfer.abort();
+        }
+        onprogress() {
+            return this.fileTransfer.onprogress;
+        }
+        upload(fileUrl, serverUrl, options, shared) {
+
+            if (shared) {
+
             } else {
-                window.requestFileSystem(options.fileSystem, 0, fileSystemHandler, (() => this.errorHandler)());
+                this.fileTransfer.upload(
+                    cordova.file.documentsDirectory + '/' + fileUrl,
+                    encodeURI(serverUrl),
+                    (() => this.successHandler)(),
+                    (() => this.errorHandler)(),
+                    options,
+                    false
+                );
             }
+            return this.fileTransfer;
+        }
+        download(url, target, options, shared) {
 
-            function fileSystemHandler(fileSystem) {
-                fileSystem.root.getFile(filename, null, fileHandler, (() => this.errorHandler)());
-            }
+            if (shared) {
 
-            function fileHandler(entry) {
-                entry.file((() => this.successHandler)(), (() => this.errorHandler)());
+            } else {
+                this.fileTransfer.download(
+                    encodeURI(url),
+                    cordova.file.documentsDirectory + '/' + target,
+                    (() => this.successHandler)(),
+                    (() => this.errorHandler)(),
+                    false,
+                    options
+                );
             }
+            return this.fileTransfer;
         }
     }
 }

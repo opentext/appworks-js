@@ -224,7 +224,7 @@ The SecureStorage Plugin allows you to store and retrieve files on the device us
 
 ##### Methods:
 ````
-store(url, filename, options)
+store(url, filename, options, share)
 ````
 
 ````

@@ -22,6 +22,7 @@ var AWPlugin = (function () {
 })();
 var Appworks;
 (function (Appworks) {
+    var idCounter = 0;
     var Auth = (function (_super) {
         __extends(Auth, _super);
         function Auth() {
@@ -109,53 +110,73 @@ var Appworks;
         __extends(SecureStorage, _super);
         function SecureStorage() {
             _super.apply(this, arguments);
+            this.seqNo = ++idCounter;
+            this.onprogress = null;
         }
-        SecureStorage.prototype.getSharedDocumentUrl = function (callback, errorCallback) {
-            var auth = new Appworks.Auth(function (response) {
-                callback(response.sharedDocumentUrl + '/');
-            }, errorCallback);
-            auth.authenticate();
-        };
-        SecureStorage.prototype.store = function (url, filename, options) {
+        SecureStorage.prototype.store = function (url, target, options) {
             var _this = this;
-            options = options || {};
-            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileTransferHandler, (function () { return _this.errorHandler; })());
-            function fileTransferHandler() {
-                var _this = this;
-                var transfer = new FileTransfer(), directory = cordova.file.documentsDirectory;
-                if (options.useSharedDocumentUrl) {
-                    this.getSharedDocumentUrl(function (sharedDirectory) {
-                        var _this = this;
-                        transfer.download(encodeURI(url), sharedDirectory + filename, (function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), false, options);
-                    }, (function () { return _this.errorHandler; })());
+            var args = [url, target, false, this.seqNo, options && options.headers], completionHandler = function () { return _this.successHandler; }, progressHandler = this.onprogress, progress;
+            function newProgressEvent(result) {
+                var pe = new ProgressEvent(null);
+                pe.lengthComputable = result.lengthComputable;
+                pe.loaded = result.loaded;
+                pe.total = result.total;
+                return pe;
+            }
+            progress = function (result) {
+                if (typeof result.lengthComputable != "undefined") {
+                    if (progressHandler) {
+                        progressHandler(newProgressEvent(result));
+                    }
                 }
                 else {
-                    return transfer.download(encodeURI(url), directory + filename, (function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), false, options);
+                    if (completionHandler) {
+                        completionHandler()(result);
+                    }
                 }
-            }
+            };
+            cordova.exec(progress, (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'store', args);
         };
-        // TODO use directory names and shared document url to access files
         SecureStorage.prototype.retrieve = function (filename, options) {
             var _this = this;
-            options = options || {};
-            options.fileSystem = options.fileSystem || LocalFileSystem.PERSISTENT;
-            if (options.resolveLocalFileSystemURI) {
-                window.resolveLocalFileSystemURI(filename, fileHandler, (function () { return _this.errorHandler; })());
-            }
-            else {
-                window.requestFileSystem(options.fileSystem, 0, fileSystemHandler, (function () { return _this.errorHandler; })());
-            }
-            function fileSystemHandler(fileSystem) {
-                var _this = this;
-                fileSystem.root.getFile(filename, null, fileHandler, (function () { return _this.errorHandler; })());
-            }
-            function fileHandler(entry) {
-                var _this = this;
-                entry.file((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })());
-            }
+            var args = [filename, options];
+            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'retrieve', args);
         };
         return SecureStorage;
     })(AWPlugin);
     Appworks.SecureStorage = SecureStorage;
+    var AWFileTransfer = (function (_super) {
+        __extends(AWFileTransfer, _super);
+        function AWFileTransfer() {
+            _super.apply(this, arguments);
+            this.fileTransfer = new FileTransfer();
+        }
+        AWFileTransfer.prototype.abort = function () {
+            this.fileTransfer.abort();
+        };
+        AWFileTransfer.prototype.onprogress = function () {
+            return this.fileTransfer.onprogress;
+        };
+        AWFileTransfer.prototype.upload = function (fileUrl, serverUrl, options, shared) {
+            var _this = this;
+            if (shared) {
+            }
+            else {
+                this.fileTransfer.upload(cordova.file.documentsDirectory + '/' + fileUrl, encodeURI(serverUrl), (function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options, false);
+            }
+            return this.fileTransfer;
+        };
+        AWFileTransfer.prototype.download = function (url, target, options, shared) {
+            var _this = this;
+            if (shared) {
+            }
+            else {
+                this.fileTransfer.download(encodeURI(url), cordova.file.documentsDirectory + '/' + target, (function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), false, options);
+            }
+            return this.fileTransfer;
+        };
+        return AWFileTransfer;
+    })(AWPlugin);
+    Appworks.AWFileTransfer = AWFileTransfer;
 })(Appworks || (Appworks = {}));
 //# sourceMappingURL=appworks.js.map
