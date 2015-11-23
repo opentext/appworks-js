@@ -1,7 +1,17 @@
 /// <reference path="../typings/cordova/cordova.d.ts"/>
 /// <reference path="../typings/cordova/plugins/Camera.d.ts"/>
+/// <reference path="../typings/cordova/plugins/Contacts.d.ts"/>
+/// <reference path="../typings/cordova/plugins/Device.d.ts"/>
+/// <reference path="../typings/cordova/plugins/DeviceMotion.d.ts"/>
+/// <reference path="../typings/cordova/plugins/DeviceOrientation.d.ts"/>
+/// <reference path="../typings/cordova/plugins/Dialogs.d.ts"/>
+/// <reference path="../typings/cordova/plugins/Media.d.ts"/>
+/// <reference path="../typings/cordova/plugins/MediaCapture.d.ts"/>
+/// <reference path="../typings/cordova/plugins/NetworkInformation.d.ts"/>
+/// <reference path="../typings/cordova/plugins/Vibration.d.ts"/>
 /// <reference path="../typings/cordova/plugins/FileTransfer.d.ts"/>
 /// <reference path="../typings/cordova/plugins/FileSystem.d.ts"/>
+/// <reference path="../typings/cordova/plugins/BatteryStatus.d.ts"/>
 
 declare var LocalFileSystem;
 abstract class AWPlugin {
@@ -195,5 +205,35 @@ module Appworks {
 
             return this.fileTransfer;
         }
+    }
+    export class AWContacts extends AWPlugin implements Contacts {
+
+    }
+    export class AWDevice extends AWPlugin implements Device {
+
+    }
+    export class AWAccelerometer extends AWPlugin implements Accelerometer {
+
+    }
+    export class AWCompass extends AWPlugin implements Compass {
+
+    }
+    export class AWNotification extends AWPlugin implements Notification {
+        // TODO put vibration api inside of this class
+    }
+    export class AWMedia extends AWPlugin implements Media {
+
+    }
+    export class AWCapture extends AWPlugin implements Capture {
+
+    }
+    export class AWNetwork extends AWPlugin implements Connection {
+
+    }
+    export class AWOffline extends AWPlugin {
+
+    }
+    export class AWCache extends AWPlugin {
+
     }
 }

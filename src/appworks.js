@@ -1,7 +1,17 @@
 /// <reference path="../typings/cordova/cordova.d.ts"/>
 /// <reference path="../typings/cordova/plugins/Camera.d.ts"/>
+/// <reference path="../typings/cordova/plugins/Contacts.d.ts"/>
+/// <reference path="../typings/cordova/plugins/Device.d.ts"/>
+/// <reference path="../typings/cordova/plugins/DeviceMotion.d.ts"/>
+/// <reference path="../typings/cordova/plugins/DeviceOrientation.d.ts"/>
+/// <reference path="../typings/cordova/plugins/Dialogs.d.ts"/>
+/// <reference path="../typings/cordova/plugins/Media.d.ts"/>
+/// <reference path="../typings/cordova/plugins/MediaCapture.d.ts"/>
+/// <reference path="../typings/cordova/plugins/NetworkInformation.d.ts"/>
+/// <reference path="../typings/cordova/plugins/Vibration.d.ts"/>
 /// <reference path="../typings/cordova/plugins/FileTransfer.d.ts"/>
 /// <reference path="../typings/cordova/plugins/FileSystem.d.ts"/>
+/// <reference path="../typings/cordova/plugins/BatteryStatus.d.ts"/>
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -191,5 +201,85 @@ var Appworks;
         return AWFileTransfer;
     })(AWPlugin);
     Appworks.AWFileTransfer = AWFileTransfer;
+    var AWContacts = (function (_super) {
+        __extends(AWContacts, _super);
+        function AWContacts() {
+            _super.apply(this, arguments);
+        }
+        return AWContacts;
+    })(AWPlugin);
+    Appworks.AWContacts = AWContacts;
+    var AWDevice = (function (_super) {
+        __extends(AWDevice, _super);
+        function AWDevice() {
+            _super.apply(this, arguments);
+        }
+        return AWDevice;
+    })(AWPlugin);
+    Appworks.AWDevice = AWDevice;
+    var AWAccelerometer = (function (_super) {
+        __extends(AWAccelerometer, _super);
+        function AWAccelerometer() {
+            _super.apply(this, arguments);
+        }
+        return AWAccelerometer;
+    })(AWPlugin);
+    Appworks.AWAccelerometer = AWAccelerometer;
+    var AWCompass = (function (_super) {
+        __extends(AWCompass, _super);
+        function AWCompass() {
+            _super.apply(this, arguments);
+        }
+        return AWCompass;
+    })(AWPlugin);
+    Appworks.AWCompass = AWCompass;
+    var AWNotification = (function (_super) {
+        __extends(AWNotification, _super);
+        function AWNotification() {
+            _super.apply(this, arguments);
+        }
+        return AWNotification;
+    })(AWPlugin);
+    Appworks.AWNotification = AWNotification;
+    var AWMedia = (function (_super) {
+        __extends(AWMedia, _super);
+        function AWMedia() {
+            _super.apply(this, arguments);
+        }
+        return AWMedia;
+    })(AWPlugin);
+    Appworks.AWMedia = AWMedia;
+    var AWCapture = (function (_super) {
+        __extends(AWCapture, _super);
+        function AWCapture() {
+            _super.apply(this, arguments);
+        }
+        return AWCapture;
+    })(AWPlugin);
+    Appworks.AWCapture = AWCapture;
+    var AWNetwork = (function (_super) {
+        __extends(AWNetwork, _super);
+        function AWNetwork() {
+            _super.apply(this, arguments);
+        }
+        return AWNetwork;
+    })(AWPlugin);
+    Appworks.AWNetwork = AWNetwork;
+    var AWOffline = (function (_super) {
+        __extends(AWOffline, _super);
+        function AWOffline() {
+            _super.apply(this, arguments);
+        }
+        return AWOffline;
+    })(AWPlugin);
+    Appworks.AWOffline = AWOffline;
+    var AWCache = (function (_super) {
+        __extends(AWCache, _super);
+        function AWCache() {
+            _super.apply(this, arguments);
+        }
+        return AWCache;
+    })(AWPlugin);
+    Appworks.AWCache = AWCache;
 })(Appworks || (Appworks = {}));
 //# sourceMappingURL=appworks.js.map
