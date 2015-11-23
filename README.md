@@ -223,14 +223,149 @@ documentation</a>
 The SecureStorage Plugin allows you to store and retrieve files on the device using AES 256-bit encryption.
 
 ##### Methods:
+
 ````
-store(url, filename, options, share)
+store(url, filename, options)
+````
+store a file securely.
+- <b>url</b>: the url of the server to download the file from.
+- <b>filename</b>: the path to the file to be stored. may be a directory structure.
+- <b>options</b>: optional options to pass with your request. currently supports headers.
+
+````js
+var self = this;
+
+function storeFile() {
+
+    var storage = new Appworks.SecureStorage(setFile, errorHandler);
+    self.imgSrc = null;
+    self.loading = true;
+
+    function setFile(file) {
+        self.storedFile = file.nativeURL;
+        stopLoading();
+    }
+
+    function stopLoading() {
+        console.log('AWJS: File downloaded successfully.');
+        self.loading = false;
+    }
+
+    storage.store('http://thecatapi.com/api/images/get', 'file.jpg');
+}
 ````
 
 ````
 retrieve(filename, options)
 ````
+- <b>filename</b>: the name of the file to be retrieved. may be a directory structure. note this is not the nativeURL,
+but the same path that was supplied to ````store()````.
+- <b>options</b>: optional options to pass with your request.
 
+````js
+var self = this;
+function getFile() {
+    var storage = new Appworks.SecureStorage(showImage, errorHandler);
+
+    function showImage(file) {
+        self.storedFile = file.nativeURL;
+        self.showStoredFileAsImage = true;
+    }
+
+    storage.retrieve('file.jpg');
+};
+
+function errorHandler(err) {
+    console.log(err);
+}
+````
+
+````
+onprogress=
+````
+bind a progress function to be passed progress events while the request is being downloaded when ````store()```` is
+called.
+
+#### AWFileTransfer
+The File Transfer plugin allows you to upload and download files to and from the device. Additionally, it allows you
+to download files to a shared container where they may be accessed by third party applications installed on the device.
+
+##### Methods:
+````
+download(url, target, options, shared) 
+````
+download a file from a remote url and store it on the device
+- <b>url</b>: the url of the server to download the file from
+- <b>target</b>: the name of the path including the filename where you would like the file to be stored.
+- <b>options</b>: an optional options object. currently supports headers only.
+- <b>shared</b>: a boolean flag. when set, the file will be downloaded to a shared container where it may be accessed
+by third party applications
+
+````js
+var self = this;
+function downloadFile () {
+    var fileTransfer = new Appworks.AWFileTransfer(showFile, errorHandler);
+
+    function showFile(file) {
+        console.log(file);
+        self.downloadedFile = file.nativeURL;
+    }
+    
+    fileTransfer.progressHandler(function (progress) {
+        console.log(progress);
+    });
+
+    fileTransfer.download('http://thecatapi.com/api/images/get', 'file.jpg');
+};
+````
+
+````
+upload(source, url, options, shared)
+````
+upload a file from the device to another location
+- <b>source</b>: the name of the path including the filename where the file is stored
+- <b>url</b>: the url of the server to upload the file to
+- <b>options</b>: an optional options object.
+- <b>shared</b>: a boolean flag. when set, the file will be uploaded from a shared container where it may be accessed
+by third party applications
+
+````js
+var self = this;
+function uploadFile () {
+    var fileTransfer = new Appworks.AWFileTransfer(showFile, errorHandler);
+
+    function showFile(file) {
+        console.log(file);
+        self.uploadedFile = file.nativeURL;
+    }
+
+    fileTransfer.upload('file.jpg', 'http://thecatapi.com/api/images/get');
+};
+````
+
+````
+progressHandler(callback)
+````
+define a callback to be executed whenever upload or download progress is made
+- <b>callback</b>: a function to be executed during upload or download. passed a ProgressEvent object.
+````
+abort()
+````
+abort the current transfer.
+
+````js
+var self = this;
+function downloadFile() {
+    var fileTransfer = new Appworks.AWFileTransfer(showFile, errorHandler);
+
+    function showFile(file) {
+        console.log(file);
+        self.downloadedFile = file.nativeURL;
+    }
+
+    fileTransfer.download('http://thecatapi.com/api/images/get', 'file.jpg');
+};
+````
 
 ## Build
 To build the compressed, minified appworks.js source and the uncompressed, commented code, open up your terminal at the appworksjs directory and type in the following commands

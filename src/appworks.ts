@@ -122,43 +122,77 @@ module Appworks {
     export class AWFileTransfer extends AWPlugin implements FileTransfer {
 
         fileTransfer = new FileTransfer();
+        onprogress = null;
 
         abort() {
             this.fileTransfer.abort();
         }
-        onprogress() {
-            return this.fileTransfer.onprogress;
-        }
-        upload(fileUrl, serverUrl, options, shared) {
-
-            if (shared) {
-
-            } else {
-                this.fileTransfer.upload(
-                    cordova.file.documentsDirectory + '/' + fileUrl,
-                    encodeURI(serverUrl),
-                    (() => this.successHandler)(),
-                    (() => this.errorHandler)(),
-                    options,
-                    false
-                );
-            }
-            return this.fileTransfer;
-        }
         download(url, target, options, shared) {
 
-            if (shared) {
+            var successHandler = this.successHandler,
+                errorHandler = this.errorHandler;
 
-            } else {
-                this.fileTransfer.download(
+            options = options || {};
+
+            function gotSharedContainerUrl(containerUrl?: string) {
+                new FileTransfer().download(
                     encodeURI(url),
-                    cordova.file.documentsDirectory + '/' + target,
-                    (() => this.successHandler)(),
-                    (() => this.errorHandler)(),
+                    containerUrl + '/' + target,
+                    successHandler,
+                    errorHandler,
                     false,
                     options
                 );
             }
+
+            if (shared) {
+                cordova.exec(gotSharedContainerUrl, (() => this.errorHandler)(), 'AWSharedDocumentProvider', 'container');
+            } else {
+                this.fileTransfer.download(
+                    encodeURI(url),
+                    cordova.file.documentsDirectory + '/' + target,
+                    successHandler,
+                    errorHandler,
+                    false,
+                    options
+                );
+            }
+            return this.fileTransfer;
+        }
+        progressHandler(handler: any) {
+            this.fileTransfer.onprogress = handler;
+        }
+        upload(source, url, options, shared) {
+
+            var successHandler = this.successHandler,
+                errorHandler = this.errorHandler;
+
+            options = options || {};
+
+            function gotSharedContainerUrl(containerUrl?: string) {
+                new FileTransfer().upload(
+                    containerUrl + '/' + source,
+                    encodeURI(url),
+                    successHandler,
+                    errorHandler,
+                    options,
+                    false
+                );
+            }
+
+            if (shared) {
+                cordova.exec(gotSharedContainerUrl, (() => this.errorHandler)(), 'AWSharedDocumentProvider', 'container');
+            } else {
+                this.fileTransfer.upload(
+                    cordova.file.documentsDirectory + '/' + source,
+                    encodeURI(url),
+                    successHandler,
+                    errorHandler,
+                    options,
+                    false
+                );
+            }
+
             return this.fileTransfer;
         }
     }

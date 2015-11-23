@@ -150,28 +150,41 @@ var Appworks;
         function AWFileTransfer() {
             _super.apply(this, arguments);
             this.fileTransfer = new FileTransfer();
+            this.onprogress = null;
         }
         AWFileTransfer.prototype.abort = function () {
             this.fileTransfer.abort();
         };
-        AWFileTransfer.prototype.onprogress = function () {
-            return this.fileTransfer.onprogress;
-        };
-        AWFileTransfer.prototype.upload = function (fileUrl, serverUrl, options, shared) {
+        AWFileTransfer.prototype.download = function (url, target, options, shared) {
             var _this = this;
+            var successHandler = this.successHandler, errorHandler = this.errorHandler;
+            options = options || {};
+            function gotSharedContainerUrl(containerUrl) {
+                new FileTransfer().download(encodeURI(url), containerUrl + '/' + target, successHandler, errorHandler, false, options);
+            }
             if (shared) {
+                cordova.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), 'AWSharedDocumentProvider', 'container');
             }
             else {
-                this.fileTransfer.upload(cordova.file.documentsDirectory + '/' + fileUrl, encodeURI(serverUrl), (function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options, false);
+                this.fileTransfer.download(encodeURI(url), cordova.file.documentsDirectory + '/' + target, successHandler, errorHandler, false, options);
             }
             return this.fileTransfer;
         };
-        AWFileTransfer.prototype.download = function (url, target, options, shared) {
+        AWFileTransfer.prototype.progressHandler = function (handler) {
+            this.fileTransfer.onprogress = handler;
+        };
+        AWFileTransfer.prototype.upload = function (source, url, options, shared) {
             var _this = this;
+            var successHandler = this.successHandler, errorHandler = this.errorHandler;
+            options = options || {};
+            function gotSharedContainerUrl(containerUrl) {
+                new FileTransfer().upload(containerUrl + '/' + source, encodeURI(url), successHandler, errorHandler, options, false);
+            }
             if (shared) {
+                cordova.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), 'AWSharedDocumentProvider', 'container');
             }
             else {
-                this.fileTransfer.download(encodeURI(url), cordova.file.documentsDirectory + '/' + target, (function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), false, options);
+                this.fileTransfer.upload(cordova.file.documentsDirectory + '/' + source, encodeURI(url), successHandler, errorHandler, options, false);
             }
             return this.fileTransfer;
         };
