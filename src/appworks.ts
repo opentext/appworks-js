@@ -48,14 +48,14 @@ module Appworks {
         }
         openGallery(options?: any) {
             options = options || {
-                    destinationType: Camera.DestinationType.NATIVE_URI
+                    destinationType: Camera.DestinationType.FILE_URI
                 };
             options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
             this.getPicture((() => this.successHandler)(), (() => this.errorHandler)(), options);
         }
         takePicture(options?: any) {
             options = options || {
-                    destinationType: Camera.DestinationType.NATIVE_URI,
+                    destinationType: Camera.DestinationType.FILE_URI,
                     encodingType: Camera.EncodingType.JPEG,
                     mediaType: Camera.MediaType.ALLMEDIA,
                     correctOrientation: true,
@@ -233,6 +233,10 @@ module Appworks {
         uuid = device.uuid;
         version = device.version;
         manufacturer = device.manufacturer;
+
+        constructor() {
+            super(() => {}, () => {});
+        }
     }
     export class AWAccelerometer extends AWPlugin implements Accelerometer {
 
@@ -240,8 +244,24 @@ module Appworks {
     export class AWCompass extends AWPlugin implements Compass {
 
     }
-    export class AWLocation extends AWPlugin implements Geolocation {
-
+    export class AWLocation extends AWPlugin {
+        getCurrentPosition(options?: any) {
+            navigator.geolocation.getCurrentPosition(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                options
+            );
+        }
+        watchPosition(options?: any) {
+            navigator.geolocation.watchPosition(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                options
+            );
+        }
+        clearWatch(watchId) {
+            navigator.geolocation.clearWatch(watchId);
+        }
     }
     export class AWMedia extends AWPlugin implements Media {
 
@@ -249,8 +269,30 @@ module Appworks {
     export class AWMediaCapture extends AWPlugin implements Capture {
 
     }
-    export class AWNotificationManager extends AWPlugin implements Notification {
-        // TODO put vibration api inside of this class
+    export class AWNotificationManager extends AWPlugin {
+        alert(message: string, alertCallback: any, title?: string, buttonName?: string) {
+            navigator.notification.alert(message, alertCallback, title, buttonName);
+        }
+        beep(times: number) {
+            navigator.notification.beep(times);
+        }
+        confirm(message: string, confirmCallback: any, title?: string, buttonLabels?: string[]) {
+            navigator.notification.confirm(message, confirmCallback, title, buttonLabels);
+        }
+        prompt(message: string, promptCallback: any, title?: string, buttonLabels?: string[], defaultText?: string) {
+            navigator.notification.prompt(message, promptCallback, title, buttonLabels, defaultText);
+        }
+        constructor() {
+            super(() => {}, () => {});
+        }
+    }
+    export class AWVibration extends AWPlugin {
+        vibrate(time: number) {
+            return navigator.vibrate(time);
+        }
+        constructor() {
+            super(() => {}, () => {});
+        }
     }
 
     export class AWOfflineManager extends AWPlugin {

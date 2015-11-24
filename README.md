@@ -389,6 +389,122 @@ Common sources of location information include Global Positioning System (GPS) a
 signals such as IP address, RFID, WiFi and Bluetooth MAC addresses, and GSM/CDMA cell IDs. 
 There is no guarantee that the API returns the device's actual location.
 
+##### Methods:
+
+getCurrentPosition
+
+````ts
+getCurrentPosition(options?: any)
+````
+returns the devices current position to the ````successHandler```` callback function with a ````Position```` object
+as the parameter. If there is an error, the ````errorHandler```` callback is passed a ````PositionError```` object.
+
+- options - geolocation options
+
+##### Example:
+
+````js
+// onSuccess Callback
+// This method accepts a Position object, which contains the
+// current GPS coordinates
+//
+var onSuccess = function(position) {
+    alert('Latitude: '          + position.coords.latitude          + '\n' +
+          'Longitude: '         + position.coords.longitude         + '\n' +
+          'Altitude: '          + position.coords.altitude          + '\n' +
+          'Accuracy: '          + position.coords.accuracy          + '\n' +
+          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+          'Heading: '           + position.coords.heading           + '\n' +
+          'Speed: '             + position.coords.speed             + '\n' +
+          'Timestamp: '         + position.timestamp                + '\n');
+};
+
+// onError Callback receives a PositionError object
+//
+function onError(error) {
+    alert('code: '    + error.code    + '\n' +
+          'message: ' + error.message + '\n');
+}
+
+var geo = new Appworks.AWLocation(onSuccess, onError);
+geo.getCurrentPosition();
+````
+
+watchPosition
+
+````ts
+watchPosition(options?: any) => watchId: number
+````
+Returns the device's current position when a change in position is detected. When the device retrieves a new location, 
+the ````successHandler```` callback executes with a ````Position```` object as the parameter. 
+If there is an error, the ````errorHandler```` callback executes with a ````PositionError```` object as the parameter.
+
+- options - geolocation options
+
+returns a ````watchId```` that references the watch position interval function. This value should be used with 
+````clearWatch```` to cancel watching for changes in position.
+
+##### Example:
+
+````js
+// onSuccess Callback
+//   This method accepts a `Position` object, which contains
+//   the current GPS coordinates
+//
+function onSuccess(position) {
+    var element = document.getElementById('geolocation');
+    element.innerHTML = 'Latitude: '  + position.coords.latitude      + '<br />' +
+                        'Longitude: ' + position.coords.longitude     + '<br />' +
+                        '<hr />'      + element.innerHTML;
+}
+
+// onError Callback receives a PositionError object
+//
+function onError(error) {
+    alert('code: '    + error.code    + '\n' +
+          'message: ' + error.message + '\n');
+}
+
+// Options: throw an error if no update is received every 30 seconds.
+//
+var geo = new Appworks.AWLocation(onSuccess, onError);
+var watchID = geo.watchPosition({ timeout: 30000 });
+````
+
+clearWatch
+
+````ts
+clearWatch(watchId: number)
+````
+Stop watching for changes to the device's location referenced by the ````watchId```` parameter.
+
+##### Example:
+
+````js
+var geo = new Appworks.AWLocation(onSuccess, onError);
+
+var watchId = geo.watchCurrentPosition();
+
+// .. later on
+
+geo.clearWatch(watchId);
+````
+
+##### Objects
+
+geolocationOptions - optional parameters to customize the retrieval of the geolocation ````Position````
+
+- enableHighAccuracy: Provides a hint that the application needs the best possible results. By default, 
+the device attempts to retrieve a Position using network-based methods. Setting this property to true tells the 
+framework to use more accurate methods, such as satellite positioning. (Boolean)
+- timeout: The maximum length of time (milliseconds) that is allowed to pass from the call to 
+````getCurrentPosition```` or ````watchPosition```` until the corresponding ````successHandler```` callback executes. 
+If the ````successHandler```` callback is not invoked within this time, the ````errorHandler```` callback is passed a 
+````PositionError.TIMEOUT```` error code. 
+- maximumAge: Accept a cached position whose age is no greater than the specified time in milliseconds. (Number)
+
+Read more on the <a href="https://github.com/apache/cordova-plugin-geolocation">Cordova Documentation</a> page.
+
 #### AWNotificationManager
 The AWNotificationManager plugin gives you access to native notifications targeted to the device and/or a specific
 app.
@@ -416,6 +532,30 @@ The AWDevice plugin gives you information that describes the device's hardware a
 var device = new Appworks.AWDevice();
 console.log(device.model);
 ````
+
+#### AWVibration
+The AWVibration plugin allows you to vibrate the device.
+
+##### Methods:
+
+````ts
+vibrate(time: number)
+````
+Vibrate the device for a specified amount of time.
+
+- time: the amount of time to vibrate the device.
+
+Read more about this plugin <a href="https://github.com/apache/cordova-plugin-vibration">here</a> to learn more
+about device specific quirks.
+
+##### Example:
+
+````js
+var vibe = new Appworks.AWVibration();
+// vibrates the device for 2 seconds
+vibe.vibrate(2000);
+````
+
 
 #### AWContacts
 The Contacts plugin gives you access to the device contacts database.

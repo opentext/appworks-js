@@ -59,7 +59,7 @@ var Appworks;
         AWCamera.prototype.openGallery = function (options) {
             var _this = this;
             options = options || {
-                destinationType: Camera.DestinationType.NATIVE_URI
+                destinationType: Camera.DestinationType.FILE_URI
             };
             options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
             this.getPicture((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
@@ -67,7 +67,7 @@ var Appworks;
         AWCamera.prototype.takePicture = function (options) {
             var _this = this;
             options = options || {
-                destinationType: Camera.DestinationType.NATIVE_URI,
+                destinationType: Camera.DestinationType.FILE_URI,
                 encodingType: Camera.EncodingType.JPEG,
                 mediaType: Camera.MediaType.ALLMEDIA,
                 correctOrientation: true,
@@ -224,7 +224,7 @@ var Appworks;
     var AWDevice = (function (_super) {
         __extends(AWDevice, _super);
         function AWDevice() {
-            _super.apply(this, arguments);
+            _super.call(this, function () { }, function () { });
             this.cordova = device.cordova;
             this.model = device.model;
             this.platform = device.platform;
@@ -256,6 +256,17 @@ var Appworks;
         function AWLocation() {
             _super.apply(this, arguments);
         }
+        AWLocation.prototype.getCurrentPosition = function (options) {
+            var _this = this;
+            navigator.geolocation.getCurrentPosition((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+        };
+        AWLocation.prototype.watchPosition = function (options) {
+            var _this = this;
+            navigator.geolocation.watchPosition((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+        };
+        AWLocation.prototype.clearWatch = function (watchId) {
+            navigator.geolocation.clearWatch(watchId);
+        };
         return AWLocation;
     })(AWPlugin);
     Appworks.AWLocation = AWLocation;
@@ -278,11 +289,34 @@ var Appworks;
     var AWNotificationManager = (function (_super) {
         __extends(AWNotificationManager, _super);
         function AWNotificationManager() {
-            _super.apply(this, arguments);
+            _super.call(this, function () { }, function () { });
         }
+        AWNotificationManager.prototype.alert = function (message, alertCallback, title, buttonName) {
+            navigator.notification.alert(message, alertCallback, title, buttonName);
+        };
+        AWNotificationManager.prototype.beep = function (times) {
+            navigator.notification.beep(times);
+        };
+        AWNotificationManager.prototype.confirm = function (message, confirmCallback, title, buttonLabels) {
+            navigator.notification.confirm(message, confirmCallback, title, buttonLabels);
+        };
+        AWNotificationManager.prototype.prompt = function (message, promptCallback, title, buttonLabels, defaultText) {
+            navigator.notification.prompt(message, promptCallback, title, buttonLabels, defaultText);
+        };
         return AWNotificationManager;
     })(AWPlugin);
     Appworks.AWNotificationManager = AWNotificationManager;
+    var AWVibration = (function (_super) {
+        __extends(AWVibration, _super);
+        function AWVibration() {
+            _super.call(this, function () { }, function () { });
+        }
+        AWVibration.prototype.vibrate = function (time) {
+            return navigator.vibrate(time);
+        };
+        return AWVibration;
+    })(AWPlugin);
+    Appworks.AWVibration = AWVibration;
     var AWOfflineManager = (function (_super) {
         __extends(AWOfflineManager, _super);
         function AWOfflineManager() {
