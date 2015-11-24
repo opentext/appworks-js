@@ -104,20 +104,20 @@ device.
 
 ##### Methods:
 ````
-open(path, filename)
+open(path: string, filename: string)
 ````
 open a file in another iOS app installed on the device
 - <b>path</b>: the path to the file you would like to open
 - <b>filename</b>: the name of the file you would like to open
 
 ````
-openDirect(filename)
+openDirect(filename: string)
 ````
 open a file in another iOS app installed on the device
 - <b>filename</b>: the name of the file you would like to open at the application root
 
 ````
-list(path)
+list(path: string)
 ````
 show the contents of a directory within the OpenText Mobile app container
 - <b>path</b>: the name of the directory you would like to see the contents of
@@ -192,7 +192,7 @@ Access the device camera to take photos, or select photos from the device galler
 
 ##### Methods:
 ````
-takePicture(options)
+takePicture(options?: any)
 ````
 use the device camera to take a photo. returns the uri specified by options - default is the native uri to the location
 on the device.
@@ -207,7 +207,7 @@ object. See apache cordova
 </a>
 
 ````
-openGallery(options)
+openGallery(options?: any)
 ````
 open the device gallery to select a photo. returns the uri specified by options - default is the native uri to the location
 on the device.
@@ -225,7 +225,7 @@ The SecureStorage Plugin allows you to store and retrieve files on the device us
 ##### Methods:
 
 ````
-store(url, filename, options)
+store(url: string, filename: string, options?: any)
 ````
 store a file securely.
 - <b>url</b>: the url of the server to download the file from.
@@ -258,7 +258,7 @@ function storeFile() {
 ````
 
 ````
-retrieve(filename, options)
+retrieve(filename: string, options?: any)
 ````
 - <b>filename</b>: the name of the file to be retrieved. may be a directory structure. note this is not the nativeURL,
 but the same path that was supplied to ````store()````.
@@ -296,7 +296,7 @@ to download files to a shared container where they may be accessed by third part
 
 ##### Methods:
 ````
-download(url, target, options, shared) 
+download(url: string, target: string, options?: any, shared?: boolean) 
 ````
 download a file from a remote url and store it on the device
 - <b>url</b>: the url of the server to download the file from
@@ -305,6 +305,9 @@ download a file from a remote url and store it on the device
 - <b>shared</b>: a boolean flag. when set, the file will be downloaded to a shared container where it may be accessed
 by third party applications
 
+This method passes a <a href="https://cordova.apache.org/docs/en/3.0.0/cordova/file/fileentry/fileentry.html">FileEntry</a>
+object to your success callback. See <a href="https://cordova.apache.org/docs/en/3.0.0/cordova/file/file.html">Apache Cordova Documentation</a>
+for more information.
 ##### Example:
 
 ````js
@@ -326,7 +329,7 @@ function downloadFile () {
 ````
 
 ````
-upload(source, url, options, shared)
+upload(source: string, url: string, options?: any, shared: boolean)
 ````
 upload a file from the device to another location
 - <b>source</b>: the name of the path including the filename where the file is stored
@@ -335,6 +338,9 @@ upload a file from the device to another location
 - <b>shared</b>: a boolean flag. when set, the file will be uploaded from a shared container where it may be accessed
 by third party applications
 
+This method passes a <a href="https://cordova.apache.org/docs/en/3.0.0/cordova/file/fileuploadresult/fileuploadresult.html">FileUploadResult</a>
+object to your success callback. See <a href="https://cordova.apache.org/docs/en/3.0.0/cordova/file/file.html">Apache Cordova Documentation</a>
+for more information.
 ##### Example:
 
 ````js
@@ -352,7 +358,7 @@ function uploadFile () {
 ````
 
 ````
-progressHandler(callback)
+progressHandler(callback: (data: any) => void)
 ````
 define a callback to be executed whenever upload or download progress is made
 - <b>callback</b>: a function to be executed during upload or download. passed a ProgressEvent object.
@@ -360,6 +366,154 @@ define a callback to be executed whenever upload or download progress is made
 abort()
 ````
 abort the current transfer.
+
+#### AWContacts
+The Contacts plugin gives you access to the device contacts database.
+Includes the following global objects:
+- Contact
+- ContactName
+- ContactField
+- ContactAddress
+- ContactOrganization
+- ContactFindOptions
+- ContactError
+
+See the <a href="https://cordova.apache.org/docs/en/3.0.0/cordova/contacts/contacts.html#link-3">Apache Cordova Contacts
+Documentation </a> to learn more. Some information provided here has been copied from the 
+<a href="https://github.com/apache/cordova-plugin-contacts">cordova contacts github repo</a>.
+
+##### Methods:
+create
+````
+create(properties?: ContactProperties)
+````
+The ````create```` method is synchronous, and returns a new Contact object.
+This method does not retain the Contact object in the device contacts database, for which you need to invoke the 
+Contact.save method.
+
+##### Example:
+````js
+var contacts = new Appworks.AWContacts();
+var myContact = contacts.create({"displayName": "Test User"});
+````
+
+find
+````
+find(contactFields: string[], options? any)
+````
+The ````find```` method executes asynchronously, querying the device contacts database and returning an 
+array of Contact objects. The resulting objects are passed to the ````successHandler```` callback function 
+defined upon instance creation.
+
+##### Example:
+````js
+function onSuccess(contacts) {
+    alert('Found ' + contacts.length + ' contacts.');
+};
+
+function onError(contactError) {
+    alert('onError!');
+};
+
+var contacts = new Appworks.AWContacts(onSuccess, onError);
+
+// find all contacts with 'Bob' in any name field
+var options = new ContactFindOptions();
+options.filter = "Bob";
+options.multiple = true;
+options.desiredFields = [contacts.options.fieldType.id];
+options.hasPhoneNumber = true;
+var fields = [contacts.options.fieldType.displayName, contacts.options.fieldType.name];
+
+contacts.find(fields, onSuccess, onError, options);
+````
+
+pickContact
+````
+pickContact()
+````
+The ````pickContact```` method launches the Contact Picker to select a single contact. The resulting object is 
+passed to the ````successHandler```` callback function specified upon instance creation.
+
+##### Example:
+
+````js
+var contacts = new Appworks.AWContacts(onSuccess, onError);
+
+contacts.pickContact(function(contact){
+    console.log('The following contact has been selected:' + JSON.stringify(contact));
+},function(err){
+    console.log('Error: ' + err);
+});
+````
+
+##### Objects:
+
+#### Contact
+The Contact object represents a user's contact. Contacts can be created, stored, or removed from the device contacts 
+database. Contacts can also be retrieved (individually or in bulk) from the database by invoking the ````find```` method.
+
+Methods:
+- clone
+- save
+- remove
+
+Properties:
+- id: A globally unique identifier. (DOMString)
+- displayName: The name of this Contact, suitable for display to end users. (DOMString)
+- name: An object containing all components of a persons name. (ContactName)
+- nickname: A casual name by which to address the contact. (DOMString)
+- phoneNumbers: An array of all the contact's phone numbers. (ContactField[])
+- emails: An array of all the contact's email addresses. (ContactField[])
+- addresses: An array of all the contact's addresses. (ContactAddress[])
+- ims: An array of all the contact's IM addresses. (ContactField[])
+- organizations: An array of all the contact's organizations. (ContactOrganization[])
+- birthday: The birthday of the contact. (Date)
+- note: A note about the contact. (DOMString)
+- photos: An array of the contact's photos. (ContactField[])
+- categories: An array of all the user-defined categories associated with the contact. (ContactField[])
+- urls: An array of web pages associated with the contact. (ContactField[])
+
+#### ContactAddress
+The ContactAddress object stores the properties of a single address of a contact. 
+A Contact object may include more than one address in a ContactAddress[] array.
+
+Properties:
+- pref: Set to true if this ContactAddress contains the user's preferred value. (boolean)
+- type: A string indicating what type of field this is, home for example. (DOMString)
+- formatted: The full address formatted for display. (DOMString)
+- streetAddress: The full street address. (DOMString)
+- locality: The city or locality. (DOMString)
+- region: The state or region. (DOMString)
+- postalCode: The zip code or postal code. (DOMString)
+- country: The country name. (DOMString)
+
+#### ContactError
+The ContactError object is returned to the user through the ````errorHandler```` callback function when an error occurs.
+
+#### ContactField
+The ContactField object is a reusable component that represents contact fields generically. Each ContactField object 
+contains a value, type, and pref property. 
+A Contact object stores several properties in ContactField[] arrays, such as phone numbers and email addresses.
+
+Properties:
+- type: A string that indicates what type of field this is, home for example. (DOMString)
+- value: The value of the field, such as a phone number or email address. (DOMString)
+- pref: Set to true if this ContactField contains the user's preferred value. (boolean)
+
+#### ContactOrganization
+The ContactOrganization object stores a contact's organization properties. 
+A Contact object stores one or more ContactOrganization objects in an array.
+
+Properties:
+- pref: Set to true if this ContactOrganization contains the user's preferred value. (boolean)
+- type: A string that indicates what type of field this is, home for example. _(DOMString)
+- name: The name of the organization. (DOMString)
+- department: The department the contract works for. (DOMString)
+- title: The contact's title at the organization. (DOMString)
+
+Please see <a href="https://cordova.apache.org/docs/en/3.0.0/cordova/contacts/contacts.html">Cordova Documentation</a>
+for full documentation on AWContacts related objects and API.
 
 ## Build
 To build the compressed, minified appworks.js source and the uncompressed, commented code, open up your terminal at the appworksjs directory and type in the following commands

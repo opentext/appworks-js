@@ -46,14 +46,14 @@ module Appworks {
                    cameraOptions?: CameraOptions) {
             navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
         }
-        openGallery(options: any) {
+        openGallery(options?: any) {
             options = options || {
                     destinationType: Camera.DestinationType.NATIVE_URI
                 };
             options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
             this.getPicture((() => this.successHandler)(), (() => this.errorHandler)(), options);
         }
-        takePicture(options: any) {
+        takePicture(options?: any) {
             options = options || {
                     destinationType: Camera.DestinationType.NATIVE_URI,
                     encodingType: Camera.EncodingType.JPEG,
@@ -66,14 +66,14 @@ module Appworks {
         }
     }
     export class Finder extends AWPlugin {
-        open(path, filename) {
+        open(path: string, filename: string) {
             var args = [path, filename];
             cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWFinder', 'open', args);
         }
-        openDirect(filename) {
+        openDirect(filename: string) {
             cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWFinder', 'openDirect', [filename]);
         }
-        list(path) {
+        list(path: string) {
             cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWFinder', 'list', [path]);
         }
     }
@@ -91,7 +91,7 @@ module Appworks {
 
         onprogress = null;
 
-        store(url, target, options) {
+        store(url: string, target: string, options?: any) {
             var args = [url, target, false, this.seqNo, options && options.headers],
                 completionHandler = () => this.successHandler,
                 progressHandler = this.onprogress,
@@ -124,7 +124,7 @@ module Appworks {
                 args
             );
         }
-        retrieve(filename, options) {
+        retrieve(filename: string, options?: any) {
             var args = [filename, options];
             cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWSecureStorage', 'retrieve', args);
         }
@@ -207,6 +207,23 @@ module Appworks {
         }
     }
     export class AWContacts extends AWPlugin implements Contacts {
+
+        options = navigator.contacts;
+
+        create(contact: any) {
+            return navigator.contacts.create(contact);
+        }
+        find(fields, options?: any) {
+            navigator.contacts.find(
+                fields,
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                options
+            )
+        }
+        pickContact() {
+            navigator.contacts.pickContact((() => this.successHandler)(), (() => this.errorHandler)())
+        }
 
     }
     export class AWDevice extends AWPlugin implements Device {

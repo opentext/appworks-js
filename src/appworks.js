@@ -205,7 +205,19 @@ var Appworks;
         __extends(AWContacts, _super);
         function AWContacts() {
             _super.apply(this, arguments);
+            this.options = navigator.contacts;
         }
+        AWContacts.prototype.create = function (contact) {
+            return navigator.contacts.create(contact);
+        };
+        AWContacts.prototype.find = function (fields, options) {
+            var _this = this;
+            navigator.contacts.find(fields, (function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+        };
+        AWContacts.prototype.pickContact = function () {
+            var _this = this;
+            navigator.contacts.pickContact((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })());
+        };
         return AWContacts;
     })(AWPlugin);
     Appworks.AWContacts = AWContacts;
