@@ -226,8 +226,13 @@ module Appworks {
         }
 
     }
-    export class AWDevice extends AWPlugin implements Device {
-
+    export class AWDevice extends AWPlugin {
+        cordova = device.cordova;
+        model = device.model;
+        platform = device.platform;
+        uuid = device.uuid;
+        version = device.version;
+        manufacturer = device.manufacturer;
     }
     export class AWAccelerometer extends AWPlugin implements Accelerometer {
 
@@ -235,20 +240,21 @@ module Appworks {
     export class AWCompass extends AWPlugin implements Compass {
 
     }
-    export class AWNotification extends AWPlugin implements Notification {
-        // TODO put vibration api inside of this class
+    export class AWLocation extends AWPlugin implements Geolocation {
+
     }
     export class AWMedia extends AWPlugin implements Media {
 
     }
-    export class AWCapture extends AWPlugin implements Capture {
+    export class AWMediaCapture extends AWPlugin implements Capture {
 
     }
-    export class AWNetwork extends AWPlugin implements Connection {
-
+    export class AWNotificationManager extends AWPlugin implements Notification {
+        // TODO put vibration api inside of this class
     }
-    export class AWOffline extends AWPlugin {
 
+    export class AWOfflineManager extends AWPlugin {
+        // TODO put network information inside of this class
     }
     export class AWCache extends AWPlugin {
 

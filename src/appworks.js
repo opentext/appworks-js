@@ -225,6 +225,12 @@ var Appworks;
         __extends(AWDevice, _super);
         function AWDevice() {
             _super.apply(this, arguments);
+            this.cordova = device.cordova;
+            this.model = device.model;
+            this.platform = device.platform;
+            this.uuid = device.uuid;
+            this.version = device.version;
+            this.manufacturer = device.manufacturer;
         }
         return AWDevice;
     })(AWPlugin);
@@ -245,14 +251,14 @@ var Appworks;
         return AWCompass;
     })(AWPlugin);
     Appworks.AWCompass = AWCompass;
-    var AWNotification = (function (_super) {
-        __extends(AWNotification, _super);
-        function AWNotification() {
+    var AWLocation = (function (_super) {
+        __extends(AWLocation, _super);
+        function AWLocation() {
             _super.apply(this, arguments);
         }
-        return AWNotification;
+        return AWLocation;
     })(AWPlugin);
-    Appworks.AWNotification = AWNotification;
+    Appworks.AWLocation = AWLocation;
     var AWMedia = (function (_super) {
         __extends(AWMedia, _super);
         function AWMedia() {
@@ -261,30 +267,30 @@ var Appworks;
         return AWMedia;
     })(AWPlugin);
     Appworks.AWMedia = AWMedia;
-    var AWCapture = (function (_super) {
-        __extends(AWCapture, _super);
-        function AWCapture() {
+    var AWMediaCapture = (function (_super) {
+        __extends(AWMediaCapture, _super);
+        function AWMediaCapture() {
             _super.apply(this, arguments);
         }
-        return AWCapture;
+        return AWMediaCapture;
     })(AWPlugin);
-    Appworks.AWCapture = AWCapture;
-    var AWNetwork = (function (_super) {
-        __extends(AWNetwork, _super);
-        function AWNetwork() {
+    Appworks.AWMediaCapture = AWMediaCapture;
+    var AWNotificationManager = (function (_super) {
+        __extends(AWNotificationManager, _super);
+        function AWNotificationManager() {
             _super.apply(this, arguments);
         }
-        return AWNetwork;
+        return AWNotificationManager;
     })(AWPlugin);
-    Appworks.AWNetwork = AWNetwork;
-    var AWOffline = (function (_super) {
-        __extends(AWOffline, _super);
-        function AWOffline() {
+    Appworks.AWNotificationManager = AWNotificationManager;
+    var AWOfflineManager = (function (_super) {
+        __extends(AWOfflineManager, _super);
+        function AWOfflineManager() {
             _super.apply(this, arguments);
         }
-        return AWOffline;
+        return AWOfflineManager;
     })(AWPlugin);
-    Appworks.AWOffline = AWOffline;
+    Appworks.AWOfflineManager = AWOfflineManager;
     var AWCache = (function (_super) {
         __extends(AWCache, _super);
         function AWCache() {

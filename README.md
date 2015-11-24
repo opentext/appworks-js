@@ -367,6 +367,56 @@ abort()
 ````
 abort the current transfer.
 
+#### AWMedia
+The AWMedia plugin provides the ability to record and play back audio files on a device.
+
+#### AWMediaCapture
+The AWMediaCapture plugin provides access to the device's audio, image, and video capture capabilities.
+
+#### AWAccelerometer
+The AWAccelerometer plugin provides access to the device's accelerometer. The accelerometer is a motion sensor that 
+detects the change (delta) in movement relative to the current device orientation, in three dimensions along the x, y, 
+and z axis.
+
+#### AWCompass
+The AWCompass plugin provides access to the device's compass. 
+The compass is a sensor that detects the direction or heading that the device is pointed, typically from the top of the 
+device. It measures the heading in degrees from 0 to 359.99, where 0 is north.
+
+#### AWLocation
+The AWLocation plugin provides information about the device's location, such as latitude and longitude. 
+Common sources of location information include Global Positioning System (GPS) and location inferred from network 
+signals such as IP address, RFID, WiFi and Bluetooth MAC addresses, and GSM/CDMA cell IDs. 
+There is no guarantee that the API returns the device's actual location.
+
+#### AWNotificationManager
+The AWNotificationManager plugin gives you access to native notifications targeted to the device and/or a specific
+app.
+
+#### AWOfflineManager
+The AWOfflineManager plugin allows you to work offline by managing an offline queue. This queue is meant to capture
+the user's intention, where it may be reconstructed when the device once again has network access.
+
+#### AWCache
+The AWCache plugin allows you to temporarily cache data using the device local storage.
+
+#### AWDevice
+The AWDevice plugin gives you information that describes the device's hardware and software.
+
+##### Properties:
+- device.cordova - the version of cordova installed on the device
+- device.model - the name of the device model
+- device.platform - the name of the device operating system
+- device.uuid - the device's Universally Unique Identifier (UUID).
+- device.version - the operating system version.
+- device.manufacturer - the device manufacturer
+
+##### Example:
+````js
+var device = new Appworks.AWDevice();
+console.log(device.model);
+````
+
 #### AWContacts
 The Contacts plugin gives you access to the device contacts database.
 Includes the following global objects:
