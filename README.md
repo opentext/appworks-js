@@ -515,6 +515,62 @@ Properties:
 Please see <a href="https://cordova.apache.org/docs/en/3.0.0/cordova/contacts/contacts.html">Cordova Documentation</a>
 for full documentation on AWContacts related objects and API.
 
+### Events
+
+#### Battery
+There are three events to hook into that will give you access to the device battery status. All three are attached to
+the ````window````.
+
+##### batterystatus
+This event fires when the percentage of battery charge changes by at least 1 percent, or if the device is plugged in or 
+unplugged.
+
+Example:
+
+````js
+window.addEventListener("batterystatus", onBatteryStatus, false);
+
+function onBatteryStatus(info) {
+    // Handle the online event
+    console.log("Level: " + info.level + " isPlugged: " + info.isPlugged);
+}
+````
+
+##### batterycritical
+The event fires when the percentage of battery charge has reached the critical battery threshold. 
+The value is device-specific.
+
+The ````batterycritical```` handler is passed an object that contains two properties:
+
+- level: The percentage of battery charge (0-100). (Number)
+- isPlugged: A boolean that indicates whether the device is plugged in. (Boolean)
+
+````js
+window.addEventListener("batterycritical", onBatteryCritical, false);
+
+function onBatteryCritical(info) {
+    // Handle the battery critical event
+    alert("Battery Level Critical " + info.level + "%\nRecharge Soon!");
+}
+````
+
+##### batterylow
+The event fires when the percentage of battery charge has reached the low battery threshold, device-specific value.
+
+The ````batterylow```` handler is passed an object that contains two properties:
+
+- level: The percentage of battery charge (0-100). (Number)
+- isPlugged: A boolean that indicates whether the device is plugged in. (Boolean)
+
+````js
+window.addEventListener("batterylow", onBatteryCritical, false);
+
+function onBatteryCritical(info) {
+    // Handle the battery critical event
+    alert("Battery Level Critical " + info.level + "%\nRecharge Soon!");
+}
+````
+
 ## Build
 To build the compressed, minified appworks.js source and the uncompressed, commented code, open up your terminal at the appworksjs directory and type in the following commands
 
