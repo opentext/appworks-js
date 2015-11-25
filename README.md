@@ -370,8 +370,72 @@ abort the current transfer.
 #### AWMedia
 The AWMedia plugin provides the ability to record and play back audio files on a device.
 
+````js
+var media = new Appworks.AWMedia('path-to-src.mp3', audioEnded, errorHandler, statusChanged);
+
+function audioEnded() {
+    console.log('audio ended');
+}
+
+function errorHandler(err) {
+    console.log(err);
+}
+
+function statusChanged(status) {
+    console.log(status);
+}
+
+media.play();
+````
+
+##### Methods:
+
+- getCurrentPosition: Returns the current position within an audio file.
+- getDuration: Returns the duration of an audio file.
+- play: Start or resume playing an audio file.
+- pause: Pause playback of an audio file.
+- release: Releases the underlying operating system's audio resources.
+- seekTo: Moves the position within the audio file.
+- setVolume: Set the volume for audio playback.
+- startRecord: Start recording an audio file.
+- stopRecord: Stop recording an audio file.
+- stop: Stop playing an audio file
+
+##### Parameters: 
+- src: A URI containing the audio content
+- mediaStatus: (Optional) The callback that executes to indicate status changes. (Function)
+
+See the <a href="https://github.com/apache/cordova-plugin-media">Apache Cordova Github</a> for in depth 
+documentation, device specific quirks, and more.
+
 #### AWMediaCapture
 The AWMediaCapture plugin provides access to the device's audio, image, and video capture capabilities.
+
+##### Methods:
+
+- captureAudio
+- captureImage
+- captureVideo
+
+##### Objects:
+
+- Capture
+- CaptureAudioOptions
+- CaptureVideoOptions
+- CaptureCallback
+- CaptureErrorCB
+- ConfigurationData
+- MediaFile
+- MediaFileData
+
+##### Properties:
+- supportedAudioModes: The audio recording formats supported by the device. (ConfigurationData[])
+- supportedImageModes: The recording image sizes and formats supported by the device. (ConfigurationData[])
+- supportedVideoModes: The recording video resolutions and formats supported by the device. (ConfigurationData[])
+
+See the <a href="https://github.com/apache/cordova-plugin-media-capture">Apache Cordova Github</a> for in depth 
+documentation, device specific quirks, and more.
+
 
 #### AWAccelerometer
 The AWAccelerometer plugin provides access to the device's accelerometer. The accelerometer is a motion sensor that 

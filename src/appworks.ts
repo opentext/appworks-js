@@ -87,9 +87,14 @@ module Appworks {
     }
     export class SecureStorage extends AWPlugin {
 
-        seqNo = ++idCounter;
+        seqNo: number;
+        onprogress: any;
 
-        onprogress = null;
+        constructor(successHandler: any, errorHandler?: any) {
+            this.seqNo = ++idCounter;
+            this.onprogress = null;
+            super(successHandler, errorHandler);
+        }
 
         store(url: string, target: string, options?: any) {
             var args = [url, target, false, this.seqNo, options && options.headers],
@@ -131,8 +136,14 @@ module Appworks {
     }
     export class AWFileTransfer extends AWPlugin implements FileTransfer {
 
-        fileTransfer = new FileTransfer();
-        onprogress = null;
+        fileTransfer: any;
+        onprogress: any;
+
+        constructor(successHandler: any, errorHandler?: any) {
+            this.fileTransfer = new FileTransfer();
+            this.onprogress = null;
+            super(successHandler, errorHandler);
+        }
 
         abort() {
             this.fileTransfer.abort();
@@ -227,14 +238,21 @@ module Appworks {
 
     }
     export class AWDevice extends AWPlugin {
-        cordova = device.cordova;
-        model = device.model;
-        platform = device.platform;
-        uuid = device.uuid;
-        version = device.version;
-        manufacturer = device.manufacturer;
+
+        cordova: any;
+        model: any;
+        platform: any;
+        uuid: any;
+        version: any;
+        manufacturer: any;
 
         constructor() {
+            this.cordova = device.cordova;
+            this.model = device.model;
+            this.platform = device.platform;
+            this.uuid = device.uuid;
+            this.version = device.version;
+            this.manufacturer = device.manufacturer;
             super(() => {}, () => {});
         }
     }
@@ -295,11 +313,91 @@ module Appworks {
     }
     export class AWMedia extends AWPlugin implements Media {
 
+        media: any;
+        src: string;
+        position: any;
+        duration: number;
+
+        constructor(src: string, successHandler: any, errorHandler?: any, statusChangeHandler?: any) {
+            this.media = new Media(src, successHandler, errorHandler, statusChangeHandler);
+            this.src = src;
+            this.position = this.media.position;
+            this.duration = this.media.duration;
+            super(successHandler, errorHandler);
+        }
+
+        getCurrentPosition(successHandler: any, errorHandler?: any) {
+            return this.media.getCurrentPosition(successHandler, errorHandler);
+        }
+        getDuration() {
+            return this.media.getDuration();
+        }
+        pause() {
+            return this.media.pause();
+        }
+        play() {
+            return this.media.play();
+        }
+        release() {
+            return this.media.release();
+        }
+        seekTo() {
+            return this.media.seekTo();
+        }
+        setVolume() {
+            return this.media.setVolume();
+        }
+        startRecord() {
+            return this.media.startRecord();
+        }
+        stop() {
+            return this.media.stop();
+        }
+        stopRecord() {
+            return this.media.stopRecord();
+        }
     }
     export class AWMediaCapture extends AWPlugin implements Capture {
 
+        supportedAudioModes: any;
+        supportedImageModes: any;
+        supportedVideoModes: any;
+
+        constructor(successHandler: any, errorHandler?: any) {
+            this.supportedAudioModes = navigator.device.capture.supportedAudioModes;
+            this.supportedImageModes = navigator.device.capture.supportedImageModes;
+            this.supportedVideoModes = navigator.device.capture.supportedVideoModes;
+            super(successHandler, errorHandler);
+        }
+
+        captureAudio(options?: any) {
+            navigator.device.capture.captureAudio(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                options
+            );
+        }
+        captureImage(options?: any) {
+            navigator.device.capture.captureImage(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                options
+            );
+        }
+        captureVideo(options?: any) {
+            navigator.device.capture.captureVideo(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                options
+            );
+        }
     }
     export class AWNotificationManager extends AWPlugin {
+
+        constructor() {
+            super(() => {}, () => {});
+        }
+
         alert(message: string, alertCallback: any, title?: string, buttonName?: string) {
             navigator.notification.alert(message, alertCallback, title, buttonName);
         }
@@ -312,16 +410,15 @@ module Appworks {
         prompt(message: string, promptCallback: any, title?: string, buttonLabels?: string[], defaultText?: string) {
             navigator.notification.prompt(message, promptCallback, title, buttonLabels, defaultText);
         }
-        constructor() {
-            super(() => {}, () => {});
-        }
     }
     export class AWVibration extends AWPlugin {
-        vibrate(time: number) {
-            return navigator.vibrate(time);
-        }
+
         constructor() {
             super(() => {}, () => {});
+        }
+
+        vibrate(time: number) {
+            return navigator.vibrate(time);
         }
     }
 

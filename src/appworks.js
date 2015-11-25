@@ -118,10 +118,10 @@ var Appworks;
     Appworks.QRReader = QRReader;
     var SecureStorage = (function (_super) {
         __extends(SecureStorage, _super);
-        function SecureStorage() {
-            _super.apply(this, arguments);
+        function SecureStorage(successHandler, errorHandler) {
             this.seqNo = ++idCounter;
             this.onprogress = null;
+            _super.call(this, successHandler, errorHandler);
         }
         SecureStorage.prototype.store = function (url, target, options) {
             var _this = this;
@@ -157,10 +157,10 @@ var Appworks;
     Appworks.SecureStorage = SecureStorage;
     var AWFileTransfer = (function (_super) {
         __extends(AWFileTransfer, _super);
-        function AWFileTransfer() {
-            _super.apply(this, arguments);
+        function AWFileTransfer(successHandler, errorHandler) {
             this.fileTransfer = new FileTransfer();
             this.onprogress = null;
+            _super.call(this, successHandler, errorHandler);
         }
         AWFileTransfer.prototype.abort = function () {
             this.fileTransfer.abort();
@@ -224,13 +224,13 @@ var Appworks;
     var AWDevice = (function (_super) {
         __extends(AWDevice, _super);
         function AWDevice() {
-            _super.call(this, function () { }, function () { });
             this.cordova = device.cordova;
             this.model = device.model;
             this.platform = device.platform;
             this.uuid = device.uuid;
             this.version = device.version;
             this.manufacturer = device.manufacturer;
+            _super.call(this, function () { }, function () { });
         }
         return AWDevice;
     })(AWPlugin);
@@ -294,17 +294,66 @@ var Appworks;
     Appworks.AWLocation = AWLocation;
     var AWMedia = (function (_super) {
         __extends(AWMedia, _super);
-        function AWMedia() {
-            _super.apply(this, arguments);
+        function AWMedia(src, successHandler, errorHandler, statusChangeHandler) {
+            this.media = new Media(src, successHandler, errorHandler, statusChangeHandler);
+            this.src = src;
+            this.position = this.media.position;
+            this.duration = this.media.duration;
+            _super.call(this, successHandler, errorHandler);
         }
+        AWMedia.prototype.getCurrentPosition = function (successHandler, errorHandler) {
+            return this.media.getCurrentPosition(successHandler, errorHandler);
+        };
+        AWMedia.prototype.getDuration = function () {
+            return this.media.getDuration();
+        };
+        AWMedia.prototype.pause = function () {
+            return this.media.pause();
+        };
+        AWMedia.prototype.play = function () {
+            return this.media.play();
+        };
+        AWMedia.prototype.release = function () {
+            return this.media.release();
+        };
+        AWMedia.prototype.seekTo = function () {
+            return this.media.seekTo();
+        };
+        AWMedia.prototype.setVolume = function () {
+            return this.media.setVolume();
+        };
+        AWMedia.prototype.startRecord = function () {
+            return this.media.startRecord();
+        };
+        AWMedia.prototype.stop = function () {
+            return this.media.stop();
+        };
+        AWMedia.prototype.stopRecord = function () {
+            return this.media.stopRecord();
+        };
         return AWMedia;
     })(AWPlugin);
     Appworks.AWMedia = AWMedia;
     var AWMediaCapture = (function (_super) {
         __extends(AWMediaCapture, _super);
-        function AWMediaCapture() {
-            _super.apply(this, arguments);
+        function AWMediaCapture(successHandler, errorHandler) {
+            this.supportedAudioModes = navigator.device.capture.supportedAudioModes;
+            this.supportedImageModes = navigator.device.capture.supportedImageModes;
+            this.supportedVideoModes = navigator.device.capture.supportedVideoModes;
+            _super.call(this, successHandler, errorHandler);
         }
+        AWMediaCapture.prototype.captureAudio = function (options) {
+            var _this = this;
+            navigator.device.capture.captureAudio((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+        };
+        AWMediaCapture.prototype.captureImage = function (options) {
+            var _this = this;
+            navigator.device.capture.captureImage((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+        };
+        AWMediaCapture.prototype.captureVideo = function (options) {
+            var _this = this;
+            navigator.device.capture.captureVideo((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+        };
         return AWMediaCapture;
     })(AWPlugin);
     Appworks.AWMediaCapture = AWMediaCapture;
