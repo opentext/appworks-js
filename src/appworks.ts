@@ -427,5 +427,20 @@ module Appworks {
     }
     export class AWCache extends AWPlugin {
 
+        constructor() {
+            super(() => {}, () => {});
+        }
+
+        setItem(key: string, value: any) {
+            return window.localStorage.setItem(key, value);
+        }
+
+        getItem(key: string) {
+            return window.localStorage.getItem(key);
+        }
+
+        clear() {
+            return window.localStorage.clear();
+        }
     }
 }

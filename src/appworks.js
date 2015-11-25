@@ -399,8 +399,17 @@ var Appworks;
     var AWCache = (function (_super) {
         __extends(AWCache, _super);
         function AWCache() {
-            _super.apply(this, arguments);
+            _super.call(this, function () { }, function () { });
         }
+        AWCache.prototype.setItem = function (key, value) {
+            return window.localStorage.setItem(key, value);
+        };
+        AWCache.prototype.getItem = function (key) {
+            return window.localStorage.getItem(key);
+        };
+        AWCache.prototype.clear = function () {
+            return window.localStorage.clear();
+        };
         return AWCache;
     })(AWPlugin);
     Appworks.AWCache = AWCache;

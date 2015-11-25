@@ -413,7 +413,6 @@ The AWMediaCapture plugin provides access to the device's audio, image, and vide
 
 ##### Methods:
 
-- captureAudio
 - captureImage
 - captureVideo
 
@@ -743,6 +742,69 @@ the user's intention, where it may be reconstructed when the device once again h
 
 #### AWCache
 The AWCache plugin allows you to temporarily cache data using the device local storage.
+
+##### Methods:
+
+- setItem
+- getItem
+- clear
+
+All methods are synchronous. The constructor does not accept any arguments.
+````js
+var cache = new Appworks.AWCache();
+````
+
+###### setItem
+````ts
+setItem(key: string, value: any)
+````
+set an item in the cache. this method is synchronous.
+
+parameters:
+- key: the key to store the item under
+- value: the data to store
+
+Example:
+````js
+var cache = new Appworks.AWCache();
+cache.setItem('myKey', 1234);
+````
+
+###### getItem
+````ts
+getItem(key: string)
+````
+get an item from the cache. this method is synchronous.
+
+parameters:
+- key: the key of the item to retrieve
+
+Example:
+````js
+var cache = new Appworks.AWCache();
+cache.setItem('myKey', 1234);
+
+var item = cache.getItem('myKey');
+````
+
+###### clear
+````ts
+clear()
+````
+clear all items from the cache
+
+Example:
+````js
+var cache = new Appworks.AWCache();
+cache.setItem('myKey', 1234);
+
+var item = cache.getItem('myKey');
+
+cache.clear();
+
+// fails
+item = cache.getItem('myKey');
+````
 
 #### AWDevice
 The AWDevice plugin gives you information that describes the device's hardware and software.
