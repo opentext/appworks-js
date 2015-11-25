@@ -67,6 +67,7 @@ access rights to make api calls against the gateway.
 
 ##### Methods:
 
+###### authenticate
 ````
 authenticate()
 ````
@@ -103,6 +104,8 @@ Files browsing can be done directly inside of your app. Files can be opened in t
 device.
 
 ##### Methods:
+
+###### open
 ````
 open(path: string, filename: string)
 ````
@@ -110,12 +113,14 @@ open a file in another iOS app installed on the device
 - <b>path</b>: the path to the file you would like to open
 - <b>filename</b>: the name of the file you would like to open
 
+###### openDirect
 ````
 openDirect(filename: string)
 ````
 open a file in another iOS app installed on the device
 - <b>filename</b>: the name of the file you would like to open at the application root
 
+###### list
 ````
 list(path: string)
 ````
@@ -163,6 +168,8 @@ listDirectory();
 The QRReader plugin allows you to scan a QR code using the device camera.
 
 ##### Methods:
+
+###### scan
 ````
 scan()
 ````
@@ -191,6 +198,8 @@ var scanQRCode = function () {
 Access the device camera to take photos, or select photos from the device gallery.
 
 ##### Methods:
+
+###### takePicture
 ````
 takePicture(options?: any)
 ````
@@ -206,6 +215,7 @@ object. See apache cordova
     documentation
 </a>
 
+###### openGallery
 ````
 openGallery(options?: any)
 ````
@@ -224,6 +234,7 @@ The SecureStorage Plugin allows you to store and retrieve files on the device us
 
 ##### Methods:
 
+###### store
 ````
 store(url: string, filename: string, options?: any)
 ````
@@ -257,6 +268,7 @@ function storeFile() {
 }
 ````
 
+###### retrieve
 ````
 retrieve(filename: string, options?: any)
 ````
@@ -284,6 +296,7 @@ function errorHandler(err) {
 }
 ````
 
+###### onprogress
 ````
 onprogress=
 ````
@@ -295,6 +308,8 @@ The File Transfer plugin allows you to upload and download files to and from the
 to download files to a shared container where they may be accessed by third party applications installed on the device.
 
 ##### Methods:
+
+###### download
 ````
 download(url: string, target: string, options?: any, shared?: boolean) 
 ````
@@ -328,6 +343,7 @@ function downloadFile () {
 };
 ````
 
+###### upload
 ````
 upload(source: string, url: string, options?: any, shared: boolean)
 ````
@@ -357,11 +373,14 @@ function uploadFile () {
 };
 ````
 
+###### progressHandler
 ````
 progressHandler(callback: (data: any) => void)
 ````
 define a callback to be executed whenever upload or download progress is made
 - <b>callback</b>: a function to be executed during upload or download. passed a ProgressEvent object.
+
+###### abort
 ````
 abort()
 ````
@@ -443,8 +462,7 @@ and z axis.
 
 ##### Methods:
 
-getCurrentAcceleration
-
+###### getCurrentAcceleration
 ````ts
 getCurrentAcceleration()
 ````
@@ -472,8 +490,7 @@ var accelerometer = new Appworks.AWAccelerometer(onSuccess, onError);
 accelerometer.getCurrentAcceleration();
 ````
 
-watchAcceleration
-
+###### watchAcceleration
 ````ts
 watchAcceleration(options?: any) => watchId: number
 ````
@@ -506,8 +523,7 @@ var accelerometer = new Appworks.AWAccelerometer(onSuccess, onError);
 var watchID = accelerometer.watchAcceleration({ period: 30000 });
 ````
 
-clearWatch
-
+###### clearWatch
 ````ts
 clearWatch(watchId: number)
 ````
@@ -532,8 +548,7 @@ device. It measures the heading in degrees from 0 to 359.99, where 0 is north.
 
 ##### Methods:
 
-getCurrentHeading
-
+###### getCurrentHeading
 ````ts
 getCurrentHeading()
 ````
@@ -555,8 +570,7 @@ var compass = new Appworks.AWCompass(onSuccess, onError);
 compass.getCurrentHeading();
 ````
 
-watchHeading
-
+###### watchHeading
 ````ts
 watchAcceleration(options?: any) => watchId: number
 ````
@@ -591,8 +605,7 @@ var compass = new Appworks.AWCompass(onSuccess, onError);
 var watchId = compass.watchHeading(options);
 ````
 
-clearWatch
-
+###### clearWatch
 ````ts
 clearWatch(watchId: number)
 ````
@@ -618,8 +631,7 @@ There is no guarantee that the API returns the device's actual location.
 
 ##### Methods:
 
-getCurrentPosition
-
+###### getCurrentPosition
 ````ts
 getCurrentPosition(options?: any)
 ````
@@ -657,8 +669,7 @@ var geo = new Appworks.AWLocation(onSuccess, onError);
 geo.getCurrentPosition();
 ````
 
-watchPosition
-
+###### watchPosition
 ````ts
 watchPosition(options?: any) => watchId: number
 ````
@@ -698,8 +709,7 @@ var geo = new Appworks.AWLocation(onSuccess, onError);
 var watchID = geo.watchPosition({ timeout: 30000 });
 ````
 
-clearWatch
-
+###### clearWatch
 ````ts
 clearWatch(watchId: number)
 ````
@@ -828,6 +838,13 @@ The AWVibration plugin allows you to vibrate the device.
 
 ##### Methods:
 
+The constructor does not accept any arguments.
+````js
+var vibe = new Appworks.AWVibration();
+````
+
+###### vibrate
+
 ````ts
 vibrate(time: number)
 ````
@@ -846,7 +863,6 @@ var vibe = new Appworks.AWVibration();
 vibe.vibrate(2000);
 ````
 
-
 #### AWContacts
 The Contacts plugin gives you access to the device contacts database.
 Includes the following global objects:
@@ -863,7 +879,8 @@ Documentation </a> to learn more. Some information provided here has been copied
 <a href="https://github.com/apache/cordova-plugin-contacts">cordova contacts github repo</a>.
 
 ##### Methods:
-create
+
+###### create
 ````
 create(properties?: ContactProperties)
 ````
@@ -877,7 +894,7 @@ var contacts = new Appworks.AWContacts();
 var myContact = contacts.create({"displayName": "Test User"});
 ````
 
-find
+###### find
 ````
 find(contactFields: string[], options? any)
 ````
@@ -908,7 +925,7 @@ var fields = [contacts.options.fieldType.displayName, contacts.options.fieldType
 contacts.find(fields, onSuccess, onError, options);
 ````
 
-pickContact
+###### pickContact
 ````
 pickContact()
 ````
