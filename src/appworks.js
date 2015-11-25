@@ -391,8 +391,30 @@ var Appworks;
     var AWOfflineManager = (function (_super) {
         __extends(AWOfflineManager, _super);
         function AWOfflineManager() {
-            _super.apply(this, arguments);
+            document.addEventListener('online', this.updateNetworkStatusToOnline);
+            document.addEventListener('online', this.updateNetworkStatusToOffline);
+            _super.call(this, function () { }, function () { });
         }
+        AWOfflineManager.prototype.updateNetworkStatusToOnline = function () {
+            this.cache = new AWCache();
+            this.online = true;
+            this.offline = false;
+            this.status = 'online';
+        };
+        AWOfflineManager.prototype.updateNetworkStatusToOffline = function () {
+            this.offline = true;
+            this.online = false;
+            this.status = 'offline';
+        };
+        AWOfflineManager.prototype.defer = function (eventName, args) {
+        };
+        AWOfflineManager.prototype.processQueue = function () {
+        };
+        AWOfflineManager.prototype.getQueue = function () {
+        };
+        AWOfflineManager.prototype.networkStatus = function () {
+            return this.status;
+        };
         return AWOfflineManager;
     })(AWPlugin);
     Appworks.AWOfflineManager = AWOfflineManager;

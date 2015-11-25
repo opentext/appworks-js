@@ -423,7 +423,46 @@ module Appworks {
     }
 
     export class AWOfflineManager extends AWPlugin {
-        // TODO put network information inside of this class
+
+        status: string;
+        online: boolean;
+        offline: boolean;
+        cache: any;
+
+        private updateNetworkStatusToOnline() {
+            this.cache = new AWCache();
+            this.online = true;
+            this.offline = false;
+            this.status = 'online';
+        }
+
+        private updateNetworkStatusToOffline() {
+            this.offline = true;
+            this.online = false;
+            this.status = 'offline';
+        }
+
+        constructor() {
+            document.addEventListener('online', this.updateNetworkStatusToOnline);
+            document.addEventListener('online', this.updateNetworkStatusToOffline);
+            super(() => {}, () => {});
+        }
+
+        defer(eventName: string, args: any) {
+
+        }
+
+        processQueue() {
+
+        }
+
+        getQueue() {
+
+        }
+
+        networkStatus() {
+            return this.status;
+        }
     }
     export class AWCache extends AWPlugin {
 
