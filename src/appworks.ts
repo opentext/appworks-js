@@ -239,10 +239,40 @@ module Appworks {
         }
     }
     export class AWAccelerometer extends AWPlugin implements Accelerometer {
-
+        getCurrentAcceleration() {
+            navigator.accelerometer.getCurrentAcceleration(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)()
+            );
+        }
+        watchAcceleration(options?: any) {
+            return navigator.accelerometer.watchAcceleration(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                options
+            );
+        }
+        clearWatch(watchId: number) {
+            navigator.accelerometer.clearWatch(watchId);
+        }
     }
     export class AWCompass extends AWPlugin implements Compass {
-
+        getCurrentHeading() {
+            navigator.compass.getCurrentHeading(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)()
+            );
+        }
+        watchHeading(options?: any) {
+            return navigator.compass.watchHeading(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                options
+            );
+        }
+        clearWatch(watchId: number) {
+            navigator.compass.clearWatch(watchId);
+        }
     }
     export class AWLocation extends AWPlugin {
         getCurrentPosition(options?: any) {
@@ -253,7 +283,7 @@ module Appworks {
             );
         }
         watchPosition(options?: any) {
-            navigator.geolocation.watchPosition(
+            return navigator.geolocation.watchPosition(
                 (() => this.successHandler)(),
                 (() => this.errorHandler)(),
                 options

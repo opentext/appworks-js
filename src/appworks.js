@@ -240,6 +240,17 @@ var Appworks;
         function AWAccelerometer() {
             _super.apply(this, arguments);
         }
+        AWAccelerometer.prototype.getCurrentAcceleration = function () {
+            var _this = this;
+            navigator.accelerometer.getCurrentAcceleration((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })());
+        };
+        AWAccelerometer.prototype.watchAcceleration = function (options) {
+            var _this = this;
+            return navigator.accelerometer.watchAcceleration((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+        };
+        AWAccelerometer.prototype.clearWatch = function (watchId) {
+            navigator.accelerometer.clearWatch(watchId);
+        };
         return AWAccelerometer;
     })(AWPlugin);
     Appworks.AWAccelerometer = AWAccelerometer;
@@ -248,6 +259,17 @@ var Appworks;
         function AWCompass() {
             _super.apply(this, arguments);
         }
+        AWCompass.prototype.getCurrentHeading = function () {
+            var _this = this;
+            navigator.compass.getCurrentHeading((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })());
+        };
+        AWCompass.prototype.watchHeading = function (options) {
+            var _this = this;
+            return navigator.compass.watchHeading((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+        };
+        AWCompass.prototype.clearWatch = function (watchId) {
+            navigator.compass.clearWatch(watchId);
+        };
         return AWCompass;
     })(AWPlugin);
     Appworks.AWCompass = AWCompass;
@@ -262,7 +284,7 @@ var Appworks;
         };
         AWLocation.prototype.watchPosition = function (options) {
             var _this = this;
-            navigator.geolocation.watchPosition((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+            return navigator.geolocation.watchPosition((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
         };
         AWLocation.prototype.clearWatch = function (watchId) {
             navigator.geolocation.clearWatch(watchId);

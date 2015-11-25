@@ -378,10 +378,174 @@ The AWAccelerometer plugin provides access to the device's accelerometer. The ac
 detects the change (delta) in movement relative to the current device orientation, in three dimensions along the x, y, 
 and z axis.
 
+##### Methods:
+
+getCurrentAcceleration
+
+````ts
+getCurrentAcceleration()
+````
+Get the current acceleration along the x, y, and z axes.
+
+##### Example:
+
+````js
+// onSuccess Callback
+// This method accepts an Acceleration object, which contains the current acceleration data
+//
+var onSuccess = function(position) {
+     alert('Acceleration X: ' + acceleration.x + '\n' +
+              'Acceleration Y: ' + acceleration.y + '\n' +
+              'Acceleration Z: ' + acceleration.z + '\n' +
+              'Timestamp: '      + acceleration.timestamp + '\n');
+};
+
+function onError(error) {
+    alert('code: '    + error.code    + '\n' +
+          'message: ' + error.message + '\n');
+}
+
+var accelerometer = new Appworks.AWAccelerometer(onSuccess, onError);
+accelerometer.getCurrentAcceleration();
+````
+
+watchAcceleration
+
+````ts
+watchAcceleration(options?: any) => watchId: number
+````
+Retrieves the device's current ````Acceleration```` at a regular interval, executing the ````successHandler````
+callback function each time. Specify the interval in milliseconds via the ````accelerometerOptions```` 
+object's frequency parameter.
+
+- options - An object with the following optional keys:
+    - period: requested period of calls to ````successHandler```` with acceleration data in Milliseconds. (Number) 
+    (Default: 10000)
+
+returns a ````watchId```` that references the watch acceleration interval function. This value should be used with 
+````clearWatch```` to cancel watching for changes in acceleration.
+
+##### Example:
+
+````js
+function onSuccess(acceleration) {
+    alert('Acceleration X: ' + acceleration.x + '\n' +
+          'Acceleration Y: ' + acceleration.y + '\n' +
+          'Acceleration Z: ' + acceleration.z + '\n' +
+          'Timestamp: '      + acceleration.timestamp + '\n');
+}
+
+function onError() {
+    alert('onError!');
+}
+
+var accelerometer = new Appworks.AWAccelerometer(onSuccess, onError);
+var watchID = accelerometer.watchAcceleration({ period: 30000 });
+````
+
+clearWatch
+
+````ts
+clearWatch(watchId: number)
+````
+Stop watching for changes to the ````acceleration```` referenced by the ````watchId```` parameter.
+
+##### Example:
+
+````js
+var accelerometer = new Appworks.AWAccelerometer(onSuccess, onError);
+
+var watchId = accelerometer.watchAcceleration();
+
+// .. later on
+
+accelerometer.clearWatch(watchId);
+````
+
 #### AWCompass
 The AWCompass plugin provides access to the device's compass. 
 The compass is a sensor that detects the direction or heading that the device is pointed, typically from the top of the 
 device. It measures the heading in degrees from 0 to 359.99, where 0 is north.
+
+##### Methods:
+
+getCurrentHeading
+
+````ts
+getCurrentHeading()
+````
+Get the current compass heading. 
+The compass heading is returned via a ````CompassHeading```` object using the ````successHandler```` callback function.
+
+##### Example:
+
+````js
+function onSuccess(heading) {
+    alert('Heading: ' + heading.magneticHeading);
+};
+
+function onError(error) {
+    alert('CompassError: ' + error.code);
+};
+
+var compass = new Appworks.AWCompass(onSuccess, onError);
+compass.getCurrentHeading();
+````
+
+watchHeading
+
+````ts
+watchAcceleration(options?: any) => watchId: number
+````
+Gets the device's current heading at a regular interval. 
+Each time the heading is retrieved, the ````successHandler```` callback function is executed.
+
+- options - An object with the following optional keys:
+            - frequency: How often to retrieve the compass heading in milliseconds. (Number) (Default: 100)
+            - filter: The change in degrees required to initiate a watchHeading success callback. When this value is set, 
+            frequency is ignored. (Number)
+
+returns a ````watchId```` that references the watch heading interval function. This value should be used with 
+````clearWatch```` to cancel watching for changes in heading.
+
+##### Example:
+
+````js
+function onSuccess(heading) {
+    var element = document.getElementById('heading');
+    element.innerHTML = 'Heading: ' + heading.magneticHeading;
+};
+
+function onError(compassError) {
+    alert('Compass error: ' + compassError.code);
+};
+
+var options = {
+    frequency: 3000
+}; // Update every 3 seconds
+
+var compass = new Appworks.AWCompass(onSuccess, onError);
+var watchId = compass.watchHeading(options);
+````
+
+clearWatch
+
+````ts
+clearWatch(watchId: number)
+````
+Stop watching for changes to the ````heading```` referenced by the ````watchId```` parameter.
+
+##### Example:
+
+````js
+var compass = new Appworks.AWCompass(onSuccess, onError);
+
+var watchId = compass.watchHeading();
+
+// .. later on
+
+compass.clearWatch(watchId);
+````
 
 #### AWLocation
 The AWLocation plugin provides information about the device's location, such as latitude and longitude. 
@@ -483,7 +647,7 @@ Stop watching for changes to the device's location referenced by the ````watchId
 ````js
 var geo = new Appworks.AWLocation(onSuccess, onError);
 
-var watchId = geo.watchCurrentPosition();
+var watchId = geo.watchPosition();
 
 // .. later on
 
