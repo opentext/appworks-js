@@ -410,6 +410,33 @@ module Appworks {
         prompt(message: string, promptCallback: any, title?: string, buttonLabels?: string[], defaultText?: string) {
             navigator.notification.prompt(message, promptCallback, title, buttonLabels, defaultText);
         }
+        enablePushNotifications(handler: any, errorHandler?: any) {
+            cordova.exec(
+                handler,
+                errorHandler,
+                'AWNotificationManager',
+                'enablePushNotifications',
+                []
+            );
+        }
+        disablePushNotifications() {
+            cordova.exec(
+                null,
+                null,
+                'AWNotificationManager',
+                'disablePushNotifications',
+                []
+            );
+        }
+        getNotifications(handler, errorHandler?: any) {
+            cordova.exec(
+                handler,
+                errorHandler,
+                'AWNotificationManager',
+                'getPushNotifications',
+                []
+            );
+        }
     }
     export class AWVibration extends AWPlugin {
 
@@ -428,6 +455,7 @@ module Appworks {
         online: boolean;
         offline: boolean;
         cache: any;
+        idCounter: number;
 
         private updateNetworkStatusToOnline() {
             this.cache = new AWCache();
@@ -445,11 +473,13 @@ module Appworks {
         constructor() {
             document.addEventListener('online', this.updateNetworkStatusToOnline);
             document.addEventListener('online', this.updateNetworkStatusToOffline);
+            this.idCounter = 0;
             super(() => {}, () => {});
         }
 
         defer(eventName: string, args: any) {
-
+            var eventId = ++this.idCounter;
+            return eventId;
         }
 
         processQueue() {

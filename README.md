@@ -746,6 +746,74 @@ Read more on the <a href="https://github.com/apache/cordova-plugin-geolocation">
 The AWNotificationManager plugin gives you access to native notifications targeted to the device and/or a specific
 app.
 
+The constructor does not take any arguments.
+
+````js
+var notificationManager = new Appworks.AWNotificationManager();
+````
+
+##### Methods:
+
+- enablePushNotifications
+- disablePushNotifications
+- getNotifications
+
+##### enablePushNotifications
+````ts
+enablePushNotifications(handler: any, errorHandler?: any)
+````
+turn on realtime notifications.
+
+Parameters:
+- handler: a callback function that will be passed a new notification in realtime once it reaches the client.
+- errorHandler: a function to get executed if there is an error in processing a notification
+
+##### getPushNotifications
+````ts
+getPushNotifications(handler: any, errorHandler?: any)
+````
+get all notifications.
+
+Parameters:
+- handler: a callback function that will be passed all of the notifications for this app.
+- errorHandler: a function to get executed if there is an error in processing notifications
+
+##### disablePushNotifications
+````ts
+disablePushNotifications()
+````
+turn off realtime notifications.
+
+##### Example:
+
+````js
+var _notifications = [];
+var notificationManager = new Appworks.AWNotificationManager();
+
+function getNotifications() {
+    // get all notifications. does not care if realtime is enabled or disabled
+    notificationManager.getPushNotifications(function (notifications) {
+        _notifications = notifications;
+    });
+}
+
+function enableNotifications() {
+    // register a callback to handle realtime notifications
+    notificationManager.enablePushNotifications(function (notification) {
+        // realtime notifications will appear here
+        console.log(notification);
+        alert(JSON.stringify(notification);
+    });
+}
+
+function disableNotifications() {
+    // turn off realtime notifications
+    notificationManager.disablePushNotifications();
+}
+````
+
+
+
 #### AWOfflineManager
 The AWOfflineManager plugin allows you to work offline by managing an offline queue. This queue is meant to capture
 the user's intention, where it may be reconstructed when the device once again has network access.

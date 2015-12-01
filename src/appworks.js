@@ -374,6 +374,15 @@ var Appworks;
         AWNotificationManager.prototype.prompt = function (message, promptCallback, title, buttonLabels, defaultText) {
             navigator.notification.prompt(message, promptCallback, title, buttonLabels, defaultText);
         };
+        AWNotificationManager.prototype.enablePushNotifications = function (handler, errorHandler) {
+            cordova.exec(handler, errorHandler, 'AWNotificationManager', 'enablePushNotifications', []);
+        };
+        AWNotificationManager.prototype.disablePushNotifications = function () {
+            cordova.exec(null, null, 'AWNotificationManager', 'disablePushNotifications', []);
+        };
+        AWNotificationManager.prototype.getNotifications = function (handler, errorHandler) {
+            cordova.exec(handler, errorHandler, 'AWNotificationManager', 'getPushNotifications', []);
+        };
         return AWNotificationManager;
     })(AWPlugin);
     Appworks.AWNotificationManager = AWNotificationManager;
@@ -393,6 +402,7 @@ var Appworks;
         function AWOfflineManager() {
             document.addEventListener('online', this.updateNetworkStatusToOnline);
             document.addEventListener('online', this.updateNetworkStatusToOffline);
+            this.idCounter = 0;
             _super.call(this, function () { }, function () { });
         }
         AWOfflineManager.prototype.updateNetworkStatusToOnline = function () {
@@ -407,6 +417,8 @@ var Appworks;
             this.status = 'offline';
         };
         AWOfflineManager.prototype.defer = function (eventName, args) {
+            var eventId = ++this.idCounter;
+            return eventId;
         };
         AWOfflineManager.prototype.processQueue = function () {
         };
