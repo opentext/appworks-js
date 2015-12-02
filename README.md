@@ -828,19 +828,108 @@ var options = {
 var offlineManager = new Appworks.AWOfflineManager(options);
 ````
 
-##### Methods:
-- defer
-- cancel
-- clear
-- networkStatus
-
-##### Properties:
-- online
-- offline
-
 If options.preserveEvents is set to true, then items will only be removed from the deferred queue when explicitly told
 to do so by calling cancel()
 
+##### Methods:
+- defer
+- cancel
+- networkStatus
+
+##### defer
+````ts
+defer(eventName: string, args: any)
+````
+defer an event to be handled when the device comes back online. if the device is already online, then the event will
+ still get added to the queue and processed after an offline => online cycle.
+ 
+Parameters:
+- eventName: the name of an document event that you intend to listen for when the device completes an offline - online
+cycle
+- args: arguments that were captured at the time an event was deferred. used to reconstruct what happened while the
+device was offline
+
+This method returns an id that you can use to remove an event from the deferred queue using ````cancel````
+
+##### cancel
+````ts
+cancel(id: number)
+````
+Remove an event from the deferred queue.
+
+Parameters:
+- id: the id of the event to remove from the queue. this is the value passed back when calling ````defer````
+
+##### networkStats
+````ts
+networkStatus()
+````
+Get the current network status of the device
+
+###### Full Example (angularjs):
+
+````js
+.controller('OfflineCtrl', function ($scope, $timeout, $http) {
+        var self = this,
+            offlineManager = new Appworks.AWOfflineManager({preserveEvents: true});
+
+        self.users = [];
+        self.defer = makeRequest;
+        self.offlineEventId = null;
+
+        self.defer = function () {
+            // want to show that arguments are preserved, so I will call makeRequest with a url I define in here
+            // when the offline event is processed the arguments I tried to call makeRequest with will be preserved.
+            var url = 'https://randomuser.me/api/';
+            makeRequest(url);
+        };
+
+        // we add an event listener outside any inner functions so that if the device turns completely off and
+        // on again, as soon as this controller is loaded this event listener will be registered.
+        //
+        // there will be a 5 second delay between when the device comes back online and the 'makeRequestEv' event gets
+        // fired
+        
+        // an event listener
+        // function should be registered here or earlier to ensure the event gets processed.
+        // this is the same event listener we registered with defer() on line 163
+        document.addEventListener('makeRequestEv', gotDeferred);
+
+        function gotDeferred(data) {
+            // the device is online now so we try to make the request again using the original arguments.
+            console.log(data);
+            var url = JSON.parse(data.detail)[0];
+            makeRequest(url);
+        }
+
+        function makeRequest(url) {
+            // if the device is online, we make the request right away
+            // otherwise, we queue the request to be processed later, and preserve any arguments that this method
+            // was called with
+            if (offlineManager.networkStatus().online) {
+                // make the request
+                $http.get(url).then(addUser, errorFn);
+                // we set up offlineManager to remove events manually by providing {preserveEvents: true}, so now
+                // that we have made the request, we remove the event from the deferred queue using the id passed
+                // back to us when we called defer()
+                offlineManager.cancel(self.offlineEventId);
+            } else {
+                self.offlineEventId = offlineManager.defer('makeRequestEv', arguments);
+                console.log(self.offlineEventId);
+            }
+        }
+
+        function addUser(response) {
+            var user = response.data.results[0];
+            self.users.push(user);
+            console.log(response);
+        }
+
+        function errorFn(err) {
+            self.err = err;
+        }
+    })
+````
 
 #### AWCache
 The AWCache plugin allows you to temporarily cache data using the device local storage.
