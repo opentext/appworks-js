@@ -10,7 +10,7 @@ module.exports = function (grunt) {
         clean: ['tmp'],
 
         jshint: {
-            files: ['Gruntfile.js', 'src/*.js', 'test/**/*.js'],
+            files: ['Gruntfile.js', 'test/**/*.js'],
             options: {
                 globals: {
                     angular: true
@@ -20,7 +20,7 @@ module.exports = function (grunt) {
 
         uglify: {
             options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> copyright OpenText Inc */\n'
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> copyright Jason Ibrahim */\n'
             },
             build: {
                 src: 'dist/appworks.js',
@@ -36,14 +36,7 @@ module.exports = function (grunt) {
             dist: {
                 // the files to concatenate
                 src: [
-                    'src/appworks-auth.js',
-                    'src/appworks-core.js',
-                    'src/appworks-cache.js',
-                    'src/appworks-comms.js',
-                    'src/appworks-storage.js',
-                    'src/appworks-offline.js',
-                    'src/appworks-notifications.js',
-                    'src/appworks-global.js'
+                    'src/appworks.js'
                 ],
                 // the location of the resulting JS file
                 dest: 'dist/appworks.js'
@@ -55,8 +48,8 @@ module.exports = function (grunt) {
                 files: [
                     {
                         expand: false,
-                        src: ['src/cordova/cordova-blackberry/cordova.js'],
-                        dest: 'lib/cordova/cordova.js'
+                        src: [''],
+                        dest: '.tmp'
                     }
                 ]
             }
