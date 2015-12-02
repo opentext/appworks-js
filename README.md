@@ -15,7 +15,8 @@ bower install --save appworks-js
 You can find the production files in the `dist` directory.
 
 #### Auto install:
-If you are deploying an app to the gateway, the gateway will automatically add appworks.min.js to the root of your project. If you opt to use the bundled file make sure your script tag looks like this:
+If you are deploying an app to the gateway, the gateway will automatically add appworks.min.js to the root of your 
+project. If you opt to use the bundled file make sure your script tag looks like this:
 
 `<script src="appworks.min.js"></script>`
 
@@ -60,6 +61,9 @@ function onFail(err) {
 
 camera.takePicture();
 ````
+
+<b>Note</b>: if you are using angularJS, ````$scope.$apply()```` calls will need to be made in your callbacks to ensure
+that scope variables and the DOM get updated.
 
 #### Auth
 The Auth plugin allows you to seamlessly authenticate against your backend. Useful for refreshing tokens and gaining
