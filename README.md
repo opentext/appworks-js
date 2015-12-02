@@ -1,8 +1,8 @@
-# appworksJS
+# appworks.js
 
-## What is appworksJS?
+## What is appworks.js?
 
-appworksJS is a javascript library for building feature rich, hybrid enterprise apps utilizing on device technology while leveraging the power of the OpenText EIM stack.
+appworks.js is a javascript library for building feature rich, hybrid enterprise apps utilizing on device technology while leveraging the power of the OpenText EIM stack.
 
 ## Installation
 
@@ -1250,7 +1250,7 @@ function onBatteryCritical(info) {
 ````
 
 ## Build
-To build the compressed, minified appworks.js source and the uncompressed, commented code, open up your terminal at the appworksjs directory and type in the following commands
+To build the compressed, minified appworks.js source and the uncompressed, commented code, open up your terminal at the appworks.js directory and type in the following commands
 
 `npm install`
 
