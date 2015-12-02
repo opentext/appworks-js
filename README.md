@@ -818,6 +818,30 @@ function disableNotifications() {
 The AWOfflineManager plugin allows you to work offline by managing an offline queue. This queue is meant to capture
 the user's intention, where it may be reconstructed when the device once again has network access.
 
+The constructor takes in an options object.
+
+````js
+var options = {
+    preserveEvents: true
+};
+
+var offlineManager = new Appworks.AWOfflineManager(options);
+````
+
+##### Methods:
+- defer
+- cancel
+- clear
+- networkStatus
+
+##### Properties:
+- online
+- offline
+
+If options.preserveEvents is set to true, then items will only be removed from the deferred queue when explicitly told
+to do so by calling cancel()
+
+
 #### AWCache
 The AWCache plugin allows you to temporarily cache data using the device local storage.
 

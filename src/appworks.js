@@ -399,33 +399,71 @@ var Appworks;
     Appworks.AWVibration = AWVibration;
     var AWOfflineManager = (function (_super) {
         __extends(AWOfflineManager, _super);
-        function AWOfflineManager() {
-            document.addEventListener('online', this.updateNetworkStatusToOnline);
-            document.addEventListener('online', this.updateNetworkStatusToOffline);
-            this.idCounter = 0;
+        function AWOfflineManager(options) {
+            var _this = this;
+            var queue;
             _super.call(this, function () { }, function () { });
-        }
-        AWOfflineManager.prototype.updateNetworkStatusToOnline = function () {
+            this.cacheKey = '__appworksjs.deferredQueue';
             this.cache = new AWCache();
-            this.online = true;
-            this.offline = false;
-            this.status = 'online';
+            this.options = options || { preserveEvents: false };
+            // process deferred queue when network status changes
+            document.addEventListener('online', function () {
+                _this.processDeferredQueue();
+            });
+            // load the deferred queue into memory
+            queue = this.cache.getItem(this.cacheKey);
+            if (queue) {
+                this.queue = JSON.parse(queue);
+            }
+            else {
+                this.queue = [];
+                this.saveQueue();
+            }
+            // process the deferred queue upon object instantiation if we are currently online
+            if (this.networkStatus().online) {
+                this.processDeferredQueue();
+            }
+        }
+        AWOfflineManager.prototype.saveQueue = function () {
+            this.cache.setItem(this.cacheKey, JSON.stringify(this.queue));
         };
-        AWOfflineManager.prototype.updateNetworkStatusToOffline = function () {
-            this.offline = true;
-            this.online = false;
-            this.status = 'offline';
+        AWOfflineManager.prototype.processDeferredQueue = function () {
+            var self = this;
+            console.info('appworks.js: processing deferred queue');
+            setTimeout(function () {
+                self.queue.forEach(function (deferred) {
+                    self.dispatchEvent(deferred);
+                });
+                if (!self.options.preserveEvents) {
+                    self.queue = [];
+                    self.saveQueue();
+                }
+            }, 5000);
+        };
+        AWOfflineManager.prototype.dispatchEvent = function (data) {
+            var event = new CustomEvent(data.event, { detail: data.args });
+            document.dispatchEvent(event);
         };
         AWOfflineManager.prototype.defer = function (eventName, args) {
-            var eventId = ++this.idCounter;
-            return eventId;
+            this.queue.push({
+                event: eventName,
+                args: JSON.stringify(args)
+            });
+            this.saveQueue();
+            return (this.queue.length - 1);
         };
-        AWOfflineManager.prototype.processQueue = function () {
-        };
-        AWOfflineManager.prototype.getQueue = function () {
+        AWOfflineManager.prototype.cancel = function (id) {
+            if (id > -1) {
+                this.queue.splice(id, 1);
+                this.saveQueue();
+            }
         };
         AWOfflineManager.prototype.networkStatus = function () {
-            return this.status;
+            return {
+                online: navigator.connection.type !== Connection.NONE,
+                offline: navigator.connection.type === Connection.NONE,
+                connection: navigator.connection
+            };
         };
         return AWOfflineManager;
     })(AWPlugin);

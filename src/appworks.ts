@@ -455,43 +455,88 @@ module Appworks {
         online: boolean;
         offline: boolean;
         cache: any;
-        idCounter: number;
+        queue: any[];
+        cacheKey: string;
+        options: any;
 
-        private updateNetworkStatusToOnline() {
-            this.cache = new AWCache();
-            this.online = true;
-            this.offline = false;
-            this.status = 'online';
+        private saveQueue() {
+            this.cache.setItem(this.cacheKey, JSON.stringify(this.queue));
         }
 
-        private updateNetworkStatusToOffline() {
-            this.offline = true;
-            this.online = false;
-            this.status = 'offline';
+        private processDeferredQueue() {
+            var self = this;
+
+            console.info('appworks.js: processing deferred queue');
+
+            setTimeout(function () {
+                self.queue.forEach(function (deferred) {
+                    self.dispatchEvent(deferred);
+                });
+                if (!self.options.preserveEvents) {
+                    self.queue = [];
+                    self.saveQueue();
+                }
+            }, 5000);
         }
 
-        constructor() {
-            document.addEventListener('online', this.updateNetworkStatusToOnline);
-            document.addEventListener('online', this.updateNetworkStatusToOffline);
-            this.idCounter = 0;
+        private dispatchEvent(data?: any) {
+            var event = new CustomEvent(data.event, {detail: data.args});
+            document.dispatchEvent(event);
+        }
+
+        constructor(options) {
+            var _this = this;
+
+            var queue;
+
             super(() => {}, () => {});
+
+            this.cacheKey = '__appworksjs.deferredQueue';
+            this.cache = new AWCache();
+            this.options = options || {preserveEvents: false};
+
+            // process deferred queue when network status changes
+            document.addEventListener('online', function () {
+                _this.processDeferredQueue();
+            });
+
+            // load the deferred queue into memory
+            queue = this.cache.getItem(this.cacheKey);
+            if (queue) {
+                this.queue = JSON.parse(queue);
+            } else {
+                this.queue = [];
+                this.saveQueue();
+            }
+
+            // process the deferred queue upon object instantiation if we are currently online
+            if (this.networkStatus().online) {
+                this.processDeferredQueue();
+            }
         }
 
         defer(eventName: string, args: any) {
-            var eventId = ++this.idCounter;
-            return eventId;
+            this.queue.push({
+                event: eventName,
+                args: JSON.stringify(args)
+            });
+            this.saveQueue();
+            return (this.queue.length - 1);
         }
 
-        processQueue() {
-
-        }
-
-        getQueue() {
-
+        cancel(id: number) {
+            if (id > -1) {
+                this.queue.splice(id, 1);
+                this.saveQueue();
+            }
         }
 
         networkStatus() {
-            return this.status;
+            return {
+                online: navigator.connection.type !== Connection.NONE,
+                offline: navigator.connection.type === Connection.NONE,
+                connection: navigator.connection
+            };
         }
     }
     export class AWCache extends AWPlugin {
