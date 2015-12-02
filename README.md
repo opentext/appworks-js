@@ -944,9 +944,13 @@ The AWCache plugin allows you to temporarily cache data using the device local s
 - getItem
 - clear
 
-All methods are synchronous. The constructor does not accept any arguments.
+All methods are synchronous. The constructor accepts an options object.
 ````js
-var cache = new Appworks.AWCache();
+var options = {
+    usePersistentStorage: true
+};
+
+var cache = new Appworks.AWCache(options);
 ````
 
 ###### setItem
@@ -982,6 +986,12 @@ cache.setItem('myKey', 1234);
 var item = cache.getItem('myKey');
 ````
 
+##### removeItem
+````ts
+removeItem(key: string)
+````
+remove an item from the cache. this method is synchronous.
+
 ###### clear
 ````ts
 clear()
@@ -1000,6 +1010,10 @@ cache.clear();
 // fails
 item = cache.getItem('myKey');
 ````
+
+#### options
+- usePersistentStorage: guarantees that json written to the cache does not get erased unless explicitly instructed
+ by calling ````removeItem````. default is ````false````.
 
 #### AWDevice
 The AWDevice plugin gives you information that describes the device's hardware and software.
