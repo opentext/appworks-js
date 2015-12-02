@@ -14,6 +14,7 @@
 /// <reference path="../typings/cordova/plugins/BatteryStatus.d.ts"/>
 
 declare var LocalFileSystem;
+
 abstract class AWPlugin {
     successHandler: (data?: any) => void;
     errorHandler: (data?: any) => void;
