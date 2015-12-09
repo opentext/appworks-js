@@ -772,9 +772,9 @@ Parameters:
 - handler: a callback function that will be passed a new notification in realtime once it reaches the client.
 - errorHandler: a function to get executed if there is an error in processing a notification
 
-##### getPushNotifications
+##### getNotifications
 ````ts
-getPushNotifications(handler: any, errorHandler?: any)
+getNotifications(handler: any, errorHandler?: any)
 ````
 get all notifications.
 
@@ -796,7 +796,7 @@ var notificationManager = new Appworks.AWNotificationManager();
 
 function getNotifications() {
     // get all notifications. does not care if realtime is enabled or disabled
-    notificationManager.getPushNotifications(function (notifications) {
+    notificationManager.getNotifications(function (notifications) {
         _notifications = notifications;
     });
 }
