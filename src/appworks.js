@@ -42,9 +42,24 @@ var Appworks;
             var _this = this;
             cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate');
         };
+        Auth.prototype.gateway = function (successHandler, errorHandler) {
+            cordova.exec(successHandler, errorHandler, 'AWAuth', 'gateway');
+        };
         return Auth;
     })(AWPlugin);
     Appworks.Auth = Auth;
+    var AWAppManager = (function (_super) {
+        __extends(AWAppManager, _super);
+        function AWAppManager() {
+            _super.apply(this, arguments);
+        }
+        AWAppManager.prototype.closeActiveApp = function () {
+            var _this = this;
+            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'closeActiveApp');
+        };
+        return AWAppManager;
+    })(AWPlugin);
+    Appworks.AWAppManager = AWAppManager;
     var AWCamera = (function (_super) {
         __extends(AWCamera, _super);
         function AWCamera() {

@@ -102,6 +102,43 @@ $('#click-me').click(function () {
     auth.authenticate();
 });
 ````
+
+###### gateway
+````
+gateway(successHandler: any, errorHandler?: any)
+````
+Returns the url of the gateway to the ````successHandler```` passed in.
+
+
+#### AWAppManager
+The AppManager plugin allows you to close the current app webview.
+
+##### Methods:
+
+###### closeActiveApp
+````
+closeActiveApp()
+````
+Closes the currently active app.
+
+##### Example:
+
+````js
+var appManager = new Appworks.AWAppManager(
+    function () {
+        // success
+    },
+    function (err) {
+        // could not complete authentication request
+        console.log(err);
+    }
+);
+    
+$('#click-me').click(function () {
+    appManager.closeActiveApp();
+});
+````
+
 #### Finder
 The Finder plugin allows you to browse and open files stored on the device inside of the OpenText Mobile container.
 Files browsing can be done directly inside of your app. Files can be opened in third party iOS apps installed on the

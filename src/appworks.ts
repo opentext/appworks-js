@@ -36,6 +36,14 @@ module Appworks {
         authenticate() {
             cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWAuth', 'authenticate');
         }
+        gateway(successHandler: any, errorHandler?: any) {
+            cordova.exec(successHandler, errorHandler, 'AWAuth', 'gateway');
+        }
+    }
+    export class AWAppManager extends AWPlugin {
+        closeActiveApp() {
+            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWAppManager', 'closeActiveApp');
+        }
     }
     export class AWCamera extends AWPlugin implements Camera {
         cleanup(onSuccess: () => void,
