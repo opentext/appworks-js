@@ -639,7 +639,7 @@ module Appworks {
             });
         }
 
-        constructor(options) {
+        constructor(options?: any) {
 
             super(() => {}, () => {});
 
