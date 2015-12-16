@@ -74,6 +74,20 @@ module Appworks {
             this.getPicture((() => this.successHandler)(), (() => this.errorHandler)(), options);
         }
     }
+    export class AWComponent extends AWPlugin {
+        open(successHandler: any, errorHandler?: any, args?: any[]) {
+            cordova.exec(successHandler, errorHandler, 'AWComponent', 'open', args);
+        }
+        list(successHandler: any, errorHandler?: any, args?: any[]) {
+            cordova.exec(successHandler, errorHandler, 'AWComponent', 'list', args);
+        }
+        check(successHandler: any, errorHandler?: any, args?: any[]) {
+            cordova.exec(successHandler, errorHandler, 'AWComponent', 'check', args);
+        }
+        close(successHandler: any, errorHandler?: any, args?: any[]) {
+            cordova.exec(successHandler, errorHandler, 'AWComponent', 'close', args);
+        }
+    }
     export class Finder extends AWPlugin {
         open(path: string, filename: string) {
             var args = [path, filename];

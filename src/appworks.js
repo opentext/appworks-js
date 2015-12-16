@@ -94,6 +94,26 @@ var Appworks;
         return AWCamera;
     })(AWPlugin);
     Appworks.AWCamera = AWCamera;
+    var AWComponent = (function (_super) {
+        __extends(AWComponent, _super);
+        function AWComponent() {
+            _super.apply(this, arguments);
+        }
+        AWComponent.prototype.open = function (successHandler, errorHandler, args) {
+            cordova.exec(successHandler, errorHandler, 'AWComponent', 'open', args);
+        };
+        AWComponent.prototype.list = function (successHandler, errorHandler, args) {
+            cordova.exec(successHandler, errorHandler, 'AWComponent', 'list', args);
+        };
+        AWComponent.prototype.check = function (successHandler, errorHandler, args) {
+            cordova.exec(successHandler, errorHandler, 'AWComponent', 'check', args);
+        };
+        AWComponent.prototype.close = function (successHandler, errorHandler, args) {
+            cordova.exec(successHandler, errorHandler, 'AWComponent', 'close', args);
+        };
+        return AWComponent;
+    })(AWPlugin);
+    Appworks.AWComponent = AWComponent;
     var Finder = (function (_super) {
         __extends(Finder, _super);
         function Finder() {

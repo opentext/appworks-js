@@ -139,6 +139,35 @@ $('#click-me').click(function () {
 });
 ````
 
+#### AWComponent
+Open, close, list, and check components
+
+##### Methods:
+
+###### open
+````
+open(successHandler: any, errorHandler?: any, args?: any[])
+````
+Open a component
+
+###### list
+````
+list(successHandler: any, errorHandler?: any, args?: any[])
+````
+Return a list of all installed components
+
+###### check
+````
+check(successHandler: any, errorHandler?: any, args?: any[])
+````
+Check if a component is installed
+
+###### close
+````
+close(successHandler: any, errorHandler?: any, args?: any[])
+````
+Close the current component
+
 #### Finder
 The Finder plugin allows you to browse and open files stored on the device inside of the OpenText Mobile container.
 Files browsing can be done directly inside of your app. Files can be opened in third party iOS apps installed on the
