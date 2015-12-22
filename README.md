@@ -366,6 +366,30 @@ function errorHandler(err) {
 }
 ````
 
+###### remove
+````
+remove(target: string)
+````
+- <b>target</b>: the name of the file to be removed. may be a directory structure. note this is not the nativeURL,
+but the same path that was supplied to ````store()````.
+
+##### Example:
+
+````js
+function removeFile() {
+    var storage = new Appworks.SecureStorage(success, errorHandler);
+    storage.remove('file.jpg');
+}
+
+function success() {
+    alert('success');
+}
+
+function errorHandler(err) {
+    console.log(err);
+}
+````
+
 ###### onprogress
 ````
 onprogress=
