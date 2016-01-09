@@ -192,6 +192,11 @@ var Appworks;
             var args = [target];
             cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'removeFile', args);
         };
+        SecureStorage.prototype.fileExistsAtPath = function (target) {
+            var _this = this;
+            var args = [target];
+            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'fileExistsAtPath', args);
+        };
         return SecureStorage;
     })(AWPlugin);
     Appworks.SecureStorage = SecureStorage;

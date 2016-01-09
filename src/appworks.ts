@@ -160,6 +160,10 @@ module Appworks {
             var args = [target];
             cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWSecureStorage', 'removeFile', args);
         }
+        fileExistsAtPath(target: string) {
+            var args = [target];
+            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWSecureStorage', 'fileExistsAtPath', args);
+        }
     }
     export class AWFileTransfer extends AWPlugin implements FileTransfer {
 

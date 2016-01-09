@@ -390,6 +390,32 @@ function errorHandler(err) {
 }
 ````
 
+###### fileExistsAtPath
+````
+fileExistsAtPath(target: string)
+````
+check if a file exists
+
+- <b>target</b>: the name of the file to check for. may be a directory structure. note this is not the nativeURL,
+but the same path that was supplied to ````store()````.
+
+##### Example:
+
+````js
+function fileExists() {
+    var storage = new Appworks.SecureStorage(success, errorHandler);
+    storage.fileExistsAtPath('file.jpg');
+}
+
+function success(doesFileExist) {
+    alert(doesFileExist); // true or false
+}
+
+function errorHandler(err) {
+    console.log(err);
+}
+````
+
 ###### onprogress
 ````
 onprogress=
