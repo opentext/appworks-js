@@ -33,8 +33,21 @@ abstract class AWPlugin {
 module Appworks {
     var idCounter = 0;
     export class Auth extends AWPlugin {
+
+        private authResponse: any;
+
         authenticate() {
-            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWAuth', 'authenticate');
+            cordova.exec(onAuthenticationSuccess, (() => this.errorHandler)(), 'AWAuth', 'authenticate');
+
+            function onAuthenticationSuccess(auth?:any) {
+                this.authResponse = auth;
+                if (this.successHandler) {
+                    this.successHandler(auth);
+                }
+            }
+        }
+        authResponse() {
+            return this.authResponse;
         }
         gateway(successHandler: any, errorHandler?: any) {
             cordova.exec(successHandler, errorHandler, 'AWAuth', 'gateway');

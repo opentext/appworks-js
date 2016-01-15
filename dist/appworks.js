@@ -40,7 +40,16 @@ var Appworks;
         }
         Auth.prototype.authenticate = function () {
             var _this = this;
-            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate');
+            cordova.exec(onAuthenticationSuccess, (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate');
+            function onAuthenticationSuccess(auth) {
+                this.authResponse = auth;
+                if (this.successHandler) {
+                    this.successHandler(auth);
+                }
+            }
+        };
+        Auth.prototype.authResponse = function () {
+            return this.authResponse;
         };
         Auth.prototype.gateway = function (successHandler, errorHandler) {
             cordova.exec(successHandler, errorHandler, 'AWAuth', 'gateway');
