@@ -37,12 +37,15 @@ module Appworks {
         private authResponse: any;
 
         authenticate() {
+
+            var successHandler = this.successHandler;
+
             cordova.exec(onAuthenticationSuccess, (() => this.errorHandler)(), 'AWAuth', 'authenticate');
 
             function onAuthenticationSuccess(auth?:any) {
                 this.authResponse = auth;
-                if (this.successHandler) {
-                    this.successHandler(auth);
+                if (successHandler) {
+                    successHandler(auth);
                 }
             }
         }
