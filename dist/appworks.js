@@ -40,11 +40,12 @@ var Appworks;
         }
         Auth.prototype.authenticate = function () {
             var _this = this;
+            var successHandler = this.successHandler;
             cordova.exec(onAuthenticationSuccess, (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate');
             function onAuthenticationSuccess(auth) {
                 this.authResponse = auth;
-                if (this.successHandler) {
-                    this.successHandler(auth);
+                if (successHandler) {
+                    successHandler(auth);
                 }
             }
         };
