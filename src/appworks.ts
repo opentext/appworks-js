@@ -46,7 +46,7 @@ module Appworks {
                 }
             }
         }
-        authResponse() {
+        getAuthResponse() {
             return this.authResponse;
         }
         gateway(successHandler: any, errorHandler?: any) {

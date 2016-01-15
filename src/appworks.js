@@ -48,7 +48,7 @@ var Appworks;
                 }
             }
         };
-        Auth.prototype.authResponse = function () {
+        Auth.prototype.getAuthResponse = function () {
             return this.authResponse;
         };
         Auth.prototype.gateway = function (successHandler, errorHandler) {
