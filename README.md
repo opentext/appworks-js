@@ -103,6 +103,38 @@ $('#click-me').click(function () {
 });
 ````
 
+###### getAuthResponse
+````
+getAuthResponse()
+````
+Returns the auth response to the callback registered upon creation of the instance without sending a reauthentication
+request.
+
+##### Example:
+
+````js
+var auth = new Appworks.Auth(
+    function (data) {
+        // got the response, now make backend api calls
+        var response = data.data;
+        $.ajax({
+            method: 'POST',
+            url: response.gatewayUrl + '/v1/content/nodes/1234/children',
+            headers: { otcsticket: response.addtl.otcsticket },
+            data: { foo: bar }
+        });
+    },
+    function (err) {
+        // could not complete authentication request
+        console.log(err);
+    }
+);
+    
+$('#click-me').click(function () {
+    auth.getAuthResponse();
+});
+````
+
 ###### gateway
 ````
 gateway(successHandler: any, errorHandler?: any)
