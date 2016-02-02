@@ -35,18 +35,42 @@ module Appworks {
     export class Auth extends AWPlugin {
 
         authenticate() {
-            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWAuth', 'authenticate');
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWAuth',
+                'authenticate',
+                []
+            );
         }
         getAuthResponse() {
-            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWAuth', 'authobject');
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWAuth',
+                'authobject',
+                []
+            );
         }
         gateway(successHandler: any, errorHandler?: any) {
-            cordova.exec(successHandler, errorHandler, 'AWAuth', 'gateway');
+            cordova.exec(
+                successHandler,
+                errorHandler,
+                'AWAuth',
+                'gateway',
+                []
+            );
         }
     }
     export class AWAppManager extends AWPlugin {
         closeActiveApp() {
-            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWAppManager', 'closeActiveApp');
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWAppManager',
+                'closeActiveApp',
+                []
+            );
         }
     }
     export class AWCamera extends AWPlugin implements Camera {
@@ -80,36 +104,90 @@ module Appworks {
     }
     export class AWComponent extends AWPlugin {
         open(successHandler: any, errorHandler?: any, args?: any[]) {
-            cordova.exec(successHandler, errorHandler, 'AWComponent', 'open', args);
+            cordova.exec(
+                successHandler,
+                errorHandler,
+                'AWComponent',
+                'open',
+                args || []
+            );
         }
         list(successHandler: any, errorHandler?: any, args?: any[]) {
-            cordova.exec(successHandler, errorHandler, 'AWComponent', 'list', args);
+            cordova.exec(
+                successHandler,
+                errorHandler,
+                'AWComponent',
+                'list',
+                args || []
+            );
         }
         check(successHandler: any, errorHandler?: any, args?: any[]) {
-            cordova.exec(successHandler, errorHandler, 'AWComponent', 'check', args);
+            cordova.exec(
+                successHandler,
+                errorHandler,
+                'AWComponent',
+                'check',
+                args || []
+            );
         }
         close(successHandler: any, errorHandler?: any, args?: any[]) {
-            cordova.exec(successHandler, errorHandler, 'AWComponent', 'close', args);
+            cordova.exec(
+                successHandler,
+                errorHandler,
+                'AWComponent',
+                'close',
+                args || []
+            );
         }
     }
     export class Finder extends AWPlugin {
         open(path: string, filename: string) {
             var args = [path, filename];
-            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWFinder', 'open', args);
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWFinder',
+                'open',
+                args
+            );
         }
         openDirect(filename: string) {
-            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWFinder', 'openDirect', [filename]);
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWFinder',
+                'openDirect',
+                [filename]
+            );
         }
         list(path: string) {
-            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWFinder', 'list', [path]);
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWFinder',
+                'list',
+                [path]
+            );
         }
     }
     export class QRReader extends AWPlugin {
         scan() {
-            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWQRCodeReader', 'scan');
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWQRCodeReader',
+                'scan',
+                []
+            );
         }
         rename() {
-            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWQRCodeReader', 'rename');
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWQRCodeReader',
+                'rename',
+                []
+            );
         }
     }
     export class SecureStorage extends AWPlugin {
@@ -158,15 +236,33 @@ module Appworks {
         }
         retrieve(filename: string, options?: any) {
             var args = [filename, options];
-            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWSecureStorage', 'retrieve', args);
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWSecureStorage',
+                'retrieve',
+                args
+            );
         }
         remove(target: string) {
             var args = [target];
-            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWSecureStorage', 'removeFile', args);
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWSecureStorage',
+                'removeFile',
+                args
+            );
         }
         fileExistsAtPath(target: string) {
             var args = [target];
-            cordova.exec((() => this.successHandler)(), (() => this.errorHandler)(), 'AWSecureStorage', 'fileExistsAtPath', args);
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWSecureStorage',
+                'fileExistsAtPath',
+                args
+            );
         }
     }
     export class AWFileTransfer extends AWPlugin implements FileTransfer {
@@ -202,7 +298,13 @@ module Appworks {
             }
 
             if (shared) {
-                cordova.exec(gotSharedContainerUrl, (() => this.errorHandler)(), 'AWSharedDocumentProvider', 'container');
+                cordova.exec(
+                    gotSharedContainerUrl,
+                    (() => this.errorHandler)(),
+                    'AWSharedDocumentProvider',
+                    'container',
+                    []
+                );
             } else {
                 this.fileTransfer.download(
                     encodeURI(url),
@@ -237,7 +339,13 @@ module Appworks {
             }
 
             if (shared) {
-                cordova.exec(gotSharedContainerUrl, (() => this.errorHandler)(), 'AWSharedDocumentProvider', 'container');
+                cordova.exec(
+                    gotSharedContainerUrl,
+                    (() => this.errorHandler)(),
+                    'AWSharedDocumentProvider',
+                    'container',
+                    []
+                );
             } else {
                 this.fileTransfer.upload(
                     cordova.file.documentsDirectory + '/' + source,

@@ -40,14 +40,14 @@ var Appworks;
         }
         Auth.prototype.authenticate = function () {
             var _this = this;
-            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate');
+            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate', []);
         };
         Auth.prototype.getAuthResponse = function () {
             var _this = this;
-            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authobject');
+            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authobject', []);
         };
         Auth.prototype.gateway = function (successHandler, errorHandler) {
-            cordova.exec(successHandler, errorHandler, 'AWAuth', 'gateway');
+            cordova.exec(successHandler, errorHandler, 'AWAuth', 'gateway', []);
         };
         return Auth;
     })(AWPlugin);
@@ -59,7 +59,7 @@ var Appworks;
         }
         AWAppManager.prototype.closeActiveApp = function () {
             var _this = this;
-            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'closeActiveApp');
+            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'closeActiveApp', []);
         };
         return AWAppManager;
     })(AWPlugin);
@@ -104,16 +104,16 @@ var Appworks;
             _super.apply(this, arguments);
         }
         AWComponent.prototype.open = function (successHandler, errorHandler, args) {
-            cordova.exec(successHandler, errorHandler, 'AWComponent', 'open', args);
+            cordova.exec(successHandler, errorHandler, 'AWComponent', 'open', args || []);
         };
         AWComponent.prototype.list = function (successHandler, errorHandler, args) {
-            cordova.exec(successHandler, errorHandler, 'AWComponent', 'list', args);
+            cordova.exec(successHandler, errorHandler, 'AWComponent', 'list', args || []);
         };
         AWComponent.prototype.check = function (successHandler, errorHandler, args) {
-            cordova.exec(successHandler, errorHandler, 'AWComponent', 'check', args);
+            cordova.exec(successHandler, errorHandler, 'AWComponent', 'check', args || []);
         };
         AWComponent.prototype.close = function (successHandler, errorHandler, args) {
-            cordova.exec(successHandler, errorHandler, 'AWComponent', 'close', args);
+            cordova.exec(successHandler, errorHandler, 'AWComponent', 'close', args || []);
         };
         return AWComponent;
     })(AWPlugin);
@@ -146,11 +146,11 @@ var Appworks;
         }
         QRReader.prototype.scan = function () {
             var _this = this;
-            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'scan');
+            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'scan', []);
         };
         QRReader.prototype.rename = function () {
             var _this = this;
-            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'rename');
+            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'rename', []);
         };
         return QRReader;
     })(AWPlugin);
@@ -222,7 +222,7 @@ var Appworks;
                 new FileTransfer().download(encodeURI(url), containerUrl + '/' + target, successHandler, errorHandler, false, options);
             }
             if (shared) {
-                cordova.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), 'AWSharedDocumentProvider', 'container');
+                cordova.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), 'AWSharedDocumentProvider', 'container', []);
             }
             else {
                 this.fileTransfer.download(encodeURI(url), cordova.file.documentsDirectory + '/' + target, successHandler, errorHandler, false, options);
@@ -240,7 +240,7 @@ var Appworks;
                 new FileTransfer().upload(containerUrl + '/' + source, encodeURI(url), successHandler, errorHandler, options, false);
             }
             if (shared) {
-                cordova.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), 'AWSharedDocumentProvider', 'container');
+                cordova.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), 'AWSharedDocumentProvider', 'container', []);
             }
             else {
                 this.fileTransfer.upload(cordova.file.documentsDirectory + '/' + source, encodeURI(url), successHandler, errorHandler, options, false);
