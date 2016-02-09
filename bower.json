@@ -12,7 +12,7 @@
     "javascript"
   ],
   "license": "Apache 2.0",
-  "homepage": "http://awg-docs.appworks.dev",
+  "homepage": "https://developer.opentext.com",
   "ignore": [
     "**/.*",
     "node_modules",
