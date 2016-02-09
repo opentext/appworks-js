@@ -11,7 +11,7 @@
     "appworks",
     "javascript"
   ],
-  "license": "C",
+  "license": "Apache 2.0",
   "homepage": "http://awg-docs.appworks.dev",
   "ignore": [
     "**/.*",
