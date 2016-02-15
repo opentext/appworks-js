@@ -1,49 +1,15 @@
-// Copyright 2015-2016 Open Text
-//
-// Licensed under the Apache License, Version 2.0 (the "License”);
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/// <reference path="../typings/cordova/cordova.d.ts"/>
-/// <reference path="../typings/cordova/plugins/Camera.d.ts"/>
-/// <reference path="../typings/cordova/plugins/Contacts.d.ts"/>
-/// <reference path="../typings/cordova/plugins/Device.d.ts"/>
-/// <reference path="../typings/cordova/plugins/DeviceMotion.d.ts"/>
-/// <reference path="../typings/cordova/plugins/DeviceOrientation.d.ts"/>
-/// <reference path="../typings/cordova/plugins/Dialogs.d.ts"/>
-/// <reference path="../typings/cordova/plugins/Media.d.ts"/>
-/// <reference path="../typings/cordova/plugins/MediaCapture.d.ts"/>
-/// <reference path="../typings/cordova/plugins/NetworkInformation.d.ts"/>
-/// <reference path="../typings/cordova/plugins/Vibration.d.ts"/>
-/// <reference path="../typings/cordova/plugins/FileTransfer.d.ts"/>
-/// <reference path="../typings/cordova/plugins/FileSystem.d.ts"/>
-/// <reference path="../typings/cordova/plugins/BatteryStatus.d.ts"/>
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var AWPlugin = (function () {
-    /**
-     * Base plugin class. Constructor takes in a success function and error function to be executed upon
-     * return from call to native layer
-     * @param successHandler - the function to be executed when the native call succeeds. passes an object as arg
-     * @param errorHandler - the function to be executed when the native call fails. passes an object as arg.
-     */
     function AWPlugin(successHandler, errorHandler) {
         this.successHandler = successHandler;
         this.errorHandler = errorHandler;
     }
     return AWPlugin;
-})();
+}());
 var Appworks;
 (function (Appworks) {
     var idCounter = 0;
@@ -64,7 +30,7 @@ var Appworks;
             cordova.exec(successHandler, errorHandler, 'AWAuth', 'gateway', []);
         };
         return Auth;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.Auth = Auth;
     var AWAppManager = (function (_super) {
         __extends(AWAppManager, _super);
@@ -76,7 +42,7 @@ var Appworks;
             cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'closeActiveApp', []);
         };
         return AWAppManager;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWAppManager = AWAppManager;
     var AWCamera = (function (_super) {
         __extends(AWCamera, _super);
@@ -110,7 +76,7 @@ var Appworks;
             this.getPicture((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
         };
         return AWCamera;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWCamera = AWCamera;
     var AWComponent = (function (_super) {
         __extends(AWComponent, _super);
@@ -130,7 +96,7 @@ var Appworks;
             cordova.exec(successHandler, errorHandler, 'AWComponent', 'close', args || []);
         };
         return AWComponent;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWComponent = AWComponent;
     var Finder = (function (_super) {
         __extends(Finder, _super);
@@ -151,8 +117,25 @@ var Appworks;
             cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'list', [path]);
         };
         return Finder;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.Finder = Finder;
+    var Menu = (function (_super) {
+        __extends(Menu, _super);
+        function Menu() {
+            _super.apply(this, arguments);
+        }
+        Menu.prototype.push = function (items) {
+            var _this = this;
+            var args = [items];
+            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWMenu', 'push', args);
+        };
+        Menu.prototype.openListener = function (listener) {
+            var _this = this;
+            cordova.exec(listener, (function () { return _this.errorHandler; })(), 'AWMenu', 'receive', []);
+        };
+        return Menu;
+    }(AWPlugin));
+    Appworks.Menu = Menu;
     var QRReader = (function (_super) {
         __extends(QRReader, _super);
         function QRReader() {
@@ -167,7 +150,7 @@ var Appworks;
             cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'rename', []);
         };
         return QRReader;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.QRReader = QRReader;
     var SecureStorage = (function (_super) {
         __extends(SecureStorage, _super);
@@ -216,7 +199,7 @@ var Appworks;
             cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'fileExistsAtPath', args);
         };
         return SecureStorage;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.SecureStorage = SecureStorage;
     var AWFileTransfer = (function (_super) {
         __extends(AWFileTransfer, _super);
@@ -262,7 +245,7 @@ var Appworks;
             return this.fileTransfer;
         };
         return AWFileTransfer;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWFileTransfer = AWFileTransfer;
     var AWContacts = (function (_super) {
         __extends(AWContacts, _super);
@@ -282,7 +265,7 @@ var Appworks;
             navigator.contacts.pickContact((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })());
         };
         return AWContacts;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWContacts = AWContacts;
     var AWDevice = (function (_super) {
         __extends(AWDevice, _super);
@@ -296,7 +279,7 @@ var Appworks;
             _super.call(this, function () { }, function () { });
         }
         return AWDevice;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWDevice = AWDevice;
     var AWAccelerometer = (function (_super) {
         __extends(AWAccelerometer, _super);
@@ -315,7 +298,7 @@ var Appworks;
             navigator.accelerometer.clearWatch(watchId);
         };
         return AWAccelerometer;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWAccelerometer = AWAccelerometer;
     var AWCompass = (function (_super) {
         __extends(AWCompass, _super);
@@ -334,7 +317,7 @@ var Appworks;
             navigator.compass.clearWatch(watchId);
         };
         return AWCompass;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWCompass = AWCompass;
     var AWLocation = (function (_super) {
         __extends(AWLocation, _super);
@@ -353,7 +336,7 @@ var Appworks;
             navigator.geolocation.clearWatch(watchId);
         };
         return AWLocation;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWLocation = AWLocation;
     var AWMedia = (function (_super) {
         __extends(AWMedia, _super);
@@ -395,7 +378,7 @@ var Appworks;
             return this.media.stopRecord();
         };
         return AWMedia;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWMedia = AWMedia;
     var AWMediaCapture = (function (_super) {
         __extends(AWMediaCapture, _super);
@@ -418,7 +401,7 @@ var Appworks;
             navigator.device.capture.captureVideo((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
         };
         return AWMediaCapture;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWMediaCapture = AWMediaCapture;
     var AWNotificationManager = (function (_super) {
         __extends(AWNotificationManager, _super);
@@ -447,7 +430,7 @@ var Appworks;
             cordova.exec(handler, errorHandler, 'AWNotificationManager', 'getPushNotifications', []);
         };
         return AWNotificationManager;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWNotificationManager = AWNotificationManager;
     var AWVibration = (function (_super) {
         __extends(AWVibration, _super);
@@ -458,7 +441,7 @@ var Appworks;
             return navigator.vibrate(time);
         };
         return AWVibration;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWVibration = AWVibration;
     var AWOfflineManager = (function (_super) {
         __extends(AWOfflineManager, _super);
@@ -469,11 +452,9 @@ var Appworks;
             this.cacheKey = '__appworksjs.deferredQueue';
             this.cache = new AWCache();
             this.options = options || { preserveEvents: false };
-            // process deferred queue when network status changes
             document.addEventListener('online', function () {
                 _this.processDeferredQueue();
             });
-            // load the deferred queue into memory
             queue = this.cache.getItem(this.cacheKey);
             if (queue) {
                 this.queue = JSON.parse(queue);
@@ -482,7 +463,6 @@ var Appworks;
                 this.queue = [];
                 this.saveQueue();
             }
-            // process the deferred queue upon object instantiation if we are currently online
             if (this.networkStatus().online) {
                 this.processDeferredQueue();
             }
@@ -529,7 +509,7 @@ var Appworks;
             };
         };
         return AWOfflineManager;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWOfflineManager = AWOfflineManager;
     var AWCache = (function (_super) {
         __extends(AWCache, _super);
@@ -635,7 +615,6 @@ var Appworks;
             return result;
         };
         return AWCache;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWCache = AWCache;
 })(Appworks || (Appworks = {}));
-//# sourceMappingURL=appworks.js.map

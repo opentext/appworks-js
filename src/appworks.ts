@@ -184,6 +184,27 @@ module Appworks {
             );
         }
     }
+    export class Menu extends AWPlugin {
+        push(items: any) {
+            var args = [items];
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWMenu',
+                'push',
+                args
+            );
+        }
+        openListener(listener: any) {
+            cordova.exec(
+                listener,
+                (() => this.errorHandler)(),
+                'AWMenu',
+                'receive',
+                []
+            );
+        }
+    }
     export class QRReader extends AWPlugin {
         scan() {
             cordova.exec(
