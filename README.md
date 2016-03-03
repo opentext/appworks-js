@@ -909,6 +909,8 @@ var notificationManager = new Appworks.AWNotificationManager();
 - enablePushNotifications
 - disablePushNotifications
 - getNotifications
+- openListener
+- getOpeningNotification
 
 ##### enablePushNotifications
 ````ts
@@ -964,6 +966,28 @@ function disableNotifications() {
 }
 ````
 
+
+##### getOpeningNotification
+````ts
+getOpeningNotification(handler: any, errorHandler?: any)
+````
+Obtain the data of the notification used to open the app.
+
+Parameters:
+- handler: a callback function that will be passed the opening notification when the app is opening via a notification tap.
+- errorHandler: a function to get executed if there is no opening notification
+
+
+##### openListener
+````ts
+openListener(handler: any)
+````
+Create a listener which will receive notification data which can enter your app by tapping on a native notification when your app is running, or by tapping on a notification in the activity screen, or by tapping on a notification in the app notification screen.
+
+This is different to push notifications as they require the user to tap the notification rather than automatically enter your app when it is received by the device/runtime.
+
+Parameters:
+- handler: a callback function that will be passed the notifications data.
 
 
 #### AWOfflineManager
