@@ -938,6 +938,28 @@ disablePushNotifications()
 ````
 turn off realtime notifications.
 
+##### getOpeningNotification
+````ts
+getOpeningNotification(handler: any, errorHandler?: any)
+````
+Obtain the data of the notification used to open the app.
+
+Parameters:
+- handler: a callback function that will be passed the opening notification when the app is opening via a notification tap.
+- errorHandler: a function to get executed if there is no opening notification
+
+##### openListener
+````ts
+openListener(handler: any)
+````
+Create a listener which will receive notification data which can enter your app by tapping on a native notification when your app is running, or by tapping on a notification in the activity screen, or by tapping on a notification in the app notification screen.
+
+This is different to push notifications as they require the user to tap the notification rather than automatically enter your app when it is received by the device/runtime.
+
+Parameters:
+- handler: a callback function that will be passed the notifications data.
+
+
 ##### Example:
 
 ````js
@@ -964,30 +986,30 @@ function disableNotifications() {
     // turn off realtime notifications
     notificationManager.disablePushNotifications();
 }
+
+function openListenter() {
+    // register a callback to handle manually activated notifications
+    notificationManager.openListener(function (notification) {
+        // manual notifications will appear here
+        console.log(notification);
+        alert(JSON.stringify(notification);
+    });
+}
+
+function getOpeningNotification() {
+    // register a callback to handle opening notification
+    notificationManager.getOpeningNotification(function (notification) {
+        // opening notifications will appear here
+        console.log(notification);
+        alert(JSON.stringify(notification);
+    }
+    , function (error) {
+        // opening notifications error appear here
+        console.log(error);
+    });
+}
+
 ````
-
-
-##### getOpeningNotification
-````ts
-getOpeningNotification(handler: any, errorHandler?: any)
-````
-Obtain the data of the notification used to open the app.
-
-Parameters:
-- handler: a callback function that will be passed the opening notification when the app is opening via a notification tap.
-- errorHandler: a function to get executed if there is no opening notification
-
-
-##### openListener
-````ts
-openListener(handler: any)
-````
-Create a listener which will receive notification data which can enter your app by tapping on a native notification when your app is running, or by tapping on a notification in the activity screen, or by tapping on a notification in the app notification screen.
-
-This is different to push notifications as they require the user to tap the notification rather than automatically enter your app when it is received by the device/runtime.
-
-Parameters:
-- handler: a callback function that will be passed the notifications data.
 
 
 #### AWOfflineManager
