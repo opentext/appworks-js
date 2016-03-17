@@ -170,6 +170,27 @@ module Appworks {
             );
         }
     }
+    export class AWHeaderBar extends AWPlugin {
+        setHeader(options: any) {
+            var args = [options];
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWHeaderBar',
+                'setHeader',
+                args
+            );
+        }
+        getHeader() {
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWHeaderBar',
+                'getHeader',
+                []
+            );
+        }
+    }
     export class QRReader extends AWPlugin {
         scan() {
             cordova.exec(

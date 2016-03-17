@@ -266,6 +266,67 @@ var listDirectory = function (path) {
 listDirectory();
 ````
 
+#### AWHeaderBar
+The AWHeaderBar plugin allows you to hide or show the client header bar,
+update the text, and/or hide or show a back button.
+
+##### Methods:
+
+###### setHeader
+````
+setHeader(options: any)
+````
+update the header bar with options
+- <b>options</b>: an object with properties to update the header bar with
+
+###### getHeader
+````
+getHeader()
+````
+get the current configuration of the header
+
+##### Example:
+````js
+var setHeader = function () {
+    var header = new Appworks.AWHeaderBar(headerWasSet, failed),
+
+    function headerWasSet(config) {
+        // returns an object containing the current header bar configuration
+        console.log(config);
+        // just to demonstrate a callback
+        getHeader();
+    }
+    
+    function failed(err) {
+        console.log(err);
+    }
+
+    header.setHeader({
+        title: 'My New Header Title',
+        visible: true,
+        backButtonVisible: true
+    });
+};
+
+var getHeader = function () {
+    var header = new Appworks.AWHeaderBar(gotHeader, failed);
+
+    function gotHeader(header) {
+        // returns an object containing the current header bar configuration
+        console.log(header);
+    }
+    
+    function failed(err) {
+        console.log(err);
+    }
+
+    header.getHeader();
+};
+
+// update the header bar
+setHeader();
+````
+
 #### QRReader
 The QRReader plugin allows you to scan a QR code using the device camera.
 

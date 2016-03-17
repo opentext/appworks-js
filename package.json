@@ -1,6 +1,6 @@
 {
   "name": "appworks-js",
-  "version": "16.0.0b",
+  "version": "16.0.0",
   "description": "",
   "main": "appworks.js",
   "dependencies": {

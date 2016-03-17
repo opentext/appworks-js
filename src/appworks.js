@@ -139,6 +139,23 @@ var Appworks;
         return Finder;
     })(AWPlugin);
     Appworks.Finder = Finder;
+    var AWHeaderBar = (function (_super) {
+        __extends(AWHeaderBar, _super);
+        function AWHeaderBar() {
+            _super.apply(this, arguments);
+        }
+        AWHeaderBar.prototype.setHeader = function (options) {
+            var _this = this;
+            var args = [options];
+            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeader', args);
+        };
+        AWHeaderBar.prototype.getHeader = function () {
+            var _this = this;
+            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'getHeader', []);
+        };
+        return AWHeaderBar;
+    })(AWPlugin);
+    Appworks.AWHeaderBar = AWHeaderBar;
     var QRReader = (function (_super) {
         __extends(QRReader, _super);
         function QRReader() {
