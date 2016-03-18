@@ -274,10 +274,12 @@ update the text, and/or hide or show a back button.
 
 ###### setHeader
 ````
-setHeader(options: any)
+setHeader(title: string, back: any)
 ````
 update the header bar with options
-- <b>options</b>: an object with properties to update the header bar with
+- <b>title</b>: the title in the header bar
+- <b>back</b>: a back action
+
 
 ###### getHeader
 ````
@@ -301,11 +303,7 @@ var setHeader = function () {
         console.log(err);
     }
 
-    header.setHeader({
-        title: 'My New Header Title',
-        visible: true,
-        backButtonVisible: true
-    });
+    header.setHeader('My New Header Title');
 };
 
 var getHeader = function () {
