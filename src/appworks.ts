@@ -637,6 +637,24 @@ module Appworks {
                 []
             );
         }
+        getOpeningNotification(handler, errorHandler?: any) {
+            cordova.exec(
+                handler,
+                errorHandler,
+                'AWNotificationManager',
+                'getOpeningNotification',
+                []
+            );
+        }
+        openListener(handler: any) {
+            cordova.exec(
+                handler,
+                null,
+                'AWNotificationManager',
+                'openListener',
+                []
+            );
+        }
     }
     export class AWVibration extends AWPlugin {
 
