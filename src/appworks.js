@@ -479,6 +479,12 @@ var Appworks;
         AWNotificationManager.prototype.getNotifications = function (handler, errorHandler) {
             cordova.exec(handler, errorHandler, 'AWNotificationManager', 'getPushNotifications', []);
         };
+        AWNotificationManager.prototype.getOpeningNotification = function (handler, errorHandler) {
+            cordova.exec(handler, errorHandler, 'AWNotificationManager', 'getOpeningNotification', []);
+        };
+        AWNotificationManager.prototype.openListener = function (handler) {
+            cordova.exec(handler, null, 'AWNotificationManager', 'openListener', []);
+        };
         return AWNotificationManager;
     })(AWPlugin);
     Appworks.AWNotificationManager = AWNotificationManager;
