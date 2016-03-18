@@ -42,7 +42,7 @@ var AWPlugin = (function () {
         this.errorHandler = errorHandler;
     }
     return AWPlugin;
-})();
+}());
 var Appworks;
 (function (Appworks) {
     var idCounter = 0;
@@ -63,7 +63,7 @@ var Appworks;
             cordova.exec(successHandler, errorHandler, 'AWAuth', 'gateway', []);
         };
         return Auth;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.Auth = Auth;
     var AWAppManager = (function (_super) {
         __extends(AWAppManager, _super);
@@ -75,7 +75,7 @@ var Appworks;
             cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'closeActiveApp', []);
         };
         return AWAppManager;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWAppManager = AWAppManager;
     var AWCamera = (function (_super) {
         __extends(AWCamera, _super);
@@ -109,7 +109,7 @@ var Appworks;
             this.getPicture((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
         };
         return AWCamera;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWCamera = AWCamera;
     var AWComponent = (function (_super) {
         __extends(AWComponent, _super);
@@ -129,7 +129,7 @@ var Appworks;
             cordova.exec(successHandler, errorHandler, 'AWComponent', 'close', args || []);
         };
         return AWComponent;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWComponent = AWComponent;
     var Finder = (function (_super) {
         __extends(Finder, _super);
@@ -150,16 +150,16 @@ var Appworks;
             cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'list', [path]);
         };
         return Finder;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.Finder = Finder;
     var AWHeaderBar = (function (_super) {
         __extends(AWHeaderBar, _super);
         function AWHeaderBar() {
             _super.apply(this, arguments);
         }
-        AWHeaderBar.prototype.setHeader = function (options) {
+        AWHeaderBar.prototype.setHeader = function (title, back) {
             var _this = this;
-            var args = [options];
+            var args = [title, back];
             cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeader', args);
         };
         AWHeaderBar.prototype.getHeader = function () {
@@ -167,7 +167,7 @@ var Appworks;
             cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'getHeader', []);
         };
         return AWHeaderBar;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWHeaderBar = AWHeaderBar;
     var Menu = (function (_super) {
         __extends(Menu, _super);
@@ -184,7 +184,7 @@ var Appworks;
             cordova.exec(listener, (function () { return _this.errorHandler; })(), 'AWMenu', 'receive', []);
         };
         return Menu;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.Menu = Menu;
     var QRReader = (function (_super) {
         __extends(QRReader, _super);
@@ -200,14 +200,14 @@ var Appworks;
             cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'rename', []);
         };
         return QRReader;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.QRReader = QRReader;
     var SecureStorage = (function (_super) {
         __extends(SecureStorage, _super);
         function SecureStorage(successHandler, errorHandler) {
+            _super.call(this, successHandler, errorHandler);
             this.seqNo = ++idCounter;
             this.onprogress = null;
-            _super.call(this, successHandler, errorHandler);
         }
         SecureStorage.prototype.store = function (url, target, options) {
             var _this = this;
@@ -249,14 +249,14 @@ var Appworks;
             cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'fileExistsAtPath', args);
         };
         return SecureStorage;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.SecureStorage = SecureStorage;
     var AWFileTransfer = (function (_super) {
         __extends(AWFileTransfer, _super);
         function AWFileTransfer(successHandler, errorHandler) {
+            _super.call(this, successHandler, errorHandler);
             this.fileTransfer = new FileTransfer();
             this.onprogress = null;
-            _super.call(this, successHandler, errorHandler);
         }
         AWFileTransfer.prototype.abort = function () {
             this.fileTransfer.abort();
@@ -295,7 +295,7 @@ var Appworks;
             return this.fileTransfer;
         };
         return AWFileTransfer;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWFileTransfer = AWFileTransfer;
     var AWContacts = (function (_super) {
         __extends(AWContacts, _super);
@@ -315,21 +315,21 @@ var Appworks;
             navigator.contacts.pickContact((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })());
         };
         return AWContacts;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWContacts = AWContacts;
     var AWDevice = (function (_super) {
         __extends(AWDevice, _super);
         function AWDevice() {
+            _super.call(this, function () { }, function () { });
             this.cordova = device.cordova;
             this.model = device.model;
             this.platform = device.platform;
             this.uuid = device.uuid;
             this.version = device.version;
             this.manufacturer = device.manufacturer;
-            _super.call(this, function () { }, function () { });
         }
         return AWDevice;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWDevice = AWDevice;
     var AWAccelerometer = (function (_super) {
         __extends(AWAccelerometer, _super);
@@ -348,7 +348,7 @@ var Appworks;
             navigator.accelerometer.clearWatch(watchId);
         };
         return AWAccelerometer;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWAccelerometer = AWAccelerometer;
     var AWCompass = (function (_super) {
         __extends(AWCompass, _super);
@@ -367,7 +367,7 @@ var Appworks;
             navigator.compass.clearWatch(watchId);
         };
         return AWCompass;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWCompass = AWCompass;
     var AWLocation = (function (_super) {
         __extends(AWLocation, _super);
@@ -386,16 +386,16 @@ var Appworks;
             navigator.geolocation.clearWatch(watchId);
         };
         return AWLocation;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWLocation = AWLocation;
     var AWMedia = (function (_super) {
         __extends(AWMedia, _super);
         function AWMedia(src, successHandler, errorHandler, statusChangeHandler) {
+            _super.call(this, successHandler, errorHandler);
             this.media = new Media(src, successHandler, errorHandler, statusChangeHandler);
             this.src = src;
             this.position = this.media.position;
             this.duration = this.media.duration;
-            _super.call(this, successHandler, errorHandler);
         }
         AWMedia.prototype.getCurrentPosition = function (successHandler, errorHandler) {
             return this.media.getCurrentPosition(successHandler, errorHandler);
@@ -428,15 +428,15 @@ var Appworks;
             return this.media.stopRecord();
         };
         return AWMedia;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWMedia = AWMedia;
     var AWMediaCapture = (function (_super) {
         __extends(AWMediaCapture, _super);
         function AWMediaCapture(successHandler, errorHandler) {
+            _super.call(this, successHandler, errorHandler);
             this.supportedAudioModes = navigator.device.capture.supportedAudioModes;
             this.supportedImageModes = navigator.device.capture.supportedImageModes;
             this.supportedVideoModes = navigator.device.capture.supportedVideoModes;
-            _super.call(this, successHandler, errorHandler);
         }
         AWMediaCapture.prototype.captureAudio = function (options) {
             var _this = this;
@@ -451,7 +451,7 @@ var Appworks;
             navigator.device.capture.captureVideo((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
         };
         return AWMediaCapture;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWMediaCapture = AWMediaCapture;
     var AWNotificationManager = (function (_super) {
         __extends(AWNotificationManager, _super);
@@ -486,7 +486,7 @@ var Appworks;
             cordova.exec(handler, null, 'AWNotificationManager', 'openListener', []);
         };
         return AWNotificationManager;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWNotificationManager = AWNotificationManager;
     var AWVibration = (function (_super) {
         __extends(AWVibration, _super);
@@ -497,14 +497,14 @@ var Appworks;
             return navigator.vibrate(time);
         };
         return AWVibration;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWVibration = AWVibration;
     var AWOfflineManager = (function (_super) {
         __extends(AWOfflineManager, _super);
         function AWOfflineManager(options) {
+            _super.call(this, function () { }, function () { });
             var _this = this;
             var queue;
-            _super.call(this, function () { }, function () { });
             this.cacheKey = '__appworksjs.deferredQueue';
             this.cache = new AWCache();
             this.options = options || { preserveEvents: false };
@@ -568,7 +568,7 @@ var Appworks;
             };
         };
         return AWOfflineManager;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWOfflineManager = AWOfflineManager;
     var AWCache = (function (_super) {
         __extends(AWCache, _super);
@@ -674,7 +674,7 @@ var Appworks;
             return result;
         };
         return AWCache;
-    })(AWPlugin);
+    }(AWPlugin));
     Appworks.AWCache = AWCache;
 })(Appworks || (Appworks = {}));
 //# sourceMappingURL=appworks.js.map

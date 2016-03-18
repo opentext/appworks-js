@@ -185,8 +185,8 @@ module Appworks {
         }
     }
     export class AWHeaderBar extends AWPlugin {
-        setHeader(options:any) {
-            var args = [options];
+        setHeader(title:string, back: any) {
+            var args = [title, back];
             cordova.exec(
                 (() => this.successHandler)(),
                 (() => this.errorHandler)(),
@@ -253,9 +253,9 @@ module Appworks {
         onprogress: any;
 
         constructor(successHandler: any, errorHandler?: any) {
+            super(successHandler, errorHandler);
             this.seqNo = ++idCounter;
             this.onprogress = null;
-            super(successHandler, errorHandler);
         }
 
         store(url: string, target: string, options?: any) {
@@ -328,9 +328,9 @@ module Appworks {
         onprogress: any;
 
         constructor(successHandler: any, errorHandler?: any) {
+            super(successHandler, errorHandler);
             this.fileTransfer = new FileTransfer();
             this.onprogress = null;
-            super(successHandler, errorHandler);
         }
 
         abort() {
@@ -447,13 +447,13 @@ module Appworks {
         manufacturer: any;
 
         constructor() {
+            super(() => {}, () => {});
             this.cordova = device.cordova;
             this.model = device.model;
             this.platform = device.platform;
             this.uuid = device.uuid;
             this.version = device.version;
             this.manufacturer = device.manufacturer;
-            super(() => {}, () => {});
         }
     }
     export class AWAccelerometer extends AWPlugin implements Accelerometer {
@@ -519,11 +519,11 @@ module Appworks {
         duration: number;
 
         constructor(src: string, successHandler: any, errorHandler?: any, statusChangeHandler?: any) {
+            super(successHandler, errorHandler);
             this.media = new Media(src, successHandler, errorHandler, statusChangeHandler);
             this.src = src;
             this.position = this.media.position;
             this.duration = this.media.duration;
-            super(successHandler, errorHandler);
         }
 
         getCurrentPosition(successHandler: any, errorHandler?: any) {
@@ -564,10 +564,10 @@ module Appworks {
         supportedVideoModes: any;
 
         constructor(successHandler: any, errorHandler?: any) {
+            super(successHandler, errorHandler);
             this.supportedAudioModes = navigator.device.capture.supportedAudioModes;
             this.supportedImageModes = navigator.device.capture.supportedImageModes;
             this.supportedVideoModes = navigator.device.capture.supportedVideoModes;
-            super(successHandler, errorHandler);
         }
 
         captureAudio(options?: any) {
@@ -703,11 +703,12 @@ module Appworks {
         }
 
         constructor(options) {
+            super(() => {}, () => {});
+
             var _this = this;
 
             var queue;
 
-            super(() => {}, () => {});
 
             this.cacheKey = '__appworksjs.deferredQueue';
             this.cache = new AWCache();
