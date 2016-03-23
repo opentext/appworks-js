@@ -274,11 +274,12 @@ update the text, and/or hide or show a back button.
 
 ###### setHeader
 ````
-setHeader(title: string, back: any)
+setHeader(config: any)
 ````
 update the header bar with options
-- <b>title</b>: the title in the header bar
-- <b>back</b>: a back action
+- <b>config</b>: a configuration object with the following parameters
+- title: the title of the header
+- backButtonVisible: boolean flag to hide/show the back button
 
 
 ###### getHeader

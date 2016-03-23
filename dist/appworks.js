@@ -157,9 +157,9 @@ var Appworks;
         function AWHeaderBar() {
             _super.apply(this, arguments);
         }
-        AWHeaderBar.prototype.setHeader = function (title, back) {
+        AWHeaderBar.prototype.setHeader = function (config) {
             var _this = this;
-            var args = [title, back];
+            var args = [config];
             cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeader', args);
         };
         AWHeaderBar.prototype.getHeader = function () {
