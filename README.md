@@ -303,7 +303,10 @@ var setHeader = function () {
         console.log(err);
     }
 
-    header.setHeader('My New Header Title');
+    header.setHeader({
+        title: 'My New Title',
+        backButtonVisible: true
+    });
 };
 
 var getHeader = function () {
