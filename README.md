@@ -20,7 +20,7 @@ project. If you opt to use the bundled file make sure your script tag looks like
 
 `<script src="appworks.min.js"></script>`
 
-## Usage API and Examples
+## API Usage and Examples
 
 ### Plugin
 All plugins have the following type definition:
@@ -1536,8 +1536,6 @@ To build appworks-js
 `grunt`
 
 The final file can be found in `dist/appworks.min.js` and `dist/appworks.js`
-
-----
 
 # LICENSE
 
