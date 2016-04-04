@@ -27,6 +27,9 @@
 /// <reference path="../typings/cordova/plugins/FileSystem.d.ts"/>
 /// <reference path="../typings/cordova/plugins/BatteryStatus.d.ts"/>
 
+// when cordova has been fully initialized, automatically add access tokens to outgoing request headers
+document.addEventListener('deviceready', setAuthorizationHeader);
+
 declare var LocalFileSystem;
 
 abstract class AWPlugin {
@@ -56,6 +59,15 @@ module Appworks {
                 'authenticate',
                 []
             );
+        }
+        getAuthorizationToken() {
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWAuth',
+                'getAuthorizationToken',
+                []
+            )
         }
         getAuthResponse() {
             cordova.exec(
@@ -892,3 +904,28 @@ module Appworks {
         }
     }
 }
+
+function setAuthorizationHeader() {
+    // hold reference to original setRequestHeader
+    var _setRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
+    // create object for plugin request
+    var auth = new Appworks.Auth(onAccessTokenRetrieval, onAuthFail);
+    // send plugin request, callback onAccessTokenRetrieval() gets called any time a new access_token is created
+    auth.getAuthorizationToken();
+
+    function onAccessTokenRetrieval(access_token: string) {
+        var event = new CustomEvent('authorization.headerWasSet', {detail: access_token});
+
+        XMLHttpRequest.prototype.setRequestHeader = function (header: string, value: string) {
+            _setRequestHeader('Authorization', 'Bearer ' + access_token);
+            _setRequestHeader(header, value);
+        };
+
+        document.dispatchEvent(event);
+    }
+
+    function onAuthFail(err) {
+        console.error(err);
+    }
+}
+
