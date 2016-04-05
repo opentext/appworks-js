@@ -30,8 +30,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 /// <reference path="../typings/cordova/plugins/FileTransfer.d.ts"/>
 /// <reference path="../typings/cordova/plugins/FileSystem.d.ts"/>
 /// <reference path="../typings/cordova/plugins/BatteryStatus.d.ts"/>
-// when cordova has been fully initialized, automatically add access tokens to outgoing request headers
-document.addEventListener('deviceready', setAuthorizationHeader);
 var AWPlugin = (function () {
     /**
      * Base plugin class. Constructor takes in a success function and error function to be executed upon
@@ -56,10 +54,6 @@ var Appworks;
         Auth.prototype.authenticate = function () {
             var _this = this;
             cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate', []);
-        };
-        Auth.prototype.getAuthorizationToken = function () {
-            var _this = this;
-            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'getAuthorizationToken', []);
         };
         Auth.prototype.getAuthResponse = function () {
             var _this = this;
@@ -683,23 +677,4 @@ var Appworks;
     }(AWPlugin));
     Appworks.AWCache = AWCache;
 })(Appworks || (Appworks = {}));
-function setAuthorizationHeader() {
-    // hold reference to original setRequestHeader
-    var _setRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
-    // create object for plugin request
-    var auth = new Appworks.Auth(onAccessTokenRetrieval, onAuthFail);
-    // send plugin request, callback onAccessTokenRetrieval() gets called any time a new access_token is created
-    auth.getAuthorizationToken();
-    function onAccessTokenRetrieval(access_token) {
-        var event = new CustomEvent('authorization.headerWasSet', { detail: access_token });
-        XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
-            _setRequestHeader('Authorization', 'Bearer ' + access_token);
-            _setRequestHeader(header, value);
-        };
-        document.dispatchEvent(event);
-    }
-    function onAuthFail(err) {
-        console.error(err);
-    }
-}
 //# sourceMappingURL=appworks.js.map
