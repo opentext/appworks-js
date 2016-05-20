@@ -76,6 +76,17 @@ module Appworks {
             );
         }
     }
+    export class AWWebView extends AWPlugin {
+        open(url:string) {
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWWebView',
+                'open',
+                [url]
+            );
+        }
+    }
     export class AWAppManager extends AWPlugin {
         closeActiveApp() {
             cordova.exec(

@@ -65,6 +65,18 @@ var Appworks;
         return Auth;
     }(AWPlugin));
     Appworks.Auth = Auth;
+    var AWWebView = (function (_super) {
+        __extends(AWWebView, _super);
+        function AWWebView() {
+            _super.apply(this, arguments);
+        }
+        AWWebView.prototype.open = function (url) {
+            var _this = this;
+            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWWebView', 'open', [url]);
+        };
+        return AWWebView;
+    }(AWPlugin));
+    Appworks.AWWebView = AWWebView;
     var AWAppManager = (function (_super) {
         __extends(AWAppManager, _super);
         function AWAppManager() {
