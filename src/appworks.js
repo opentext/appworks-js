@@ -30,6 +30,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 /// <reference path="../typings/cordova/plugins/FileTransfer.d.ts"/>
 /// <reference path="../typings/cordova/plugins/FileSystem.d.ts"/>
 /// <reference path="../typings/cordova/plugins/BatteryStatus.d.ts"/>
+/// <reference path="../typings/cordova/plugins/InAppBrowser.d.ts"/>
 var AWPlugin = (function () {
     /**
      * Base plugin class. Constructor takes in a success function and error function to be executed upon
@@ -68,11 +69,10 @@ var Appworks;
     var AWWebView = (function (_super) {
         __extends(AWWebView, _super);
         function AWWebView() {
-            _super.apply(this, arguments);
+            _super.call(this, null, null);
         }
-        AWWebView.prototype.open = function (url) {
-            var _this = this;
-            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWWebView', 'open', [url]);
+        AWWebView.prototype.open = function (url, target, options) {
+            cordova.InAppBrowser.open(url, target, options);
         };
         return AWWebView;
     }(AWPlugin));

@@ -26,8 +26,10 @@
 /// <reference path="../typings/cordova/plugins/FileTransfer.d.ts"/>
 /// <reference path="../typings/cordova/plugins/FileSystem.d.ts"/>
 /// <reference path="../typings/cordova/plugins/BatteryStatus.d.ts"/>
+/// <reference path="../typings/cordova/plugins/InAppBrowser.d.ts"/>
 
 declare var LocalFileSystem;
+declare var InAppBrowser;
 
 abstract class AWPlugin {
     successHandler: (data?: any) => void;
@@ -77,14 +79,13 @@ module Appworks {
         }
     }
     export class AWWebView extends AWPlugin {
-        open(url:string) {
-            cordova.exec(
-                (() => this.successHandler)(),
-                (() => this.errorHandler)(),
-                'AWWebView',
-                'open',
-                [url]
-            );
+
+        constructor() {
+            super(null, null);
+        }
+
+        open(url:string, target?:string, options?: string) {
+            (cordova as any).InAppBrowser.open(url, target, options);
         }
     }
     export class AWAppManager extends AWPlugin {
