@@ -197,14 +197,22 @@ module Appworks {
         }
     }
     export class AWHeaderBar extends AWPlugin {
+
+        private callback:any;
+
         setHeader(config: any) {
-            var args = [config];
+            if (config && config.callback) {
+                this.callback = config.callback;
+                config.callback = true;
+            } else {
+                this.callback = null;
+            }
             cordova.exec(
-                (() => this.successHandler)(),
+                (() => this.callback)(),
                 (() => this.errorHandler)(),
                 'AWHeaderBar',
                 'setHeader',
-                args
+                [config]
             );
         }
 

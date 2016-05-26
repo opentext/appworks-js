@@ -171,8 +171,14 @@ var Appworks;
         }
         AWHeaderBar.prototype.setHeader = function (config) {
             var _this = this;
-            var args = [config];
-            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeader', args);
+            if (config && config.callback) {
+                this.callback = config.callback;
+                config.callback = true;
+            }
+            else {
+                this.callback = null;
+            }
+            cordova.exec((function () { return _this.callback; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeader', [config]);
         };
         AWHeaderBar.prototype.getHeader = function () {
             var _this = this;
