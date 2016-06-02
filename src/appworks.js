@@ -72,7 +72,7 @@ var Appworks;
             _super.call(this, null, null);
         }
         AWWebView.prototype.open = function (url, target, options) {
-            cordova.InAppBrowser.open(url, target, options);
+            return cordova.InAppBrowser.open(url, target, options);
         };
         return AWWebView;
     }(AWPlugin));
@@ -695,4 +695,3 @@ var Appworks;
     }(AWPlugin));
     Appworks.AWCache = AWCache;
 })(Appworks || (Appworks = {}));
-//# sourceMappingURL=appworks.js.map

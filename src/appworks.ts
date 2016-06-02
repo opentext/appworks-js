@@ -84,8 +84,8 @@ module Appworks {
             super(null, null);
         }
 
-        open(url:string, target?:string, options?: string) {
-            (cordova as any).InAppBrowser.open(url, target, options);
+        open(url:string, target?:string, options?: string):InAppBrowser {
+            return (cordova as any).InAppBrowser.open(url, target, options);
         }
     }
     export class AWAppManager extends AWPlugin {
