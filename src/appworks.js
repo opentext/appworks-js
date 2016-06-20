@@ -72,16 +72,16 @@ var Appworks;
             _super.call(this, null, null);
         }
         AWKeyboard.prototype.hideKeyboardAccessoryBar = function (hide) {
-            cordova.exec(null, null, 'AWKeyboard', 'hideKeyboardAccessoryBar', [hide.toString()]);
+            cordova.exec(function () { }, function () { }, 'AWKeyboard', 'hideKeyboardAccessoryBar', [hide.toString()]);
         };
         AWKeyboard.prototype.close = function () {
-            cordova.exec(null, null, 'AWKeyboard', 'close', []);
+            cordova.exec(function () { }, function () { }, 'AWKeyboard', 'close', []);
         };
         AWKeyboard.prototype.show = function () {
-            cordova.exec(null, null, 'AWKeyboard', 'show', []);
+            cordova.exec(function () { }, function () { }, 'AWKeyboard', 'show', []);
         };
         AWKeyboard.prototype.disableScroll = function (disable) {
-            cordova.exec(null, null, 'AWKeyboard', 'disableScroll', [disable.toString()]);
+            cordova.exec(function () { }, function () { }, 'AWKeyboard', 'disableScroll', [disable.toString()]);
         };
         return AWKeyboard;
     }(AWPlugin));

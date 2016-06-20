@@ -84,19 +84,19 @@ module Appworks {
         }
 
         hideKeyboardAccessoryBar(hide:boolean) {
-            cordova.exec(null, null, 'AWKeyboard', 'hideKeyboardAccessoryBar', [hide.toString()]);
+            cordova.exec(() => {}, () => {}, 'AWKeyboard', 'hideKeyboardAccessoryBar', [hide.toString()]);
         }
 
         close() {
-            cordova.exec(null, null, 'AWKeyboard', 'close', []);
+            cordova.exec(() => {}, () => {}, 'AWKeyboard', 'close', []);
         }
 
         show() {
-            cordova.exec(null, null, 'AWKeyboard', 'show', []);
+            cordova.exec(() => {}, () => {}, 'AWKeyboard', 'show', []);
         }
 
         disableScroll(disable:boolean) {
-            cordova.exec(null, null, 'AWKeyboard', 'disableScroll', [disable.toString()]);
+            cordova.exec(() => {}, () => {}, 'AWKeyboard', 'disableScroll', [disable.toString()]);
         }
     }
     export class AWWebView extends AWPlugin {
