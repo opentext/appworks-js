@@ -66,6 +66,26 @@ var Appworks;
         return Auth;
     }(AWPlugin));
     Appworks.Auth = Auth;
+    var AWKeyboard = (function (_super) {
+        __extends(AWKeyboard, _super);
+        function AWKeyboard() {
+            _super.call(this, null, null);
+        }
+        AWKeyboard.prototype.hideKeyboardAccessoryBar = function (hide) {
+            cordova.exec(null, null, 'AWKeyboard', 'hideKeyboardAccessoryBar', [hide.toString()]);
+        };
+        AWKeyboard.prototype.close = function () {
+            cordova.exec(null, null, 'AWKeyboard', 'close', []);
+        };
+        AWKeyboard.prototype.show = function () {
+            cordova.exec(null, null, 'AWKeyboard', 'show', []);
+        };
+        AWKeyboard.prototype.disableScroll = function (disable) {
+            cordova.exec(null, null, 'AWKeyboard', 'disableScroll', [disable.toString()]);
+        };
+        return AWKeyboard;
+    }(AWPlugin));
+    Appworks.AWKeyboard = AWKeyboard;
     var AWWebView = (function (_super) {
         __extends(AWWebView, _super);
         function AWWebView() {

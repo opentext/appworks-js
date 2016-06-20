@@ -78,6 +78,27 @@ module Appworks {
             );
         }
     }
+    export class AWKeyboard extends AWPlugin {
+        constructor() {
+            super(null, null);
+        }
+
+        hideKeyboardAccessoryBar(hide:boolean) {
+            cordova.exec(null, null, 'AWKeyboard', 'hideKeyboardAccessoryBar', [hide.toString()]);
+        }
+
+        close() {
+            cordova.exec(null, null, 'AWKeyboard', 'close', []);
+        }
+
+        show() {
+            cordova.exec(null, null, 'AWKeyboard', 'show', []);
+        }
+
+        disableScroll(disable:boolean) {
+            cordova.exec(null, null, 'AWKeyboard', 'disableScroll', [disable.toString()]);
+        }
+    }
     export class AWWebView extends AWPlugin {
 
         constructor() {
