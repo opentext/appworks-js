@@ -81,6 +81,7 @@ var Appworks;
             cordova.exec(function () { }, function () { }, 'AWKeyboard', 'show', []);
         };
         AWKeyboard.prototype.disableScroll = function (disable) {
+            disable = !!disable;
             cordova.exec(function () { }, function () { }, 'AWKeyboard', 'disableScroll', [disable.toString()]);
         };
         return AWKeyboard;

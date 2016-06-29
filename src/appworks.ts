@@ -96,6 +96,7 @@ module Appworks {
         }
 
         disableScroll(disable:boolean) {
+            disable = !!disable;
             cordova.exec(() => {}, () => {}, 'AWKeyboard', 'disableScroll', [disable.toString()]);
         }
     }
