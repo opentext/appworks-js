@@ -141,6 +141,24 @@ gateway(successHandler: any, errorHandler?: any)
 ````
 Returns the url of the gateway to the ````successHandler```` passed in.
 
+#### AWWebView
+The web view plugin allows you to open links via the in-app browser. This is great for giving your app a native feel
+when opening external links
+
+##### Methods:
+
+###### open
+````
+url:string, target?:string, options?: string):InAppBrowser
+````
+Opens the in-app browser with the url provided.
+- <b>url</b>: the URL to load
+- <b>target</b>: The target in which to load the URL. Defaults to '_self'
+- <b>options</b>: options for the in-app browser. Defaults to 'location=yes'. The options string must not contain any
+blank space, and each feature's name/value pairs must be separated by a comma.
+Feature names are case insensitive.
+
+Refer to https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-inappbrowser/ for more documentation
 
 #### AWAppManager
 The AppManager plugin allows you to close the current app webview.
