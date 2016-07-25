@@ -50,13 +50,14 @@ module Appworks {
     var idCounter = 0;
     export class Auth extends AWPlugin {
 
-        authenticate() {
+        authenticate(force?:boolean) {
+            force = !!force;
             cordova.exec(
                 (() => this.successHandler)(),
                 (() => this.errorHandler)(),
                 'AWAuth',
                 'authenticate',
-                []
+                [force.toString()]
             );
         }
         getAuthResponse() {

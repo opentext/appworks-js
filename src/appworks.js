@@ -52,9 +52,10 @@ var Appworks;
         function Auth() {
             _super.apply(this, arguments);
         }
-        Auth.prototype.authenticate = function () {
+        Auth.prototype.authenticate = function (force) {
             var _this = this;
-            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate', []);
+            force = !!force;
+            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate', [force.toString()]);
         };
         Auth.prototype.getAuthResponse = function () {
             var _this = this;
@@ -716,3 +717,4 @@ var Appworks;
     }(AWPlugin));
     Appworks.AWCache = AWCache;
 })(Appworks || (Appworks = {}));
+//# sourceMappingURL=appworks.js.map
