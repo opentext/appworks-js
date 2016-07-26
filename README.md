@@ -73,10 +73,12 @@ access rights to make api calls against the gateway.
 
 ###### authenticate
 ````
-authenticate()
+authenticate(force?:boolean)
 ````
 Makes a call against the gateway /auth endpoint. Returns the response to the callback registered
 upon creation of the instance
+
+- force: when a truthy value is passed, the client will force a reauthentication by the user.
 
 ##### Example:
 
