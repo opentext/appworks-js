@@ -249,6 +249,17 @@ module Appworks {
             );
         }
     }
+    export class AWPage extends AWPlugin {
+        setPageUrl(url: string) {
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWPage',
+                'setPageUrl',
+                [url]
+            );
+        }
+    }
     export class Menu extends AWPlugin {
         push(items: any) {
             var args = [items];
@@ -935,4 +946,3 @@ module Appworks {
         }
     }
 }
-

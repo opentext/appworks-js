@@ -15,7 +15,7 @@ bower install --save appworks-js
 You can find the production files in the `dist` directory.
 
 #### Auto install:
-If you are deploying an app to the gateway, the gateway will automatically add appworks.min.js to the root of your 
+If you are deploying an app to the gateway, the gateway will automatically add appworks.min.js to the root of your
 project. If you opt to use the bundled file make sure your script tag looks like this:
 
 `<script src="appworks.min.js"></script>`
@@ -99,7 +99,7 @@ var auth = new Appworks.Auth(
         console.log(err);
     }
 );
-    
+
 $('#click-me').click(function () {
     auth.authenticate();
 });
@@ -131,7 +131,7 @@ var auth = new Appworks.Auth(
         console.log(err);
     }
 );
-    
+
 $('#click-me').click(function () {
     auth.getAuthResponse();
 });
@@ -185,7 +185,7 @@ var appManager = new Appworks.AWAppManager(
         console.log(err);
     }
 );
-    
+
 $('#click-me').click(function () {
     appManager.closeActiveApp();
 });
@@ -257,7 +257,7 @@ var openFile = function (filename) {
     function showFile(data) {
         console.log(data);
     }
-    
+
     function showFileError(err) {
         console.log(err);
     }
@@ -271,11 +271,11 @@ var listDirectory = function (path) {
     function showContents(directory) {
         console.log(directory);
         // returns an array containing each item in the directory specified by @path
-        
+
         // try to open file now
         openFile('/', directory[1].filename);
     }
-    
+
     function showDirectoryError(err) {
         console.log(err);
     }
@@ -319,7 +319,7 @@ var setHeader = function () {
         // just to demonstrate a callback
         getHeader();
     }
-    
+
     function failed(err) {
         console.log(err);
     }
@@ -337,7 +337,7 @@ var getHeader = function () {
         // returns an object containing the current header bar configuration
         console.log(header);
     }
-    
+
     function failed(err) {
         console.log(err);
     }
@@ -348,6 +348,25 @@ var getHeader = function () {
 // update the header bar
 setHeader();
 ````
+
+#### AWPage
+The AWPage plugin allows you to set the URL of page to an external URL (such as http://www.google.com). This allows the web app to launch a new webView with a specified URL in the current context of the view.
+
+##### Methods:
+
+###### setPageUrl
+````
+setPageUrl(url: string)
+````
+Pass in a URL as a string, starting with http(s):// and a webview will overlay the current webview with that URL. For security reasons no appworks functionality will be available from this URL.
+
+##### Example:
+````js
+  var url = "http://www.opentext.com/"
+  var awPage = new Appworks.AWPage();
+  awPage.setPageUrl(url);
+````
+
 
 #### QRReader
 The QRReader plugin allows you to scan a QR code using the device camera.
@@ -370,11 +389,11 @@ var scanQRCode = function () {
     function onScan(data) {
         qrScanResult = data;
     }
-    
+
     function onScanErr(err) {
         console.log(err);
     }
-    
+
     qrScanner.scan();
 };
 ````
@@ -390,12 +409,12 @@ takePicture(options?: any)
 ````
 use the device camera to take a photo. returns the uri specified by options - default is the native uri to the location
 on the device.
-- <b>options</b>: 
-a 
+- <b>options</b>:
+a
     <a href="http://docs.phonegap.com/en/edge/cordova_camera_camera.md.html#cameraOptions" target="_blank">
         CameraOptions
-    </a> 
-object. See apache cordova 
+    </a>
+object. See apache cordova
 <a href="http://docs.phonegap.com/en/edge/cordova_camera_camera.md.html#cameraOptions">
     documentation
 </a>
@@ -406,11 +425,11 @@ openGallery(options?: any)
 ````
 open the device gallery to select a photo. returns the uri specified by options - default is the native uri to the location
 on the device.
-- <b>options</b>: a 
+- <b>options</b>: a
 <a href="http://docs.phonegap.com/en/edge/cordova_camera_camera.md.html#cameraOptions" target="_blank">
 CameraOptions
-</a> 
-object. 
+</a>
+object.
 See apache cordova <a href="http://docs.phonegap.com/en/edge/cordova_camera_camera.md.html#cameraOptions">
 documentation</a>
 
@@ -546,7 +565,7 @@ to download files to a shared container where they may be accessed by third part
 
 ###### download
 ````
-download(url: string, target: string, options?: any, shared?: boolean) 
+download(url: string, target: string, options?: any, shared?: boolean)
 ````
 download a file from a remote url and store it on the device
 - <b>url</b>: the url of the server to download the file from
@@ -569,7 +588,7 @@ function downloadFile () {
         console.log(file);
         self.downloadedFile = file.nativeURL;
     }
-    
+
     fileTransfer.progressHandler(function (progress) {
         console.log(progress);
     });
@@ -655,11 +674,11 @@ media.play();
 - stopRecord: Stop recording an audio file.
 - stop: Stop playing an audio file
 
-##### Parameters: 
+##### Parameters:
 - src: A URI containing the audio content
 - mediaStatus: (Optional) The callback that executes to indicate status changes. (Function)
 
-See the <a href="https://github.com/apache/cordova-plugin-media">Apache Cordova Github</a> for in depth 
+See the <a href="https://github.com/apache/cordova-plugin-media">Apache Cordova Github</a> for in depth
 documentation, device specific quirks, and more.
 
 #### AWMediaCapture
@@ -686,13 +705,13 @@ The AWMediaCapture plugin provides access to the device's audio, image, and vide
 - supportedImageModes: The recording image sizes and formats supported by the device. (ConfigurationData[])
 - supportedVideoModes: The recording video resolutions and formats supported by the device. (ConfigurationData[])
 
-See the <a href="https://github.com/apache/cordova-plugin-media-capture">Apache Cordova Github</a> for in depth 
+See the <a href="https://github.com/apache/cordova-plugin-media-capture">Apache Cordova Github</a> for in depth
 documentation, device specific quirks, and more.
 
 
 #### AWAccelerometer
-The AWAccelerometer plugin provides access to the device's accelerometer. The accelerometer is a motion sensor that 
-detects the change (delta) in movement relative to the current device orientation, in three dimensions along the x, y, 
+The AWAccelerometer plugin provides access to the device's accelerometer. The accelerometer is a motion sensor that
+detects the change (delta) in movement relative to the current device orientation, in three dimensions along the x, y,
 and z axis.
 
 ##### Methods:
@@ -730,14 +749,14 @@ accelerometer.getCurrentAcceleration();
 watchAcceleration(options?: any) => watchId: number
 ````
 Retrieves the device's current ````Acceleration```` at a regular interval, executing the ````successHandler````
-callback function each time. Specify the interval in milliseconds via the ````accelerometerOptions```` 
+callback function each time. Specify the interval in milliseconds via the ````accelerometerOptions````
 object's frequency parameter.
 
 - options - An object with the following optional keys:
-    - period: requested period of calls to ````successHandler```` with acceleration data in Milliseconds. (Number) 
+    - period: requested period of calls to ````successHandler```` with acceleration data in Milliseconds. (Number)
     (Default: 10000)
 
-returns a ````watchId```` that references the watch acceleration interval function. This value should be used with 
+returns a ````watchId```` that references the watch acceleration interval function. This value should be used with
 ````clearWatch```` to cancel watching for changes in acceleration.
 
 ##### Example:
@@ -777,8 +796,8 @@ accelerometer.clearWatch(watchId);
 ````
 
 #### AWCompass
-The AWCompass plugin provides access to the device's compass. 
-The compass is a sensor that detects the direction or heading that the device is pointed, typically from the top of the 
+The AWCompass plugin provides access to the device's compass.
+The compass is a sensor that detects the direction or heading that the device is pointed, typically from the top of the
 device. It measures the heading in degrees from 0 to 359.99, where 0 is north.
 
 ##### Methods:
@@ -787,7 +806,7 @@ device. It measures the heading in degrees from 0 to 359.99, where 0 is north.
 ````ts
 getCurrentHeading()
 ````
-Get the current compass heading. 
+Get the current compass heading.
 The compass heading is returned via a ````CompassHeading```` object using the ````successHandler```` callback function.
 
 ##### Example:
@@ -809,15 +828,15 @@ compass.getCurrentHeading();
 ````ts
 watchAcceleration(options?: any) => watchId: number
 ````
-Gets the device's current heading at a regular interval. 
+Gets the device's current heading at a regular interval.
 Each time the heading is retrieved, the ````successHandler```` callback function is executed.
 
 - options - An object with the following optional keys:
             - frequency: How often to retrieve the compass heading in milliseconds. (Number) (Default: 100)
-            - filter: The change in degrees required to initiate a watchHeading success callback. When this value is set, 
+            - filter: The change in degrees required to initiate a watchHeading success callback. When this value is set,
             frequency is ignored. (Number)
 
-returns a ````watchId```` that references the watch heading interval function. This value should be used with 
+returns a ````watchId```` that references the watch heading interval function. This value should be used with
 ````clearWatch```` to cancel watching for changes in heading.
 
 ##### Example:
@@ -859,9 +878,9 @@ compass.clearWatch(watchId);
 ````
 
 #### AWLocation
-The AWLocation plugin provides information about the device's location, such as latitude and longitude. 
-Common sources of location information include Global Positioning System (GPS) and location inferred from network 
-signals such as IP address, RFID, WiFi and Bluetooth MAC addresses, and GSM/CDMA cell IDs. 
+The AWLocation plugin provides information about the device's location, such as latitude and longitude.
+Common sources of location information include Global Positioning System (GPS) and location inferred from network
+signals such as IP address, RFID, WiFi and Bluetooth MAC addresses, and GSM/CDMA cell IDs.
 There is no guarantee that the API returns the device's actual location.
 
 ##### Methods:
@@ -908,13 +927,13 @@ geo.getCurrentPosition();
 ````ts
 watchPosition(options?: any) => watchId: number
 ````
-Returns the device's current position when a change in position is detected. When the device retrieves a new location, 
-the ````successHandler```` callback executes with a ````Position```` object as the parameter. 
+Returns the device's current position when a change in position is detected. When the device retrieves a new location,
+the ````successHandler```` callback executes with a ````Position```` object as the parameter.
 If there is an error, the ````errorHandler```` callback executes with a ````PositionError```` object as the parameter.
 
 - options - geolocation options
 
-returns a ````watchId```` that references the watch position interval function. This value should be used with 
+returns a ````watchId```` that references the watch position interval function. This value should be used with
 ````clearWatch```` to cancel watching for changes in position.
 
 ##### Example:
@@ -966,13 +985,13 @@ geo.clearWatch(watchId);
 
 geolocationOptions - optional parameters to customize the retrieval of the geolocation ````Position````
 
-- enableHighAccuracy: Provides a hint that the application needs the best possible results. By default, 
-the device attempts to retrieve a Position using network-based methods. Setting this property to true tells the 
+- enableHighAccuracy: Provides a hint that the application needs the best possible results. By default,
+the device attempts to retrieve a Position using network-based methods. Setting this property to true tells the
 framework to use more accurate methods, such as satellite positioning. (Boolean)
-- timeout: The maximum length of time (milliseconds) that is allowed to pass from the call to 
-````getCurrentPosition```` or ````watchPosition```` until the corresponding ````successHandler```` callback executes. 
-If the ````successHandler```` callback is not invoked within this time, the ````errorHandler```` callback is passed a 
-````PositionError.TIMEOUT```` error code. 
+- timeout: The maximum length of time (milliseconds) that is allowed to pass from the call to
+````getCurrentPosition```` or ````watchPosition```` until the corresponding ````successHandler```` callback executes.
+If the ````successHandler```` callback is not invoked within this time, the ````errorHandler```` callback is passed a
+````PositionError.TIMEOUT```` error code.
 - maximumAge: Accept a cached position whose age is no greater than the specified time in milliseconds. (Number)
 
 Read more on the <a href="https://github.com/apache/cordova-plugin-geolocation">Cordova Documentation</a> page.
@@ -1123,7 +1142,7 @@ defer(eventName: string, args: any)
 ````
 defer an event to be handled when the device comes back online. if the device is already online, then the event will
  still get added to the queue and processed after an offline => online cycle.
- 
+
 Parameters:
 - eventName: the name of an document event that you intend to listen for when the device completes an offline - online
 cycle
@@ -1170,7 +1189,7 @@ Get the current network status of the device
         //
         // there will be a 5 second delay between when the device comes back online and the 'makeRequestEv' event gets
         // fired
-        
+
         // an event listener
         // function should be registered here or earlier to ensure the event gets processed.
         // this is the same event listener we registered with defer() on line 163
@@ -1351,7 +1370,7 @@ Includes the following global objects:
 - ContactError
 
 See the <a href="https://cordova.apache.org/docs/en/3.0.0/cordova/contacts/contacts.html#link-3">Apache Cordova Contacts
-Documentation </a> to learn more. Some information provided here has been copied from the 
+Documentation </a> to learn more. Some information provided here has been copied from the
 <a href="https://github.com/apache/cordova-plugin-contacts">cordova contacts github repo</a>.
 
 ##### Methods:
@@ -1361,7 +1380,7 @@ Documentation </a> to learn more. Some information provided here has been copied
 create(properties?: ContactProperties)
 ````
 The ````create```` method is synchronous, and returns a new Contact object.
-This method does not retain the Contact object in the device contacts database, for which you need to invoke the 
+This method does not retain the Contact object in the device contacts database, for which you need to invoke the
 Contact.save method.
 
 ##### Example:
@@ -1374,8 +1393,8 @@ var myContact = contacts.create({"displayName": "Test User"});
 ````
 find(contactFields: string[], options? any)
 ````
-The ````find```` method executes asynchronously, querying the device contacts database and returning an 
-array of Contact objects. The resulting objects are passed to the ````successHandler```` callback function 
+The ````find```` method executes asynchronously, querying the device contacts database and returning an
+array of Contact objects. The resulting objects are passed to the ````successHandler```` callback function
 defined upon instance creation.
 
 ##### Example:
@@ -1405,7 +1424,7 @@ contacts.find(fields, onSuccess, onError, options);
 ````
 pickContact()
 ````
-The ````pickContact```` method launches the Contact Picker to select a single contact. The resulting object is 
+The ````pickContact```` method launches the Contact Picker to select a single contact. The resulting object is
 passed to the ````successHandler```` callback function specified upon instance creation.
 
 ##### Example:
@@ -1423,7 +1442,7 @@ contacts.pickContact(function(contact){
 ##### Objects:
 
 #### Contact
-The Contact object represents a user's contact. Contacts can be created, stored, or removed from the device contacts 
+The Contact object represents a user's contact. Contacts can be created, stored, or removed from the device contacts
 database. Contacts can also be retrieved (individually or in bulk) from the database by invoking the ````find```` method.
 
 Methods:
@@ -1448,7 +1467,7 @@ Properties:
 - urls: An array of web pages associated with the contact. (ContactField[])
 
 #### ContactAddress
-The ContactAddress object stores the properties of a single address of a contact. 
+The ContactAddress object stores the properties of a single address of a contact.
 A Contact object may include more than one address in a ContactAddress[] array.
 
 Properties:
@@ -1465,8 +1484,8 @@ Properties:
 The ContactError object is returned to the user through the ````errorHandler```` callback function when an error occurs.
 
 #### ContactField
-The ContactField object is a reusable component that represents contact fields generically. Each ContactField object 
-contains a value, type, and pref property. 
+The ContactField object is a reusable component that represents contact fields generically. Each ContactField object
+contains a value, type, and pref property.
 A Contact object stores several properties in ContactField[] arrays, such as phone numbers and email addresses.
 
 Properties:
@@ -1475,7 +1494,7 @@ Properties:
 - pref: Set to true if this ContactField contains the user's preferred value. (boolean)
 
 #### ContactOrganization
-The ContactOrganization object stores a contact's organization properties. 
+The ContactOrganization object stores a contact's organization properties.
 A Contact object stores one or more ContactOrganization objects in an array.
 
 Properties:
@@ -1495,7 +1514,7 @@ There are three events to hook into that will give you access to the device batt
 the ````window````.
 
 ##### batterystatus
-This event fires when the percentage of battery charge changes by at least 1 percent, or if the device is plugged in or 
+This event fires when the percentage of battery charge changes by at least 1 percent, or if the device is plugged in or
 unplugged.
 
 Example:
@@ -1510,7 +1529,7 @@ function onBatteryStatus(info) {
 ````
 
 ##### batterycritical
-The event fires when the percentage of battery charge has reached the critical battery threshold. 
+The event fires when the percentage of battery charge has reached the critical battery threshold.
 The value is device-specific.
 
 The ````batterycritical```` handler is passed an object that contains two properties:

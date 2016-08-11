@@ -209,6 +209,18 @@ var Appworks;
         return AWHeaderBar;
     }(AWPlugin));
     Appworks.AWHeaderBar = AWHeaderBar;
+    var AWPage = (function (_super) {
+        __extends(AWPage, _super);
+        function AWPage() {
+            _super.apply(this, arguments);
+        }
+        AWPage.prototype.setPageUrl = function (url) {
+            var _this = this;
+            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'setPageUrl', [url]);
+        };
+        return AWPage;
+    }(AWPlugin));
+    Appworks.AWPage = AWPage;
     var Menu = (function (_super) {
         __extends(Menu, _super);
         function Menu() {
