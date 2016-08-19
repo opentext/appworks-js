@@ -729,4 +729,14 @@ var Appworks;
     }(AWPlugin));
     Appworks.AWCache = AWCache;
 })(Appworks || (Appworks = {}));
+function initBackButton() {
+    document.addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady() {
+        document.addEventListener("backbutton", onBackKeyDown, false);
+    }
+    function onBackKeyDown() {
+        cordova.exec(null, null, "AWBackButton", "backButtonTap", []);
+    }
+}
+initBackButton();
 //# sourceMappingURL=appworks.js.map
