@@ -186,6 +186,19 @@ var Appworks;
         return Finder;
     }(AWPlugin));
     Appworks.Finder = Finder;
+    var FileChooser = (function (_super) {
+        __extends(FileChooser, _super);
+        function FileChooser() {
+            _super.apply(this, arguments);
+        }
+        FileChooser.prototype.selectAndUpload = function (action) {
+            var _this = this;
+            var args = [action];
+            cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFileChooser', 'open', args);
+        };
+        return FileChooser;
+    }(AWPlugin));
+    Appworks.FileChooser = FileChooser;
     var AWHeaderBar = (function (_super) {
         __extends(AWHeaderBar, _super);
         function AWHeaderBar() {

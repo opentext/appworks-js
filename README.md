@@ -286,6 +286,18 @@ var listDirectory = function (path) {
 listDirectory();
 ````
 
+#### FileChooser
+The FileChooser plugin allows you to select and upload files from the device file system. Android only.
+
+##### Methods:
+
+###### selectAndUpload
+````
+selectAndUpload(action: string)
+````
+select a file and upload
+- <b>action</b>: the action
+
 #### AWHeaderBar
 The AWHeaderBar plugin allows you to hide or show the client header bar,
 update the text, and/or hide or show a back button.

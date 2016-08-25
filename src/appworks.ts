@@ -219,6 +219,18 @@ module Appworks {
             );
         }
     }
+    export class FileChooser extends AWPlugin {
+        selectAndUpload(action: string) {
+            var args = [action];
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWFileChooser',
+                'open',
+                args
+            );
+        }
+    }
     export class AWHeaderBar extends AWPlugin {
 
         private callback:any;
