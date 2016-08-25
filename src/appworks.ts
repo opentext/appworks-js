@@ -261,6 +261,17 @@ module Appworks {
             );
         }
     }
+    export class AWPage extends AWPlugin {
+        setPageUrl(url: string) {
+            cordova.exec(
+                (() => this.successHandler)(),
+                (() => this.errorHandler)(),
+                'AWPage',
+                'setPageUrl',
+                [url]
+            );
+        }
+    }
     export class Menu extends AWPlugin {
         push(items: any) {
             var args = [items];
@@ -947,4 +958,14 @@ module Appworks {
         }
     }
 }
+function initBackButton() {
+    document.addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady() {
+        document.addEventListener("backbutton", onBackKeyDown, false);
+    }
 
+    function onBackKeyDown() {
+        cordova.exec(null, null, "AWBackButton", "backButtonTap", []);
+    }
+}
+initBackButton();
