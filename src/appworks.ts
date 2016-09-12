@@ -425,7 +425,7 @@ module Appworks {
                     gotSharedContainerUrl,
                     (() => this.errorHandler)(),
                     'AWSharedDocumentProvider',
-                    'container',
+                    'containerForCurrentApp',
                     []
                 );
             } else {
@@ -466,7 +466,7 @@ module Appworks {
                     gotSharedContainerUrl,
                     (() => this.errorHandler)(),
                     'AWSharedDocumentProvider',
-                    'container',
+                    'containerForCurrentApp',
                     []
                 );
             } else {
