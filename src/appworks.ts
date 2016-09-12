@@ -325,7 +325,7 @@ module Appworks {
         }
 
         store(url: string, target: string, options?: any) {
-            var args = [url, target, false, this.seqNo, options && options.headers],
+            var args = [encodeURI(url), target, false, this.seqNo, options && options.headers],
                 completionHandler = () => this.successHandler,
                 progressHandler = this.onprogress,
                 progress;
