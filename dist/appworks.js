@@ -276,7 +276,7 @@ var Appworks;
         }
         SecureStorage.prototype.store = function (url, target, options) {
             var _this = this;
-            var args = [url, target, false, this.seqNo, options && options.headers], completionHandler = function () { return _this.successHandler; }, progressHandler = this.onprogress, progress;
+            var args = [encodeURI(url), target, false, this.seqNo, options && options.headers], completionHandler = function () { return _this.successHandler; }, progressHandler = this.onprogress, progress;
             function newProgressEvent(result) {
                 var pe = new ProgressEvent(null);
                 pe.lengthComputable = result.lengthComputable;
