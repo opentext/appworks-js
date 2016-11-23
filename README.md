@@ -1587,13 +1587,3 @@ To build appworks-js
 `grunt`
 
 The final file can be found in `dist/appworks.min.js` and `dist/appworks.js`
-
-# LICENSE
-
-Apache License, Version 2.0
-
-----
-
-For community support, please refer to [https://developer.opentext.com](https://developer.opentext.com).
-
-Copyright © 2015-2016 Open Text SA or Open Text ULC (in Canada). All rights reserved.

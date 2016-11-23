@@ -1,0 +1,23 @@
+{
+  "globalDependencies": {
+    "cordova": "registry:dt/cordova#0.0.0+20160607055823",
+    "cordova/plugins/batterystatus": "registry:dt/cordova/plugins/batterystatus#0.0.0+20160316155526",
+    "cordova/plugins/camera": "registry:dt/cordova/plugins/camera#0.0.0+20160316155526",
+    "cordova/plugins/contacts": "registry:dt/cordova/plugins/contacts#0.0.0+20160830150057",
+    "cordova/plugins/device": "registry:dt/cordova/plugins/device#0.0.0+20160316155526",
+    "cordova/plugins/devicemotion": "registry:dt/cordova/plugins/devicemotion#0.0.0+20160316155526",
+    "cordova/plugins/deviceorientation": "registry:dt/cordova/plugins/deviceorientation#0.0.0+20160316155526",
+    "cordova/plugins/dialogs": "registry:dt/cordova/plugins/dialogs#0.0.0+20160316155526",
+    "cordova/plugins/filesystem": "registry:dt/cordova/plugins/filesystem#0.0.0+20160823215534",
+    "cordova/plugins/filetransfer": "registry:dt/cordova/plugins/filetransfer#0.0.0+20160329171220",
+    "cordova/plugins/globalization": "registry:dt/cordova/plugins/globalization#0.0.0+20160316155526",
+    "cordova/plugins/inappbrowser": "registry:dt/cordova/plugins/inappbrowser#0.0.0+20160316155526",
+    "cordova/plugins/keyboard": "registry:dt/cordova/plugins/keyboard#0.1.2+20160316155526",
+    "cordova/plugins/media": "registry:dt/cordova/plugins/media#0.0.0+20160316155526",
+    "cordova/plugins/mediacapture": "registry:dt/cordova/plugins/mediacapture#0.0.0+20160316155526",
+    "cordova/plugins/networkinformation": "registry:dt/cordova/plugins/networkinformation#0.0.0+20160514150524",
+    "cordova/plugins/push": "registry:dt/cordova/plugins/push#0.0.0+20160316155526",
+    "cordova/plugins/statusbar": "registry:dt/cordova/plugins/statusbar#0.0.0+20160316155526",
+    "cordova/plugins/vibration": "registry:dt/cordova/plugins/vibration#0.0.0+20160316155526"
+  }
+}
