@@ -3,6 +3,7 @@
   "version": "16.2.0-beta1",
   "description": "JavaScript library providing an interface for native bindings provided by AppWorks mobile and desktop clients.",
   "dependencies": {},
+  "repository": "https://github.com/opentext/appworks.js",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "^0.6.0",

@@ -18,6 +18,7 @@
     "cordova/plugins/networkinformation": "registry:dt/cordova/plugins/networkinformation#0.0.0+20160514150524",
     "cordova/plugins/push": "registry:dt/cordova/plugins/push#0.0.0+20160316155526",
     "cordova/plugins/statusbar": "registry:dt/cordova/plugins/statusbar#0.0.0+20160316155526",
-    "cordova/plugins/vibration": "registry:dt/cordova/plugins/vibration#0.0.0+20160316155526"
+    "cordova/plugins/vibration": "registry:dt/cordova/plugins/vibration#0.0.0+20160316155526",
+    "jasmine": "registry:dt/jasmine#2.5.0+20161025102649"
   }
 }
