@@ -67,17 +67,19 @@ export class AWProxy {
     }
 
     static device(): Device {
-        return device || {
-                cordova: null,
-                model: null,
-                platform: null,
-                uuid: null,
-                version: null,
-                manufacturer: null,
-                isVirtual: null,
-                serial: null,
-                capture: (navigator.device && navigator.device.capture) || new MockCapture()
-            };
+        let _device = device || {
+            cordova: null,
+            model: null,
+            platform: null,
+            uuid: null,
+            version: null,
+            manufacturer: null,
+            isVirtual: null,
+            serial: null,
+            capture: null
+        };
+        _device.capture = (navigator.device && navigator.device.capture) || new MockCapture();
+        return _device;
     }
 
     static geolocation() {

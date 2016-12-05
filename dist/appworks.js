@@ -238,7 +238,7 @@ var AWProxy = (function () {
         return navigator.contacts || new MockContacts();
     };
     AWProxy.device = function () {
-        return device || {
+        var _device = device || {
             cordova: null,
             model: null,
             platform: null,
@@ -247,8 +247,10 @@ var AWProxy = (function () {
             manufacturer: null,
             isVirtual: null,
             serial: null,
-            capture: (navigator.device && navigator.device.capture) || new MockCapture()
+            capture: null
         };
+        _device.capture = (navigator.device && navigator.device.capture) || new MockCapture();
+        return _device;
     };
     AWProxy.geolocation = function () {
         return navigator.geolocation || new MockGeolocation();
