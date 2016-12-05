@@ -7,18 +7,22 @@
   "dependencies": {},
   "repository": "https://github.com/opentext/appworks.js",
   "devDependencies": {
-    "babelrc-rollup": "^3.0.0",
+    "chai": "^3.5.0",
     "concurrently": "^3.1.0",
+    "mocha": "^3.2.0",
     "rollup-plugin-typescript": "^0.8.1",
     "rollup-plugin-uglify": "^1.0.1",
+    "ts-node": "^1.7.0",
     "tslint": "^4.0.1",
     "typescript": "^2.0.10",
     "typings": "^2.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --compilers ts:ts-node/register test/**.spec.ts test/**/*.spec.ts",
+    "test:watch": "mocha --compilers ts:ts-node/register test/**.spec.ts test/**/*.spec.ts --watch",
     "lint": "tslint -c tslint.json ./src/**/*.ts",
     "postinstall": "typings install",
+    "prebuild": "npm run test",
     "build": "concurrently 'rollup -c' 'rollup -c --environment BUILD:min'"
   },
   "author": "OpenText Inc",

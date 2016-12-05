@@ -1,5 +1,6 @@
 {
   "globalDependencies": {
+    "chai": "registry:dt/chai#3.4.0+20160601211834",
     "cordova": "registry:dt/cordova#0.0.0+20160607055823",
     "cordova/plugins/batterystatus": "registry:dt/cordova/plugins/batterystatus#0.0.0+20160316155526",
     "cordova/plugins/camera": "registry:dt/cordova/plugins/camera#0.0.0+20160316155526",
@@ -19,6 +20,10 @@
     "cordova/plugins/push": "registry:dt/cordova/plugins/push#0.0.0+20160316155526",
     "cordova/plugins/statusbar": "registry:dt/cordova/plugins/statusbar#0.0.0+20160316155526",
     "cordova/plugins/vibration": "registry:dt/cordova/plugins/vibration#0.0.0+20160316155526",
-    "jasmine": "registry:dt/jasmine#2.5.0+20161025102649"
+    "jasmine": "registry:dt/jasmine#2.5.0+20161025102649",
+    "mocha": "registry:dt/mocha#2.2.5+20161028141524"
+  },
+  "dependencies": {
+    "chai": "registry:npm/chai#3.5.0+20160723033700"
   }
 }

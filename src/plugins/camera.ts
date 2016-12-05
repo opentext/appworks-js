@@ -15,21 +15,21 @@ export class AWCamera extends AWPlugin {
 
     openGallery(options?: any) {
         options = options || {
-                destinationType: Camera.DestinationType.FILE_URI
+                destinationType: AWProxy.Camera().DestinationType.FILE_URI
             };
-        options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
+        options.sourceType = AWProxy.Camera().PictureSourceType.PHOTOLIBRARY;
         return this.getPicture((() => this.successHandler)(), (() => this.errorHandler)(), options);
     }
 
     takePicture(options?: any) {
         options = options || {
-                destinationType: Camera.DestinationType.FILE_URI,
-                encodingType: Camera.EncodingType.JPEG,
-                mediaType: Camera.MediaType.ALLMEDIA,
+                destinationType: AWProxy.Camera().DestinationType.FILE_URI,
+                encodingType: AWProxy.Camera().EncodingType.JPEG,
+                mediaType: AWProxy.Camera().MediaType.ALLMEDIA,
                 correctOrientation: true,
                 saveToPhotoAlbum: true
             };
-        options.sourceType = Camera.PictureSourceType.CAMERA;
+        options.sourceType = AWProxy.Camera().PictureSourceType.CAMERA;
         return this.getPicture((() => this.successHandler)(), (() => this.errorHandler)(), options);
     }
 }

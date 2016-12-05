@@ -1,18 +1,17 @@
 {
+  "compileOnSave": true,
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "lib": ["es2015", "dom"],
-    "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true,
+    "moduleResolution": "node"
   },
-  "compileOnSave": true,
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx"
+  ],
   "exclude": [
-    "node_modules/*",
-    "**/*-aot.ts"
+    "node_modules",
+    "src/**/tests/*.ts",
+    "src/**/tests/*.tsx"
   ]
 }
