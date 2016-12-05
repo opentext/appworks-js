@@ -1,12 +1,18 @@
 {
   "compilerOptions": {
-    "module": "amd",
-    "noEmitOnError": false,
-    "noImplicitAny": false,
-    "removeComments": false,
-    "sourceMap": true,
     "target": "es5",
-    "declaration": true,
-    "outfile": "src/appworks-bundle.js"
-  }
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["es2015", "dom"],
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+  },
+  "compileOnSave": true,
+  "exclude": [
+    "node_modules/*",
+    "**/*-aot.ts"
+  ]
 }

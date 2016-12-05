@@ -19,11 +19,11 @@ export class SecureStorage extends AWPlugin {
             progressHandler = this.onprogress,
             progress;
 
-        function newProgressEvent(result) {
+        function newProgressEvent(result: any) {
             let pe = new ProgressEvent(null);
-            pe.lengthComputable = result.lengthComputable;
-            pe.loaded = result.loaded;
-            pe.total = result.total;
+            (pe as any).lengthComputable = result.lengthComputable;
+            (pe as any).loaded = result.loaded;
+            (pe as any).total = result.total;
             return pe;
         }
 

@@ -4,7 +4,7 @@
   "authors": [
     "Jason Ibrahim <jibrahim@opentext.com>"
   ],
-  "description": "opentext mobile js library for secure storage, offline capability, device technology and more.",
+  "description": "OpenText AppWorks -- javascript library to facilitate secure storage, offline capability, device technology and more on AppWorks powered devices",
   "main": "dist/appworks.js",
   "keywords": [
     "opentext",

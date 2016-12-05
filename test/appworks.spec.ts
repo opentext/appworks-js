@@ -1,3 +1,2 @@
-import {AWAccelerometer} from "../src/plugins/accelerometer";
+/// <reference path="../src/appworks.d.ts" />
 
-AWAccelerometer

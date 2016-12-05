@@ -66,19 +66,19 @@ export class AWNotificationManager extends AWPlugin {
         this.openListener(handler, errorHandler);
     }
 
-    static alert(message: string, alertCallback: any, title?: string, buttonName?: string) {
+    alert(message: string, alertCallback: any, title?: string, buttonName?: string) {
         AWProxy.notification().alert(message, alertCallback, title, buttonName);
     }
 
-    static beep(times: number) {
+    beep(times: number) {
         AWProxy.notification().beep(times);
     }
 
-    static confirm(message: string, confirmCallback: any, title?: string, buttonLabels?: string[]) {
+    confirm(message: string, confirmCallback: any, title?: string, buttonLabels?: string[]) {
         AWProxy.notification().confirm(message, confirmCallback, title, buttonLabels);
     }
 
-    static prompt(message: string, promptCallback: any, title?: string, buttonLabels?: string[], defaultText?: string) {
+    prompt(message: string, promptCallback: any, title?: string, buttonLabels?: string[], defaultText?: string) {
         AWProxy.notification().prompt(message, promptCallback, title, buttonLabels, defaultText);
     }
 }

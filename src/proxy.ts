@@ -4,6 +4,7 @@
 /// <reference path='../typings/globals/cordova/plugins/networkinformation/index.d.ts'/>
 /// <reference path='../typings/globals/cordova/plugins/inappbrowser/index.d.ts'/>
 /// <reference path='../typings/globals/cordova/plugins/filesystem/index.d.ts'/>
+/// <reference path='../typings/globals/cordova/plugins/mediacapture/index.d.ts'/>
 
 import {MockContacts} from '../test/mock/contacts';
 import {MockAccelerometer} from '../test/mock/accelerometer';
@@ -75,7 +76,7 @@ export class AWProxy {
                 manufacturer: null,
                 isVirtual: null,
                 serial: null,
-                capture: new MockCapture()
+                capture: (navigator.device && navigator.device.capture) || new MockCapture()
             };
     }
 
