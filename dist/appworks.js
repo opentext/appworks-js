@@ -438,6 +438,9 @@ var AWAuth$1 = (function (_super) {
     AWAuth.prototype.gateway = function (successHandler, errorHandler) {
         AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'gateway', []);
     };
+    AWAuth.prototype.online = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'online', []);
+    };
     return AWAuth;
 }(AWPlugin));
 
@@ -731,6 +734,10 @@ var AWFinder$1 = (function (_super) {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'list', [path]);
     };
+    AWFinder.prototype.filePathToData = function (path) {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'filePathToData', [path]);
+    };
     AWFinder.prototype.openDirect = function (filename) {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'openDirect', [filename]);
@@ -923,6 +930,9 @@ var AWNotificationManager$1 = (function (_super) {
     };
     AWNotificationManager.prototype.didTapNotificationFromActivityView = function (handler, errorHandler) {
         this.openListener(handler, errorHandler);
+    };
+    AWNotificationManager.prototype.removeNotification = function (seqNo, handler, errorHandler) {
+        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'removeNotification', [seqNo]);
     };
     AWNotificationManager.prototype.alert = function (message, alertCallback, title, buttonName) {
         AWProxy.notification().alert(message, alertCallback, title, buttonName);

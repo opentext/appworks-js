@@ -16,6 +16,11 @@ describe('Auth', () => {
         expect(auth.getAuthResponse).to.not.equal(undefined);
     });
 
+    it('should define a online function', () => {
+        let auth = new AWAuth(Util.noop, Util.noop);
+        expect(auth.online).to.not.equal(undefined);
+    });
+
     it('should define a gateway function', () => {
         let auth = new AWAuth(Util.noop, Util.noop);
         expect(auth.gateway).to.not.equal(undefined);

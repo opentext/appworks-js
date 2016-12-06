@@ -66,6 +66,16 @@ export class AWNotificationManager extends AWPlugin {
         this.openListener(handler, errorHandler);
     }
 
+    removeNotification(seqNo, handler, errorHandler?: any) {
+        AWProxy.exec(
+            handler,
+            errorHandler,
+            'AWNotificationManager',
+            'removeNotification',
+            [seqNo]
+        );
+    }
+
     alert(message: string, alertCallback: any, title?: string, buttonName?: string) {
         AWProxy.notification().alert(message, alertCallback, title, buttonName);
     }

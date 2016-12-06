@@ -32,4 +32,14 @@ export class AWAuth extends AWPlugin {
             []
         );
     }
+
+    online(successHandler: any, errorHandler?: any) {
+        AWProxy.exec(
+            successHandler,
+            errorHandler,
+            'AWAuth',
+            'online',
+            []
+        );
+    }
 }

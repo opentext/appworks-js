@@ -40,6 +40,11 @@ describe('Notifications', () => {
         expect(o.openListener).to.not.equal(undefined);
     });
 
+    it('should define a removeNotificationi function', () => {
+        let o = new AWNotificationManager();
+        expect(o.removeNotification).to.not.equal(undefined);
+    });
+
     it('should define a alert function', () => {
         let o = new AWNotificationManager();
         expect(o.alert).to.not.equal(undefined);
