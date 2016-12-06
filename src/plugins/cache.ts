@@ -18,7 +18,7 @@ export class AWCache extends AWPlugin {
     }
 
     setItem(key: string, value: any) {
-        let result = window.localStorage.setItem(key, value);
+        let result = AWProxy.storage().setItem(key, value);
         if (this.options.usePersistentStorage) {
             this.writeLocalStorageDataToPersistentStorage();
         }
@@ -26,12 +26,12 @@ export class AWCache extends AWPlugin {
     }
 
     getItem(key: string) {
-        let result = window.localStorage.getItem(key);
+        let result = AWProxy.storage().getItem(key);
         return result;
     }
 
     removeItem(key: string) {
-        let result = window.localStorage.removeItem(key);
+        let result = AWProxy.storage().removeItem(key);
         if (this.options.usePersistentStorage) {
             this.writeLocalStorageDataToPersistentStorage();
         }
@@ -39,7 +39,7 @@ export class AWCache extends AWPlugin {
     }
 
     clear() {
-        let result = window.localStorage.clear();
+        let result = AWProxy.storage().clear();
         if (this.options.usePersistentStorage) {
             this.writeLocalStorageDataToPersistentStorage();
         }
@@ -89,9 +89,9 @@ export class AWCache extends AWPlugin {
             data = {},
             key,
             value;
-        for (i = 0; i < window.localStorage.length; i += 1) {
-            key = window.localStorage.key(i);
-            value = window.localStorage.getItem(key);
+        for (i = 0; i < AWProxy.storage().length; i += 1) {
+            key = AWProxy.storage().key(i);
+            value = AWProxy.storage().getItem(key);
             data[key] = value;
         }
         this.writeDataToPersistentStorage(JSON.stringify(data));

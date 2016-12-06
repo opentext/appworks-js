@@ -189,6 +189,48 @@ var LocalFileSystem;
     LocalFileSystem[LocalFileSystem["TEMPORARY"] = 1] = "TEMPORARY";
 })(LocalFileSystem || (LocalFileSystem = {}));
 
+/// <reference path="../../typings/globals/cordova/plugins/filetransfer/index.d.ts"/>
+var MockFileTransfer = (function () {
+    function MockFileTransfer() {
+    }
+    MockFileTransfer.prototype.upload = function (fileURL, server, successCallback, errorCallback, options, trustAllHosts) {
+    };
+    MockFileTransfer.prototype.download = function (source, target, successCallback, errorCallback, trustAllHosts, options) {
+    };
+    MockFileTransfer.prototype.abort = function () {
+    };
+    return MockFileTransfer;
+}());
+
+var Util = (function () {
+    function Util() {
+    }
+    Util.noop = function () {
+    };
+    return Util;
+}());
+
+var MockLocalStorage = (function () {
+    function MockLocalStorage() {
+    }
+    MockLocalStorage.prototype.getItem = function (key) {
+        return null;
+    };
+    MockLocalStorage.prototype.setItem = function (key, value) {
+        return null;
+    };
+    MockLocalStorage.prototype.removeItem = function (key) {
+        return null;
+    };
+    MockLocalStorage.prototype.clear = function () {
+        return null;
+    };
+    MockLocalStorage.prototype.key = function (index) {
+        return null;
+    };
+    return MockLocalStorage;
+}());
+
 /// <reference path='../typings/globals/cordova/index.d.ts'/>
 /// <reference path='../typings/globals/cordova/plugins/device/index.d.ts'/>
 /// <reference path='../typings/globals/cordova/plugins/media/index.d.ts'/>
@@ -288,9 +330,21 @@ var AWProxy = (function () {
             serial: null,
             capture: null
         };
-        _device.capture = (typeof navigator !== 'undefined') ?
-            (navigator.device && navigator.device.capture) || new MockCapture() : new MockCapture();
+        if (typeof navigator !== 'undefined' && navigator.device && navigator.device.capture) {
+            _device.capture = navigator.device.capture;
+        }
+        else {
+            _device.capture = new MockCapture();
+        }
         return _device;
+    };
+    AWProxy.document = function () {
+        return (typeof document !== 'undefined') ? document : {
+            addEventListener: Util.noop
+        };
+    };
+    AWProxy.filetransfer = function () {
+        return (typeof FileTransfer !== 'undefined') ? new FileTransfer() : new MockFileTransfer();
     };
     AWProxy.geolocation = function () {
         return (typeof navigator !== 'undefined') ? navigator.geolocation : new MockGeolocation();
@@ -329,6 +383,9 @@ var AWProxy = (function () {
         else {
             return (new MockWebview());
         }
+    };
+    AWProxy.storage = function () {
+        return (typeof window !== 'undefined') ? window.localStorage : new MockLocalStorage();
     };
     return AWProxy;
 }());
@@ -384,14 +441,6 @@ var AWAuth$1 = (function (_super) {
     return AWAuth;
 }(AWPlugin));
 
-var Util = (function () {
-    function Util() {
-    }
-    Util.noop = function () {
-    };
-    return Util;
-}());
-
 var AWCache$1 = (function (_super) {
     __extends(AWCache, _super);
     function AWCache(options) {
@@ -402,25 +451,25 @@ var AWCache$1 = (function (_super) {
         }
     }
     AWCache.prototype.setItem = function (key, value) {
-        var result = window.localStorage.setItem(key, value);
+        var result = AWProxy.storage().setItem(key, value);
         if (this.options.usePersistentStorage) {
             this.writeLocalStorageDataToPersistentStorage();
         }
         return result;
     };
     AWCache.prototype.getItem = function (key) {
-        var result = window.localStorage.getItem(key);
+        var result = AWProxy.storage().getItem(key);
         return result;
     };
     AWCache.prototype.removeItem = function (key) {
-        var result = window.localStorage.removeItem(key);
+        var result = AWProxy.storage().removeItem(key);
         if (this.options.usePersistentStorage) {
             this.writeLocalStorageDataToPersistentStorage();
         }
         return result;
     };
     AWCache.prototype.clear = function () {
-        var result = window.localStorage.clear();
+        var result = AWProxy.storage().clear();
         if (this.options.usePersistentStorage) {
             this.writeLocalStorageDataToPersistentStorage();
         }
@@ -457,9 +506,9 @@ var AWCache$1 = (function (_super) {
     };
     AWCache.prototype.writeLocalStorageDataToPersistentStorage = function () {
         var i, data = {}, key, value;
-        for (i = 0; i < window.localStorage.length; i += 1) {
-            key = window.localStorage.key(i);
-            value = window.localStorage.getItem(key);
+        for (i = 0; i < AWProxy.storage().length; i += 1) {
+            key = AWProxy.storage().key(i);
+            value = AWProxy.storage().getItem(key);
             data[key] = value;
         }
         this.writeDataToPersistentStorage(JSON.stringify(data));
@@ -598,6 +647,7 @@ var AWDevice$1 = (function (_super) {
         this.uuid = AWProxy.device().uuid;
         this.version = AWProxy.device().version;
         this.manufacturer = AWProxy.device().manufacturer;
+        this.capture = AWProxy.device().capture;
     }
     return AWDevice;
 }(AWPlugin));
@@ -622,7 +672,7 @@ var AWFileTransfer$1 = (function (_super) {
     __extends(AWFileTransfer, _super);
     function AWFileTransfer(successHandler, errorHandler) {
         _super.call(this, successHandler, errorHandler);
-        this.fileTransfer = new FileTransfer();
+        this.fileTransfer = AWProxy.filetransfer();
         this.onprogress = null;
     }
     AWFileTransfer.prototype.abort = function () {
@@ -894,10 +944,11 @@ var AWOfflineManager$1 = (function (_super) {
     function AWOfflineManager(options) {
         _super.call(this, Util.noop, Util.noop);
         var _this = this;
-        var queue;
+        var queue, document;
         this.cacheKey = '__appworksjs.deferredQueue';
         this.cache = new AWCache$1();
         this.options = options || { preserveEvents: false };
+        document = AWProxy.document();
         // process deferred queue when network status changes
         document.addEventListener('online', function () {
             _this.processDeferredQueue();

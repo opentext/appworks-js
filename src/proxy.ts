@@ -19,12 +19,15 @@ import {MockConnection} from '../test/mock/connection';
 import {MockVibrate} from '../test/mock/vibrate';
 import {MockWebview} from '../test/mock/webview';
 import {LocalFileSystem} from "./plugins/local-file-system";
+import {MockFileTransfer} from "../test/mock/file-transfer";
+import {Util} from "./util";
+import {MockLocalStorage} from "../test/mock/local-storage";
 
 declare var __aw_plugin_proxy;
 
 export class AWProxy {
 
-    static exec(successHandler: any, errorHandler: any, name: string, method: string, args: any[]) {
+    static exec(successHandler: any, errorHandler: any, name: string, method: string, args: any[]): void {
         if (typeof cordova !== 'undefined') {
             cordova.exec(successHandler, errorHandler, name, method, args);
         } else if (typeof __aw_plugin_proxy !== 'undefined') {
@@ -37,15 +40,15 @@ export class AWProxy {
         }
     }
 
-    static accelerometer() {
+    static accelerometer(): Accelerometer {
         return typeof 'navigator' !== undefined ? navigator.accelerometer : new MockAccelerometer();
     }
 
-    static camera() {
+    static camera(): Camera {
         return typeof navigator !== 'undefined' ? navigator.camera : new MockCamera();
     }
 
-    static Camera() {
+    static Camera(): any {
         return (typeof Camera !== 'undefined') ? Camera : {
             DestinationType: {
                 DATA_URL: null,
@@ -81,15 +84,15 @@ export class AWProxy {
         };
     }
 
-    static compass() {
+    static compass(): Compass {
         return typeof navigator !== 'undefined' ? navigator.compass : new MockCompass();
     }
 
-    static connection() {
+    static connection(): Connection {
         return typeof navigator !== 'undefined' ? navigator.connection : new MockConnection();
     }
 
-    static Connection() {
+    static Connection(): any {
         return (typeof Connection !== 'undefined') ? Connection : {
             UNKNOWN: null,
             ETHERNET: null,
@@ -102,7 +105,7 @@ export class AWProxy {
         };
     }
 
-    static contacts() {
+    static contacts(): Contacts {
         return typeof navigator !== 'undefined' ? navigator.contacts : new MockContacts();
     }
 
@@ -118,20 +121,33 @@ export class AWProxy {
             serial: null,
             capture: null
         };
-        _device.capture = (typeof navigator !== 'undefined') ?
-            (navigator.device && navigator.device.capture) || new MockCapture() : new MockCapture();
+        if (typeof navigator !== 'undefined' && navigator.device && navigator.device.capture) {
+            _device.capture = navigator.device.capture;
+        } else {
+            _device.capture = new MockCapture();
+        }
         return _device;
     }
 
-    static geolocation() {
+    static document(): any {
+        return (typeof document !== 'undefined') ? document : {
+            addEventListener: Util.noop
+        };
+    }
+
+    static filetransfer(): FileTransfer {
+        return (typeof FileTransfer !== 'undefined') ? new FileTransfer() : new MockFileTransfer();
+    }
+
+    static geolocation(): Geolocation {
         return (typeof navigator !== 'undefined') ? navigator.geolocation : new MockGeolocation();
     }
 
-    static localFileSystem() {
+    static localFileSystem(): any {
         return LocalFileSystem;
     }
 
-    static media(src, successHandler, errorHandler, statusChangeHandler) {
+    static media(src, successHandler, errorHandler, statusChangeHandler): Media {
         if (typeof Media !== 'undefined') {
             return new Media(src, successHandler, errorHandler, statusChangeHandler);
         } else {
@@ -139,20 +155,20 @@ export class AWProxy {
         }
     }
 
-    static notification() {
+    static notification(): Notification {
         return (typeof navigator !== 'undefined') ? navigator.notification : new MockNotification();
     }
 
     static requestFileSystem(type: LocalFileSystem,
                              size: number,
                              successCallback: (fileSystem: FileSystem) => void,
-                             errorCallback?: (fileError: FileError) => void) {
+                             errorCallback?: (fileError: FileError) => void): void {
         if (window.requestFileSystem) {
             return window.requestFileSystem(type, size, successCallback, errorCallback);
         }
     }
 
-    static vibrate(time: number) {
+    static vibrate(time: number): void {
         if (typeof navigator !== 'undefined' && navigator.vibrate) {
             return navigator.vibrate(time);
         } else {
@@ -166,5 +182,9 @@ export class AWProxy {
         } else {
             return (new MockWebview() as InAppBrowser);
         }
+    }
+
+    static storage(): any {
+        return (typeof window !== 'undefined') ? window.localStorage : new MockLocalStorage();
     }
 }

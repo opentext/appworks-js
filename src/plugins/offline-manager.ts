@@ -18,13 +18,13 @@ export class AWOfflineManager extends AWPlugin {
 
         let _this = this;
 
-        let queue;
-
+        let queue, document;
 
         this.cacheKey = '__appworksjs.deferredQueue';
         this.cache = new AWCache();
         this.options = options || {preserveEvents: false};
 
+        document = AWProxy.document();
         // process deferred queue when network status changes
         document.addEventListener('online', function () {
             _this.processDeferredQueue();

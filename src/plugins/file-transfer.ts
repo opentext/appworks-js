@@ -3,6 +3,7 @@
 /// <reference path="../../typings/globals/cordova/plugins/filetransfer/index.d.ts"/>
 
 import {AWPlugin} from '../plugin';
+import {AWProxy} from "../proxy";
 
 export class AWFileTransfer extends AWPlugin {
 
@@ -11,7 +12,7 @@ export class AWFileTransfer extends AWPlugin {
 
     constructor(successHandler: any, errorHandler?: any) {
         super(successHandler, errorHandler);
-        this.fileTransfer = new FileTransfer();
+        this.fileTransfer = AWProxy.filetransfer();
         this.onprogress = null;
     }
 

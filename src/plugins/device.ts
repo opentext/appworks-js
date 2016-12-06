@@ -9,6 +9,7 @@ export class AWDevice extends AWPlugin {
     public uuid: any;
     public version: any;
     public manufacturer: any;
+    public capture: any;
 
     constructor() {
         super(() => {}, () => {});
@@ -18,5 +19,6 @@ export class AWDevice extends AWPlugin {
         this.uuid = AWProxy.device().uuid;
         this.version = AWProxy.device().version;
         this.manufacturer = AWProxy.device().manufacturer;
+        this.capture = AWProxy.device().capture;
     }
 }
