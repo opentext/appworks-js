@@ -1,6 +1,3 @@
-/// <reference path="../typings/globals/cordova/index.d.ts"/>
-/// <reference path="../typings/globals/cordova/plugins/inappbrowser/index.d.ts"/>
-
 declare namespace Appworks {
     /** */
     export interface AWAccelerometer {

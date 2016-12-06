@@ -2,6 +2,7 @@
   "name": "appworks-js",
   "version": "16.2.0-beta1",
   "main": "dist/appworks.js",
+  "types": "index.d.ts",
   "main:min": "dist/appworks.min.js",
   "description": "JavaScript library providing an interface for native bindings provided by AppWorks mobile and desktop clients.",
   "dependencies": {},
