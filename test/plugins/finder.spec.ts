@@ -20,9 +20,4 @@ describe('Finder', () => {
         let o = new AWFinder(Util.noop, Util.noop);
         expect(o.list).to.not.equal(undefined);
     });
-
-    it('should define an filePathToData function', () => {
-        let o = new AWFinder(Util.noop, Util.noop);
-        expect(o.filePathToData).to.not.equal(undefined);
-    });
 });
