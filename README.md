@@ -143,6 +143,31 @@ gateway(successHandler: any, errorHandler?: any)
 ````
 Returns the url of the gateway to the ````successHandler```` passed in.
 
+###### online
+````
+online(successHandler: any, errorHandler?: any)
+````
+Returns a boolean value based on the current network connection, visibility of the gateway and if the user has signed in online (not with offline pin)
+
+##### Example:
+
+````js
+var auth = new Appworks.Auth();
+var weAreOnline = false;
+
+$('#click-me').click(function () {
+    auth.online(function(status) {
+      // Will return true if the device is connected to a network/data, the gateway is responsive to us, and the user is not logged in with the offline pin.
+      // Otherwise this will return false.
+      weAreOnline = status;
+    }, function(error) {
+      // Error function calls in the event an error.
+      console.log(error);
+    });
+});
+````
+
+
 #### AWWebView
 The web view plugin allows you to open links via the in-app browser. This is great for giving your app a native feel
 when opening external links
@@ -1025,6 +1050,7 @@ var notificationManager = new Appworks.AWNotificationManager();
 - getNotifications
 - openListener
 - getOpeningNotification
+- removeNotification
 
 ##### enablePushNotifications
 ````ts
@@ -1061,6 +1087,18 @@ Obtain the data of the notification used to open the app.
 Parameters:
 - handler: a callback function that will be passed the opening notification when the app is opening via a notification tap.
 - errorHandler: a function to get executed if there is no opening notification
+
+##### removeNotification
+````ts
+removeNotification(seqNo: any, handler: any, errorHandler?: any)
+````
+Delete a notification with a given seqNo.
+
+Parameters:
+- seqNo: the id of the notification to be deleted.
+- handler: the function that will be called upon successful deletion of the notification.
+- errorHandler: the function that will be called if the notification fails to be deleted.
+
 
 ##### openListener
 ````ts
@@ -1122,6 +1160,18 @@ function getOpeningNotification() {
         console.log(error);
     });
 }
+
+function removeNotification(seqNo) {
+    // delete a notification with the given seqNo
+    notificationManager.removeNotification(seqNo, function () {
+        // success function
+        console.log("Notification with seqNo " + seqNo + ", has been deleted");
+    }, function (error) {
+        // error function
+        console.log("Notification with seqNo " + seqNo + ", could not be deleted: " + error);
+    });
+}
+ 
 
 ````
 

@@ -27,16 +27,6 @@ export class AWFinder extends AWPlugin {
         );
     }
 
-    filePathToData(path: string) {
-        AWProxy.exec(
-            (() => this.successHandler)(),
-            (() => this.errorHandler)(),
-            'AWFinder',
-            'filePathToData',
-            [path]
-        );
-    }
-
     private openDirect(filename: string) {
         AWProxy.exec(
             (() => this.successHandler)(),

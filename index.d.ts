@@ -238,6 +238,6 @@ declare namespace Appworks {
     /** */
     export interface AWWebView {
         /** */
-        open(url: string, target?: string, options?: string): InAppBrowser;
+        open(url: string, target?: string, options?: string);
     }
 }
