@@ -734,10 +734,6 @@ var AWFinder$1 = (function (_super) {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'list', [path]);
     };
-    AWFinder.prototype.filePathToData = function (path) {
-        var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'filePathToData', [path]);
-    };
     AWFinder.prototype.openDirect = function (filename) {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'openDirect', [filename]);
@@ -952,8 +948,8 @@ var AWNotificationManager$1 = (function (_super) {
 var AWOfflineManager$1 = (function (_super) {
     __extends(AWOfflineManager, _super);
     function AWOfflineManager(options) {
-        _super.call(this, Util.noop, Util.noop);
         var _this = this;
+        _super.call(this, Util.noop, Util.noop);
         var queue, document;
         this.cacheKey = '__appworksjs.deferredQueue';
         this.cache = new AWCache$1();
