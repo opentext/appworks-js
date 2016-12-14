@@ -38,7 +38,7 @@ export class AWFileTransfer extends AWPlugin {
         } else {
             this.fileTransfer.download(
                 encodeURI(url),
-                AWProxy.File().documentsDirectory + '/' + target,
+                AWProxy.file().documentsDirectory + '/' + target,
                 successHandler,
                 errorHandler,
                 false,
@@ -80,7 +80,7 @@ export class AWFileTransfer extends AWPlugin {
             );
         } else {
             this.fileTransfer.upload(
-                AWProxy.File().documentsDirectory + '/' + source,
+                AWProxy.file().documentsDirectory + '/' + source,
                 encodeURI(url),
                 successHandler,
                 errorHandler,

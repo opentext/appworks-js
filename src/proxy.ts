@@ -135,7 +135,7 @@ export class AWProxy {
         };
     }
 
-    static File(): any {
+    static file(): any {
         if (typeof cordova !== 'undefined') {
             return cordova.file;
         } else {
