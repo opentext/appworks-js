@@ -135,7 +135,22 @@ export class AWProxy {
         };
     }
 
+    static File(): any {
+        if (typeof cordova !== 'undefined') {
+            return cordova.file;
+        } else {
+            return {
+                documentsDirectory: ''
+            };
+        }
+    }
+
     static filetransfer(): FileTransfer {
+        return (typeof FileTransfer !== 'undefined') ? new FileTransfer() : new MockFileTransfer();
+    }
+
+    // alias name
+    static fileTransfer(): FileTransfer {
         return (typeof FileTransfer !== 'undefined') ? new FileTransfer() : new MockFileTransfer();
     }
 

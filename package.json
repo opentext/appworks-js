@@ -1,6 +1,6 @@
 {
   "name": "appworks-js",
-  "version": "16.2.0-alpha.1",
+  "version": "16.2.1-alpha.1",
   "main": "dist/appworks.js",
   "types": "index.d.ts",
   "main:min": "dist/appworks.min.js",

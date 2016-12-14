@@ -27,19 +27,8 @@ export class AWFileTransfer extends AWPlugin {
 
         options = options || {};
 
-        function gotSharedContainerUrl(containerUrl?: string) {
-            new FileTransfer().download(
-                encodeURI(url),
-                containerUrl + '/' + target,
-                successHandler,
-                errorHandler,
-                false,
-                options
-            );
-        }
-
         if (shared) {
-            cordova.exec(
+            AWProxy.exec(
                 gotSharedContainerUrl,
                 (() => this.errorHandler)(),
                 'AWSharedDocumentProvider',
@@ -49,7 +38,7 @@ export class AWFileTransfer extends AWPlugin {
         } else {
             this.fileTransfer.download(
                 encodeURI(url),
-                cordova.file.documentsDirectory + '/' + target,
+                AWProxy.File().documentsDirectory + '/' + target,
                 successHandler,
                 errorHandler,
                 false,
@@ -57,6 +46,17 @@ export class AWFileTransfer extends AWPlugin {
             );
         }
         return this.fileTransfer;
+
+        function gotSharedContainerUrl(containerUrl?: string) {
+            AWProxy.filetransfer().download(
+                encodeURI(url),
+                containerUrl + '/' + target,
+                successHandler,
+                errorHandler,
+                false,
+                options
+            );
+        }
     }
 
     progressHandler(handler: any) {
@@ -70,19 +70,8 @@ export class AWFileTransfer extends AWPlugin {
 
         options = options || {};
 
-        function gotSharedContainerUrl(containerUrl?: string) {
-            new FileTransfer().upload(
-                containerUrl + '/' + source,
-                encodeURI(url),
-                successHandler,
-                errorHandler,
-                options,
-                false
-            );
-        }
-
         if (shared) {
-            cordova.exec(
+            AWProxy.exec(
                 gotSharedContainerUrl,
                 (() => this.errorHandler)(),
                 'AWSharedDocumentProvider',
@@ -91,7 +80,7 @@ export class AWFileTransfer extends AWPlugin {
             );
         } else {
             this.fileTransfer.upload(
-                cordova.file.documentsDirectory + '/' + source,
+                AWProxy.File().documentsDirectory + '/' + source,
                 encodeURI(url),
                 successHandler,
                 errorHandler,
@@ -101,5 +90,16 @@ export class AWFileTransfer extends AWPlugin {
         }
 
         return this.fileTransfer;
+
+        function gotSharedContainerUrl(containerUrl?: string) {
+            AWProxy.filetransfer().upload(
+                containerUrl + '/' + source,
+                encodeURI(url),
+                successHandler,
+                errorHandler,
+                options,
+                false
+            );
+        }
     }
 }
