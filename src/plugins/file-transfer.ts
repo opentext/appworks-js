@@ -36,15 +36,15 @@ export class AWFileTransfer extends AWPlugin {
                 []
             );
         } else {
+            this.fileTransfer.download(
+                encodeURI(url),
+                AWProxy.file().documentsDirectory + '/' + target,
+                successHandler,
+                errorHandler,
+                false,
+                options
+            );
         }
-        this.fileTransfer.download(
-            encodeURI(url),
-            AWProxy.file().documentsDirectory + '/' + target,
-            successHandler,
-            errorHandler,
-            options,
-            false
-        );
         return this.fileTransfer;
 
         function gotSharedContainerUrl(containerUrl?: string) {
