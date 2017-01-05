@@ -343,7 +343,21 @@ var AWProxy = (function () {
             addEventListener: Util.noop
         };
     };
+    AWProxy.file = function () {
+        if (typeof cordova !== 'undefined') {
+            return cordova.file;
+        }
+        else {
+            return {
+                documentsDirectory: ''
+            };
+        }
+    };
     AWProxy.filetransfer = function () {
+        return (typeof FileTransfer !== 'undefined') ? new FileTransfer() : new MockFileTransfer();
+    };
+    // alias name
+    AWProxy.fileTransfer = function () {
         return (typeof FileTransfer !== 'undefined') ? new FileTransfer() : new MockFileTransfer();
     };
     AWProxy.geolocation = function () {
@@ -685,16 +699,16 @@ var AWFileTransfer$1 = (function (_super) {
         var _this = this;
         var successHandler = this.successHandler, errorHandler = this.errorHandler;
         options = options || {};
-        function gotSharedContainerUrl(containerUrl) {
-            new FileTransfer().download(encodeURI(url), containerUrl + '/' + target, successHandler, errorHandler, false, options);
-        }
         if (shared) {
-            cordova.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), 'AWSharedDocumentProvider', 'containerForCurrentApp', []);
+            AWProxy.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), 'AWSharedDocumentProvider', 'containerForCurrentApp', []);
         }
         else {
-            this.fileTransfer.download(encodeURI(url), cordova.file.documentsDirectory + '/' + target, successHandler, errorHandler, false, options);
+            this.fileTransfer.download(encodeURI(url), AWProxy.file().documentsDirectory + '/' + target, successHandler, errorHandler, false, options);
         }
         return this.fileTransfer;
+        function gotSharedContainerUrl(containerUrl) {
+            AWProxy.filetransfer().download(encodeURI(url), containerUrl + '/' + target, successHandler, errorHandler, false, options);
+        }
     };
     AWFileTransfer.prototype.progressHandler = function (handler) {
         this.fileTransfer.onprogress = handler;
@@ -703,16 +717,16 @@ var AWFileTransfer$1 = (function (_super) {
         var _this = this;
         var successHandler = this.successHandler, errorHandler = this.errorHandler;
         options = options || {};
-        function gotSharedContainerUrl(containerUrl) {
-            new FileTransfer().upload(containerUrl + '/' + source, encodeURI(url), successHandler, errorHandler, options, false);
-        }
         if (shared) {
-            cordova.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), 'AWSharedDocumentProvider', 'containerForCurrentApp', []);
+            AWProxy.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), 'AWSharedDocumentProvider', 'containerForCurrentApp', []);
         }
         else {
-            this.fileTransfer.upload(cordova.file.documentsDirectory + '/' + source, encodeURI(url), successHandler, errorHandler, options, false);
+            this.fileTransfer.upload(AWProxy.file().documentsDirectory + '/' + source, encodeURI(url), successHandler, errorHandler, options, false);
         }
         return this.fileTransfer;
+        function gotSharedContainerUrl(containerUrl) {
+            AWProxy.filetransfer().upload(containerUrl + '/' + source, encodeURI(url), successHandler, errorHandler, options, false);
+        }
     };
     return AWFileTransfer;
 }(AWPlugin));

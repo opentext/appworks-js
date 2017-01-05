@@ -11,6 +11,7 @@
     "chai": "^3.5.0",
     "concurrently": "^3.1.0",
     "mocha": "^3.2.0",
+    "rollup": "^0.40.2",
     "rollup-plugin-typescript": "^0.8.1",
     "rollup-plugin-uglify": "^1.0.1",
     "ts-node": "1.7.0",
@@ -24,7 +25,7 @@
     "lint": "tslint -c tslint.json ./src/**/*.ts",
     "postinstall": "typings install",
     "prebuild": "npm run test",
-    "build": "concurrently 'rollup -c' 'rollup -c --environment BUILD:min'"
+    "build": "concurrently \"rollup -c\" \"rollup -c --environment BUILD:min\""
   },
   "author": "OpenText Inc",
   "license": "LICENSE"
