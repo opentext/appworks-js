@@ -1,5 +1,3 @@
-/// <reference path="../../typings/globals/cordova/plugins/devicemotion/index.d.ts"/>
-
 export class MockGeolocation implements Geolocation {
     clearWatch(watchId: number): void {
     }

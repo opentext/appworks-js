@@ -1,5 +1,3 @@
-/// <reference path="../../typings/globals/cordova/plugins/mediacapture/index.d.ts"/>
-
 export class MockCapture implements Capture {
     supportedAudioModes: ConfigurationData[];
     supportedImageModes: ConfigurationData[];

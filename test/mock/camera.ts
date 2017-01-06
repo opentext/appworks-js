@@ -1,5 +1,3 @@
-/// <reference path="../../typings/globals/cordova/plugins/camera/index.d.ts"/>
-
 export class MockCamera implements Camera {
 
     cleanup(

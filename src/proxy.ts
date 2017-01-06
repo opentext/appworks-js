@@ -1,23 +1,14 @@
-/// <reference path='../typings/globals/cordova/index.d.ts'/>
-/// <reference path='../typings/globals/cordova/plugins/device/index.d.ts'/>
-/// <reference path='../typings/globals/cordova/plugins/media/index.d.ts'/>
-/// <reference path='../typings/globals/cordova/plugins/networkinformation/index.d.ts'/>
-/// <reference path='../typings/globals/cordova/plugins/inappbrowser/index.d.ts'/>
-/// <reference path='../typings/globals/cordova/plugins/filesystem/index.d.ts'/>
-/// <reference path='../typings/globals/cordova/plugins/mediacapture/index.d.ts'/>
-/// <reference path='../typings/globals/cordova/plugins/camera/index.d.ts'/>
-
-import {MockContacts} from '../test/mock/contacts';
-import {MockAccelerometer} from '../test/mock/accelerometer';
-import {MockCamera} from '../test/mock/camera';
-import {MockCompass} from '../test/mock/compass';
-import {MockGeolocation} from '../test/mock/geolocation';
-import {MockMedia} from '../test/mock/media';
-import {MockCapture} from '../test/mock/capture';
-import {MockNotification} from '../test/mock/notifications';
-import {MockConnection} from '../test/mock/connection';
-import {MockVibrate} from '../test/mock/vibrate';
-import {MockWebview} from '../test/mock/webview';
+import {MockContacts} from "../test/mock/contacts";
+import {MockAccelerometer} from "../test/mock/accelerometer";
+import {MockCamera} from "../test/mock/camera";
+import {MockCompass} from "../test/mock/compass";
+import {MockGeolocation} from "../test/mock/geolocation";
+import {MockMedia} from "../test/mock/media";
+import {MockCapture} from "../test/mock/capture";
+import {MockNotification} from "../test/mock/notifications";
+import {MockConnection} from "../test/mock/connection";
+import {MockVibrate} from "../test/mock/vibrate";
+import {MockWebview} from "../test/mock/webview";
 import {LocalFileSystem} from "./plugins/local-file-system";
 import {MockFileTransfer} from "../test/mock/file-transfer";
 import {Util} from "./util";
@@ -30,7 +21,7 @@ export class AWProxy {
     static exec(successHandler: any, errorHandler: any, name: string, method: string, args: any[]): void {
         if (typeof cordova !== 'undefined') {
             cordova.exec(successHandler, errorHandler, name, method, args);
-        } else if (typeof __aw_plugin_proxy !== 'undefined') {
+        } else if (AWProxy.isDesktopEnv()) {
             __aw_plugin_proxy.exec(successHandler, errorHandler, name, method, args);
         } else {
             console.error('No proxy objects defined - tried [Cordova, __aw_plugin_proxy]');
@@ -110,8 +101,9 @@ export class AWProxy {
     }
 
     static device(): Device {
-        let _device = (typeof device !== 'undefined') ? device : {
+        let _device: Device = (typeof device !== 'undefined') ? device : {
             cordova: null,
+            available: true,
             model: null,
             platform: null,
             uuid: null,
@@ -121,6 +113,7 @@ export class AWProxy {
             serial: null,
             capture: null
         };
+
         if (typeof navigator !== 'undefined' && navigator.device && navigator.device.capture) {
             _device.capture = navigator.device.capture;
         } else {
@@ -146,12 +139,22 @@ export class AWProxy {
     }
 
     static filetransfer(): FileTransfer {
-        return (typeof FileTransfer !== 'undefined') ? new FileTransfer() : new MockFileTransfer();
+        return AWProxy.doGetFileTransfer();
     }
 
     // alias name
     static fileTransfer(): FileTransfer {
-        return (typeof FileTransfer !== 'undefined') ? new FileTransfer() : new MockFileTransfer();
+        return AWProxy.doGetFileTransfer();
+    }
+
+    static doGetFileTransfer(): FileTransfer {
+        if (AWProxy.isDesktopEnv()) {
+            const plugin = AWProxy.getDesktopPlugin('AWFileTransfer');
+            return (plugin !== null) ? plugin : new MockFileTransfer();
+        } else {
+            return (typeof FileTransfer !== 'undefined') ?
+                new FileTransfer() : new MockFileTransfer();
+        }
     }
 
     static geolocation(): Geolocation {
@@ -202,4 +205,21 @@ export class AWProxy {
     static storage(): any {
         return (typeof window !== 'undefined') ? window.localStorage : new MockLocalStorage();
     }
+
+    /**
+     * Are we executing within the AppWorks Desktop context.
+     *
+     * @returns {boolean} true if this is a desktop environment, false otherwise
+     */
+    static isDesktopEnv(): boolean {
+        return typeof __aw_plugin_proxy !== 'undefined';
+    }
+
+    static getDesktopPlugin(pluginName: string): any {
+        if (!AWProxy.isDesktopEnv())
+            throw new Error('Desktop plugins are only available for use in the AppWorks Desktop environment');
+        // the proxy exposed by desktop has a method to allow retrieval of plugin instances
+        return __aw_plugin_proxy.getPlugin(pluginName);
+    }
+
 }

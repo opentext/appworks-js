@@ -56,7 +56,7 @@ module.exports = function (grunt) {
         },
         typescript: {
             base: {
-                src: ['src/*.ts', 'src/*.d.ts', 'typings/**/*.d.ts', 'typings/**/**/*.d.ts'],
+                src: ['src/*.ts', 'src/*.d.ts'],
                 dest: 'dist',
                 options: {
                     module: 'amd', //or commonjs

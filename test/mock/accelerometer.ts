@@ -1,5 +1,3 @@
-/// <reference path="../../typings/globals/cordova/plugins/devicemotion/index.d.ts"/>
-
 export class MockAccelerometer implements Accelerometer {
     getCurrentAcceleration(accelerometerSuccess: (acceleration: Acceleration) => void,
                            accelerometerError: () => void,

@@ -25,7 +25,10 @@ function dest() {
 }
 
 function plugins() {
-    let use = [typescript()];
+    // as we are using a different version of Typescript to the one supplied by rollup we need to require it here
+    let use = [typescript({
+        typescript: require('typescript')
+    })];
     if (process.env.BUILD === 'min') {
         use.push(uglify());
     }

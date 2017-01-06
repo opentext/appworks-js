@@ -1,7 +1,5 @@
-/// <reference path='../typings/globals/chai/index.d.ts' />
-/// <reference path='../typings/globals/mocha/index.d.ts' />
-
 import {expect} from 'chai';
+
 import {
     AWAccelerometer, Accelerometer, AppManager, AWAppManager,
     Vibration, WebView, AWAuth, Auth, AWCache, Cache, AWCamera, AWCompass, Compass, AWComponent, Component, AWContacts,

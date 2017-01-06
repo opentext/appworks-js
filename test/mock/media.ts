@@ -1,5 +1,3 @@
-/// <reference path="../../typings/globals/cordova/plugins/media/index.d.ts"/>
-
 export class MockMedia implements Media {
     position: number;
     duration: number;

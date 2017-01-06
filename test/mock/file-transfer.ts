@@ -1,5 +1,3 @@
-/// <reference path="../../typings/globals/cordova/plugins/filetransfer/index.d.ts"/>
-
 export class MockFileTransfer implements FileTransfer {
     onprogress: (event: ProgressEvent) => void;
 

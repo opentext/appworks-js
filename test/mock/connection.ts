@@ -1,7 +1,3 @@
-/// <reference path="../../typings/globals/cordova/plugins/networkinformation/index.d.ts"/>
-
-/// <reference path="../../typings/globals/cordova/plugins/dialogs/index.d.ts"/>
-
 export class MockConnection implements Connection {
     type: string;
 

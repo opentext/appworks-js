@@ -1,14 +1,10 @@
-/// <reference path="../../typings/globals/cordova/index.d.ts"/>
-/// <reference path="../../typings/globals/cordova/plugins/filesystem/index.d.ts"/>
-/// <reference path="../../typings/globals/cordova/plugins/filetransfer/index.d.ts"/>
-
 import {AWPlugin} from '../plugin';
 import {AWProxy} from "../proxy";
 
 export class AWFileTransfer extends AWPlugin {
 
     public onprogress: any;
-    private fileTransfer: any;
+    private fileTransfer: FileTransfer;
 
     constructor(successHandler: any, errorHandler?: any) {
         super(successHandler, errorHandler);

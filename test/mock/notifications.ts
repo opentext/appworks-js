@@ -1,5 +1,3 @@
-/// <reference path="../../typings/globals/cordova/plugins/dialogs/index.d.ts"/>
-
 export class MockNotification implements Notification {
     alert(message: string,
           alertCallback: () => void,

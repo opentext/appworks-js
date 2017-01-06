@@ -1,5 +1,3 @@
-/// <reference path="../../typings/globals/cordova/plugins/contacts/index.d.ts"/>
-
 export class MockContacts implements Contacts {
     fieldType: any;
 

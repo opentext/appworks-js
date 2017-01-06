@@ -1,5 +1,3 @@
-/// <reference path="../../typings/globals/cordova/plugins/deviceorientation/index.d.ts"/>
-
 export class MockCompass implements Compass {
     getCurrentHeading(
         onSuccess: (heading: CompassHeading) => void,
