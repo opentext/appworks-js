@@ -1,53 +1,54 @@
-import {AWPlugin} from '../plugin';
-import {AWProxy} from '../proxy';
-import {Util} from '../util';
+import {AWPlugin} from "../plugin";
+import {AWProxy} from "../proxy";
+import {Util} from "../util";
+import {Promise} from "es6-promise";
 
 export class AWCache extends AWPlugin {
 
     private options: any;
 
     constructor(options?: any) {
-
         super(Util.noop, Util.noop);
-
         this.options = options || {usePersistentStorage: false};
-
-        if (this.options.usePersistentStorage) {
+        if (this.usePersistentStorage())
             this.loadPersistentDataIntoLocalStorage();
-        }
     }
 
-    setItem(key: string, value: any) {
-        let result = AWProxy.storage().setItem(key, value);
-        if (this.options.usePersistentStorage) {
-            this.writeLocalStorageDataToPersistentStorage();
-        }
-        return result;
+    setItem(key: string, value: any): Promise<any> {
+        return new Promise((resolve, reject) => {
+            AWProxy.storage().setItem(key, value).then(() => {
+                if (this.usePersistentStorage())
+                    this.writeLocalStorageDataToPersistentStorage();
+                resolve();
+            }, reject);
+        });
     }
 
-    getItem(key: string) {
-        let result = AWProxy.storage().getItem(key);
-        return result;
+    getItem(key: string): Promise<any> {
+        return AWProxy.storage().getItem(key);
     }
 
-    removeItem(key: string) {
-        let result = AWProxy.storage().removeItem(key);
-        if (this.options.usePersistentStorage) {
-            this.writeLocalStorageDataToPersistentStorage();
-        }
-        return result;
+    removeItem(key: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            AWProxy.storage().removeItem(key).then(() => {
+                if (this.usePersistentStorage())
+                    this.writeLocalStorageDataToPersistentStorage();
+                resolve();
+            }, reject);
+        });
     }
 
-    clear() {
-        let result = AWProxy.storage().clear();
-        if (this.options.usePersistentStorage) {
-            this.writeLocalStorageDataToPersistentStorage();
-        }
-        return result;
+    clear(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            AWProxy.storage().clear().then(() => {
+                if (this.usePersistentStorage())
+                    this.writeLocalStorageDataToPersistentStorage();
+                resolve();
+            }, reject);
+        });
     }
 
     private readDataFromPersistentStorage(callback: any, errorCallback?: any) {
-
         let fail = function (error) {
             console.error(error.code);
         };
@@ -132,4 +133,9 @@ export class AWCache extends AWPlugin {
             }
         });
     }
+
+    private usePersistentStorage(): boolean {
+        return !AWProxy.isDesktopEnv() && this.options.usePersistentStorage;
+    }
+
 }

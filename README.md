@@ -1294,7 +1294,7 @@ Get the current network status of the device
 ````
 
 #### AWCache
-The AWCache plugin allows you to temporarily cache data using the device local storage.
+The AWCache plugin allows you to temporarily cache JSON data using the device local storage, or permanently store it using the file system.
 
 ##### Methods:
 
@@ -1302,7 +1302,7 @@ The AWCache plugin allows you to temporarily cache data using the device local s
 - getItem
 - clear
 
-All methods are synchronous. The constructor accepts an options object.
+All methods are asynchronous and return a Promise. The constructor accepts an options object.
 ````js
 var options = {
     usePersistentStorage: true
@@ -1310,12 +1310,12 @@ var options = {
 
 var cache = new Appworks.AWCache(options);
 ````
-
+Please note that in the AppWorks Desktop environment persistent storage is always used.
 ###### setItem
 ````ts
 setItem(key: string, value: any)
 ````
-set an item in the cache. this method is synchronous.
+set an item in the cache. this method is asynchronous.
 
 parameters:
 - key: the key to store the item under
@@ -1324,14 +1324,20 @@ parameters:
 Example:
 ````js
 var cache = new Appworks.AWCache();
-cache.setItem('myKey', 1234);
+cache.setItem('myKey', 1234).then(
+    function() { 
+        console.log('stored 1234 under key "myKey"');
+    },
+    function(err) {
+        console.error('failed to store 1234 under key "myKey" in cache - ' + err);
+    });
 ````
 
 ###### getItem
 ````ts
 getItem(key: string)
 ````
-get an item from the cache. this method is synchronous.
+get an item from the cache. this method is asynchronous.
 
 parameters:
 - key: the key of the item to retrieve
@@ -1339,16 +1345,32 @@ parameters:
 Example:
 ````js
 var cache = new Appworks.AWCache();
-cache.setItem('myKey', 1234);
-
-var item = cache.getItem('myKey');
+cache.getItem('myKey').then(
+    function(item) {
+        console.log('we got the item ' + item + 'from the cache using key "myKey"');
+    },
+    function(err) { 
+        console.error(`failed to get 'myKey' from cache - ` + err);
+    });
 ````
 
 ##### removeItem
 ````ts
 removeItem(key: string)
 ````
-remove an item from the cache. this method is synchronous.
+remove an item from the cache. this method is asynchronous.
+
+Example:
+````js
+var cache = new Appworks.AWCache();
+cache.removeItem('myKey').then(
+    function() {
+        console.log('successfully removed "myKey" from the cache');
+    },
+    function(err) {
+        console.error('failed to remove "myKey" from the cache - ' + err);
+    });
+````
 
 ###### clear
 ````ts
@@ -1359,19 +1381,18 @@ clear all items from the cache
 Example:
 ````js
 var cache = new Appworks.AWCache();
-cache.setItem('myKey', 1234);
-
-var item = cache.getItem('myKey');
-
-cache.clear();
-
-// fails
-item = cache.getItem('myKey');
+cache.clear().then(
+    function() {
+        console.log('successfully cleared the cache');
+    },
+    function(err) {
+        console.error('failed to clear the cache - ' + err);
+    });
 ````
 
 #### options
 - usePersistentStorage: guarantees that json written to the cache does not get erased unless explicitly instructed
- by calling ````removeItem````. default is ````false````.
+ by calling ````removeItem````. default is ````false````. This option applies to the mobile environment only.
 
 #### AWDevice
 The AWDevice plugin gives you information that describes the device's hardware and software.

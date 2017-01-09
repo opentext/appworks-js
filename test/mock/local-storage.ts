@@ -1,5 +1,4 @@
-export class MockLocalStorage implements WindowLocalStorage {
-    localStorage: this;
+export class MockLocalStorage implements Storage {
     length: number;
     [key: string]: any;
     [index: number]: string;
@@ -9,15 +8,12 @@ export class MockLocalStorage implements WindowLocalStorage {
     }
 
     setItem(key: string, value: string): void {
-        return null;
     }
 
     removeItem(key: string): void {
-        return null;
     }
 
     clear(): void {
-        return null;
     }
 
     key(index: number): string {

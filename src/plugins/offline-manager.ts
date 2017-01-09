@@ -1,7 +1,7 @@
-import {AWCache} from './cache';
-import {AWPlugin} from '../plugin';
-import {AWProxy} from '../proxy';
-import {Util} from '../util';
+import {AWCache} from "./cache";
+import {AWPlugin} from "../plugin";
+import {AWProxy} from "../proxy";
+import {Util} from "../util";
 
 export class AWOfflineManager extends AWPlugin {
 
@@ -16,8 +16,7 @@ export class AWOfflineManager extends AWPlugin {
     constructor(options?: any) {
         super(Util.noop, Util.noop);
 
-        let queue, document;
-
+        let document;
         this.cacheKey = '__appworksjs.deferredQueue';
         this.cache = new AWCache();
         this.options = options || {preserveEvents: false};
@@ -29,18 +28,19 @@ export class AWOfflineManager extends AWPlugin {
         });
 
         // load the deferred queue into memory
-        queue = this.cache.getItem(this.cacheKey);
-        if (queue) {
-            this.queue = JSON.parse(queue);
-        } else {
-            this.queue = [];
-            this.saveQueue();
-        }
+        this.cache.getItem(this.cacheKey).then(queue => {
+            if (queue) {
+                this.queue = JSON.parse(queue);
+            } else {
+                this.queue = [];
+                this.saveQueue();
+            }
+            // process the deferred queue upon object instantiation if we are currently online
+            if (this.networkStatus().online) {
+                this.processDeferredQueue();
+            }
+        });
 
-        // process the deferred queue upon object instantiation if we are currently online
-        if (this.networkStatus().online) {
-            this.processDeferredQueue();
-        }
     }
 
     defer(eventName: string, args: any) {

@@ -12,7 +12,7 @@ import {MockWebview} from "../test/mock/webview";
 import {LocalFileSystem} from "./plugins/local-file-system";
 import {MockFileTransfer} from "../test/mock/file-transfer";
 import {Util} from "./util";
-import {MockLocalStorage} from "../test/mock/local-storage";
+import {AWStorage, AsyncStorage} from "./plugins/storage";
 
 declare var __aw_plugin_proxy;
 
@@ -151,10 +151,8 @@ export class AWProxy {
         if (AWProxy.isDesktopEnv()) {
             const plugin = AWProxy.getDesktopPlugin('AWFileTransfer');
             return (plugin !== null) ? plugin : new MockFileTransfer();
-        } else {
-            return (typeof FileTransfer !== 'undefined') ?
-                new FileTransfer() : new MockFileTransfer();
         }
+        return (typeof FileTransfer !== 'undefined') ? new FileTransfer() : new MockFileTransfer();
     }
 
     static geolocation(): Geolocation {
@@ -202,8 +200,9 @@ export class AWProxy {
         }
     }
 
-    static storage(): any {
-        return (typeof window !== 'undefined') ? window.localStorage : new MockLocalStorage();
+    static storage(): AsyncStorage {
+        const desktopPlugin = AWProxy.getDesktopPlugin('AWStorage');
+        return desktopPlugin !== null ? desktopPlugin : new AWStorage();
     }
 
     /**
@@ -215,9 +214,15 @@ export class AWProxy {
         return typeof __aw_plugin_proxy !== 'undefined';
     }
 
+    /**
+     * Ask the AppWorks desktop environment to retrieve an instance of a specific plugin.
+     *
+     * @param pluginName plugin identifier
+     * @returns {any} plugin instance or null if no such plugin exists or the method was
+     *                called outside of the desktop client context
+     */
     static getDesktopPlugin(pluginName: string): any {
-        if (!AWProxy.isDesktopEnv())
-            throw new Error('Desktop plugins are only available for use in the AppWorks Desktop environment');
+        if (!AWProxy.isDesktopEnv()) return null;
         // the proxy exposed by desktop has a method to allow retrieval of plugin instances
         return __aw_plugin_proxy.getPlugin(pluginName);
     }
