@@ -36,52 +36,29 @@ export class AWStorage implements AsyncStorage {
     }
 
     clear(): Promise<any> {
-        return new Promise((resolve, reject) => {
-            try {
-                this.storage.clear();
-                resolve();
-            } catch (e) {
-                reject(e);
-            }
-        });
+        return this.doAsync(this.storage, this.storage.clear);
     }
 
     getItem(key: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            try {
-                resolve(this.storage.getItem(key));
-            } catch (e) {
-                reject(e);
-            }
-        });
+        return this.doAsync(this.storage, this.storage.getItem, [key]);
     }
 
     key(index: number): Promise<string> {
-        return new Promise((resolve, reject) => {
-            try {
-                resolve(this.storage.key(index));
-            } catch (e) {
-                reject(e);
-            }
-        });
+        return this.doAsync(this.storage, this.storage.key, [index]);
     }
 
     removeItem(key: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            try {
-                this.storage.removeItem(key);
-                resolve();
-            } catch (e) {
-                reject(e);
-            }
-        });
+        return this.doAsync(this.storage, this.storage.removeItem, [key]);
     }
 
     setItem(key: string, data: any): Promise<any> {
+        return this.doAsync(this.storage, this.storage.setItem, [key, data]);
+    }
+
+    doAsync(thisArg: any, operation: Function, args?: any[]): Promise<any> {
         return new Promise((resolve, reject) => {
             try {
-                this.storage.setItem(key, data);
-                resolve();
+                resolve(operation.apply(thisArg, args));
             } catch (e) {
                 reject(e);
             }

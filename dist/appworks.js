@@ -1406,57 +1406,24 @@ var AWStorage = (function () {
         configurable: true
     });
     AWStorage.prototype.clear = function () {
-        var _this = this;
-        return new es6Promise_1(function (resolve, reject) {
-            try {
-                _this.storage.clear();
-                resolve();
-            }
-            catch (e) {
-                reject(e);
-            }
-        });
+        return this.doAsync(this.storage, this.storage.clear);
     };
     AWStorage.prototype.getItem = function (key) {
-        var _this = this;
-        return new es6Promise_1(function (resolve, reject) {
-            try {
-                resolve(_this.storage.getItem(key));
-            }
-            catch (e) {
-                reject(e);
-            }
-        });
+        return this.doAsync(this.storage, this.storage.getItem, [key]);
     };
     AWStorage.prototype.key = function (index) {
-        var _this = this;
-        return new es6Promise_1(function (resolve, reject) {
-            try {
-                resolve(_this.storage.key(index));
-            }
-            catch (e) {
-                reject(e);
-            }
-        });
+        return this.doAsync(this.storage, this.storage.key, [index]);
     };
     AWStorage.prototype.removeItem = function (key) {
-        var _this = this;
-        return new es6Promise_1(function (resolve, reject) {
-            try {
-                _this.storage.removeItem(key);
-                resolve();
-            }
-            catch (e) {
-                reject(e);
-            }
-        });
+        return this.doAsync(this.storage, this.storage.removeItem, [key]);
     };
     AWStorage.prototype.setItem = function (key, data) {
-        var _this = this;
+        return this.doAsync(this.storage, this.storage.setItem, [key, data]);
+    };
+    AWStorage.prototype.doAsync = function (thisArg, operation, args) {
         return new es6Promise_1(function (resolve, reject) {
             try {
-                _this.storage.setItem(key, data);
-                resolve();
+                resolve(operation.apply(thisArg, args));
             }
             catch (e) {
                 reject(e);
