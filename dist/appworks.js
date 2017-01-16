@@ -2462,8 +2462,6 @@ var AWVibration$$1 = AWVibration$1;
 // Webview plugin and alias -- [mobile]
 var WebView = AWWebView$1;
 var AWWebView$$1 = AWWebView$1;
-var Webview = AWWebView$1;
-var AWWebview = AWWebView$1;
 
 exports.Accelerometer = Accelerometer;
 exports.AWAccelerometer = AWAccelerometer$$1;
@@ -2519,8 +2517,6 @@ exports.Vibration = Vibration;
 exports.AWVibration = AWVibration$$1;
 exports.WebView = WebView;
 exports.AWWebView = AWWebView$$1;
-exports.Webview = Webview;
-exports.AWWebview = AWWebview;
 
 }((this.Appworks = this.Appworks || {})));
 //# sourceMappingURL=appworks.js.map

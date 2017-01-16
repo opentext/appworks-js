@@ -103,5 +103,3 @@ export const AWVibration = _AWVibration;
 // Webview plugin and alias -- [mobile]
 export const WebView = _AWWebView;
 export const AWWebView = _AWWebView;
-export const Webview = _AWWebView;
-export const AWWebview = _AWWebView;
