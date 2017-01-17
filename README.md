@@ -429,8 +429,8 @@ Basic file details resolved by the host OS.
 
 ###### FileFilter
 A filter that can be applied within a file browser to limit the types of file that are visible
--<b>name</b>: the name of the filter as it appears in the file browser
--<b>extensions</b>: an array of file extensions without wildcards or dots (e.g. 'png' is good but '.png' and '*.png' are bad). To show all files, use the '*' wildcard (no other wildcard is supported).
+- <b>name</b>: the name of the filter as it appears in the file browser
+- <b>extensions</b>: an array of file extensions without wildcards or dots (e.g. 'png' is good but '.png' and '*.png' are bad) <b>to show all files, use the '*' wildcard (no other wildcard is supported)</b>
 
 ###### SaveDialogOptions
 Options to configure the 'Save As' dialog.
