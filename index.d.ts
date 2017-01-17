@@ -28,13 +28,13 @@ declare namespace Appworks {
     /** */
     export interface AWCache {
         /** */
-        setItem(key: string, value: any): void;
+        setItem(key: string, value: any): Promise<any>;
         /** */
-        getItem(key: string): void;
+        getItem(key: string): Promise<any>;
         /** */
-        removeItem(key: string): void;
+        removeItem(key: string): Promise<any>;
         /** */
-        clear(): void;
+        clear(): Promise<any>;
     }
 
     /** */
@@ -84,6 +84,101 @@ declare namespace Appworks {
     export interface AWFileChooser {
         /** */
         selectAndUpload(action: string): void;
+    }
+
+    export interface FileDetails {
+        /**
+         * File name.
+         */
+        name: string;
+        /**
+         * Full path to the file.
+         */
+        path: string;
+        /**
+         * Is this a directory or file?
+         */
+        isDirectory: boolean;
+        /**
+         * MD5 hash checksum of the file (files only).
+         */
+        checksum: string;
+        /**
+         * Last modified time in millis (since epoch).
+         */
+        modified: number;
+    }
+
+    export interface SaveDialogOptions {
+        title?: string;
+        defaultPath?: string;
+        /**
+         * Custom label for the confirmation button, when left empty the default label will be used.
+         */
+        buttonLabel?: string;
+        /**
+         * Extensions without wildcards or dots (e.g. 'png' is good but '.png' and '*.png' are bad).
+         * To show all files, use the '*' wildcard (no other wildcard is supported).
+         */
+        filters?: {
+            name: string;
+            extensions: string[];
+        }[];
+    }
+
+    export interface FileDialogOptions {
+        /**
+         * File types that can be displayed or selected.
+         */
+        filters?: {
+            name: string;
+            /**
+             * Extensions without wildcards or dots (e.g. 'png' is good but '.png' and '*.png' are bad).
+             * To show all files, use the '*' wildcard (no other wildcard is supported).
+             */
+            extensions: string[];
+        }[];
+        /**
+         * Can multiple files be selected by the dialog?
+         */
+        multiSelections?: boolean;
+    }
+
+    export interface AWFileSystem {
+        exists(path: string,
+               successCallback: (result: boolean) => void,
+               errorCallback?: (result: Error) => void): void;
+
+        isDir(path: string,
+              successCallback: (result: boolean) => void,
+              errorCallback?: (result: Error) => void): void;
+
+        open(path: string,
+             successCallback: (result: boolean) => void,
+             errorCallback?: (result: Error) => void): void;
+
+        reveal(path: string,
+               successCallback: (result: boolean) => void,
+               errorCallback?: (result: Error) => void): void;
+
+        getDetails(path: string,
+                   successCallback: (result: FileDetails) => void,
+                   errorCallback?: (result: Error) => void): void;
+
+        listDirContents(path: string,
+                        successCallback: (result: FileDetails[]) => void,
+                        errorCallback?: (result: Error) => void): void;
+
+        showSaveDialog(opts: FileDialogOptions,
+                       successCallback: (result: string) => void,
+                       errorCallback?: (result: Error) => void): void;
+
+        showDirSelector(successCallback: (result: string[]) => void,
+                        errorCallback?: (result: Error) => void): void;
+
+        showFileSelector(opts: SaveDialogOptions,
+                         successCallback: (result: string[]) => void,
+                         errorCallback?: (result: Error) => void): void;
     }
 
     /** */
