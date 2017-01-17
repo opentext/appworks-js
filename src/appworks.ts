@@ -23,6 +23,7 @@ import {AWQRReader as _AWQRReader} from './plugins/qr-reader';
 import {AWSecureStorage as _AWSecureStorage} from './plugins/secure-storage';
 import {AWVibration as _AWVibration} from './plugins/vibration';
 import {AWWebView as _AWWebView} from './plugins/webview';
+import {AWFileSystem as _AWFileSystem} from './plugins/file-system';
 
 // Accelerometer plugin and alias -- [mobile]
 export const Accelerometer = _AWAccelerometer;
@@ -30,10 +31,10 @@ export const AWAccelerometer = _AWAccelerometer;
 // AppManager plugin and alias -- [mobile]
 export const AppManager = _AWAppManager;
 export const AWAppManager = _AWAppManager;
-// Auth plugin and alias -- [mobile]
+// Auth plugin and alias -- [desktop/mobile]
 export const Auth = _AWAuth;
 export const AWAuth = _AWAuth;
-// Cache plugin and alias -- [mobile]
+// Cache plugin and alias -- [desktop/mobile]
 export const Cache = _AWCache;
 export const AWCache = _AWCache;
 // Camera plugin and alias -- [mobile]
@@ -48,13 +49,13 @@ export const AWComponent = _AWComponent;
 // Contacts plugin and alias -- [mobile]
 export const Contacts = _AWContacts;
 export const AWContacts = _AWContacts;
-// Device plugin and alias -- [mobile]
+// Device plugin and alias -- [desktop/mobile]
 export const Device = _AWDevice;
 export const AWDevice = _AWDevice;
 // FileChooser plugin and alias -- [mobile]
 export const FileChooser = _AWFileChooser;
 export const AWFileChooser = _AWFileChooser;
-// FileTransfer plugin and alias -- [mobile]
+// FileTransfer plugin and alias -- [desktop/mobile]
 export const FileTransfer = _AWFileTransfer;
 export const AWFileTransfer = _AWFileTransfer;
 // Finder plugin and alias -- [mobile]
@@ -103,3 +104,5 @@ export const AWVibration = _AWVibration;
 // Webview plugin and alias -- [mobile]
 export const WebView = _AWWebView;
 export const AWWebView = _AWWebView;
+// FileSystem -- [desktop]
+export const AWFileSystem = _AWFileSystem;
