@@ -323,6 +323,127 @@ selectAndUpload(action: string)
 select a file and upload
 - <b>action</b>: the action
 
+#### AWFileSystem
+The AWFileSystem plugin allows AppWorks Desktop hosted apps to interact with the underlying desktop host. Specifically to make use of the OS file system operations, and also some of the native file browsing dialogs (Windows Explorer, OSX Finder, etc.).
+
+Please note this plugin is only usable in the desktop environment, the plugin methods will throw an error if usage outside of this context is detected.
+
+##### Methods:
+
+###### exists
+````
+    exists(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+````
+Determine if the path provided refers to an existing file or directory. <b>Relative paths should not be used.</b>
+- <b>path</b>: a file path
+
+A boolean value will be passed to the callback if the path does exist, else the error callback will be fired.
+
+###### isDir
+````
+    isDir(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+````
+Determine if the path provided refers to a directory, as opposed to a file. <b>Relative paths should not be used.</b>
+- <b>path</b>: a file path
+
+A boolean value will be passed to the callback if the path does refer to an existing directory, else the error callback will be fired.
+
+###### open
+````
+    open(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+````
+Open a file using the host OS. If the file extension of the existing file is known then the corresponding host application will open, else you will be prompted to choose an application. <b>Relative paths should not be used.</b>
+- <b>path</b>: a file path
+
+A boolean value will be passed to the callback if the OS managed to open the file, else the error callback will be fired.
+
+###### reveal
+````
+    reveal(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+````
+Open the OS file browser at the supplied file path. <b>Relative paths should not be used.</b>
+- <b>path</b>: a file path
+
+A boolean value will be passed to the callback if the OS managed to open the file browser at the supplied location, else the error callback will be fired. <b>Relative paths should not be used.</b>
+
+
+###### getDetails
+````
+    getDetails(path: string, successCallback: (result: FileDetails), errorCallback?: (result: Error))
+````
+Retrieve the details of a specific file/directory at the supplied path. <b>Relative paths should not be used.</b>
+- <b>path</b>: a file path
+
+A [FileDetails](#filedetails) object will be passed to the callback if the path exists, else the error callback will be fired.
+
+
+###### listDirContents
+````
+    listDirContents(path: string, successCallback: (result: FileDetails[]), errorCallback?: (result: Error))
+````
+List the contents of the directory at the supplied path. <b>Relative paths should not be used.</b>
+- <b>path</b>: a file path
+
+An array of [FileDetails](#filedetails) objects will be passed to the callback if the path exists and is a directory, else the error callback will be fired.
+
+###### showSaveDialog
+````
+    showSaveDialog(opts: SaveDialogOptions, successCallback: (result: string), errorCallback?: (result: Error))
+````
+Show the OS 'Save As' file browser, only permitting selection of a single file. A new file name is usually entered otherwise we will overwrite the existing file at the provided path (provide the correct permissions are in place)
+- <b>options</b>: [SaveDialogOptions](#savedialogoptions) save dialog options
+
+The full path of the file indicated in the OS file browser will be returned to the callback on pressing the dialog confirmation button.
+
+
+###### showDirSelector
+````
+    showDirSelector(successCallback: (result: string[]), errorCallback?: (result: Error))
+````
+Show the OS file selection browser, only allowing the selection of directories.
+
+The full path to the selected directory will be returned to the callback on pressing the dialog confirmation button.
+
+
+###### showFileSelector
+````
+    showFileSelector(opts: FileDialogOptions, successCallback: (result: string[]), errorCallback?: (result: Error))
+````
+Show the OS file selection browser, allowing the selection of files only. Multiple files can be selected at once as specified in the options.
+- <b>opts</b>: [FileDialogOptions](#filedialogoptions) file browser dialog options
+
+An array of the selected file paths will be returned to the callback on pressing the dialog confirmation button.
+
+
+##### Objects:
+
+These objects are defined as part of the AWFileSystem module.
+
+###### FileDetails
+Basic file details resolved by the host OS.
+- <b>name</b>: file name with extension
+- <b>path</b>: full path to the file
+- <b>isDirectory</b>: is this a directory or file?
+- <b>checksum</b>: MD5 hash checksum of the file (files only)
+- <b>modified</b>: last modified time in millis (since epoch)
+
+###### FileFilter
+A filter that can be applied within a file browser to limit the types of file that are visible
+-<b>name</b>: the name of the filter as it appears in the file browser
+-<b>extensions</b>: an array of file extensions without wildcards or dots (e.g. 'png' is good but '.png' and '*.png' are bad). To show all files, use the '*' wildcard (no other wildcard is supported).
+
+###### SaveDialogOptions
+Options to configure the 'Save As' dialog.
+- <b>title</b>: custom title for the dialog
+- <b>defaultPath</b>: the path at which to open the dialog
+- <b>buttonLabel</b>: custom label for the confirmation button, when left empty the default label will be used
+- <b>filters</b>: an array of [FileFilter](#filefilter) objects
+
+###### FileDialogOptions
+Options to configure the file browser dialog
+- <b>multiSelections</b>: enable multiple file selection
+- <b>filters</b>: an array of [FileFilter](#filefilter) objects
+
 #### AWHeaderBar
 The AWHeaderBar plugin allows you to hide or show the client header bar,
 update the text, and/or hide or show a back button.
@@ -1171,7 +1292,6 @@ function removeNotification(seqNo) {
         console.log("Notification with seqNo " + seqNo + ", could not be deleted: " + error);
     });
 }
- 
 
 ````
 
@@ -1325,7 +1445,7 @@ Example:
 ````js
 var cache = new Appworks.AWCache();
 cache.setItem('myKey', 1234).then(
-    function() { 
+    function() {
         console.log('stored 1234 under key "myKey"');
     },
     function(err) {
@@ -1349,7 +1469,7 @@ cache.getItem('myKey').then(
     function(item) {
         console.log('we got the item ' + item + 'from the cache using key "myKey"');
     },
-    function(err) { 
+    function(err) {
         console.error(`failed to get 'myKey' from cache - ` + err);
     });
 ````

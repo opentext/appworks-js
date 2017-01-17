@@ -85,14 +85,14 @@ export interface DesktopHostFileSystem {
                     successCallback: (result: FileDetails[]) => void,
                     errorCallback?: (result: Error) => void): void;
 
-    showSaveDialog(opts: any,
+    showSaveDialog(opts: FileDialogOptions,
                    successCallback: (result: string) => void,
                    errorCallback?: (result: Error) => void): void;
 
     showDirSelector(successCallback: (result: string[]) => void,
                     errorCallback?: (result: Error) => void): void;
 
-    showFileSelector(opts: any,
+    showFileSelector(opts: SaveDialogOptions,
                      successCallback: (result: string[]) => void,
                      errorCallback?: (result: Error) => void): void;
 }
