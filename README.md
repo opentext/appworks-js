@@ -20,6 +20,122 @@ project. If you opt to use the bundled file make sure your script tag looks like
 
 `<script src="appworks.min.js"></script>`
 
+## Table of Contents
+* [API Usage and Examples](#api-usage-and-examples)
+  - [Auth](#auth)
+      + [authenticate](#authenticate)
+      + [getAuthResponse](#getauthresponse)
+      + [gateway](#gateway)
+      + [online](#online)
+  - [AWWebView](#awwebview)
+      + [open](#open)
+  - [AWAppManager](#awappmanager)
+      + [closeActiveApp](#closeactiveapp)
+  - [AWComponent](#awcomponent)
+      + [open](#open-1)
+      + [list](#list)
+      + [check](#check)
+      + [close](#close)
+  - [Finder](#finder)
+      + [open](#open-2)
+      + [openDirect](#opendirect)
+      + [list](#list-1)
+  - [FileChooser](#filechooser)
+      + [selectAndUpload](#selectandupload)
+  - [AWFileSystem](#awfilesystem)
+      + [exists](#exists)
+      + [isDir](#isdir)
+      + [open](#open-3)
+      + [reveal](#reveal)
+      + [getDetails](#getdetails)
+      + [listDirContents](#listdircontents)
+      + [showSaveDialog](#showsavedialog)
+      + [showDirSelector](#showdirselector)
+      + [showFileSelector](#showfileselector)
+    * [Objects:](#objects)
+      + [FileDetails](#filedetails)
+      + [FileFilter](#filefilter)
+      + [SaveDialogOptions](#savedialogoptions)
+      + [FileDialogOptions](#filedialogoptions)
+  - [AWHeaderBar](#awheaderbar)
+      + [setHeader](#setheader)
+      + [getHeader](#getheader)
+      + [setHeaderButtons](#setheaderbuttons)
+      + [ButtonName enumerator](#buttonname-enumerator)
+      + [ButtonImage enumerator](#buttonimage-enumerator)
+  - [AWPage](#awpage)
+      + [setPageUrl](#setpageurl)
+  - [QRReader](#qrreader)
+      + [scan](#scan)
+  - [Camera](#camera)
+      + [takePicture](#takepicture)
+      + [openGallery](#opengallery)
+  - [SecureStorage](#securestorage)
+      + [store](#store)
+      + [retrieve](#retrieve)
+      + [remove](#remove)
+      + [fileExistsAtPath](#fileexistsatpath)
+      + [onprogress](#onprogress)
+  - [AWFileTransfer](#awfiletransfer)
+      + [download](#download)
+      + [upload](#upload)
+      + [progressHandler](#progresshandler)
+      + [abort](#abort)
+  - [AWMedia](#awmedia)
+    * [Parameters:](#parameters)
+  - [AWMediaCapture](#awmediacapture)
+    * [Objects:](#objects-1)
+    * [Properties:](#properties)
+  - [AWAccelerometer](#awaccelerometer)
+      + [getCurrentAcceleration](#getcurrentacceleration)
+      + [watchAcceleration](#watchacceleration)
+      + [clearWatch](#clearwatch)
+  - [AWCompass](#awcompass)
+      + [getCurrentHeading](#getcurrentheading)
+      + [watchHeading](#watchheading)
+      + [clearWatch](#clearwatch-1)
+  - [AWLocation](#awlocation)
+      + [getCurrentPosition](#getcurrentposition)
+      + [watchPosition](#watchposition)
+      + [clearWatch](#clearwatch-2)
+    * [Objects](#objects)
+  - [AWNotificationManager](#awnotificationmanager)
+    * [enablePushNotifications](#enablepushnotifications)
+    * [getNotifications](#getnotifications)
+    * [disablePushNotifications](#disablepushnotifications)
+    * [getOpeningNotification](#getopeningnotification)
+    * [removeNotification](#removenotification)
+    * [openListener](#openlistener)
+  - [AWOfflineManager](#awofflinemanager)
+    * [defer](#defer)
+    * [cancel](#cancel)
+    * [networkStats](#networkstats)
+      + [Full Example (angularjs):](#full-example-angularjs)
+  - [AWCache](#awcache)
+      + [setItem](#setitem)
+      + [getItem](#getitem)
+    * [removeItem](#removeitem)
+      + [clear](#clear)
+  - [AWDevice](#awdevice)
+    * [Properties:](#properties-1)
+  - [AWVibration](#awvibration)
+      + [vibrate](#vibrate)
+  - [AWContacts](#awcontacts)
+      + [create](#create)
+      + [find](#find)
+      + [pickContact](#pickcontact)
+    * [Objects:](#objects-2)
+  - [Contact](#contact)
+  - [ContactAddress](#contactaddress)
+  - [ContactError](#contacterror)
+  - [ContactField](#contactfield)
+  - [ContactOrganization](#contactorganization)
++ [Events](#events)
+  - [Battery](#battery)
+    * [batterystatus](#batterystatus)
+    * [batterycritical](#batterycritical)
+    * [batterylow](#batterylow)
+
 ## API Usage and Examples
 
 ### Plugin
@@ -506,6 +622,117 @@ var getHeader = function () {
 // update the header bar
 setHeader();
 ````
+
+###### setHeaderButtons
+````
+setHeaderButtons(callback: Function, config: any)
+````
+Set the header buttons to specified images and indicate if their event handler is custom
+- <b>config</b>: an array of objects. The properties of each object must contains:
+- <b>button</b>: The identifier of the button. You can use the AWHeaderBar.ButtonName enumerator for this.
+- <b>image</b>: The identifier of the image. You can use the AWHeaderBar.ButtonImage enumerator for this.
+- <b>function</b>: custom|default - Indicate to AppWorks whether AppWorks will handle the tap event (default) or your app will (custom)
+
+##### Example:
+````js
+var self = this;
+
+function initHeaderButtons() {
+    self.header = new Appworks.AWHeaderBar(null, failFn);
+    setHeaderButtons();
+}
+
+// Tell the client to set the header buttons according to the apps needs
+function setHeaderButtons() {
+  // Button definitions
+  var RightButtonOne = {
+      "button": header.ButtonName.RightOne, // Identifiy the button using an enumerator
+      "image": header.ButtonImage.Dots, // Use an image specified by an enumerator
+      "function" : "custom" // Inform the client this will be handled in the app
+    };
+
+  var RightButtonTwo = {
+      "button": header.ButtonName.RightTwo,
+      "image": header.ButtonImage.Search,
+      "function" : "custom"
+    };
+
+  var LeftButtonOne = {
+      "button": header.ButtonName.LeftOne,
+      "image": header.ButtonImage.Back,
+      "function" : "custom"
+    };
+
+  var LeftButtonTwo = {
+      "button": header.ButtonName.LeftTwo,
+      "function" : "default" // Inform the client this button is to be handled by the client. The image will revert to default.
+    };
+
+  var buttons = [LeftButtonOne, RightButtonOne, RightButtonTwo];
+  header.setHeaderButtons(headerButtonCallback, buttons);
+}
+
+// Tell the client to set each button to their default icons and functions
+function resetHeaderButtons() {
+  var RightButtonOne = {
+      "button": header.ButtonName.RightOne,
+      "function" : "default" // Inform the client this button is to be handled by the client. The image will revert to default.
+    };
+
+  var RightButtonTwo = {
+      "button": header.ButtonName.RightTwo,
+      "function" : "default" // Inform the client this button is to be handled by the client. The image will revert to default.
+    };
+
+  var LeftButtonOne = {
+      "button": header.ButtonName.LeftOne,
+      "function" : "default" // Inform the client this button is to be handled by the client. The image will revert to default.
+    };
+
+  var LeftButtonTwo = {
+      "button": header.ButtonName.LeftTwo,
+      "function" : "default" // Inform the client this button is to be handled by the client. The image will revert to default.
+    };
+
+  var buttons = [LeftButtonOne, LeftButtonTwo, RightButtonOne, RightButtonTwo];
+  header.setHeaderButtons(headerButtonCallback, buttons);
+}
+
+// Callback function called when a button is tapped
+function headerButtonCallback(button){
+  if(button == header.ButtonName.RightOne) {
+    rightButtonOneFunction();
+  }
+
+  if(button == header.ButtonName.RightTwo) {
+    rightButtonTwoFunction();
+  }
+
+  if(button == header.ButtonName.LeftOne) {
+    leftButtonOneFunction();
+  }
+}
+
+function failFn(err) {
+    // called when the header bar fails to set the buttons
+    console.log(err);
+}
+
+// Execute the function to initialize the header buttons
+initHeaderButtons();
+````
+###### ButtonName enumerator
+- <b>ButtonName.LeftOne</b>: The left most button, normally the hamburger menu icon
+- <b>ButtonName.LeftTwo</b>: The second left button, no default use.
+- <b>ButtonName.RightOne</b>:  The right most button, normally the app switcher icon in the multi app client
+- <b>ButtonName.RightTwo</b>: The second right button, no default use for apps, but the settings icon on the app library page in the multi app client
+
+###### ButtonImage enumerator
+- <b>ButtonImage.Back</b>: Same image as the back icon. Can be used here as an alternative.
+- <b>ButtonImage.Settings</b>: A settings cog-wheel icon
+- <b>ButtonImage.None</b>: Hides the button
+- <b>ButtonImage.Dots</b>: Three dots stacked vertically icon
+- <b>ButtonImage.Search</b>: Magnifying glass icon
 
 #### AWPage
 The AWPage plugin allows you to set the URL of page to an external URL (such as http://www.google.com). This allows the web app to launch a new webView with a specified URL in the current context of the view.

@@ -1,11 +1,9 @@
 {
   "name": "appworks-js",
-  "version": "16.2.2-alpha.2",
-  "main": "dist/appworks.js",
-  "types": "index.d.ts",
-  "main:min": "dist/appworks.min.js",
   "description": "JavaScript library providing an interface for native bindings provided by AppWorks mobile and desktop clients.",
-  "repository": "https://github.com/opentext/appworks.js",
+  "version": "16.2.2-alpha.2",
+  "author": "OpenText Inc",
+  "bugs": "https://github.com/opentext/appworks-js/issues",
   "devDependencies": {
     "@types/chai": "^3.4.34",
     "@types/cordova": "0.0.34",
@@ -41,13 +39,20 @@
     "tslint": "^4.0.1",
     "typescript": "^2.1.4"
   },
+  "homepage": "https://github.com/opentext/appworks-js",
+  "keywords": [
+    ""
+  ],
+  "license": "LICENSE",
+  "main": "dist/appworks.js",
+  "main:min": "dist/appworks.min.js",
+  "repository": "https://github.com/opentext/appworks-js",
   "scripts": {
-    "test": "mocha --compilers ts:ts-node/register test/**.spec.ts test/**/*.spec.ts",
-    "test:watch": "mocha --compilers ts:ts-node/register test/**.spec.ts test/**/*.spec.ts --watch",
+    "build": "concurrently \"rollup -c\" \"rollup -c --environment BUILD:min\"",
     "lint": "tslint -c tslint.json ./src/**/*.ts",
     "prebuild": "npm run test",
-    "build": "concurrently \"rollup -c\" \"rollup -c --environment BUILD:min\""
+    "test": "mocha --compilers ts:ts-node/register test/**.spec.ts test/**/*.spec.ts",
+    "test:watch": "mocha --compilers ts:ts-node/register test/**.spec.ts test/**/*.spec.ts --watch"
   },
-  "author": "OpenText Inc",
-  "license": "LICENSE"
+  "types": "index.d.ts"
 }

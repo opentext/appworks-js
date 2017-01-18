@@ -13,6 +13,11 @@ describe('Header', () => {
         expect(o.getHeader).to.not.equal(undefined);
     });
 
+    it('should define a setHeaderButtons function', () => {
+        let o = new AWHeader(Util.noop, Util.noop);
+        expect(o.setHeaderButtons).to.not.equal(undefined);
+    });
+
     it('alias should define a setHeader function', () => {
         let o = new AWHeaderBar(Util.noop, Util.noop);
         expect(o.setHeader).to.not.equal(undefined);

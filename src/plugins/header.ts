@@ -3,9 +3,7 @@ import {AWProxy} from '../proxy';
 
 export class AWHeaderBar extends AWPlugin {
 
-    // TODO needs documentation
     ButtonName = {LeftOne: 0, LeftTwo: 1, RightOne: 2, RightTwo: 3};
-    // TODO needs documentation
     ButtonImage = {Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7};
     private callback: any;
 
@@ -35,10 +33,9 @@ export class AWHeaderBar extends AWPlugin {
         );
     }
 
-    // TODO needs documentation
-    setHeaderButtons(config: any) {
+    setHeaderButtons(callback: Function, config: any) {
         AWProxy.exec(
-            (() => this.successHandler)(),
+            callback,
             (() => this.errorHandler)(),
             'AWHeaderBar',
             'setHeaderButtons',
