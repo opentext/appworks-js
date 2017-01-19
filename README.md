@@ -15,7 +15,12 @@ Supported platforms:
     - OSX
     - Linux
 
-A limited number of appworks.js plugins are available in the desktop environment. They are marked in the [API Usage and Examples](#api-usage-and-examples) section.
+A limited number of appworks.js plugins are available in the desktop environment. They are marked in the [API Usage and Examples](#api-usage-and-examples) section and are listed for quick refernce below: 
+- [AWAuth](#awauth)
+- [AWCache](#awcache)
+- [AWDevice](#awdevice)
+- [AWFileSystem](#awfilesystem)
+- [AWFileTransfer](#awfiletransfer)
 
 ## Installation
 
