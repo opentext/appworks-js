@@ -198,7 +198,9 @@ var Util = (function () {
 }());
 
 var MockLocalStorage = (function () {
-    function MockLocalStorage() {
+    // allow tests to set a value if they need to
+    function MockLocalStorage(len) {
+        this.length = isNaN(len) ? 0 : len;
     }
     MockLocalStorage.prototype.getItem = function (key) {
         return null;
@@ -214,6 +216,445 @@ var MockLocalStorage = (function () {
     };
     return MockLocalStorage;
 }());
+
+/**
+ * Web local storage wrapper that hooks into the native persistent layer on mobile and desktop
+ * The local and persistent storage are kept in, sync with update being flushed, and the local web
+ * storage always acting as the reference.
+ */
+var AWStorage = (function () {
+    function AWStorage() {
+        // resolve the local storage or fall back onto a mock impl
+        this.storage = (typeof window !== 'undefined') ?
+            window.localStorage : new MockLocalStorage();
+    }
+    Object.defineProperty(AWStorage.prototype, "length", {
+        get: function () {
+            return this.storage ? this.storage.length : -1;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    AWStorage.prototype.clear = function () {
+        this.storage.clear();
+    };
+    AWStorage.prototype.getItem = function (key) {
+        return this.storage.getItem(key);
+    };
+    AWStorage.prototype.key = function (index) {
+        return this.storage.key(index);
+    };
+    AWStorage.prototype.removeItem = function (key) {
+        return this.storage.removeItem(key);
+    };
+    AWStorage.prototype.setItem = function (key, data) {
+        return this.storage.setItem(key, data);
+    };
+    return AWStorage;
+}());
+
+/**
+ * The mobile environment implementation of persistent storage.
+ */
+var OnDeviceStorage = (function () {
+    function OnDeviceStorage() {
+    }
+    OnDeviceStorage.prototype.persistLocalStorage = function () {
+        var _this = this;
+        var i, data = {}, key, value;
+        var storage = AWProxy.storage();
+        for (i = 0; i < storage.length; i += 1) {
+            key = storage.key(i);
+            value = storage.getItem(key);
+            data[key] = value;
+        }
+        return new Promise(function (resolve, reject) {
+            _this.writeDataToPersistentStorage(JSON.stringify(data)).then(resolve, reject);
+        });
+    };
+    OnDeviceStorage.prototype.loadPersistentData = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.readDataFromPersistentStorage().then(function (json) {
+                var data;
+                if (json) {
+                    data = JSON.parse(json);
+                    for (var item in data) {
+                        if (data.hasOwnProperty(item)) {
+                            AWProxy.storage().setItem(item, data[item]);
+                        }
+                    }
+                    resolve();
+                }
+            }, reject);
+        });
+    };
+    OnDeviceStorage.prototype.readDataFromPersistentStorage = function () {
+        return new Promise(function (resolve, reject) {
+            AWProxy.requestFileSystem(AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
+            function gotFS(fileSystem) {
+                fileSystem.root.getFile('appworksjs.cache.json', {
+                    create: true,
+                    exclusive: false
+                }, gotFileEntry, reject);
+            }
+            function gotFileEntry(entry) {
+                entry.file(gotFile, reject);
+            }
+            function gotFile(file) {
+                readAsText(file);
+            }
+            function readAsText(file) {
+                var reader = new FileReader();
+                reader.onloadend = function (evt) {
+                    console.log(evt);
+                    resolve(evt.target.result);
+                };
+                reader.readAsText(file);
+            }
+        });
+    };
+    OnDeviceStorage.prototype.writeDataToPersistentStorage = function (data) {
+        return new Promise(function (resolve, reject) {
+            AWProxy.requestFileSystem(AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
+            function gotFS(fileSystem) {
+                fileSystem.root.getFile('appworksjs.cache.json', { create: true, exclusive: false }, gotFileEntry, reject);
+            }
+            function gotFileEntry(fileEntry) {
+                fileEntry.createWriter(gotFileWriter, reject);
+            }
+            function gotFileWriter(writer) {
+                writer.onwriteend = function () {
+                    console.info('cache data backed up successfully');
+                };
+                writer.write(data);
+                resolve();
+            }
+        });
+    };
+    return OnDeviceStorage;
+}());
+
+var PersistentStorageMock = (function () {
+    function PersistentStorageMock() {
+    }
+    PersistentStorageMock.prototype.persistLocalStorage = function () {
+        return Promise.resolve();
+    };
+    PersistentStorageMock.prototype.loadPersistentData = function () {
+        return Promise.resolve();
+    };
+    return PersistentStorageMock;
+}());
+
+var DesktopStorage = (function () {
+    function DesktopStorage(desktopPlugin) {
+        this.desktopStorage = desktopPlugin;
+    }
+    DesktopStorage.prototype.persistLocalStorage = function () {
+        var _this = this;
+        if (this.desktopStorage === null) {
+            return Promise.reject(DesktopStorage.PLUGIN_NOT_FOUND);
+        }
+        return new Promise(function (resolve, reject) {
+            var i, data = [], key, value;
+            var storage = AWProxy.storage();
+            for (i = 0; i < storage.length; i += 1) {
+                key = storage.key(i);
+                value = storage.getItem(key);
+                data.push({ key: key, value: value });
+            }
+            var setter = function (obj) { return _this.desktopStorage.setItem(obj.key, obj.value); };
+            Promise.all(data.map(setter)).then(resolve, reject);
+        });
+    };
+    DesktopStorage.prototype.loadPersistentData = function () {
+        var _this = this;
+        if (this.desktopStorage === null) {
+            return Promise.reject(DesktopStorage.PLUGIN_NOT_FOUND);
+        }
+        return new Promise(function (resolve, reject) {
+            try {
+                // get data is actually synchronous
+                var data = _this.desktopStorage.getData();
+                var storage = AWProxy.storage();
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        storage.setItem(key, data[key]);
+                    }
+                }
+                resolve();
+            }
+            catch (e) {
+                reject(e);
+            }
+        });
+    };
+    return DesktopStorage;
+}());
+DesktopStorage.PLUGIN_NOT_FOUND = new Error('Unable to resolve AWStorage desktop plugin');
+
+var AWProxy = (function () {
+    function AWProxy() {
+    }
+    AWProxy.exec = function (successHandler, errorHandler, name, method, args) {
+        if (typeof cordova !== 'undefined') {
+            cordova.exec(successHandler, errorHandler, name, method, args);
+        }
+        else if (AWProxy.isDesktopEnv()) {
+            __aw_plugin_proxy.exec(successHandler, errorHandler, name, method, args);
+        }
+        else {
+            console.error('No proxy objects defined - tried [Cordova, __aw_plugin_proxy]');
+            if (typeof errorHandler === 'function') {
+                errorHandler('No proxy objects defined - tried [Cordova, __aw_plugin_proxy]');
+            }
+        }
+    };
+    AWProxy.accelerometer = function () {
+        return typeof 'navigator' !== undefined ? navigator.accelerometer : new MockAccelerometer();
+    };
+    AWProxy.camera = function () {
+        return typeof navigator !== 'undefined' ? navigator.camera : new MockCamera();
+    };
+    AWProxy.Camera = function () {
+        return (typeof Camera !== 'undefined') ? Camera : {
+            DestinationType: {
+                DATA_URL: null,
+                FILE_URI: null,
+                NATIVE_URI: null,
+            },
+            Direction: {
+                BACK: null,
+                FRONT: null,
+            },
+            EncodingType: {
+                JPEG: null,
+                PNG: null,
+            },
+            MediaType: {
+                PICTURE: null,
+                VIDEO: null,
+                ALLMEDIA: null,
+            },
+            PictureSourceType: {
+                PHOTOLIBRARY: null,
+                CAMERA: null,
+                SAVEDPHOTOALBUM: null,
+            },
+            // Used only on iOS
+            PopoverArrowDirection: {
+                ARROW_UP: null,
+                ARROW_DOWN: null,
+                ARROW_LEFT: null,
+                ARROW_RIGHT: null,
+                ARROW_ANY: null
+            }
+        };
+    };
+    AWProxy.compass = function () {
+        return typeof navigator !== 'undefined' ? navigator.compass : new MockCompass();
+    };
+    AWProxy.connection = function () {
+        return typeof navigator !== 'undefined' ? navigator.connection : new MockConnection();
+    };
+    AWProxy.Connection = function () {
+        return (typeof Connection !== 'undefined') ? Connection : {
+            UNKNOWN: null,
+            ETHERNET: null,
+            WIFI: null,
+            CELL_2G: null,
+            CELL_3G: null,
+            CELL_4G: null,
+            CELL: null,
+            NONE: null
+        };
+    };
+    AWProxy.contacts = function () {
+        return typeof navigator !== 'undefined' ? navigator.contacts : new MockContacts();
+    };
+    AWProxy.device = function () {
+        var _device = (typeof device !== 'undefined') ? device : {
+            cordova: null,
+            available: true,
+            model: null,
+            platform: null,
+            uuid: null,
+            version: null,
+            manufacturer: null,
+            isVirtual: null,
+            serial: null,
+            capture: null
+        };
+        if (typeof navigator !== 'undefined' && navigator.device && navigator.device.capture) {
+            _device.capture = navigator.device.capture;
+        }
+        else {
+            _device.capture = new MockCapture();
+        }
+        return _device;
+    };
+    AWProxy.document = function () {
+        return (typeof document !== 'undefined') ? document : {
+            addEventListener: Util.noop
+        };
+    };
+    AWProxy.file = function () {
+        if (typeof cordova !== 'undefined') {
+            return cordova.file;
+        }
+        else {
+            return {
+                documentsDirectory: ''
+            };
+        }
+    };
+    AWProxy.filetransfer = function () {
+        return AWProxy.doGetFileTransfer();
+    };
+    // alias name
+    AWProxy.fileTransfer = function () {
+        return AWProxy.doGetFileTransfer();
+    };
+    AWProxy.doGetFileTransfer = function () {
+        if (AWProxy.isDesktopEnv()) {
+            var plugin = AWProxy.getDesktopPlugin('AWFileTransfer');
+            return (plugin !== null) ? plugin : new MockFileTransfer();
+        }
+        return (typeof FileTransfer !== 'undefined') ? new FileTransfer() : new MockFileTransfer();
+    };
+    AWProxy.geolocation = function () {
+        return (typeof navigator !== 'undefined') ? navigator.geolocation : new MockGeolocation();
+    };
+    AWProxy.localFileSystem = function () {
+        return LocalFileSystem;
+    };
+    AWProxy.media = function (src, successHandler, errorHandler, statusChangeHandler) {
+        if (typeof Media !== 'undefined') {
+            return new Media(src, successHandler, errorHandler, statusChangeHandler);
+        }
+        else {
+            return new MockMedia(src, successHandler, errorHandler, statusChangeHandler);
+        }
+    };
+    AWProxy.notification = function () {
+        return (typeof navigator !== 'undefined') ? navigator.notification : new MockNotification();
+    };
+    AWProxy.requestFileSystem = function (type, size, successCallback, errorCallback) {
+        if (window.requestFileSystem) {
+            return window.requestFileSystem(type, size, successCallback, errorCallback);
+        }
+    };
+    AWProxy.vibrate = function (time) {
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+            return navigator.vibrate(time);
+        }
+        else {
+            return new MockVibrate().vibrate(time);
+        }
+    };
+    AWProxy.webview = function () {
+        if (typeof cordova !== 'undefined') {
+            return cordova.InAppBrowser;
+        }
+        else {
+            return new MockWebview();
+        }
+    };
+    AWProxy.storage = function () {
+        return new AWStorage();
+    };
+    AWProxy.persistentStorage = function () {
+        var desktopPlugin = AWProxy.getDesktopPlugin('AWStorage');
+        return desktopPlugin !== null ?
+            new DesktopStorage(desktopPlugin) : (AWProxy.isMobileEnv()) ?
+            new OnDeviceStorage() : new PersistentStorageMock();
+    };
+    /**
+     * Are we executing within the AppWorks Desktop context.
+     *
+     * @returns {boolean} true if this is a desktop environment, false otherwise
+     */
+    AWProxy.isDesktopEnv = function () {
+        return typeof __aw_plugin_proxy !== 'undefined';
+    };
+    /**
+     * Are we executing within the AppWorks mobile context.
+     *
+     * @return {boolean} true if Cordova is available, false otherwise
+     */
+    AWProxy.isMobileEnv = function () {
+        return typeof cordova !== 'undefined';
+    };
+    /**
+     * Ask the AppWorks desktop environment to retrieve an instance of a specific plugin.
+     *
+     * @param pluginName plugin identifier
+     * @returns {any} plugin instance or null if no such plugin exists or the method was
+     *                called outside of the desktop client context
+     */
+    AWProxy.getDesktopPlugin = function (pluginName) {
+        if (!AWProxy.isDesktopEnv())
+            return null;
+        // the proxy exposed by desktop has a method to allow retrieval of plugin instances
+        return __aw_plugin_proxy.getPlugin(pluginName);
+    };
+    return AWProxy;
+}());
+
+var AWAccelerometer$1 = (function (_super) {
+    __extends(AWAccelerometer, _super);
+    function AWAccelerometer() {
+        return _super.apply(this, arguments) || this;
+    }
+    AWAccelerometer.prototype.getCurrentAcceleration = function () {
+        var _this = this;
+        return AWProxy.accelerometer().getCurrentAcceleration((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })());
+    };
+    AWAccelerometer.prototype.watchAcceleration = function (options) {
+        var _this = this;
+        return AWProxy.accelerometer().watchAcceleration((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+    };
+    AWAccelerometer.prototype.clearWatch = function (watchId) {
+        return AWProxy.accelerometer().clearWatch(watchId);
+    };
+    return AWAccelerometer;
+}(AWPlugin));
+
+var AWAppManager$1 = (function (_super) {
+    __extends(AWAppManager, _super);
+    function AWAppManager() {
+        return _super.apply(this, arguments) || this;
+    }
+    AWAppManager.prototype.closeActiveApp = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'closeActiveApp', []);
+    };
+    return AWAppManager;
+}(AWPlugin));
+
+var AWAuth$1 = (function (_super) {
+    __extends(AWAuth, _super);
+    function AWAuth() {
+        return _super.apply(this, arguments) || this;
+    }
+    AWAuth.prototype.authenticate = function (force) {
+        var _this = this;
+        force = !!force;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate', [force.toString()]);
+    };
+    AWAuth.prototype.getAuthResponse = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authobject', []);
+    };
+    AWAuth.prototype.gateway = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'gateway', []);
+    };
+    AWAuth.prototype.online = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'online', []);
+    };
+    return AWAuth;
+}(AWPlugin));
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -1387,318 +1828,25 @@ return Promise;
 
 var es6Promise_1 = es6Promise.Promise;
 
-/**
- * Intermediary type to adapt the synchronous {@link Storage} API into a an asynchronous
- * one for use by {@link AWCache}. If window.localStorage is defined then this is what we
- * will wrap.
- */
-var AWStorage = (function () {
-    function AWStorage() {
-        // resolve the local storage or fall back onto a mock impl
-        this.storage = (typeof window !== 'undefined') ?
-            window.localStorage : new MockLocalStorage();
-    }
-    Object.defineProperty(AWStorage.prototype, "length", {
-        get: function () {
-            return this.storage ? this.storage.length : -1;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    AWStorage.prototype.clear = function () {
-        return this.doAsync(this.storage, this.storage.clear);
-    };
-    AWStorage.prototype.getItem = function (key) {
-        return this.doAsync(this.storage, this.storage.getItem, [key]);
-    };
-    AWStorage.prototype.key = function (index) {
-        return this.doAsync(this.storage, this.storage.key, [index]);
-    };
-    AWStorage.prototype.removeItem = function (key) {
-        return this.doAsync(this.storage, this.storage.removeItem, [key]);
-    };
-    AWStorage.prototype.setItem = function (key, data) {
-        return this.doAsync(this.storage, this.storage.setItem, [key, data]);
-    };
-    AWStorage.prototype.doAsync = function (thisArg, operation, args) {
-        return new es6Promise_1(function (resolve, reject) {
-            try {
-                resolve(operation.apply(thisArg, args));
-            }
-            catch (e) {
-                reject(e);
-            }
-        });
-    };
-    return AWStorage;
-}());
-
-var AWProxy = (function () {
-    function AWProxy() {
-    }
-    AWProxy.exec = function (successHandler, errorHandler, name, method, args) {
-        if (typeof cordova !== 'undefined') {
-            cordova.exec(successHandler, errorHandler, name, method, args);
-        }
-        else if (AWProxy.isDesktopEnv()) {
-            __aw_plugin_proxy.exec(successHandler, errorHandler, name, method, args);
-        }
-        else {
-            console.error('No proxy objects defined - tried [Cordova, __aw_plugin_proxy]');
-            if (typeof errorHandler === 'function') {
-                errorHandler('No proxy objects defined - tried [Cordova, __aw_plugin_proxy]');
-            }
-        }
-    };
-    AWProxy.accelerometer = function () {
-        return typeof 'navigator' !== undefined ? navigator.accelerometer : new MockAccelerometer();
-    };
-    AWProxy.camera = function () {
-        return typeof navigator !== 'undefined' ? navigator.camera : new MockCamera();
-    };
-    AWProxy.Camera = function () {
-        return (typeof Camera !== 'undefined') ? Camera : {
-            DestinationType: {
-                DATA_URL: null,
-                FILE_URI: null,
-                NATIVE_URI: null,
-            },
-            Direction: {
-                BACK: null,
-                FRONT: null,
-            },
-            EncodingType: {
-                JPEG: null,
-                PNG: null,
-            },
-            MediaType: {
-                PICTURE: null,
-                VIDEO: null,
-                ALLMEDIA: null,
-            },
-            PictureSourceType: {
-                PHOTOLIBRARY: null,
-                CAMERA: null,
-                SAVEDPHOTOALBUM: null,
-            },
-            // Used only on iOS
-            PopoverArrowDirection: {
-                ARROW_UP: null,
-                ARROW_DOWN: null,
-                ARROW_LEFT: null,
-                ARROW_RIGHT: null,
-                ARROW_ANY: null
-            }
-        };
-    };
-    AWProxy.compass = function () {
-        return typeof navigator !== 'undefined' ? navigator.compass : new MockCompass();
-    };
-    AWProxy.connection = function () {
-        return typeof navigator !== 'undefined' ? navigator.connection : new MockConnection();
-    };
-    AWProxy.Connection = function () {
-        return (typeof Connection !== 'undefined') ? Connection : {
-            UNKNOWN: null,
-            ETHERNET: null,
-            WIFI: null,
-            CELL_2G: null,
-            CELL_3G: null,
-            CELL_4G: null,
-            CELL: null,
-            NONE: null
-        };
-    };
-    AWProxy.contacts = function () {
-        return typeof navigator !== 'undefined' ? navigator.contacts : new MockContacts();
-    };
-    AWProxy.device = function () {
-        var _device = (typeof device !== 'undefined') ? device : {
-            cordova: null,
-            available: true,
-            model: null,
-            platform: null,
-            uuid: null,
-            version: null,
-            manufacturer: null,
-            isVirtual: null,
-            serial: null,
-            capture: null
-        };
-        if (typeof navigator !== 'undefined' && navigator.device && navigator.device.capture) {
-            _device.capture = navigator.device.capture;
-        }
-        else {
-            _device.capture = new MockCapture();
-        }
-        return _device;
-    };
-    AWProxy.document = function () {
-        return (typeof document !== 'undefined') ? document : {
-            addEventListener: Util.noop
-        };
-    };
-    AWProxy.file = function () {
-        if (typeof cordova !== 'undefined') {
-            return cordova.file;
-        }
-        else {
-            return {
-                documentsDirectory: ''
-            };
-        }
-    };
-    AWProxy.filetransfer = function () {
-        return AWProxy.doGetFileTransfer();
-    };
-    // alias name
-    AWProxy.fileTransfer = function () {
-        return AWProxy.doGetFileTransfer();
-    };
-    AWProxy.doGetFileTransfer = function () {
-        if (AWProxy.isDesktopEnv()) {
-            var plugin = AWProxy.getDesktopPlugin('AWFileTransfer');
-            return (plugin !== null) ? plugin : new MockFileTransfer();
-        }
-        return (typeof FileTransfer !== 'undefined') ? new FileTransfer() : new MockFileTransfer();
-    };
-    AWProxy.geolocation = function () {
-        return (typeof navigator !== 'undefined') ? navigator.geolocation : new MockGeolocation();
-    };
-    AWProxy.localFileSystem = function () {
-        return LocalFileSystem;
-    };
-    AWProxy.media = function (src, successHandler, errorHandler, statusChangeHandler) {
-        if (typeof Media !== 'undefined') {
-            return new Media(src, successHandler, errorHandler, statusChangeHandler);
-        }
-        else {
-            return new MockMedia(src, successHandler, errorHandler, statusChangeHandler);
-        }
-    };
-    AWProxy.notification = function () {
-        return (typeof navigator !== 'undefined') ? navigator.notification : new MockNotification();
-    };
-    AWProxy.requestFileSystem = function (type, size, successCallback, errorCallback) {
-        if (window.requestFileSystem) {
-            return window.requestFileSystem(type, size, successCallback, errorCallback);
-        }
-    };
-    AWProxy.vibrate = function (time) {
-        if (typeof navigator !== 'undefined' && navigator.vibrate) {
-            return navigator.vibrate(time);
-        }
-        else {
-            return new MockVibrate().vibrate(time);
-        }
-    };
-    AWProxy.webview = function () {
-        if (typeof cordova !== 'undefined') {
-            return cordova.InAppBrowser;
-        }
-        else {
-            return new MockWebview();
-        }
-    };
-    AWProxy.storage = function () {
-        var desktopPlugin = AWProxy.getDesktopPlugin('AWStorage');
-        return desktopPlugin !== null ? desktopPlugin : new AWStorage();
-    };
-    /**
-     * Are we executing within the AppWorks Desktop context.
-     *
-     * @returns {boolean} true if this is a desktop environment, false otherwise
-     */
-    AWProxy.isDesktopEnv = function () {
-        return typeof __aw_plugin_proxy !== 'undefined';
-    };
-    /**
-     * Ask the AppWorks desktop environment to retrieve an instance of a specific plugin.
-     *
-     * @param pluginName plugin identifier
-     * @returns {any} plugin instance or null if no such plugin exists or the method was
-     *                called outside of the desktop client context
-     */
-    AWProxy.getDesktopPlugin = function (pluginName) {
-        if (!AWProxy.isDesktopEnv())
-            return null;
-        // the proxy exposed by desktop has a method to allow retrieval of plugin instances
-        return __aw_plugin_proxy.getPlugin(pluginName);
-    };
-    return AWProxy;
-}());
-
-var AWAccelerometer$1 = (function (_super) {
-    __extends(AWAccelerometer, _super);
-    function AWAccelerometer() {
-        return _super.apply(this, arguments) || this;
-    }
-    AWAccelerometer.prototype.getCurrentAcceleration = function () {
-        var _this = this;
-        return AWProxy.accelerometer().getCurrentAcceleration((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })());
-    };
-    AWAccelerometer.prototype.watchAcceleration = function (options) {
-        var _this = this;
-        return AWProxy.accelerometer().watchAcceleration((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
-    };
-    AWAccelerometer.prototype.clearWatch = function (watchId) {
-        return AWProxy.accelerometer().clearWatch(watchId);
-    };
-    return AWAccelerometer;
-}(AWPlugin));
-
-var AWAppManager$1 = (function (_super) {
-    __extends(AWAppManager, _super);
-    function AWAppManager() {
-        return _super.apply(this, arguments) || this;
-    }
-    AWAppManager.prototype.closeActiveApp = function () {
-        var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'closeActiveApp', []);
-    };
-    return AWAppManager;
-}(AWPlugin));
-
-var AWAuth$1 = (function (_super) {
-    __extends(AWAuth, _super);
-    function AWAuth() {
-        return _super.apply(this, arguments) || this;
-    }
-    AWAuth.prototype.authenticate = function (force) {
-        var _this = this;
-        force = !!force;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate', [force.toString()]);
-    };
-    AWAuth.prototype.getAuthResponse = function () {
-        var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authobject', []);
-    };
-    AWAuth.prototype.gateway = function (successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'gateway', []);
-    };
-    AWAuth.prototype.online = function (successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'online', []);
-    };
-    return AWAuth;
-}(AWPlugin));
-
 var AWCache$1 = (function (_super) {
     __extends(AWCache, _super);
     function AWCache(options) {
         var _this = _super.call(this, Util.noop, Util.noop) || this;
         _this.options = options || { usePersistentStorage: false };
-        if (_this.usePersistentStorage())
-            _this.loadPersistentDataIntoLocalStorage();
+        _this.preloadCache();
         return _this;
     }
     AWCache.prototype.setItem = function (key, value) {
         var _this = this;
         return new es6Promise_1(function (resolve, reject) {
-            AWProxy.storage().setItem(key, value).then(function () {
-                if (_this.usePersistentStorage())
-                    _this.writeLocalStorageDataToPersistentStorage();
+            AWProxy.storage().setItem(key, value);
+            if (_this.usePersistentStorage()) {
+                AWProxy.persistentStorage().persistLocalStorage()
+                    .then(resolve, reject);
+            }
+            else {
                 resolve();
-            }, reject);
+            }
         });
     };
     AWCache.prototype.getItem = function (key) {
@@ -1707,92 +1855,40 @@ var AWCache$1 = (function (_super) {
     AWCache.prototype.removeItem = function (key) {
         var _this = this;
         return new es6Promise_1(function (resolve, reject) {
-            AWProxy.storage().removeItem(key).then(function () {
-                if (_this.usePersistentStorage())
-                    _this.writeLocalStorageDataToPersistentStorage();
+            AWProxy.storage().removeItem(key);
+            if (_this.usePersistentStorage()) {
+                AWProxy.persistentStorage().persistLocalStorage()
+                    .then(resolve, reject);
+            }
+            else {
                 resolve();
-            }, reject);
+            }
         });
     };
     AWCache.prototype.clear = function () {
         var _this = this;
         return new es6Promise_1(function (resolve, reject) {
-            AWProxy.storage().clear().then(function () {
-                if (_this.usePersistentStorage())
-                    _this.writeLocalStorageDataToPersistentStorage();
+            AWProxy.storage().clear();
+            if (_this.usePersistentStorage()) {
+                AWProxy.persistentStorage().persistLocalStorage()
+                    .then(resolve, reject);
+            }
+            else {
                 resolve();
-            }, reject);
-        });
-    };
-    AWCache.prototype.readDataFromPersistentStorage = function (callback, errorCallback) {
-        var fail = function (error) {
-            console.error(error.code);
-        };
-        if (typeof errorCallback === 'function') {
-            fail = errorCallback;
-        }
-        if (typeof callback !== 'function') {
-            callback = Util.noop;
-        }
-        AWProxy.requestFileSystem(AWProxy.localFileSystem().PERSISTENT, 0, gotFS, fail);
-        function gotFS(fileSystem) {
-            fileSystem.root.getFile('appworksjs.cache.json', { create: true, exclusive: false }, gotFileEntry, fail);
-        }
-        function gotFileEntry(entry) {
-            entry.file(gotFile, fail);
-        }
-        function gotFile(file) {
-            readAsText(file);
-        }
-        function readAsText(file) {
-            var reader = new FileReader();
-            reader.onloadend = function (evt) {
-                console.log(evt);
-                callback(evt.target.result);
-            };
-            reader.readAsText(file);
-        }
-    };
-    AWCache.prototype.writeLocalStorageDataToPersistentStorage = function () {
-        var i, data = {}, key, value;
-        for (i = 0; i < AWProxy.storage().length; i += 1) {
-            key = AWProxy.storage().key(i);
-            value = AWProxy.storage().getItem(key);
-            data[key] = value;
-        }
-        this.writeDataToPersistentStorage(JSON.stringify(data));
-    };
-    AWCache.prototype.writeDataToPersistentStorage = function (data) {
-        AWProxy.requestFileSystem(AWProxy.localFileSystem().PERSISTENT, 0, gotFS, fail);
-        function gotFS(fileSystem) {
-            fileSystem.root.getFile('appworksjs.cache.json', { create: true, exclusive: false }, gotFileEntry, fail);
-        }
-        function gotFileEntry(fileEntry) {
-            fileEntry.createWriter(gotFileWriter, fail);
-        }
-        function gotFileWriter(writer) {
-            writer.onwriteend = function () {
-                console.info('cache data backed up successfully');
-            };
-            writer.write(data);
-        }
-        function fail(error) {
-            console.log(error.code);
-        }
-    };
-    AWCache.prototype.loadPersistentDataIntoLocalStorage = function () {
-        this.readDataFromPersistentStorage(function (json) {
-            var data;
-            if (json) {
-                data = JSON.parse(json);
-                for (var item in data) {
-                    window.localStorage.setItem(item, data[item]);
-                }
             }
         });
     };
+    AWCache.prototype.preloadCache = function () {
+        if (this.usePersistentStorage())
+            AWProxy.persistentStorage().loadPersistentData()
+                .then(function () {
+                return console.log('AWCache: Successfully loaded persistent data into local storage');
+            }, function (err) {
+                return console.error("AWCache: Failed to load persistent data into local storage - " + err.toString());
+            });
+    };
     AWCache.prototype.usePersistentStorage = function () {
-        return !AWProxy.isDesktopEnv() && this.options.usePersistentStorage;
+        return this.options.usePersistentStorage;
     };
     return AWCache;
 }(AWPlugin));
@@ -1992,7 +2088,10 @@ var AWFinder$1 = (function (_super) {
 var AWHeaderBar$1 = (function (_super) {
     __extends(AWHeaderBar, _super);
     function AWHeaderBar() {
-        return _super.apply(this, arguments) || this;
+        var _this = _super.apply(this, arguments) || this;
+        _this.ButtonName = { LeftOne: 0, LeftTwo: 1, RightOne: 2, RightTwo: 3 };
+        _this.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7 };
+        return _this;
     }
     AWHeaderBar.prototype.setHeader = function (config) {
         var _this = this;
@@ -2008,6 +2107,10 @@ var AWHeaderBar$1 = (function (_super) {
     AWHeaderBar.prototype.getHeader = function () {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'getHeader', []);
+    };
+    AWHeaderBar.prototype.setHeaderButtons = function (callback, config) {
+        var _this = this;
+        AWProxy.exec(callback, (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeaderButtons', [config]);
     };
     return AWHeaderBar;
 }(AWPlugin));
@@ -2208,20 +2311,18 @@ var AWOfflineManager$1 = (function (_super) {
         document.addEventListener('online', function () {
             _this.processDeferredQueue();
         });
-        // load the deferred queue into memory
-        _this.cache.getItem(_this.cacheKey).then(function (queue) {
-            if (queue) {
-                _this.queue = JSON.parse(queue);
-            }
-            else {
-                _this.queue = [];
-                _this.saveQueue();
-            }
-            // process the deferred queue upon object instantiation if we are currently online
-            if (_this.networkStatus().online) {
-                _this.processDeferredQueue();
-            }
-        });
+        var queue = _this.cache.getItem(_this.cacheKey);
+        if (queue) {
+            _this.queue = JSON.parse(queue);
+        }
+        else {
+            _this.queue = [];
+            _this.saveQueue();
+        }
+        // process the deferred queue upon object instantiation if we are currently online
+        if (_this.networkStatus().online) {
+            _this.processDeferredQueue();
+        }
         return _this;
     }
     AWOfflineManager.prototype.defer = function (eventName, args) {
@@ -2250,7 +2351,6 @@ var AWOfflineManager$1 = (function (_super) {
     };
     AWOfflineManager.prototype.processDeferredQueue = function () {
         var self = this;
-        console.info('appworks.js: processing deferred queue');
         setTimeout(function () {
             self.queue.forEach(function (deferred) {
                 self.dispatchEvent(deferred);
@@ -2383,16 +2483,71 @@ var AWWebView$1 = (function (_super) {
     return AWWebView;
 }(AWPlugin));
 
+var AWFileSystem$1 = (function (_super) {
+    __extends(AWFileSystem, _super);
+    function AWFileSystem() {
+        var _this = _super.call(this, Util.noop, Util.noop) || this;
+        _this.desktopEnvError = new Error('This method is only available in the AppWorks Desktop environment');
+        return _this;
+    }
+    AWFileSystem.prototype.exists = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'exists', [path]);
+    };
+    AWFileSystem.prototype.isDir = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isDir', [path]);
+    };
+    AWFileSystem.prototype.open = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'open', [path]);
+    };
+    AWFileSystem.prototype.reveal = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'reveal', [path]);
+    };
+    AWFileSystem.prototype.getDetails = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'getDetails', [path]);
+    };
+    AWFileSystem.prototype.listDirContents = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'listDirContents', [path]);
+    };
+    AWFileSystem.prototype.showSaveDialog = function (opts, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showSaveDialog', [opts]);
+    };
+    AWFileSystem.prototype.showDirSelector = function (successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showDirSelector', []);
+    };
+    AWFileSystem.prototype.showFileSelector = function (opts, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showFileSelector', [opts]);
+    };
+    /**
+     * The methods of this class should only be called from within an AppWorks desktop
+     * environment.
+     */
+    AWFileSystem.prototype.validateEnv = function () {
+        if (!AWProxy.isDesktopEnv()) {
+            throw this.desktopEnvError;
+        }
+    };
+    return AWFileSystem;
+}(AWPlugin));
+
 // Accelerometer plugin and alias -- [mobile]
 var Accelerometer = AWAccelerometer$1;
 var AWAccelerometer$$1 = AWAccelerometer$1;
 // AppManager plugin and alias -- [mobile]
 var AppManager = AWAppManager$1;
 var AWAppManager$$1 = AWAppManager$1;
-// Auth plugin and alias -- [mobile]
+// Auth plugin and alias -- [desktop/mobile]
 var Auth = AWAuth$1;
 var AWAuth$$1 = AWAuth$1;
-// Cache plugin and alias -- [mobile]
+// Cache plugin and alias -- [desktop/mobile]
 var Cache = AWCache$1;
 var AWCache$$1 = AWCache$1;
 // Camera plugin and alias -- [mobile]
@@ -2407,13 +2562,13 @@ var AWComponent$$1 = AWComponent$1;
 // Contacts plugin and alias -- [mobile]
 var Contacts = AWContacts$1;
 var AWContacts$$1 = AWContacts$1;
-// Device plugin and alias -- [mobile]
+// Device plugin and alias -- [desktop/mobile]
 var Device = AWDevice$1;
 var AWDevice$$1 = AWDevice$1;
 // FileChooser plugin and alias -- [mobile]
 var FileChooser = AWFileChooser$1;
 var AWFileChooser$$1 = AWFileChooser$1;
-// FileTransfer plugin and alias -- [mobile]
+// FileTransfer plugin and alias -- [desktop/mobile]
 var FileTransfer$1 = AWFileTransfer$1;
 var AWFileTransfer$$1 = AWFileTransfer$1;
 // Finder plugin and alias -- [mobile]
@@ -2462,6 +2617,8 @@ var AWVibration$$1 = AWVibration$1;
 // Webview plugin and alias -- [mobile]
 var WebView = AWWebView$1;
 var AWWebView$$1 = AWWebView$1;
+// FileSystem -- [desktop]
+var AWFileSystem$$1 = AWFileSystem$1;
 
 exports.Accelerometer = Accelerometer;
 exports.AWAccelerometer = AWAccelerometer$$1;
@@ -2517,6 +2674,7 @@ exports.Vibration = Vibration;
 exports.AWVibration = AWVibration$$1;
 exports.WebView = WebView;
 exports.AWWebView = AWWebView$$1;
+exports.AWFileSystem = AWFileSystem$$1;
 
 }((this.Appworks = this.Appworks || {})));
 //# sourceMappingURL=appworks.js.map

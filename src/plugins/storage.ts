@@ -1,24 +1,14 @@
 import {MockLocalStorage} from "../../test/mock/local-storage";
-import {Promise} from "es6-promise";
 
 /**
- * Async version of the {@link Storage} interface supplied by the Web Storage API.
+ * Web local storage wrapper that hooks into the native persistent layer on mobile and desktop
+ * The local and persistent storage are kept in, sync with update being flushed, and the local web
+ * storage always acting as the reference.
  */
-export interface AsyncStorage {
-    length: number;
-    clear(): Promise<any>;
-    getItem(key: string): Promise<any>;
-    key(index: number): Promise<string>;
-    removeItem(key: string): Promise<any>;
-    setItem(key: string, data: string): Promise<any>;
-}
+export class AWStorage implements Storage {
 
-/**
- * Intermediary type to adapt the synchronous {@link Storage} API into a an asynchronous
- * one for use by {@link AWCache}. If window.localStorage is defined then this is what we
- * will wrap.
- */
-export class AWStorage implements AsyncStorage {
+    [key: string]: any;
+    [index: number]: string;
 
     /**
      * Storage implementation.
@@ -35,34 +25,24 @@ export class AWStorage implements AsyncStorage {
         return this.storage ? this.storage.length : -1;
     }
 
-    clear(): Promise<any> {
-        return this.doAsync(this.storage, this.storage.clear);
+    clear(): void {
+        this.storage.clear();
     }
 
-    getItem(key: string): Promise<any> {
-        return this.doAsync(this.storage, this.storage.getItem, [key]);
+    getItem(key: string): any {
+        return this.storage.getItem(key);
     }
 
-    key(index: number): Promise<string> {
-        return this.doAsync(this.storage, this.storage.key, [index]);
+    key(index: number): string {
+        return this.storage.key(index);
     }
 
-    removeItem(key: string): Promise<any> {
-        return this.doAsync(this.storage, this.storage.removeItem, [key]);
+    removeItem(key: string): void {
+        return this.storage.removeItem(key);
     }
 
-    setItem(key: string, data: any): Promise<any> {
-        return this.doAsync(this.storage, this.storage.setItem, [key, data]);
-    }
-
-    doAsync(thisArg: any, operation: Function, args?: any[]): Promise<any> {
-        return new Promise((resolve, reject) => {
-            try {
-                resolve(operation.apply(thisArg, args));
-            } catch (e) {
-                reject(e);
-            }
-        });
+    setItem(key: string, data: any): void {
+        return this.storage.setItem(key, data);
     }
 
 }

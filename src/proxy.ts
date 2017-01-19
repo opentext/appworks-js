@@ -12,7 +12,11 @@ import {MockWebview} from "../test/mock/webview";
 import {LocalFileSystem} from "./plugins/local-file-system";
 import {MockFileTransfer} from "../test/mock/file-transfer";
 import {Util} from "./util";
-import {AWStorage, AsyncStorage} from "./plugins/storage";
+import {AWStorage} from "./plugins/storage";
+import {OnDeviceStorage} from "./plugins/on-device-storage";
+import {PersistentStorage} from "./plugins/cache";
+import {PersistentStorageMock} from "../test/mock/persistent-storage";
+import {DesktopStorage} from "./plugins/desktop-storage";
 
 declare var __aw_plugin_proxy;
 
@@ -200,9 +204,15 @@ export class AWProxy {
         }
     }
 
-    static storage(): AsyncStorage {
+    static storage(): Storage {
+        return new AWStorage();
+    }
+
+    static persistentStorage(): PersistentStorage {
         const desktopPlugin = AWProxy.getDesktopPlugin('AWStorage');
-        return desktopPlugin !== null ? desktopPlugin : new AWStorage();
+        return desktopPlugin !== null ?
+            new DesktopStorage(desktopPlugin) : (AWProxy.isMobileEnv()) ?
+            new OnDeviceStorage() : new PersistentStorageMock();
     }
 
     /**
@@ -212,6 +222,15 @@ export class AWProxy {
      */
     static isDesktopEnv(): boolean {
         return typeof __aw_plugin_proxy !== 'undefined';
+    }
+
+    /**
+     * Are we executing within the AppWorks mobile context.
+     *
+     * @return {boolean} true if Cordova is available, false otherwise
+     */
+    static isMobileEnv(): boolean {
+        return typeof cordova !== 'undefined';
     }
 
     /**

@@ -226,10 +226,7 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
      * environment.
      */
     validateEnv(): void {
-        var desktopEnv = AWProxy.isDesktopEnv();
-        console.log(`isDesktopEnv=${desktopEnv}`);
-        if (!desktopEnv) {
-            console.log('throwing error');
+        if (!AWProxy.isDesktopEnv()) {
             throw this.desktopEnvError;
         }
     }

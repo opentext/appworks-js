@@ -1,12 +1,13 @@
 import {expect} from "chai";
+import * as mocha from "mocha";
 import {AWFileSystem} from "../../src/plugins/file-system";
-import {Util} from "../../src/util";
+const _mocha = mocha;
 
 describe('FileSystem', () => {
     let underTest: AWFileSystem;
 
     beforeEach(() => {
-       underTest = new AWFileSystem();
+        underTest = new AWFileSystem();
     });
 
     it('should define an exists method', () => {
@@ -45,14 +46,15 @@ describe('FileSystem', () => {
         expect(underTest.showFileSelector).to.not.equal(undefined);
     });
 
-    it('should throw an exception when a validateEnv is called outside of the Desktop environment', () => {
-       try {
-           underTest.validateEnv();
-           fail('We expected an error to be thrown');
-       } catch (e) {
-           expect(e).to.not.equal(undefined);
-           expect(e.message).to.equal('This method is only available in the AppWorks Desktop environment');
-       }
+    it('should throw an exception when a validateEnv is called outside of the Desktop environment', (done) => {
+        try {
+            underTest.validateEnv();
+            done(new Error('We expected an error to be thrown'));
+        } catch (e) {
+            expect(e).to.not.equal(undefined);
+            expect(e.message).to.equal('This method is only available in the AppWorks Desktop environment');
+            done();
+        }
     });
 
 });

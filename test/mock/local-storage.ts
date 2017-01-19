@@ -3,6 +3,11 @@ export class MockLocalStorage implements Storage {
     [key: string]: any;
     [index: number]: string;
 
+    // allow tests to set a value if they need to
+    constructor(len?: number) {
+        this.length = isNaN(len) ? 0 : len;
+    }
+
     getItem(key: string): any {
         return null;
     }
@@ -19,4 +24,5 @@ export class MockLocalStorage implements Storage {
     key(index: number): string {
         return null;
     }
+
 }
