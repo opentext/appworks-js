@@ -3,10 +3,11 @@ import {expect} from 'chai';
 import {
     AWAccelerometer, Accelerometer, AppManager, AWAppManager,
     Vibration, WebView, AWAuth, Auth, AWCache, Cache, AWCamera, AWCompass, Compass, AWComponent, Component, AWContacts,
-    Contacts, AWDevice, Device, Media, Location, FileTransfer, Camera, AWFileChooser, FileChooser, AWFileTransfer, AWFinder, Finder, AWHeaderBar, HeaderBar,
+    Contacts, AWDevice, Device, Media, Location, FileTransfer, Camera, AWFileChooser, FileChooser, AWFileTransfer,
+    AWFinder, Finder, AWHeaderBar, HeaderBar,
     AWKeyboard, Keyboard, AWLocation, AWMedia, AWMediaCapture, MediaCapture, AWMenu, Menu, AWNotificationManager,
     NotificationManager, AWOfflineManager, OfflineManager, AWPage, Page, QRReader, AWSecureStorage, SecureStorage,
-    AWVibration, AWWebView, AWQRReader,
+    AWVibration, AWWebView, AWQRReader, AWFileSystem,
 } from "../src/appworks";
 
 describe('Appworks namespace', () => {
@@ -133,5 +134,9 @@ describe('Appworks namespace', () => {
     it('should define WebView as a global relative to the Appworks namespace', () => {
         expect(AWWebView).to.not.equal(undefined);
         expect(WebView).to.not.equal(undefined);
+    });
+
+    it('should define AWFileSystem as a global relative to the Appworks namespace', () => {
+        expect(AWFileSystem).to.not.equal(undefined);
     });
 });

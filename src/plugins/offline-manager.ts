@@ -27,20 +27,17 @@ export class AWOfflineManager extends AWPlugin {
             this.processDeferredQueue();
         });
 
-        // load the deferred queue into memory
-        this.cache.getItem(this.cacheKey).then(queue => {
-            if (queue) {
-                this.queue = JSON.parse(queue);
-            } else {
-                this.queue = [];
-                this.saveQueue();
-            }
-            // process the deferred queue upon object instantiation if we are currently online
-            if (this.networkStatus().online) {
-                this.processDeferredQueue();
-            }
-        });
-
+        const queue = this.cache.getItem(this.cacheKey);
+        if (queue) {
+            this.queue = JSON.parse(queue);
+        } else {
+            this.queue = [];
+            this.saveQueue();
+        }
+        // process the deferred queue upon object instantiation if we are currently online
+        if (this.networkStatus().online) {
+            this.processDeferredQueue();
+        }
     }
 
     defer(eventName: string, args: any) {
@@ -73,8 +70,6 @@ export class AWOfflineManager extends AWPlugin {
 
     private processDeferredQueue() {
         let self = this;
-
-        console.info('appworks.js: processing deferred queue');
 
         setTimeout(function () {
             self.queue.forEach(function (deferred) {
