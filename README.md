@@ -2,7 +2,20 @@
 
 ## What is appworks.js?
 
-appworks.js is a javascript library for building feature rich, hybrid enterprise apps utilizing on device technology while leveraging the power of the OpenText EIM stack.
+appworks.js is a javascript (TypeScript) library for building feature rich, hybrid enterprise apps. The [OpenText AppWorks platform](https://developer.opentext.com/awd/resources/articles/7866/what+is+appworks) provides mobile and desktop clients that support apps that utilize appworks.js.
+
+In a mobile environment the library provides access to on-device technology, and in the desktop environment some features of the underlying host OS (operating system) are exposed.
+
+Supported platforms:
+- mobile
+    - iOS
+    - Android
+- desktop
+    - Windows
+    - OSX
+    - Linux
+
+A limited number of appworks.js plugins are available in the desktop environment. They are marked in the [API Usage and Examples](#api-usage-and-examples) section.
 
 ## Installation
 
@@ -22,109 +35,30 @@ project. If you opt to use the bundled file make sure your script tag looks like
 
 ## Table of Contents
 * [API Usage and Examples](#api-usage-and-examples)
-  - [Auth](#auth)
-      + [authenticate](#authenticate)
-      + [getAuthResponse](#getauthresponse)
-      + [gateway](#gateway)
-      + [online](#online)
+  - [AWAuth](#awauth)
   - [AWWebView](#awwebview)
-      + [open](#open)
   - [AWAppManager](#awappmanager)
-      + [closeActiveApp](#closeactiveapp)
   - [AWComponent](#awcomponent)
-      + [open](#open-1)
-      + [list](#list)
-      + [check](#check)
-      + [close](#close)
   - [Finder](#finder)
-      + [open](#open-2)
-      + [openDirect](#opendirect)
-      + [list](#list-1)
   - [FileChooser](#filechooser)
-      + [selectAndUpload](#selectandupload)
   - [AWFileSystem](#awfilesystem)
-      + [exists](#exists)
-      + [isDir](#isdir)
-      + [open](#open-3)
-      + [reveal](#reveal)
-      + [getDetails](#getdetails)
-      + [listDirContents](#listdircontents)
-      + [showSaveDialog](#showsavedialog)
-      + [showDirSelector](#showdirselector)
-      + [showFileSelector](#showfileselector)
-    * [Objects:](#objects)
-      + [FileDetails](#filedetails)
-      + [FileFilter](#filefilter)
-      + [SaveDialogOptions](#savedialogoptions)
-      + [FileDialogOptions](#filedialogoptions)
   - [AWHeaderBar](#awheaderbar)
-      + [setHeader](#setheader)
-      + [getHeader](#getheader)
-      + [setHeaderButtons](#setheaderbuttons)
-      + [ButtonName enumerator](#buttonname-enumerator)
-      + [ButtonImage enumerator](#buttonimage-enumerator)
   - [AWPage](#awpage)
-      + [setPageUrl](#setpageurl)
   - [QRReader](#qrreader)
-      + [scan](#scan)
   - [Camera](#camera)
-      + [takePicture](#takepicture)
-      + [openGallery](#opengallery)
   - [SecureStorage](#securestorage)
-      + [store](#store)
-      + [retrieve](#retrieve)
-      + [remove](#remove)
-      + [fileExistsAtPath](#fileexistsatpath)
-      + [onprogress](#onprogress)
   - [AWFileTransfer](#awfiletransfer)
-      + [download](#download)
-      + [upload](#upload)
-      + [progressHandler](#progresshandler)
-      + [abort](#abort)
   - [AWMedia](#awmedia)
-    * [Parameters:](#parameters)
   - [AWMediaCapture](#awmediacapture)
-    * [Objects:](#objects-1)
-    * [Properties:](#properties)
   - [AWAccelerometer](#awaccelerometer)
-      + [getCurrentAcceleration](#getcurrentacceleration)
-      + [watchAcceleration](#watchacceleration)
-      + [clearWatch](#clearwatch)
   - [AWCompass](#awcompass)
-      + [getCurrentHeading](#getcurrentheading)
-      + [watchHeading](#watchheading)
-      + [clearWatch](#clearwatch-1)
   - [AWLocation](#awlocation)
-      + [getCurrentPosition](#getcurrentposition)
-      + [watchPosition](#watchposition)
-      + [clearWatch](#clearwatch-2)
-    * [Objects](#objects)
   - [AWNotificationManager](#awnotificationmanager)
-    * [enablePushNotifications](#enablepushnotifications)
-    * [getNotifications](#getnotifications)
-    * [disablePushNotifications](#disablepushnotifications)
-    * [getOpeningNotification](#getopeningnotification)
-    * [removeNotification](#removenotification)
-    * [openListener](#openlistener)
   - [AWOfflineManager](#awofflinemanager)
-    * [defer](#defer)
-    * [cancel](#cancel)
-    * [networkStats](#networkstats)
-      + [Full Example (angularjs):](#full-example-angularjs)
   - [AWCache](#awcache)
-      + [setItem](#setitem)
-      + [getItem](#getitem)
-    * [removeItem](#removeitem)
-      + [clear](#clear)
   - [AWDevice](#awdevice)
-    * [Properties:](#properties-1)
   - [AWVibration](#awvibration)
-      + [vibrate](#vibrate)
   - [AWContacts](#awcontacts)
-      + [create](#create)
-      + [find](#find)
-      + [pickContact](#pickcontact)
-    * [Objects:](#objects-2)
   - [Contact](#contact)
   - [ContactAddress](#contactaddress)
   - [ContactError](#contacterror)
@@ -132,9 +66,6 @@ project. If you opt to use the bundled file make sure your script tag looks like
   - [ContactOrganization](#contactorganization)
 + [Events](#events)
   - [Battery](#battery)
-    * [batterystatus](#batterystatus)
-    * [batterycritical](#batterycritical)
-    * [batterylow](#batterylow)
 
 ## API Usage and Examples
 
@@ -181,7 +112,9 @@ camera.takePicture();
 <b>Note</b>: if you are using angularJS, ````$scope.$apply()```` calls will need to be made in your callbacks to ensure
 that scope variables and the DOM get updated.
 
-#### Auth
+#### AWAuth
+<b>**_* available on desktop_**</b>
+
 The Auth plugin allows you to seamlessly authenticate against your backend. Useful for refreshing tokens and gaining
 access rights to make api calls against the gateway.
 
@@ -440,6 +373,8 @@ select a file and upload
 - <b>action</b>: the action
 
 #### AWFileSystem
+<b>**_* available on desktop_**</b>
+
 The AWFileSystem plugin allows AppWorks Desktop hosted apps to interact with the underlying desktop host. Specifically to make use of the OS file system operations, and also some of the native file browsing dialogs (Windows Explorer, OSX Finder, etc.).
 
 Please note this plugin is only usable in the desktop environment, the plugin methods will throw an error if usage outside of this context is detected.
@@ -943,6 +878,8 @@ bind a progress function to be passed progress events while the request is being
 called.
 
 #### AWFileTransfer
+<b>**_* available on desktop_**</b>
+
 The File Transfer plugin allows you to upload and download files to and from the device. Additionally, it allows you
 to download files to a shared container where they may be accessed by third party applications installed on the device.
 
@@ -1641,7 +1578,9 @@ Get the current network status of the device
 ````
 
 #### AWCache
-The AWCache plugin allows you to temporarily cache JSON data using the device local storage, or permanently store it using the file system.
+<b>**_* available on desktop_**</b>
+
+The AWCache plugin allows you to temporarily cache JSON data using local storage, or permanently store it using the device/host OS file system.
 
 ##### Methods:
 
@@ -1649,7 +1588,8 @@ The AWCache plugin allows you to temporarily cache JSON data using the device lo
 - getItem
 - clear
 
-All methods are asynchronous and return a Promise. The constructor accepts an options object.
+All methods are asynchronous and return a Promise. The constructor accepts an options object with a single property `usePersistentStorage`.
+If the `usePersistentStorage` option is set to `true` then the on-device file system or host OS storage will be used depending on the runtime environment.
 ````js
 var options = {
     usePersistentStorage: true
@@ -1657,7 +1597,7 @@ var options = {
 
 var cache = new Appworks.AWCache(options);
 ````
-Please note that in the AppWorks Desktop environment persistent storage is always used.
+
 ###### setItem
 ````ts
 setItem(key: string, value: any)
@@ -1742,6 +1682,8 @@ cache.clear().then(
  by calling ````removeItem````. default is ````false````. This option applies to the mobile environment only.
 
 #### AWDevice
+<b>**_* available on desktop_**</b>
+
 The AWDevice plugin gives you information that describes the device's hardware and software.
 
 ##### Properties:
