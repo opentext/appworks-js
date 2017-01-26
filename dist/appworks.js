@@ -2498,6 +2498,14 @@ var AWFileSystem$1 = (function (_super) {
         this.validateEnv();
         AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isDir', [path]);
     };
+    AWFileSystem.prototype.create = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'create', [path]);
+    };
+    AWFileSystem.prototype.copy = function (from, to, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'copy', [from, to]);
+    };
     AWFileSystem.prototype.open = function (path, successCallback, errorCallback) {
         this.validateEnv();
         AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'open', [path]);
