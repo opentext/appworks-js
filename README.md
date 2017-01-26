@@ -404,6 +404,29 @@ Determine if the path provided refers to a directory, as opposed to a file. <b>R
 
 A boolean value will be passed to the callback if the path does refer to an existing directory, else the error callback will be fired.
 
+###### create
+````
+    create(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+````
+Create a new file at the provided path. A file extension must be provided and any extra directories specified in the path that do not currently exist will be created for you. 
+This method does not support overwriting existing files, it is to be used for the creation of new files only. <b>Relative paths should not be used.</b>
+- <b>path</b>: a new file path that has a non empty file extension
+
+A boolean value will be passed to the callback if the file is created, else the error callback will be fired.
+
+###### copy
+````
+    open(from: string, to: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+````
+Copy a file from one location to another. The supplied source and destination paths must be non-empty and contain file extensions. 
+The source path has to refer to an existing file, and any directories in the 'to' path that do not exist will be created as part of the copy operation.
+<b>Relative paths should not be used.</b>
+- <b>from</b>: source file path
+- <b>to</b>: destination file path
+
+A boolean value will be passed to the callback if the file was successfully copied, else the error callback will be fired.
+
+
 ###### open
 ````
     open(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
