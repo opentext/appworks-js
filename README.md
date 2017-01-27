@@ -383,7 +383,7 @@ select a file and upload
 The AWFileSystem plugin allows AppWorks Desktop hosted apps to interact with the underlying desktop host. Specifically to make use of the OS file system operations, and also some of the native file browsing dialogs (Windows Explorer, OSX Finder, etc.).
 
 Please note this plugin is only usable in the desktop environment, the plugin methods will throw an error if usage outside of this context is detected. Use of relative paths with this plugin's methods is not advised, and paths beginning with a slash on Windows will assume that they begin at the root drive of the hosts file system. 
-Absolute paths can be retrieved via the AWFileSystem dialog methods, namely [showSaveDialog](#showSaveDialog), [showDirSelector](#showDirSelector), and [showFileSelector](#showFileSelector).
+Absolute paths can be retrieved via the AWFileSystem dialog methods, namely [showSaveDialog](#showsavedialog), [showDirSelector](#showdirselector), and [showFileSelector](#showfileselector).
 
 ##### Methods:
 
