@@ -382,7 +382,8 @@ select a file and upload
 
 The AWFileSystem plugin allows AppWorks Desktop hosted apps to interact with the underlying desktop host. Specifically to make use of the OS file system operations, and also some of the native file browsing dialogs (Windows Explorer, OSX Finder, etc.).
 
-Please note this plugin is only usable in the desktop environment, the plugin methods will throw an error if usage outside of this context is detected.
+Please note this plugin is only usable in the desktop environment, the plugin methods will throw an error if usage outside of this context is detected. Use of relative paths with this plugin's methods is not advised, and paths beginning with a slash on Windows will assume that they begin at the root drive of the hosts file system. 
+Absolute paths can be retrieved via the AWFileSystem dialog methods, namely [showSaveDialog](#showSaveDialog), [showDirSelector](#showDirSelector), and [showFileSelector](#showFileSelector).
 
 ##### Methods:
 
@@ -409,7 +410,7 @@ A boolean value will be passed to the callback if the path does refer to an exis
     create(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
 ````
 Create a new file at the provided path. A file extension must be provided and any extra directories specified in the path that do not currently exist will be created for you. 
-This method does not support overwriting existing files, it is to be used for the creation of new files only. <b>Relative paths should not be used.</b>
+This method does not support overwriting existing files, it is to be used for the creation of new files only. <b>Use of relative paths will result in an error being thrown.</b>
 - <b>path</b>: a new file path that has a non empty file extension
 
 A boolean value will be passed to the callback if the file is created, else the error callback will be fired.
@@ -420,7 +421,7 @@ A boolean value will be passed to the callback if the file is created, else the 
 ````
 Copy a file from one location to another. The supplied source and destination paths must be non-empty and contain file extensions. 
 The source path has to refer to an existing file, and any directories in the 'to' path that do not exist will be created as part of the copy operation.
-<b>Relative paths should not be used.</b>
+<b>Use of relative paths will result in an error being thrown.</b>
 - <b>from</b>: source file path
 - <b>to</b>: destination file path
 
