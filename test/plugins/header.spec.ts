@@ -27,4 +27,10 @@ describe('Header', () => {
         let o = new AWHeaderBar(Util.noop, Util.noop);
         expect(o.getHeader).to.not.equal(undefined);
     });
+
+    it('should define a maskHeader function', () => {
+        let o = new AWHeader(Util.noop, Util.noop);
+        expect(o.maskHeader).to.not.equal(undefined);
+    });
+
 });

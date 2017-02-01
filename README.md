@@ -685,6 +685,37 @@ function failFn(err) {
 // Execute the function to initialize the header buttons
 initHeaderButtons();
 ````
+
+###### maskHeader
+````
+maskHeader(shouldMaskHeader: any)
+````
+
+- <b>shouldMaskHeader</b>: A boolean value, true to mask false to unmask
+- Add an overlay to the native header. 
+- The buttons underneath are not usable when when the overlay is visible.
+
+##### Example:
+````js
+document.addEventListener("deviceready", onDeviceReady, false);
+
+var self = this;
+
+function onDeviceReady() {
+  app();
+}
+
+function app() {
+    self.header = new Appworks.AWHeaderBar();
+}
+
+// Invoke the mask header plugin
+// Pass in a boolean (true to mask, false to unmask)
+function maskHeader(shouldMaskHeader) {
+  header.maskHeader(shouldMaskHeader);
+}
+````
+
 ###### ButtonName enumerator
 - <b>ButtonName.LeftOne</b>: The left most button, normally the hamburger menu icon
 - <b>ButtonName.LeftTwo</b>: The second left button, no default use.

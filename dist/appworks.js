@@ -2112,6 +2112,10 @@ var AWHeaderBar$1 = (function (_super) {
         var _this = this;
         AWProxy.exec(callback, (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeaderButtons', [config]);
     };
+    AWHeaderBar.prototype.maskHeader = function (shouldMaskHeader) {
+        var _this = this;
+        cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'maskHeader', [shouldMaskHeader]);
+    };
     return AWHeaderBar;
 }(AWPlugin));
 // alias
