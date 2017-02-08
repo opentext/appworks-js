@@ -4,8 +4,7 @@
   "version": "16.2.2-alpha.2",
   "author": "OpenText Inc",
   "bugs": "https://github.com/opentext/appworks-js/issues",
-  "devDependencies": {
-    "@types/chai": "^3.4.34",
+  "dependencies": {
     "@types/cordova": "0.0.34",
     "@types/cordova-plugin-battery-status": "0.0.3",
     "@types/cordova-plugin-camera": "0.0.3",
@@ -24,11 +23,14 @@
     "@types/cordova-plugin-statusbar": "0.0.3",
     "@types/cordova-plugin-vibration": "0.0.3",
     "@types/es6-promise": "0.0.32",
+    "es6-promise": "^4.0.5"
+  },
+  "devDependencies": {
+    "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.38",
     "@types/sinon": "^1.16.34",
     "chai": "^3.5.0",
     "concurrently": "^3.1.0",
-    "es6-promise": "^4.0.5",
     "mocha": "^3.2.0",
     "rollup": "^0.40.2",
     "rollup-plugin-commonjs": "^7.0.0",
