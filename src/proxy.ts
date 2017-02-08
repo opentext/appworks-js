@@ -18,7 +18,7 @@ import {PersistentStorage} from "./plugins/cache";
 import {PersistentStorageMock} from "../test/mock/persistent-storage";
 import {DesktopStorage} from "./plugins/desktop-storage";
 
-declare var __aw_plugin_proxy;
+export declare const __aw_plugin_proxy;
 
 export class AWProxy {
 

@@ -21,19 +21,20 @@
     "@types/cordova-plugin-media-capture": "0.0.3",
     "@types/cordova-plugin-network-information": "0.0.3",
     "@types/cordova-plugin-statusbar": "0.0.3",
-    "@types/cordova-plugin-vibration": "0.0.3",
-    "@types/es6-promise": "0.0.32",
-    "es6-promise": "^4.0.5"
+    "@types/cordova-plugin-vibration": "0.0.3"
   },
   "devDependencies": {
     "@types/chai": "^3.4.34",
+    "@types/es6-promise": "0.0.32",
     "@types/mocha": "^2.2.38",
     "@types/sinon": "^1.16.34",
     "chai": "^3.5.0",
     "concurrently": "^3.1.0",
+    "es6-promise": "^4.0.5",
     "mocha": "^3.2.0",
     "rollup": "^0.40.2",
     "rollup-plugin-commonjs": "^7.0.0",
+    "rollup-plugin-inject": "^2.0.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-typescript": "^0.8.1",
     "rollup-plugin-uglify": "^1.0.1",
@@ -42,6 +43,16 @@
     "tslint": "^4.0.1",
     "typescript": "^2.1.4"
   },
+  "files": [
+    "index.ts",
+    "src/plugin.ts",
+    "src/proxy.ts",
+    "src/util.ts",
+    "src/index.ts",
+    "src/plugins/*.ts",
+    "test/mock/*.ts",
+    "node_modules/es6-promise"
+  ],
   "homepage": "https://github.com/opentext/appworks-js",
   "keywords": [
     ""

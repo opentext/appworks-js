@@ -2,6 +2,7 @@ import typescript from 'rollup-plugin-typescript';
 import uglify from 'rollup-plugin-uglify';
 import commonjs from 'rollup-plugin-commonjs';
 import nodeResolve from 'rollup-plugin-node-resolve';
+import inject from 'rollup-plugin-inject';
 
 export default {
     entry: 'src/appworks.ts',
@@ -27,10 +28,20 @@ function dest() {
 }
 
 function plugins() {
+    let use = [];
     // as we are using a different version of Typescript to the one supplied by rollup we need to require it here
-    let use = [typescript({
+    use.push(typescript({
         typescript: require('typescript')
-    })];
+    }));
+    use.push(inject({
+        // control which files this plugin applies to
+        // with include/exclude
+        include: '**/*.ts',
+        // use a named export – i.e. insert
+        // import { Promise } from 'es6-promise'
+        Promise: ['es6-promise', 'Promise'],
+    }));
+    // compress assets if BUILD environment variable has been set to `min`
     if (process.env.BUILD === 'min') {
         use.push(uglify());
     }
