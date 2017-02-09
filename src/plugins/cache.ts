@@ -1,7 +1,6 @@
 import {AWPlugin} from "../plugin";
 import {AWProxy} from "../proxy";
 import {Util} from "../util";
-import {Promise} from "es6-promise";
 
 export interface PersistentStorage {
 
