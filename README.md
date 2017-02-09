@@ -753,7 +753,7 @@ openModalAppWebView(url: string, title: string)
 setActionButtonCallback(callback: any)
 ````
 
-- Perform a javascript function in your app when the action button is tapped
+- Execute a javascript function in your app when the action button is tapped
 - <b>callback</b>: The callback to run when the action button is tapped.
 
 ###### closeModalAppWebView
