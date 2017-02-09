@@ -42,6 +42,16 @@ export class AWHeaderBar extends AWPlugin {
             [config]
         );
     }
+
+    maskHeader(shouldMaskHeader: any) {
+        cordova.exec(
+            (() => this.successHandler)(),
+            (() => this.errorHandler)(),
+            'AWHeaderBar',
+            'maskHeader',
+            [shouldMaskHeader]
+        );
+    }
 }
 // alias
 export class AWHeader extends AWHeaderBar {
