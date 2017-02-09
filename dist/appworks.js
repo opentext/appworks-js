@@ -2377,6 +2377,22 @@ var AWPage$1 = (function (_super) {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'setPageUrl', [url]);
     };
+    AWPage.prototype.openModalAppWebView = function (url, title) {
+        var _this = this;
+        cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'showModalAppWebView', [url, title]);
+    };
+    AWPage.prototype.openModalExternalWebView = function (url, title) {
+        var _this = this;
+        cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'showModalExternalWebView', [url, title]);
+    };
+    AWPage.prototype.setActionButtonCallback = function (callback) {
+        var _this = this;
+        cordova.exec(callback, (function () { return _this.errorHandler; })(), 'AWPage', 'setModalAppWebViewActionCallback', []);
+    };
+    AWPage.prototype.closeModalAppWebView = function () {
+        var _this = this;
+        cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'closeModalAppWebView', []);
+    };
     return AWPage;
 }(AWPlugin));
 

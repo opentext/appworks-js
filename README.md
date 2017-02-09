@@ -709,6 +709,27 @@ setPageUrl(url: string)
 ````
 Pass in a URL as a string, starting with http(s):// and a webview will overlay the current webview with that URL. For security reasons no appworks functionality will be available from this URL.
 
+###### openModalAppWebView
+````
+openModalAppWebView(url: string, title: string)
+````
+
+- <b>url</b>: the filename and querystring to be opened
+- <b>title</b>: the title to be displayed in the header
+
+###### setActionButtonCallback
+````
+setActionButtonCallback(callback: any)
+````
+
+- Perform a javascript function in your app when the action button is tapped
+- <b>callback</b>: The callback to run when the action button is tapped.
+
+###### closeModalAppWebView
+````
+closeModalAppWebView()
+````
+
 ##### Example:
 ````js
   var url = "http://www.opentext.com/"
