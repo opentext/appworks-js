@@ -11,4 +11,45 @@ export class AWPage extends AWPlugin {
             [url]
         );
     }
+
+    openModalAppWebView(url: string, title: string) {
+        cordova.exec(
+            (() => this.successHandler)(),
+            (() => this.errorHandler)(),
+            'AWPage',
+            'showModalAppWebView',
+            [url, title]
+        );
+    }
+
+    openModalExternalWebView(url: string, title: string) {
+        cordova.exec(
+            (() => this.successHandler)(),
+            (() => this.errorHandler)(),
+            'AWPage',
+            'showModalExternalWebView',
+            [url, title]
+        );
+    }
+
+    setActionButtonCallback(callback: any) {
+        cordova.exec(
+            callback,
+            (() => this.errorHandler)(),
+            'AWPage',
+            'setModalAppWebViewActionCallback',
+            []
+        );
+    }
+
+    closeModalAppWebView() {
+        cordova.exec(
+            (() => this.successHandler)(),
+            (() => this.errorHandler)(),
+            'AWPage',
+            'closeModalAppWebView',
+            []
+        );
+    }
+
 }
