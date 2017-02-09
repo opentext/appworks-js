@@ -275,7 +275,9 @@ var es6Promise = createCommonjsModule(function (module, exports) {
  */
 
 (function (global, factory) {
-    module.exports = factory();
+    'object' === 'object' && 'object' !== 'undefined' ? module.exports = factory() :
+    typeof undefined === 'function' && undefined.amd ? undefined(factory) :
+    (global.ES6Promise = factory());
 }(commonjsGlobal, (function () { 'use strict';
 
 function objectOrFunction(x) {
@@ -1420,7 +1422,6 @@ Promise.Promise = Promise;
 return Promise;
 
 })));
-
 });
 
 var es6Promise_1 = es6Promise.Promise;
@@ -1777,7 +1778,7 @@ var AWProxy = (function () {
 var AWAccelerometer$1 = (function (_super) {
     __extends(AWAccelerometer, _super);
     function AWAccelerometer() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     AWAccelerometer.prototype.getCurrentAcceleration = function () {
         var _this = this;
@@ -1796,7 +1797,7 @@ var AWAccelerometer$1 = (function (_super) {
 var AWAppManager$1 = (function (_super) {
     __extends(AWAppManager, _super);
     function AWAppManager() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     AWAppManager.prototype.closeActiveApp = function () {
         var _this = this;
@@ -1808,7 +1809,7 @@ var AWAppManager$1 = (function (_super) {
 var AWAuth$1 = (function (_super) {
     __extends(AWAuth, _super);
     function AWAuth() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     AWAuth.prototype.authenticate = function (force) {
         var _this = this;
@@ -1896,7 +1897,7 @@ var AWCache$1 = (function (_super) {
 var AWCamera$1 = (function (_super) {
     __extends(AWCamera, _super);
     function AWCamera() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     AWCamera.prototype.cleanup = function (onSuccess, onError) {
         return AWProxy.camera().cleanup(onSuccess, onError);
@@ -1930,7 +1931,7 @@ var AWCamera$1 = (function (_super) {
 var AWCompass$1 = (function (_super) {
     __extends(AWCompass, _super);
     function AWCompass() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     AWCompass.prototype.getCurrentHeading = function () {
         var _this = this;
@@ -1949,7 +1950,7 @@ var AWCompass$1 = (function (_super) {
 var AWComponent$1 = (function (_super) {
     __extends(AWComponent, _super);
     function AWComponent() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     AWComponent.prototype.open = function (successHandler, errorHandler, args) {
         AWProxy.exec(successHandler, errorHandler, 'AWComponent', 'open', args || []);
@@ -1969,7 +1970,7 @@ var AWComponent$1 = (function (_super) {
 var AWContacts$1 = (function (_super) {
     __extends(AWContacts, _super);
     function AWContacts() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     AWContacts.prototype.create = function (contact) {
         return AWProxy.contacts().create(contact);
@@ -2004,7 +2005,7 @@ var AWDevice$1 = (function (_super) {
 var AWFileChooser$1 = (function (_super) {
     __extends(AWFileChooser, _super);
     function AWFileChooser() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     AWFileChooser.prototype.selectAndUpload = function (action) {
         var _this = this;
@@ -2064,7 +2065,7 @@ var AWFileTransfer$1 = (function (_super) {
 var AWFinder$1 = (function (_super) {
     __extends(AWFinder, _super);
     function AWFinder() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     AWFinder.prototype.open = function (path, filename) {
         var _this = this;
@@ -2088,7 +2089,7 @@ var AWFinder$1 = (function (_super) {
 var AWHeaderBar$1 = (function (_super) {
     __extends(AWHeaderBar, _super);
     function AWHeaderBar() {
-        var _this = _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.ButtonName = { LeftOne: 0, LeftTwo: 1, RightOne: 2, RightTwo: 3 };
         _this.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7 };
         return _this;
@@ -2122,7 +2123,7 @@ var AWHeaderBar$1 = (function (_super) {
 var AWHeader$1 = (function (_super) {
     __extends(AWHeader, _super);
     function AWHeader() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     return AWHeader;
 }(AWHeaderBar$1));
@@ -2155,7 +2156,7 @@ var AWKeyboard$1 = (function (_super) {
 var AWLocation$1 = (function (_super) {
     __extends(AWLocation, _super);
     function AWLocation() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     AWLocation.prototype.getCurrentPosition = function (options) {
         var _this = this;
@@ -2241,7 +2242,7 @@ var AWMediaCapture$1 = (function (_super) {
 var AWMenu$1 = (function (_super) {
     __extends(AWMenu, _super);
     function AWMenu() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     AWMenu.prototype.push = function (items) {
         var _this = this;
@@ -2375,7 +2376,7 @@ var AWOfflineManager$1 = (function (_super) {
 var AWPage$1 = (function (_super) {
     __extends(AWPage, _super);
     function AWPage() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     AWPage.prototype.setPageUrl = function (url) {
         var _this = this;
@@ -2403,7 +2404,7 @@ var AWPage$1 = (function (_super) {
 var QRReader$1 = (function (_super) {
     __extends(QRReader, _super);
     function QRReader() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     QRReader.prototype.scan = function () {
         var _this = this;
@@ -2418,7 +2419,7 @@ var QRReader$1 = (function (_super) {
 var AWQRReader$1 = (function (_super) {
     __extends(AWQRReader, _super);
     function AWQRReader() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     return AWQRReader;
 }(QRReader$1));
@@ -2476,7 +2477,7 @@ SecureStorage$1.idCounter = 0;
 var AWSecureStorage$1 = (function (_super) {
     __extends(AWSecureStorage, _super);
     function AWSecureStorage() {
-        return _super.apply(this, arguments) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     return AWSecureStorage;
 }(SecureStorage$1));
