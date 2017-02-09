@@ -62,7 +62,7 @@
   "main:min": "dist/appworks.min.js",
   "repository": "https://github.com/opentext/appworks-js",
   "scripts": {
-    "build": "concurrently \"rollup -c\" \"rollup -c --environment BUILD:min\"",
+    "build": "rollup -c && rollup -c --environment BUILD:min",
     "lint": "tslint -c tslint.json ./src/**/*.ts",
     "prebuild": "npm run test",
     "test": "mocha --compilers ts:ts-node/register test/**.spec.ts test/**/*.spec.ts",

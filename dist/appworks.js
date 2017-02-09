@@ -275,9 +275,7 @@ var es6Promise = createCommonjsModule(function (module, exports) {
  */
 
 (function (global, factory) {
-    'object' === 'object' && 'object' !== 'undefined' ? module.exports = factory() :
-    typeof undefined === 'function' && undefined.amd ? undefined(factory) :
-    (global.ES6Promise = factory());
+    module.exports = factory();
 }(commonjsGlobal, (function () { 'use strict';
 
 function objectOrFunction(x) {
@@ -1422,6 +1420,7 @@ Promise.Promise = Promise;
 return Promise;
 
 })));
+
 });
 
 var es6Promise_1 = es6Promise.Promise;
