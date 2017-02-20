@@ -49,6 +49,7 @@ project. If you opt to use the bundled file make sure your script tag looks like
   - [AWFileSystem](#awfilesystem)
   - [AWHeaderBar](#awheaderbar)
   - [AWPage](#awpage)
+  - [AWLauncher](#awlauncher)
   - [QRReader](#qrreader)
   - [Camera](#camera)
   - [SecureStorage](#securestorage)
@@ -768,6 +769,42 @@ closeModalAppWebView()
   awPage.setPageUrl(url);
 ````
 
+#### AWLauncher
+The AWLauncher plugin provides the URL used to open the client in the event it was opened via a custom URL scheme, with the url appended as the launchUrl parameter, e.g. x-otm://?launchUrl=http%3A%2F%2Fmurdoch.opentext.com%2Fnode%2F200
+The launchUrl content must be URL encoded.
+
+If your client and domain are setup to use this functionality, then your client will open when you tap on a corresponding link from another app on your device.
+
+This plugin allows your app to get this URL and also clear it to prevent it from being accessed subsequently.
+
+##### Methods:
+````
+getLaunchURL(successHandler: any, errorHandler: any)
+````
+- <b>successHandler</b> will return the url as a string if one is set
+- <b>errorHandler</b> will return a string if no url is set
+
+````
+clearLaunchURL()
+````
+- No parameters, this will simply set the launch URL to null prevent any further access.
+
+##### Example:
+````js
+  self.launcher = new Appworks.AWLauncher();
+  
+  // Retrieve the launch URL
+  launcher.getLaunchURL(function(url) {
+    // Success, a launch url is set
+    alert(url);
+  }, function(error) {
+    // Error, no launch url is set
+    alert(error);
+  });
+
+  // Clears the launch URL
+  launcher.clearLaunchURL();
+````
 
 #### QRReader
 The QRReader plugin allows you to scan a QR code using the device camera.
