@@ -10,6 +10,10 @@ describe('FileSystem', () => {
         underTest = new AWFileSystem();
     });
 
+    it('should define a getPath method', () => {
+        expect(underTest.getPath).to.not.equal(undefined);
+    });
+
     it('should define an exists method', () => {
         expect(underTest.exists).to.not.equal(undefined);
     });
