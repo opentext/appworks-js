@@ -126,6 +126,21 @@ var MockCapture = (function () {
 
 var MockNotification = (function () {
     function MockNotification() {
+        this.body = null;
+        this.dir = null;
+        this.icon = null;
+        this.lang = null;
+        this.onclick = null;
+        this.onclose = null;
+        this.onerror = null;
+        this.onshow = null;
+        this.permission = null;
+        this.title = null;
+        this.tag = null;
+        this.close = null;
+        this.addEventListener = function (name) { };
+        this.removeEventListener = function (name) { };
+        this.dispatchEvent = function (name) { };
     }
     MockNotification.prototype.alert = function (message, alertCallback, title, buttonName) {
     };
@@ -2248,6 +2263,15 @@ var AWMenu$1 = (function (_super) {
         var args = [items];
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWMenu', 'push', args);
     };
+    AWMenu.prototype.addSectionsToMenu = function (menuSections) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(resolve, reject, 'AWMenu', 'addSectionsToMenu', [menuSections]);
+        });
+    };
+    AWMenu.prototype.didOpenMenuItem = function (callback) {
+        var _this = this;
+        AWProxy.exec(callback, (function () { return _this.errorHandler; })(), 'AWMenu', 'receive', []);
+    };
     AWMenu.prototype.openListener = function (listener) {
         var _this = this;
         AWProxy.exec(listener, (function () { return _this.errorHandler; })(), 'AWMenu', 'receive', []);
@@ -2510,6 +2534,10 @@ var AWFileSystem$1 = (function (_super) {
         _this.desktopEnvError = new Error('This method is only available in the AppWorks Desktop environment');
         return _this;
     }
+    AWFileSystem.prototype.getPath = function (name, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'getPath', [name]);
+    };
     AWFileSystem.prototype.exists = function (path, successCallback, errorCallback) {
         this.validateEnv();
         AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'exists', [path]);
