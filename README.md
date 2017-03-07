@@ -436,11 +436,11 @@ A boolean value will be passed to the callback if the path does refer to an exis
 ````
     create(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
 ````
-Create a new file at the provided path. A file extension must be provided and any extra directories specified in the path that do not currently exist will be created for you. 
-This method does not support overwriting existing files, it is to be used for the creation of new files only. <b>Use of relative paths will result in an error being thrown.</b>
-- <b>path</b>: a new file path that has a non empty file extension
+Create a new file or directory at the provided path. In the case of file creation a file extension must be provided. In the case of new directory creation a trailing slash is required in the supplied path. Any extra directories specified in the path that do not currently exist will be created for you. 
+This method does not support overwriting existing files/directories. <b>Use of relative paths will result in an error being thrown.</b>
+- <b>path</b>: a new file path that has a non empty file extension, or a new directory path that ends with a trailing slash
 
-A boolean value will be passed to the callback if the file is created, else the error callback will be fired.
+A boolean value will be passed to the callback if the file/directory was created, else the error callback will be fired.
 
 ###### copy
 ````
