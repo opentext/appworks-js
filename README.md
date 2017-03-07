@@ -388,6 +388,32 @@ Absolute paths can be retrieved via the AWFileSystem dialog methods, namely [sho
 
 ##### Methods:
 
+###### getPath
+````
+    getPath(name: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+````
+Retrieve the full path of a well-known location via a special name.
+- <b>name</b>: an alias for a well-known disk location
+
+A String path value will be passed to the callback if the alias is recognised, else the error callback will be fired.
+
+You can request the following paths by the name:
+
+* `home` User's home directory.
+* `appData` Per-user application data directory, which by default points to:
+  * `%APPDATA%` on Windows
+  * `$XDG_CONFIG_HOME` or `~/.config` on Linux
+  * `~/Library/Application Support` on macOS
+* `userData` The directory for storing your app's configuration files, which by
+  default it is the `appData` directory appended with your app's name.
+* `temp` Temporary directory.
+* `desktop` The current user's Desktop directory.
+* `documents` Directory for a user's "My Documents".
+* `downloads` Directory for a user's downloads.
+* `music` Directory for a user's music.
+* `pictures` Directory for a user's pictures.
+* `videos` Directory for a user's videos.
+
 ###### exists
 ````
     exists(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
