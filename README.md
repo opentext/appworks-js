@@ -390,7 +390,7 @@ Absolute paths can be retrieved via the AWFileSystem dialog methods, namely [sho
 
 ###### getPath
 ````
-    getPath(name: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+    getPath(name: string, successCallback: (result: string), errorCallback?: (result: Error))
 ````
 Retrieve the full path of a well-known location via a special name.
 - <b>name</b>: an alias for a well-known disk location
