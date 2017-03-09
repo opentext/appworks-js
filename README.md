@@ -48,6 +48,7 @@ project. If you opt to use the bundled file make sure your script tag looks like
   - [FileChooser](#filechooser)
   - [AWFileSystem](#awfilesystem)
   - [AWHeaderBar](#awheaderbar)
+  - [AWMenu](#awmenu)
   - [AWPage](#awpage)
   - [AWLauncher](#awlauncher)
   - [QRReader](#qrreader)
@@ -755,6 +756,113 @@ function maskHeader(shouldMaskHeader) {
 - <b>ButtonImage.None</b>: Hides the button
 - <b>ButtonImage.Dots</b>: Three dots stacked vertically icon
 - <b>ButtonImage.Search</b>: Magnifying glass icon
+
+
+#### AWMenu
+* available on Desktop
+The AWMenu plugin allows you to set items in the Desktop or Mobile native menu's.
+
+##### Methods:
+
+###### setMenu
+```typescript
+    setMenu(sections: MenuSection[])
+```
+- <b>sections</b>: MenuSection objects to add to native menu
+
+Pass in a number of MenuSection objects to be added to the native menu. Each MenuSection object contains a number of
+MenuItem objects.
+
+##### MenuSection
+```typescript
+export interface MenuSection {
+    /**
+     * the title of the section
+     */
+    subhead: string;
+    /**
+     * the items to add to this section
+     */
+    items: MenuItem[];
+}
+```
+
+##### MenuItem
+```typescript
+export interface MenuItem {
+    /**
+     * the title text to use for the menu item
+     */
+    title: string;
+    /**
+     * the callback to invoke when the user taps the menu item
+     */
+    action: any;
+    /**
+     * is the menu item visible?
+     */
+    visible: boolean;
+    /**
+     * does the menu item have a badge? e.g. Notifications (1)
+     */
+    hasBadge: boolean;
+}
+```
+##### Example
+```typescript
+addItems() {
+    const menu = new AWMenu(null, (err) => {
+      console.error(err);
+    });
+    const menuSections = [
+        {
+            subhead: 'Breakfast',
+            items: [
+                 {
+                     title: 'Steak & Eggs',
+                     action: () => {
+                         alert('You chose Steak & Eggs. Please watch your cholesterol levels.');
+                     },
+                     visible: true,
+                     hasBadge: true
+                 },
+                 {
+                     title: 'Donuts',
+                     action: () => {
+                         alert('You chose Donuts. Yummy, but gym time is required');
+                     },
+                     visible: true,
+                     hasBadge: true
+                 },
+            ]
+        },
+        {
+            subhead: 'Dinner',
+            items: [
+                {
+                    title: 'Smoked black cod and escarole salad',
+                    action: () => {
+                        alert('Isnt this on the menu at Chez Panisse?');
+                    },
+                    visible: true,
+                    hasBadge: false
+                },
+                {
+                    title: 'Cheeseburger, Fries, and a Beer',
+                    action: () => {
+                        alert('Why not');
+                    },
+                    visible: true,
+                    hasBadge: true
+                }
+            ]
+        }
+    ];
+    menu.setMenu(menuSections).then(() => {
+      alert(`Successfully added ${menuSections.length} sections to menu`);
+    });
+  }
+```
 
 #### AWPage
 The AWPage plugin allows you to set the URL of page to an external URL (such as http://www.google.com). This allows the web app to launch a new webView with a specified URL in the current context of the view.

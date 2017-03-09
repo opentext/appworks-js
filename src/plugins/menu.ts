@@ -51,7 +51,13 @@ export class AWMenu extends AWPlugin {
 }
 
 export interface MenuSection {
+    /**
+     * the title of the section
+     */
     subhead: string;
+    /**
+     * the items to add to this section
+     */
     items: MenuItem[];
 }
 
