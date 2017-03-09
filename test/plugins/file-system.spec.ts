@@ -22,8 +22,12 @@ describe('FileSystem', () => {
         expect(underTest.isDir).to.not.equal(undefined);
     });
 
-    it('should define a create method', () => {
-        expect(underTest.create).to.not.equal(undefined);
+    it('should define a createFile method', () => {
+        expect(underTest.createFile).to.not.equal(undefined);
+    });
+
+    it('should define a createDirectory method', () => {
+        expect(underTest.createDirectory).to.not.equal(undefined);
     });
 
     it('should define a copy method', () => {

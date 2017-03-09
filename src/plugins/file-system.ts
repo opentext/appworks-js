@@ -72,9 +72,13 @@ export interface DesktopHostFileSystem {
           successCallback: (result: boolean) => void,
           errorCallback?: (result: Error) => void): void;
 
-    create(path: string,
-           successCallback: (result: boolean) => void,
-           errorCallback?: (result: Error) => void): void;
+    createFile(path: string,
+               successCallback: (result: boolean) => void,
+               errorCallback?: (result: Error) => void): void;
+
+    createDirectory(path: string,
+                    successCallback: (result: boolean) => void,
+                    errorCallback?: (result: Error) => void): void;
 
     copy(from: string,
          to: string,
@@ -156,15 +160,28 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
         );
     }
 
-    create(path: string,
-           successCallback: (result: boolean) => void,
-           errorCallback?: (result: Error) => void): void {
+    createFile(path: string,
+               successCallback: (result: boolean) => void,
+               errorCallback?: (result: Error) => void): void {
         this.validateEnv();
         AWProxy.exec(
             successCallback,
             errorCallback,
             'AWFileSystem',
-            'create',
+            'createFile',
+            [path]
+        );
+    }
+
+    createDirectory(path: string,
+                    successCallback: (result: boolean) => void,
+                    errorCallback?: (result: Error) => void): void {
+        this.validateEnv();
+        AWProxy.exec(
+            successCallback,
+            errorCallback,
+            'AWFileSystem',
+            'createDirectory',
             [path]
         );
     }

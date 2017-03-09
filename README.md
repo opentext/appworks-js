@@ -432,13 +432,23 @@ Determine if the path provided refers to a directory, as opposed to a file. <b>R
 
 A boolean value will be passed to the callback if the path does refer to an existing directory, else the error callback will be fired.
 
-###### create
+###### createFile
 ````
-    create(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+    createFile(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
 ````
-Create a new file or directory at the provided path. In the case of file creation a file extension must be provided (e.g. `../myNewImage.jpg`), and in the case of new directory creation a trailing slash is required in the supplied path (e.g. `../myDir/`). Any extra directories specified in the path that do not currently exist will be created for you. 
-This method does not support overwriting existing files/directories. <b>Use of relative paths will result in an error being thrown.</b>
-- <b>path</b>: a new file path that has a non empty file extension, or a new directory path that ends with a trailing slash
+Create a new file at the provided path. A file extension must be provided (e.g. `../myNewImage.jpg`). Any extra directories specified in the path that do not currently exist will be created for you. 
+This method does not support overwriting existing files. <b>Use of relative paths will result in an error being thrown.</b>
+- <b>path</b>: a new file path that has a non empty file extension
+
+A boolean value will be passed to the callback if the file/directory was created, else the error callback will be fired.
+
+###### createDirectory
+````
+    createDirectory(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+````
+Create a new directory at the provided path. The provided path may contain a trailing slash (both `../myDir/` and `../myDir` are valid). Any extra directories specified in the path that do not currently exist will be created for you. 
+This method does not support overwriting existing directories. <b>Use of relative paths will result in an error being thrown.</b>
+- <b>path</b>: a new directory path that may end with a trailing slash
 
 A boolean value will be passed to the callback if the file/directory was created, else the error callback will be fired.
 
