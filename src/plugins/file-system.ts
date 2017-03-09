@@ -62,7 +62,7 @@ export interface FileDialogOptions {
 
 export interface DesktopHostFileSystem {
     getPath(name: string,
-            successCallback: (result: boolean) => void,
+            successCallback: (result: string) => void,
             errorCallback?: (result: Error) => void): void;
     exists(path: string,
            successCallback: (result: boolean) => void,
@@ -118,7 +118,7 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     }
 
     getPath(name: string,
-            successCallback: (result: boolean) => void,
+            successCallback: (result: string) => void,
             errorCallback?: (result: Error) => void): void {
         this.validateEnv();
         AWProxy.exec(
