@@ -2263,9 +2263,9 @@ var AWMenu$1 = (function (_super) {
         var args = [items];
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWMenu', 'push', args);
     };
-    AWMenu.prototype.addSectionsToMenu = function (menuSections) {
+    AWMenu.prototype.setMenu = function (menuSections) {
         return new es6Promise_1(function (resolve, reject) {
-            AWProxy.exec(resolve, reject, 'AWMenu', 'addSectionsToMenu', [menuSections]);
+            AWProxy.exec(resolve, reject, 'AWMenu', 'setMenu', [menuSections]);
         });
     };
     AWMenu.prototype.didOpenMenuItem = function (callback) {
