@@ -17,4 +17,9 @@ describe('Menu', () => {
         let o = new AWMenu(Util.noop, Util.noop);
         expect(o.didTapMenuItem).to.not.equal(undefined);
     });
+
+    it('should define a setMenu function', () => {
+        let o = new AWMenu(Util.noop, Util.noop);
+        expect(o.setMenu).to.not.equal(undefined);
+    });
 });

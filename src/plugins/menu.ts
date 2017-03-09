@@ -13,13 +13,13 @@ export class AWMenu extends AWPlugin {
         );
     }
 
-    addSectionsToMenu(menuSections: MenuSection[]) {
+    setMenu(menuSections: MenuSection[]) {
         return new Promise((resolve, reject) => {
             AWProxy.exec(
                 resolve,
                 reject,
                 'AWMenu',
-                'addSectionsToMenu',
+                'setMenu',
                 [menuSections]
             );
         });
@@ -56,6 +56,20 @@ export interface MenuSection {
 }
 
 export interface MenuItem {
+    /**
+     * the title text to use for the menu item
+     */
     title: string;
+    /**
+     * the callback to invoke when the user taps the menu item
+     */
     action: any;
+    /**
+     * is the menu item visible?
+     */
+    visible: boolean;
+    /**
+     * does the menu item have a badge? e.g. Notifications (1)
+     */
+    hasBadge: boolean;
 }
