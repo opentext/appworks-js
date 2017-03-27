@@ -43,6 +43,7 @@ export interface SaveDialogOptions {
 }
 
 export interface FileDialogOptions {
+    defaultPath?: string;
     /**
      * File types that can be displayed or selected.
      */
@@ -105,7 +106,8 @@ export interface DesktopHostFileSystem {
                    successCallback: (result: string) => void,
                    errorCallback?: (result: Error) => void): void;
 
-    showDirSelector(successCallback: (result: string[]) => void,
+    showDirSelector(opts:FileDialogOptions,
+                    successCallback: (result: string[]) => void,
                     errorCallback?: (result: Error) => void): void;
 
     showFileSelector(opts: SaveDialogOptions,
@@ -264,7 +266,8 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
         );
     }
 
-    showDirSelector(successCallback: (result: string[]) => void,
+    showDirSelector(opts: FileDialogOptions,
+                    successCallback: (result: string[]) => void,
                     errorCallback?: (result: Error) => void): void {
         this.validateEnv();
         AWProxy.exec(
@@ -272,7 +275,7 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
             errorCallback,
             'AWFileSystem',
             'showDirSelector',
-            []
+            [opts]
         );
     }
 
