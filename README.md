@@ -516,9 +516,10 @@ The full path of the file indicated in the OS file browser will be returned to t
 
 ###### showDirSelector
 ````
-    showDirSelector(successCallback: (result: string[]), errorCallback?: (result: Error))
+    showDirSelector(opts: FileDialogOptions, successCallback: (result: string[]), errorCallback?: (result: Error))
 ````
 Show the OS file selection browser, only allowing the selection of directories.
+- <b>opts</b>: [FileDialogOptions](#filedialogoptions) file browser dialog options
 
 The full path to the selected directory will be returned to the callback on pressing the dialog confirmation button.
 
@@ -559,6 +560,7 @@ Options to configure the 'Save As' dialog.
 
 ###### FileDialogOptions
 Options to configure the file browser dialog
+- <b>defaultPath</b>: the file path at which the dialog should be opened
 - <b>multiSelections</b>: enable multiple file selection
 - <b>filters</b>: an array of [FileFilter](#filefilter) objects
 
