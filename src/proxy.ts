@@ -17,6 +17,7 @@ import {OnDeviceStorage} from "./plugins/on-device-storage";
 import {PersistentStorage} from "./plugins/cache";
 import {PersistentStorageMock} from "../test/mock/persistent-storage";
 import {DesktopStorage} from "./plugins/desktop-storage";
+import {DesktopWebview} from "./plugins/desktop-webview";
 
 export declare const __aw_plugin_proxy;
 
@@ -196,11 +197,11 @@ export class AWProxy {
         }
     }
 
-    static webview(): InAppBrowser {
+    static webview(): any {
         if (typeof cordova !== 'undefined') {
             return (cordova as any).InAppBrowser;
         } else {
-            return (new MockWebview() as InAppBrowser);
+            return new DesktopWebview();
         }
     }
 
