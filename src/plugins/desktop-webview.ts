@@ -196,7 +196,7 @@ export class DesktopWebview {
             Util.noop,
             'AWWebView',
             'open',
-            [url, target, options]
+            [this.id, url, target, options]
         );
         return this;
     }
