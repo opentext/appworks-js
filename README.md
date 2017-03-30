@@ -225,8 +225,13 @@ $('#click-me').click(function () {
 
 
 #### AWWebView
+<b>**_* available on desktop_**</b>
 The web view plugin allows you to open links via the in-app browser. This is great for giving your app a native feel
-when opening external links
+when opening external links. On Desktop, this plugin allows you to open urls either in the system browser, or a new 
+BrowserWindow.
+
+Note: on Desktop, `addEventListener` and `removeEventListener` methods may only be used on BrowserWindow instances
+opened with the target `_self`.
 
 ##### Methods:
 
@@ -241,7 +246,112 @@ Opens the in-app browser with the url provided.
 blank space, and each feature's name/value pairs must be separated by a comma.
 Feature names are case insensitive.
 
+###### addEventListener
+```
+type: string, callback: (event: InAppBrowserEvent) => void
+```
+Add an event listener to the browser window opened with `open`
+- <b> type</b>: the event type
+- <b> callback</b>: a function that will get called when the event with the provided `type` is emitted
+
+###### removeEventListener
+```
+type: string, callback: (event: InAppBrowserEvent) => void
+```
+Remove an event listener from the browser window opened with `open`
+- <b> type</b>: the event type
+- <b> callback</b>: a function that will get called when the event with the provided `type` is emitted
+
+###### show
+
+Show a browser window opened with the `open` method
+
+###### close
+
+Close a browser window opened with the `open` method
+
+###### executeScript
+```
+script: string, callback: (result: any) => void
+```
+Execute javascript on the browser window opened with `open`
+- <b> script</b>: the script to execute. must be a javascript string.
+- <b> callback</b>: a function that will get called when the script is executed
+
+Note: this feature is disabled on Desktop
+
+###### insertCSS
+```
+css: string, callback: (result: any) => void
+```
+Insert CSS on the browser window opened with `open`
+- <b> css</b>: the css to execute. must be a string
+- <b> callback</b>: a function that will get called when the script is executed
+
 Refer to https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-inappbrowser/ for more documentation
+
+On Desktop, refer to https://github.com/electron/electron/blob/master/docs/api/browser-window.md#instance-events for
+a full list of all events available to BrowserWindow instances.
+
+##### Example:
+```typescript
+export class MyWebview {
+
+  alertContent: string;
+  ref: any;
+
+  openInExternal() {
+    const webview = new AWWebView();
+    const url = 'https://www.nytimes.com/';
+    this.ref = webview.open(url, '_blank');
+    this.alertContent = 'You opened a link!';
+    this.ref.addEventListener('close', () => {
+      this.alertContent = 'You closed the webview!';
+    });
+  }
+
+  openInInternal() {
+    const webview = new AWWebView();
+    const url = 'https://www.nytimes.com/';
+    this.ref = webview.open(url, '_self');
+    this.alertContent = 'You opened a link!';
+    this.ref.addEventListener('close', () => {
+        this.alertContent = 'You closed the webview!';
+    });
+  }
+
+  openMinimized() {
+    const webview = new AWWebView();
+    const url = 'https://www.nytimes.com/';
+    this.ref = webview.open(url, '_self', {show: false});
+    this.alertContent = 'You opened a browser window that is "closed"';
+  }
+
+  showMinimized() {
+    if (this.ref) {
+      this.ref.show();
+    }
+  }
+
+  executeScript() {
+    if (this.ref) {
+      const script = `alert('You executed javascript inside a browser window!')`;
+      this.ref.executeScript(script, () => {
+        this.alertContent = 'You executed a script!';
+      });
+    }
+  }
+
+  insertCSS() {
+    if (this.ref) {
+      const css = `* { color: red !important; }`;
+      this.ref.insertCSS(css, () => {
+        this.alertContent = 'You inserted CSS';
+      });
+    }
+  }
+}
+```
 
 #### AWAppManager
 The AppManager plugin allows you to close the current app webview.

@@ -28,11 +28,11 @@ export class AWWebView extends AWPlugin {
         AWProxy.webview().close();
     }
 
-    executeScript(script: any, callback: (result: any) => void): void {
+    executeScript(script: string, callback: (result: any) => void): void {
         AWProxy.webview().executeScript(script, callback);
     }
 
-    insertCSS(script: any, callback: (result: any) => void): void {
+    insertCSS(script: string, callback: (result: any) => void): void {
         AWProxy.webview().insertCSS(script, callback);
     }
 }
