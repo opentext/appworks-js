@@ -177,15 +177,6 @@ var MockVibrate = (function () {
     return MockVibrate;
 }());
 
-var MockWebview = (function () {
-    function MockWebview() {
-    }
-    MockWebview.prototype.open = function (url, target, options) {
-        return null;
-    };
-    return MockWebview;
-}());
-
 var LocalFileSystem;
 (function (LocalFileSystem) {
     LocalFileSystem[LocalFileSystem["PERSISTENT"] = 0] = "PERSISTENT";
@@ -1581,6 +1572,38 @@ var DesktopStorage = (function () {
 }());
 DesktopStorage.PLUGIN_NOT_FOUND = new Error('Unable to resolve AWStorage desktop plugin');
 
+var DesktopWebviewSequenceStore = {
+    seqNo: 0
+};
+var DesktopWebview = (function () {
+    function DesktopWebview() {
+        this.id = DesktopWebviewSequenceStore.seqNo++;
+    }
+    DesktopWebview.prototype.addEventListener = function (type, callback) {
+        AWProxy.exec(Util.noop, Util.noop, 'AWWebView', 'addEventListener', [this.id, type, callback]);
+    };
+    DesktopWebview.prototype.removeEventListener = function (type, callback) {
+        AWProxy.exec(Util.noop, Util.noop, 'AWWebView', 'removeEventListener', [this.id, type, callback]);
+    };
+    DesktopWebview.prototype.close = function () {
+        AWProxy.exec(Util.noop, Util.noop, 'AWWebView', 'close', [this.id]);
+    };
+    DesktopWebview.prototype.show = function () {
+        AWProxy.exec(Util.noop, Util.noop, 'AWWebView', 'show', [this.id]);
+    };
+    DesktopWebview.prototype.open = function (url, target, options) {
+        AWProxy.exec(Util.noop, Util.noop, 'AWWebView', 'open', [this.id, url, target, options]);
+        return this;
+    };
+    DesktopWebview.prototype.executeScript = function (script, callback) {
+        AWProxy.exec(callback, Util.noop, 'AWWebView', 'executeScript', [this.id, script]);
+    };
+    DesktopWebview.prototype.insertCSS = function (css, callback) {
+        AWProxy.exec(callback, Util.noop, 'AWWebView', 'insertCSS', [this.id, css]);
+    };
+    return DesktopWebview;
+}());
+
 var AWProxy = (function () {
     function AWProxy() {
     }
@@ -1745,7 +1768,7 @@ var AWProxy = (function () {
             return cordova.InAppBrowser;
         }
         else {
-            return new MockWebview();
+            return new DesktopWebview();
         }
     };
     AWProxy.storage = function () {
@@ -2524,6 +2547,24 @@ var AWWebView$1 = (function (_super) {
     AWWebView.prototype.open = function (url, target, options) {
         return AWProxy.webview().open(url, target, options);
     };
+    AWWebView.prototype.addEventListener = function (type, callback) {
+        AWProxy.webview().addEventListener(type, callback);
+    };
+    AWWebView.prototype.removeEventListener = function (type, callback) {
+        AWProxy.webview().removeEventListener(type, callback);
+    };
+    AWWebView.prototype.show = function () {
+        AWProxy.webview().show();
+    };
+    AWWebView.prototype.close = function () {
+        AWProxy.webview().close();
+    };
+    AWWebView.prototype.executeScript = function (script, callback) {
+        AWProxy.webview().executeScript(script, callback);
+    };
+    AWWebView.prototype.insertCSS = function (script, callback) {
+        AWProxy.webview().insertCSS(script, callback);
+    };
     return AWWebView;
 }(AWPlugin));
 
@@ -2546,9 +2587,13 @@ var AWFileSystem$1 = (function (_super) {
         this.validateEnv();
         AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isDir', [path]);
     };
-    AWFileSystem.prototype.create = function (path, successCallback, errorCallback) {
+    AWFileSystem.prototype.createFile = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'create', [path]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createFile', [path]);
+    };
+    AWFileSystem.prototype.createDirectory = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createDirectory', [path]);
     };
     AWFileSystem.prototype.copy = function (from, to, successCallback, errorCallback) {
         this.validateEnv();
@@ -2574,9 +2619,9 @@ var AWFileSystem$1 = (function (_super) {
         this.validateEnv();
         AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showSaveDialog', [opts]);
     };
-    AWFileSystem.prototype.showDirSelector = function (successCallback, errorCallback) {
+    AWFileSystem.prototype.showDirSelector = function (opts, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showDirSelector', []);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showDirSelector', [opts]);
     };
     AWFileSystem.prototype.showFileSelector = function (opts, successCallback, errorCallback) {
         this.validateEnv();
