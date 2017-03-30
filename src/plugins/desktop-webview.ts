@@ -142,7 +142,7 @@ const DesktopWebviewSequenceStore = {
     seqNo: 0
 };
 
-export class DesktopWebview {
+export class DesktopWebview implements DesktopWebviewInterface {
 
     private id: number;
 

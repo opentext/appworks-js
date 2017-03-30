@@ -2547,6 +2547,24 @@ var AWWebView$1 = (function (_super) {
     AWWebView.prototype.open = function (url, target, options) {
         return AWProxy.webview().open(url, target, options);
     };
+    AWWebView.prototype.addEventListener = function (type, callback) {
+        AWProxy.webview().addEventListener(type, callback);
+    };
+    AWWebView.prototype.removeEventListener = function (type, callback) {
+        AWProxy.webview().removeEventListener(type, callback);
+    };
+    AWWebView.prototype.show = function () {
+        AWProxy.webview().show();
+    };
+    AWWebView.prototype.close = function () {
+        AWProxy.webview().close();
+    };
+    AWWebView.prototype.executeScript = function (script, callback) {
+        AWProxy.webview().executeScript(script, callback);
+    };
+    AWWebView.prototype.insertCSS = function (script, callback) {
+        AWProxy.webview().insertCSS(script, callback);
+    };
     return AWWebView;
 }(AWPlugin));
 
