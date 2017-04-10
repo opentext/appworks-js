@@ -1,4 +1,4 @@
-import {AWPlugin} from '../plugin';
+import {AWPlugin} from "../plugin";
 import {AWProxy} from "../proxy";
 
 export class AWFileTransfer extends AWPlugin {
@@ -23,7 +23,7 @@ export class AWFileTransfer extends AWPlugin {
 
         options = options || {};
 
-        if (shared) {
+        if (shared && !AWProxy.isDesktopEnv()) {
             AWProxy.exec(
                 gotSharedContainerUrl,
                 (() => this.errorHandler)(),
@@ -34,7 +34,7 @@ export class AWFileTransfer extends AWPlugin {
         } else {
             this.fileTransfer.download(
                 encodeURI(url),
-                AWProxy.file().documentsDirectory + '/' + target,
+                this.toEnvFilePath(target),
                 successHandler,
                 errorHandler,
                 false,
@@ -66,7 +66,7 @@ export class AWFileTransfer extends AWPlugin {
 
         options = options || {};
 
-        if (shared) {
+        if (shared && !AWProxy.isDesktopEnv()) {
             AWProxy.exec(
                 gotSharedContainerUrl,
                 (() => this.errorHandler)(),
@@ -76,7 +76,7 @@ export class AWFileTransfer extends AWPlugin {
             );
         } else {
             this.fileTransfer.upload(
-                AWProxy.file().documentsDirectory + '/' + source,
+                this.toEnvFilePath(source),
                 encodeURI(url),
                 successHandler,
                 errorHandler,
@@ -89,6 +89,7 @@ export class AWFileTransfer extends AWPlugin {
 
         function gotSharedContainerUrl(containerUrl?: string) {
             AWProxy.filetransfer().upload(
+                // valid use of slash here as shared container is a mobile only concept
                 containerUrl + '/' + source,
                 encodeURI(url),
                 successHandler,
@@ -98,4 +99,10 @@ export class AWFileTransfer extends AWPlugin {
             );
         }
     }
+
+    toEnvFilePath(fileUrl: string): string {
+        // use a path relative to the Cordova defined sandbox in a mobile environment
+        return AWProxy.isDesktopEnv() ? fileUrl : AWProxy.file().documentsDirectory + '/' + fileUrl;
+    }
+
 }
