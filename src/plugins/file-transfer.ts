@@ -23,7 +23,7 @@ export class AWFileTransfer extends AWPlugin {
 
         options = options || {};
 
-        if (shared) {
+        if (shared && !AWProxy.isDesktopEnv()) {
             AWProxy.exec(
                 gotSharedContainerUrl,
                 (() => this.errorHandler)(),
@@ -66,7 +66,7 @@ export class AWFileTransfer extends AWPlugin {
 
         options = options || {};
 
-        if (shared) {
+        if (shared && !AWProxy.isDesktopEnv()) {
             AWProxy.exec(
                 gotSharedContainerUrl,
                 (() => this.errorHandler)(),
