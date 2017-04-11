@@ -58,7 +58,7 @@ export class AWNotificationManager extends AWPlugin {
             errorHandler,
             'AWNotificationManager',
             'openListener',
-            []
+            AWProxy.isDesktopEnv() ? [handler] : []
         );
     }
 
