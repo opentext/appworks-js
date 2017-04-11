@@ -14,7 +14,7 @@ export class AWNotificationManager extends AWPlugin {
             errorHandler,
             'AWNotificationManager',
             'enablePushNotifications',
-            []
+            AWProxy.isDesktopEnv() ? [handler] : []
         );
     }
 

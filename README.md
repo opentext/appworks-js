@@ -21,6 +21,8 @@ A limited number of appworks.js plugins are available in the desktop environment
 - [AWDevice](#awdevice)
 - [AWFileSystem](#awfilesystem)
 - [AWFileTransfer](#awfiletransfer)
+- [AWMenu](#awmenu)
+- [AWNotificationManager](#awnotificationmanager)
 
 ## Installation
 
@@ -964,7 +966,7 @@ addItems() {
                 {
                     title: 'Smoked black cod and escarole salad',
                     action: () => {
-                        alert('Isnt this on the menu at Chez Panisse?');
+                        alert('Isn\'t this on the menu at Chez Panisse?');
                     },
                     visible: true,
                     hasBadge: false
@@ -1693,8 +1695,9 @@ If the ````successHandler```` callback is not invoked within this time, the ````
 Read more on the <a href="https://github.com/apache/cordova-plugin-geolocation">Cordova Documentation</a> page.
 
 #### AWNotificationManager
-The AWNotificationManager plugin gives you access to native notifications targeted to the device and/or a specific
-app.
+<b>**_* available on desktop_**</b>
+
+The AWNotificationManager plugin gives you access to notifications targeted to a specific app.
 
 The constructor does not take any arguments.
 
@@ -1715,10 +1718,10 @@ var notificationManager = new Appworks.AWNotificationManager();
 ````ts
 enablePushNotifications(handler: any, errorHandler?: any)
 ````
-turn on realtime notifications.
+turn on real-time notifications.
 
 Parameters:
-- handler: a callback function that will be passed a new notification in realtime once it reaches the client.
+- handler: a callback function that will be passed a new notification in real-time once it reaches the client.
 - errorHandler: a function to get executed if there is an error in processing a notification
 
 ##### getNotifications
@@ -1735,7 +1738,7 @@ Parameters:
 ````ts
 disablePushNotifications()
 ````
-turn off realtime notifications.
+turn off real-time notifications.
 
 ##### getOpeningNotification
 ````ts
@@ -1778,23 +1781,23 @@ var _notifications = [];
 var notificationManager = new Appworks.AWNotificationManager();
 
 function getNotifications() {
-    // get all notifications. does not care if realtime is enabled or disabled
+    // get all notifications. does not care if real-time is enabled or disabled
     notificationManager.getNotifications(function (notifications) {
         _notifications = notifications;
     });
 }
 
 function enableNotifications() {
-    // register a callback to handle realtime notifications
+    // register a callback to handle real-time notifications
     notificationManager.enablePushNotifications(function (notification) {
-        // realtime notifications will appear here
+        // real-time notifications will appear here
         console.log(notification);
         alert(JSON.stringify(notification);
     });
 }
 
 function disableNotifications() {
-    // turn off realtime notifications
+    // turn off real-time notifications
     notificationManager.disablePushNotifications();
 }
 
