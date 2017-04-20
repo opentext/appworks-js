@@ -2,7 +2,7 @@
   "name": "appworks",
   "version": "16.2.0-alpha.1",
   "authors": [
-    "Jason Ibrahim <jibrahim@opentext.com>"
+    "info@opentext.com"
   ],
   "description": "OpenText AppWorks -- javascript library to facilitate secure storage, offline capability, device technology and more on AppWorks powered devices",
   "main": "dist/appworks.js",
