@@ -277,7 +277,7 @@ var es6Promise = createCommonjsModule(function (module, exports) {
  * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
  * @license   Licensed under MIT license
  *            See https://raw.githubusercontent.com/stefanpenner/es6-promise/master/LICENSE
- * @version   4.0.5
+ * @version   4.1.0
  */
 
 (function (global, factory) {
@@ -583,6 +583,7 @@ function handleMaybeThenable(promise, maybeThenable, then$$) {
   } else {
     if (then$$ === GET_THEN_ERROR) {
       _reject(promise, GET_THEN_ERROR.error);
+      GET_THEN_ERROR.error = null;
     } else if (then$$ === undefined) {
       fulfill(promise, maybeThenable);
     } else if (isFunction(then$$)) {
@@ -703,7 +704,7 @@ function invokeCallback(settled, promise, callback, detail) {
     if (value === TRY_CATCH_ERROR) {
       failed = true;
       error = value.error;
-      value = null;
+      value.error = null;
     } else {
       succeeded = true;
     }
@@ -2067,11 +2068,11 @@ var AWFileTransfer$1 = (function (_super) {
         var _this = this;
         var successHandler = this.successHandler, errorHandler = this.errorHandler;
         options = options || {};
-        if (shared) {
+        if (shared && !AWProxy.isDesktopEnv()) {
             AWProxy.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), 'AWSharedDocumentProvider', 'containerForCurrentApp', []);
         }
         else {
-            this.fileTransfer.download(encodeURI(url), AWProxy.file().documentsDirectory + '/' + target, successHandler, errorHandler, false, options);
+            this.fileTransfer.download(encodeURI(url), this.toEnvFilePath(target), successHandler, errorHandler, false, options);
         }
         return this.fileTransfer;
         function gotSharedContainerUrl(containerUrl) {
@@ -2085,16 +2086,22 @@ var AWFileTransfer$1 = (function (_super) {
         var _this = this;
         var successHandler = this.successHandler, errorHandler = this.errorHandler;
         options = options || {};
-        if (shared) {
+        if (shared && !AWProxy.isDesktopEnv()) {
             AWProxy.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), 'AWSharedDocumentProvider', 'containerForCurrentApp', []);
         }
         else {
-            this.fileTransfer.upload(AWProxy.file().documentsDirectory + '/' + source, encodeURI(url), successHandler, errorHandler, options, false);
+            this.fileTransfer.upload(this.toEnvFilePath(source), encodeURI(url), successHandler, errorHandler, options, false);
         }
         return this.fileTransfer;
         function gotSharedContainerUrl(containerUrl) {
-            AWProxy.filetransfer().upload(containerUrl + '/' + source, encodeURI(url), successHandler, errorHandler, options, false);
+            AWProxy.filetransfer().upload(
+            // valid use of slash here as shared container is a mobile only concept
+            containerUrl + '/' + source, encodeURI(url), successHandler, errorHandler, options, false);
         }
+    };
+    AWFileTransfer.prototype.toEnvFilePath = function (fileUrl) {
+        // use a path relative to the Cordova defined sandbox in a mobile environment
+        return AWProxy.isDesktopEnv() ? fileUrl : AWProxy.file().documentsDirectory + '/' + fileUrl;
     };
     return AWFileTransfer;
 }(AWPlugin));
@@ -2188,6 +2195,21 @@ var AWKeyboard$1 = (function (_super) {
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWKeyboard', 'disableScroll', [disable.toString()]);
     };
     return AWKeyboard;
+}(AWPlugin));
+
+var AWLauncher$1 = (function (_super) {
+    __extends(AWLauncher, _super);
+    function AWLauncher(successHandler, errorHandler) {
+        return _super.call(this, successHandler || Util.noop, errorHandler || Util.noop) || this;
+    }
+    AWLauncher.prototype.getLaunchURL = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWLauncher', 'getLaunchURL', []);
+    };
+    AWLauncher.prototype.clearLaunchURL = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWLauncher', 'clearLaunchURL', []);
+    };
+    return AWLauncher;
 }(AWPlugin));
 
 var AWLocation$1 = (function (_super) {
@@ -2311,7 +2333,7 @@ var AWNotificationManager$1 = (function (_super) {
         return _super.call(this, Util.noop, Util.noop) || this;
     }
     AWNotificationManager.prototype.enablePushNotifications = function (handler, errorHandler) {
-        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'enablePushNotifications', []);
+        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'enablePushNotifications', AWProxy.isDesktopEnv() ? [handler] : []);
     };
     AWNotificationManager.prototype.disablePushNotifications = function () {
         AWProxy.exec(null, null, 'AWNotificationManager', 'disablePushNotifications', []);
@@ -2326,7 +2348,7 @@ var AWNotificationManager$1 = (function (_super) {
         this.getOpeningNotification(handler, errorHandler);
     };
     AWNotificationManager.prototype.openListener = function (handler, errorHandler) {
-        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'openListener', []);
+        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'openListener', AWProxy.isDesktopEnv() ? [handler] : []);
     };
     AWNotificationManager.prototype.didTapNotificationFromActivityView = function (handler, errorHandler) {
         this.openListener(handler, errorHandler);
@@ -2469,6 +2491,24 @@ var AWQRReader$1 = (function (_super) {
     }
     return AWQRReader;
 }(QRReader$1));
+
+var Scanner$1 = (function (_super) {
+    __extends(Scanner, _super);
+    function Scanner() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Scanner.prototype.scanDocument = function (returnType, successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWScanner', 'scanDocument', [returnType]);
+    };
+    return Scanner;
+}(AWPlugin));
+var AWScanner$1 = (function (_super) {
+    __extends(AWScanner, _super);
+    function AWScanner() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return AWScanner;
+}(Scanner$1));
 
 var SecureStorage$1 = (function (_super) {
     __extends(SecureStorage, _super);
@@ -2686,6 +2726,9 @@ var AWKeyboard$$1 = AWKeyboard$1;
 // Location plugin and alias -- [mobile]
 var Location = AWLocation$1;
 var AWLocation$$1 = AWLocation$1;
+// Launcher plugin and alias -- [mobile]
+var Launcher = AWLauncher$1;
+var AWLauncher$$1 = AWLauncher$1;
 // Media plugin and alias -- [mobile]
 var Media$1 = AWMedia$1;
 var AWMedia$$1 = AWMedia$1;
@@ -2709,6 +2752,9 @@ var AWPage$$1 = AWPage$1;
 // QRReader plugin and alias -- [mobile]
 var QRReader$$1 = AWQRReader$1;
 var AWQRReader$$1 = AWQRReader$1;
+// Scanner plugin and alias -- [mobile]
+var Scanner$$1 = AWScanner$1;
+var AWScanner$$1 = AWScanner$1;
 // SecureStorage plugin and alias -- [mobile]
 var SecureStorage$$1 = AWSecureStorage$1;
 var AWSecureStorage$$1 = AWSecureStorage$1;
@@ -2753,6 +2799,8 @@ exports.Keyboard = Keyboard;
 exports.AWKeyboard = AWKeyboard$$1;
 exports.Location = Location;
 exports.AWLocation = AWLocation$$1;
+exports.Launcher = Launcher;
+exports.AWLauncher = AWLauncher$$1;
 exports.Media = Media$1;
 exports.AWMedia = AWMedia$$1;
 exports.MediaCapture = MediaCapture;
@@ -2769,6 +2817,8 @@ exports.Page = Page;
 exports.AWPage = AWPage$$1;
 exports.QRReader = QRReader$$1;
 exports.AWQRReader = AWQRReader$$1;
+exports.Scanner = Scanner$$1;
+exports.AWScanner = AWScanner$$1;
 exports.SecureStorage = SecureStorage$$1;
 exports.AWSecureStorage = AWSecureStorage$$1;
 exports.Vibration = Vibration;

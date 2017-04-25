@@ -26,13 +26,22 @@ A limited number of appworks.js plugins are available in the desktop environment
 
 ## Installation
 
-#### With bower:
+### NPM:
+```shell
+npm install appworks-js --save
+```
+
+### Yarn
+```shell
+yarn add appworks-js
+```
+
+#### Bower:
 
 ````shell
 bower install --save appworks-js
 ````
-
-You can find the production files in the `dist` directory.
+* You can find the production files in the `dist` directory.
 
 #### Auto install:
 If you are deploying an app to the gateway, the gateway will automatically add appworks.min.js to the root of your
@@ -42,37 +51,38 @@ project. If you opt to use the bundled file make sure your script tag looks like
 
 ## Table of Contents
 * [API Usage and Examples](#api-usage-and-examples)
-  - [AWAuth](#awauth)
-  - [AWWebView](#awwebview)
+  - [AWAccelerometer](#awaccelerometer)
   - [AWAppManager](#awappmanager)
+  - [AWAuth](#awauth)
+  - [AWCache](#awcache)
+  - [AWCompass](#awcompass)
   - [AWComponent](#awcomponent)
-  - [Finder](#finder)
-  - [FileChooser](#filechooser)
+  - [AWContacts](#awcontacts)
+  - [AWDevice](#awdevice)
   - [AWFileSystem](#awfilesystem)
-  - [AWHeaderBar](#awheaderbar)
-  - [AWMenu](#awmenu)
-  - [AWPage](#awpage)
-  - [AWLauncher](#awlauncher)
-  - [QRReader](#qrreader)
-  - [Camera](#camera)
-  - [SecureStorage](#securestorage)
   - [AWFileTransfer](#awfiletransfer)
+  - [AWHeaderBar](#awheaderbar)
+  - [AWLauncher](#awlauncher)
+  - [AWLocation](#awlocation)
   - [AWMedia](#awmedia)
   - [AWMediaCapture](#awmediacapture)
-  - [AWAccelerometer](#awaccelerometer)
-  - [AWCompass](#awcompass)
-  - [AWLocation](#awlocation)
+  - [AWMenu](#awmenu)
   - [AWNotificationManager](#awnotificationmanager)
+  - [AWPage](#awpage)
   - [AWOfflineManager](#awofflinemanager)
-  - [AWCache](#awcache)
-  - [AWDevice](#awdevice)
+  - [AWScanner](#awscanner)
   - [AWVibration](#awvibration)
-  - [AWContacts](#awcontacts)
+  - [AWWebView](#awwebview)
+  - [Camera](#camera)
   - [Contact](#contact)
   - [ContactAddress](#contactaddress)
   - [ContactError](#contacterror)
   - [ContactField](#contactfield)
   - [ContactOrganization](#contactorganization)
+  - [Finder](#finder)
+  - [FileChooser](#filechooser)
+  - [QRReader](#qrreader)
+  - [SecureStorage](#securestorage)
 + [Events](#events)
   - [Battery](#battery)
 
@@ -2105,6 +2115,46 @@ about device specific quirks.
 var vibe = new Appworks.AWVibration();
 // vibrates the device for 2 seconds
 vibe.vibrate(2000);
+````
+
+#### AWScanner
+The Scanner plugin allows you to scan one or more documents using the device camera to create a PDF file.
+
+##### Methods:
+
+###### scanDocument
+````
+scanDocument(returnType: Number, successHandler: Function, errorHandler: Function)
+````
+Opens the device camera in document scanning mode. A blue rectangle is placed over the document in the view where the user may manually capture the image or let the device automatically capture the image.
+
+Once the image is captured, the document is cropped and transformed into a straightened document with regular A4/A5 dimensions.
+
+The final image is added to a PDF project where the user may add more images (one document per page) in either A4 or A5 and as a portrait or landscape image.
+
+The return type is a numerical value with the following options:
+0. Return the PDF as a filepath
+1. Return the PDF file as a base64 string
+2. Allow the PDF to be sent to another app (e.g. an email app)
+
+##### Example:
+````js
+var scan = function (returnType) {
+        var scanner = new Appworks.Scanner();
+        scanner.scanDocument(
+          returnType, // Set the return type: 0 = filepath, 1 = base64, 2 = doc provider (will return a filepath as well)
+          function(successMessage) {
+            // Called when the scan completes and returns successfully
+            // Success message will be a string
+            console.log(successMessage);
+
+          }, function(errorMessage) {
+            // Called when the scan fails or a cancelled
+            // error message will be string
+            console.log(errorMessage);
+          }
+        );
+};
 ````
 
 #### AWContacts

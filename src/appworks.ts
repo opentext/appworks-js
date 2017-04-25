@@ -12,6 +12,7 @@ import {AWFileTransfer as _AWFileTransfer} from './plugins/file-transfer';
 import {AWFinder as _AWFinder} from './plugins/finder';
 import {AWHeaderBar as _AWHeaderBar} from './plugins/header';
 import {AWKeyboard as _AWKeyboard} from './plugins/keyboard';
+import {AWLauncher as _AWLauncher} from './plugins/launcher';
 import {AWLocation as _AWLocation} from './plugins/location';
 import {AWMedia as _AWMedia} from './plugins/media';
 import {AWMediaCapture as _AWMediaCapture} from './plugins/media-capture';
@@ -20,6 +21,7 @@ import {AWNotificationManager as _AWNotificationManager} from './plugins/notific
 import {AWOfflineManager as _AWOfflineManager} from './plugins/offline-manager';
 import {AWPage as _AWPage} from './plugins/page';
 import {AWQRReader as _AWQRReader} from './plugins/qr-reader';
+import {AWScanner as _AWScanner} from './plugins/scanner';
 import {AWSecureStorage as _AWSecureStorage} from './plugins/secure-storage';
 import {AWVibration as _AWVibration} from './plugins/vibration';
 import {AWWebView as _AWWebView} from './plugins/webview';
@@ -72,6 +74,9 @@ export const AWKeyboard = _AWKeyboard;
 // Location plugin and alias -- [mobile]
 export const Location = _AWLocation;
 export const AWLocation = _AWLocation;
+// Launcher plugin and alias -- [mobile]
+export const Launcher = _AWLauncher;
+export const AWLauncher = _AWLauncher;
 // Media plugin and alias -- [mobile]
 export const Media = _AWMedia;
 export const AWMedia = _AWMedia;
@@ -95,6 +100,9 @@ export const AWPage = _AWPage;
 // QRReader plugin and alias -- [mobile]
 export const QRReader = _AWQRReader;
 export const AWQRReader = _AWQRReader;
+// Scanner plugin and alias -- [mobile]
+export const Scanner = _AWScanner;
+export const AWScanner = _AWScanner;
 // SecureStorage plugin and alias -- [mobile]
 export const SecureStorage = _AWSecureStorage;
 export const AWSecureStorage = _AWSecureStorage;
