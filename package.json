@@ -33,7 +33,7 @@
     "src/proxy.ts",
     "src/util.ts",
     "src/index.ts",
-    "src/plugins/*.ts",
+    "src/plugins/**/*.ts",
     "test/mock/*.ts",
     "node_modules/es6-promise"
   ],
