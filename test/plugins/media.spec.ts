@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Util} from "../../src/util";
-import {AWMedia} from "../../src/plugins/media";
+import {AWMedia} from "../../src/plugins/media/media";
 
 describe('Media', () => {
     it('should define a getCurrentPosition function', () => {

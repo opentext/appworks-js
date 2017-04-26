@@ -2159,7 +2159,7 @@ var AWHeaderBar$1 = (function (_super) {
     };
     AWHeaderBar.prototype.maskHeader = function (shouldMaskHeader) {
         var _this = this;
-        cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'maskHeader', [shouldMaskHeader]);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'maskHeader', [shouldMaskHeader]);
     };
     return AWHeaderBar;
 }(AWPlugin));
@@ -2452,19 +2452,19 @@ var AWPage$1 = (function (_super) {
     };
     AWPage.prototype.openModalAppWebView = function (url, title) {
         var _this = this;
-        cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'showModalAppWebView', [url, title]);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'showModalAppWebView', [url, title]);
     };
     AWPage.prototype.openModalExternalWebView = function (url, title) {
         var _this = this;
-        cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'showModalExternalWebView', [url, title]);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'showModalExternalWebView', [url, title]);
     };
     AWPage.prototype.setActionButtonCallback = function (callback) {
         var _this = this;
-        cordova.exec(callback, (function () { return _this.errorHandler; })(), 'AWPage', 'setModalAppWebViewActionCallback', []);
+        AWProxy.exec(callback, (function () { return _this.errorHandler; })(), 'AWPage', 'setModalAppWebViewActionCallback', []);
     };
     AWPage.prototype.closeModalAppWebView = function () {
         var _this = this;
-        cordova.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'closeModalAppWebView', []);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'closeModalAppWebView', []);
     };
     return AWPage;
 }(AWPlugin));

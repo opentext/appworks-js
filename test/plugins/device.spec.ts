@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {AWDevice} from "../../src/plugins/device";
+import {AWDevice} from "../../src/plugins/device/device";
 
 describe('Contacts', () => {
     it('should define a device object function', () => {

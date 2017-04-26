@@ -1,6 +1,5 @@
-import {AsyncStorage} from "../../src/plugins/desktop-storage";
+import {AsyncStorage} from '../../src/plugins/storage/index';
 export class MockAsyncStorage implements AsyncStorage {
-
     length: number;
 
     clear(): Promise<any> {

@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Util} from "../../src/util";
-import {AWFinder} from "../../src/plugins/finder";
+import {AWFinder} from "../../src/plugins/finder/finder";
 
 describe('Finder', () => {
     it('should define an open function', () => {

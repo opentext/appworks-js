@@ -1,3 +1,4 @@
+import {Contact, ContactError, ContactFindOptions, ContactProperties, Contacts} from '../../src/plugins/contacts/index';
 export class MockContacts implements Contacts {
     fieldType: any;
 

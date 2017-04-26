@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {AWOfflineManager} from "../../src/plugins/offline-manager";
+import {AWOfflineManager} from "../../src/plugins/offline/offline-manager";
 
 describe('OfflineManager', () => {
     it('should define a defer function', () => {

@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Util} from "../../src/util";
-import {AWMenu} from "../../src/plugins/menu";
+import {AWMenu} from "../../src/plugins/menu/menu";
 
 describe('Menu', () => {
     it('should define a push function', () => {

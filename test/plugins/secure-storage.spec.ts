@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Util} from "../../src/util";
-import {AWSecureStorage} from "../../src/plugins/secure-storage";
+import {AWSecureStorage} from "../../src/plugins/storage/secure-storage";
 
 describe('SecureStorage', () => {
     it('should define a store function', () => {

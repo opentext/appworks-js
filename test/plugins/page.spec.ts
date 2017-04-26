@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Util} from "../../src/util";
-import {AWPage} from "../../src/plugins/page";
+import {AWPage} from "../../src/plugins/page/page";
 
 describe('Page', () => {
     it('should define a setPageUrl function', () => {

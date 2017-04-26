@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Util} from "../../src/util";
-import {AWLauncher} from "../../src/plugins/launcher";
+import {AWLauncher} from "../../src/plugins/launcher/launcher";
 
 describe('Launcher', () => {
     it('should define a getLaunchURL function', () => {

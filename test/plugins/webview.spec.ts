@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {AWWebView} from "../../src/plugins/webview";
+import {AWWebView} from "../../src/plugins/webview/webview";
 
 describe('WebView', () => {
     it('should define an open function', () => {

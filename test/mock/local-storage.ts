@@ -1,3 +1,5 @@
+import {Storage} from '../../src/plugins/storage/index';
+
 export class MockLocalStorage implements Storage {
     length: number;
     [key: string]: any;

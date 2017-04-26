@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Util} from "../../src/util";
-import {AWScanner, Scanner} from "../../src/plugins/scanner";
+import {AWScanner, Scanner} from "../../src/plugins/document-scanner/scanner";
 
 describe('Scanner', () => {
     it('should define a scan function', () => {

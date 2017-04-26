@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {AWNotificationManager} from "../../src/plugins/notifications";
+import {AWNotificationManager} from "../../src/plugins/notifications/notifications";
 
 describe('Notifications', () => {
     it('should define a enablePushNotifications function', () => {

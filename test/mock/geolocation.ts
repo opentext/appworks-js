@@ -1,3 +1,5 @@
+import {Geolocation} from '../../src/plugins/location/index';
+
 export class MockGeolocation implements Geolocation {
     clearWatch(watchId: number): void {
     }

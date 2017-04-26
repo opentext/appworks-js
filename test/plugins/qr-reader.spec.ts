@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Util} from "../../src/util";
-import {AWQRReader, QRReader} from "../../src/plugins/qr-reader";
+import {AWQRReader, QRReader} from "../../src/plugins/qr-reader/qr-reader";
 
 describe('QRReader', () => {
     it('should define a scan function', () => {

@@ -8,18 +8,80 @@ import {MockCapture} from "../test/mock/capture";
 import {MockNotification} from "../test/mock/notifications";
 import {MockConnection} from "../test/mock/connection";
 import {MockVibrate} from "../test/mock/vibrate";
-import {MockWebview} from "../test/mock/webview";
-import {LocalFileSystem} from "./plugins/local-file-system";
+import {LocalFileSystem} from "./plugins/file/local-file-system";
 import {MockFileTransfer} from "../test/mock/file-transfer";
 import {Util} from "./util";
-import {AWStorage} from "./plugins/storage";
-import {OnDeviceStorage} from "./plugins/on-device-storage";
-import {PersistentStorage} from "./plugins/cache";
+import {AWStorage} from "./plugins/storage/storage";
+import {OnDeviceStorage} from "./plugins/storage/on-device-storage";
 import {PersistentStorageMock} from "../test/mock/persistent-storage";
-import {DesktopStorage} from "./plugins/desktop-storage";
-import {DesktopWebview} from "./plugins/desktop-webview";
+import {DesktopStorage} from "./plugins/storage/desktop-storage";
+import {DesktopWebview} from "./plugins/webview/desktop-webview";
+import {CameraInterface} from './plugins/camera/index';
+import {Accelerometer} from './plugins/device-motion/index';
+import {Compass} from './plugins/device-orientation/index';
+import {ConnectionInterface} from './plugins/network-information/index';
+import {Contacts} from './plugins/contacts/index';
+import {FileTransferInterface} from './plugins/file-transfer/index';
+import {MediaInterface} from './plugins/media/index';
+import {FileError, FileSystem} from './plugins/file/index';
+import {PersistentStorage} from './plugins/storage/index';
+import {Device} from './plugins/device/index';
+import {Notification} from './plugins/dialogs/index';
+
+export declare const Media: {
+    new (src: string,
+         mediaSuccess: () => void,
+         mediaError?: (error: MediaError) => any,
+         mediaStatus?: (status: number) => void): MediaInterface;
+    // Media statuses
+    MEDIA_NONE: number;
+    MEDIA_STARTING: number;
+    MEDIA_RUNNING: number;
+    MEDIA_PAUSED: number;
+    MEDIA_STOPPED: number
+};
+export declare const FileTransfer: any;
+export declare const Camera: {
+    // Camera constants, defined in Camera plugin
+    DestinationType: {
+        DATA_URL: number;
+        FILE_URI: number;
+        NATIVE_URI: number
+    }
+    Direction: {
+        BACK: number;
+        FRONT: number;
+    }
+    EncodingType: {
+        JPEG: number;
+        PNG: number;
+    }
+    MediaType: {
+        PICTURE: number;
+        VIDEO: number;
+        ALLMEDIA: number;
+    }
+    PictureSourceType: {
+        PHOTOLIBRARY: number;
+        CAMERA: number;
+        SAVEDPHOTOALBUM: number;
+    }
+    // Used only on iOS
+    PopoverArrowDirection: {
+        ARROW_UP: number;
+        ARROW_DOWN: number;
+        ARROW_LEFT: number;
+        ARROW_RIGHT: number;
+        ARROW_ANY: number;
+    }
+};
 
 export declare const __aw_plugin_proxy;
+export declare const cordova: any;
+export declare const navigator: any;
+export declare const device: any;
+export declare const window: any;
+export declare const Connection: any;
 
 export class AWProxy {
 
@@ -40,7 +102,7 @@ export class AWProxy {
         return typeof 'navigator' !== undefined ? navigator.accelerometer : new MockAccelerometer();
     }
 
-    static camera(): Camera {
+    static camera(): CameraInterface {
         return typeof navigator !== 'undefined' ? navigator.camera : new MockCamera();
     }
 
@@ -84,7 +146,7 @@ export class AWProxy {
         return typeof navigator !== 'undefined' ? navigator.compass : new MockCompass();
     }
 
-    static connection(): Connection {
+    static connection(): ConnectionInterface {
         return typeof navigator !== 'undefined' ? navigator.connection : new MockConnection();
     }
 
@@ -143,16 +205,16 @@ export class AWProxy {
         }
     }
 
-    static filetransfer(): FileTransfer {
+    static filetransfer(): FileTransferInterface {
         return AWProxy.doGetFileTransfer();
     }
 
     // alias name
-    static fileTransfer(): FileTransfer {
+    static fileTransfer(): FileTransferInterface {
         return AWProxy.doGetFileTransfer();
     }
 
-    static doGetFileTransfer(): FileTransfer {
+    static doGetFileTransfer(): FileTransferInterface {
         if (AWProxy.isDesktopEnv()) {
             const plugin = AWProxy.getDesktopPlugin('AWFileTransfer');
             return (plugin !== null) ? plugin : new MockFileTransfer();
@@ -168,7 +230,7 @@ export class AWProxy {
         return LocalFileSystem;
     }
 
-    static media(src, successHandler, errorHandler, statusChangeHandler): Media {
+    static media(src, successHandler, errorHandler, statusChangeHandler): MediaInterface {
         if (typeof Media !== 'undefined') {
             return new Media(src, successHandler, errorHandler, statusChangeHandler);
         } else {
@@ -246,5 +308,4 @@ export class AWProxy {
         // the proxy exposed by desktop has a method to allow retrieval of plugin instances
         return __aw_plugin_proxy.getPlugin(pluginName);
     }
-
 }

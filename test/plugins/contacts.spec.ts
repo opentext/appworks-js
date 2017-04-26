@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Util} from "../../src/util";
-import {AWContacts} from "../../src/plugins/contacts";
+import {AWContacts} from "../../src/plugins/contacts/contacts";
 
 describe('Contacts', () => {
     it('should define a create function', () => {

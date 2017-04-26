@@ -1,4 +1,5 @@
-export class MockCamera implements Camera {
+import {CameraInterface, CameraOptions} from '../../src/plugins/camera/index';
+export class MockCamera implements CameraInterface {
 
     cleanup(
         onSuccess: () => void,

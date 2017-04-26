@@ -1,4 +1,4 @@
-import {PersistentStorage} from "../../src/plugins/cache";
+import {PersistentStorage} from '../../src/plugins/storage/index';
 
 export class PersistentStorageMock implements PersistentStorage {
 

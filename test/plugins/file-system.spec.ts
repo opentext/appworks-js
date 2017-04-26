@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import * as mocha from "mocha";
-import {AWFileSystem} from "../../src/plugins/file-system";
+import {AWFileSystem} from "../../src/plugins/file/file-system";
 const _mocha = mocha;
 
 describe('FileSystem', () => {

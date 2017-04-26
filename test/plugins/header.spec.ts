@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Util} from "../../src/util";
-import {AWHeader, AWHeaderBar} from "../../src/plugins/header";
+import {AWHeader, AWHeaderBar} from "../../src/plugins/header/header";
 
 describe('Header', () => {
     it('should define a setHeader function', () => {

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {AWKeyboard} from "../../src/plugins/keyboard";
+import {AWKeyboard} from "../../src/plugins/keyboard/keyboard";
 
 describe('Keyboard', () => {
     it('should define a hideKeyboardAccessoryBar function', () => {

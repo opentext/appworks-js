@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Util} from "../../src/util";
-import {AWAuth} from "../../src/plugins/auth";
+import {AWAuth} from "../../src/plugins/auth/auth";
 
 describe('Auth', () => {
     it('should define an authenticate function', () => {

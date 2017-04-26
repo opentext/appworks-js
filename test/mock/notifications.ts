@@ -1,3 +1,5 @@
+import {Notification, NotificationPromptResult} from '../../src/plugins/dialogs/index';
+
 export class MockNotification implements Notification {
     body: any = null;
     dir: any = null;

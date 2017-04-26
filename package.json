@@ -5,23 +5,7 @@
   "author": "OpenText Inc",
   "bugs": "https://github.com/opentext/appworks-js/issues",
   "dependencies": {
-    "@types/cordova": "0.0.34",
-    "@types/cordova-plugin-battery-status": "0.0.3",
-    "@types/cordova-plugin-camera": "0.0.3",
-    "@types/cordova-plugin-contacts": "0.0.3",
-    "@types/cordova-plugin-device": "0.0.3",
-    "@types/cordova-plugin-device-motion": "0.0.3",
-    "@types/cordova-plugin-device-orientation": "0.0.3",
-    "@types/cordova-plugin-dialogs": "0.0.3",
-    "@types/cordova-plugin-file-transfer": "0.0.3",
-    "@types/cordova-plugin-globalization": "0.0.3",
-    "@types/cordova-plugin-inappbrowser": "0.0.3",
-    "@types/cordova-plugin-keyboard": "^0.1.3",
-    "@types/cordova-plugin-media": "0.0.3",
-    "@types/cordova-plugin-media-capture": "0.0.3",
-    "@types/cordova-plugin-network-information": "0.0.3",
-    "@types/cordova-plugin-statusbar": "0.0.3",
-    "@types/cordova-plugin-vibration": "0.0.3"
+    "@types/cordova": "0.0.34"
   },
   "devDependencies": {
     "@types/chai": "^3.4.34",

@@ -1,11 +1,11 @@
 import {expect} from "chai";
 import * as sinon from "sinon";
 import * as mocha from "mocha";
-import {DesktopStorage} from "../../src/plugins/desktop-storage";
-import {PersistentStorage} from "../../src/plugins/cache";
+import {DesktopStorage} from "../../src/plugins/storage/desktop-storage";
 import {AWProxy} from "../../src/proxy";
 import {MockLocalStorage} from "../mock/local-storage";
 import {MockAsyncStorage} from "../mock/async-storage";
+import {PersistentStorage} from '../../src/plugins/storage/index';
 // explicitly import mocha to prevent whining about the done function taking an error object to fail a test
 const _mocha = mocha;
 

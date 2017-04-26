@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {AWAccelerometer} from "../../src/plugins/accelerometer";
+import {AWAccelerometer} from "../../src/plugins/accelerometer/accelerometer";
 import {Util} from "../../src/util";
 
 describe('Accelerometer', () => {

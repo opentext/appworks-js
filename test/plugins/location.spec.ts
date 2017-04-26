@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {AWLocation} from "../../src/plugins/location";
+import {AWLocation} from "../../src/plugins/location/location";
 import {Util} from "../../src/util";
 
 describe('Location', () => {
