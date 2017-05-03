@@ -29,9 +29,7 @@
   },
   "files": [
     "index.ts",
-    "src/plugin.ts",
-    "src/proxy.ts",
-    "src/util.ts",
+    "src/common/**.ts",
     "src/index.ts",
     "src/plugins/**/*.ts",
     "test/mock/*.ts",
