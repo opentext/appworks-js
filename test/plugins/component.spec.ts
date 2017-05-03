@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Util} from "../../src/util";
+import {Util} from "../../src/common/util";
 import {AWComponent} from "../../src/plugins/component/component";
 
 describe('Component', () => {

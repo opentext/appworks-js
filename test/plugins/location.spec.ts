@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {AWLocation} from "../../src/plugins/location/location";
-import {Util} from "../../src/util";
+import {Util} from "../../src/common/util";
 
 describe('Location', () => {
     it('should define a getCurrentPosition function', () => {

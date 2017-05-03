@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Util} from "../../src/util";
+import {Util} from "../../src/common/util";
 import {AWLauncher} from "../../src/plugins/launcher/launcher";
 
 describe('Launcher', () => {

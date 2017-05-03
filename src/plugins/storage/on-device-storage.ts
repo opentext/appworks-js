@@ -1,4 +1,4 @@
-import {AWProxy} from "../../proxy";
+import {AWProxy} from "../../common/proxy";
 import {PersistentStorage} from './index';
 
 /**

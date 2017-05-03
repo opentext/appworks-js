@@ -1,6 +1,6 @@
-import {AWPlugin} from "../../plugin";
-import {AWProxy} from "../../proxy";
-import {Util} from "../../util";
+import {AWPlugin} from "../../common/plugin";
+import {AWProxy} from "../../common/proxy";
+import {Util} from "../../common/util";
 import {DesktopHostFileSystem, FileDetails, FileDialogOptions, SaveDialogOptions} from './index';
 
 export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {

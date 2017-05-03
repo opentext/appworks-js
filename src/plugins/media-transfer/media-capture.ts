@@ -1,5 +1,5 @@
-import {AWPlugin} from '../../plugin';
-import {AWProxy} from '../../proxy';
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
 import {Capture} from './index';
 
 export class AWMediaCapture extends AWPlugin implements Capture {

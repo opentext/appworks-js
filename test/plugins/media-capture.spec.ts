@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Util} from "../../src/util";
+import {Util} from "../../src/common/util";
 import {AWMediaCapture} from "../../src/plugins/media-transfer/media-capture";
 
 describe('MediaCapture', () => {

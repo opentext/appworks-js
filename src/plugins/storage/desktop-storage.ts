@@ -1,4 +1,4 @@
-import {AWProxy} from "../../proxy";
+import {AWProxy} from "../../common/proxy";
 import {AsyncStorage, PersistentStorage} from './index';
 
 export class DesktopStorage implements PersistentStorage {

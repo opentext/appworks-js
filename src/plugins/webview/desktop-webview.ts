@@ -1,5 +1,5 @@
-import {AWProxy} from "../../proxy";
-import {Util} from "../../util";
+import {AWProxy} from "../../common/proxy";
+import {Util} from "../../common/util";
 import {DesktopWebviewInterface, InAppBrowserEvent} from './index';
 
 const DesktopWebviewSequenceStore = {

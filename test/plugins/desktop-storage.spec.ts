@@ -2,7 +2,7 @@ import {expect} from "chai";
 import * as sinon from "sinon";
 import * as mocha from "mocha";
 import {DesktopStorage} from "../../src/plugins/storage/desktop-storage";
-import {AWProxy} from "../../src/proxy";
+import {AWProxy} from "../../src/common/proxy";
 import {MockLocalStorage} from "../mock/local-storage";
 import {MockAsyncStorage} from "../mock/async-storage";
 import {PersistentStorage} from '../../src/plugins/storage/index';

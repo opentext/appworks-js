@@ -19,16 +19,16 @@ export default {
 };
 
 function dest() {
-    let pkg = require('./package.json');
-    if (process.env.BUILD == 'min') {
-        return pkg['main:min'];
+    const pkg = require('./package.json');
+    if (process.env.BUILD === 'min') {
+        return pkg['legacy:min'];
     } else {
-        return pkg['main'];
+        return pkg['legacy'];
     }
 }
 
 function plugins() {
-    let use = [];
+    const use = [];
     // as we are using a different version of Typescript to the one supplied by rollup we need to require it here
     use.push(typescript({
         typescript: require('typescript')

@@ -42,11 +42,13 @@
     ""
   ],
   "license": "LICENSE",
-  "main": "dist/appworks.js",
-  "main:min": "dist/appworks.min.js",
+  "main": "src/index.js",
+  "legacy": "dist/appworks.js",
+  "legacy:min": "dist/appworks.min.js",
   "repository": "https://github.com/opentext/appworks-js",
   "scripts": {
-    "build": "rollup -c && rollup -c --environment BUILD:min",
+    "ts:export": "tsc index.ts --target es5",
+    "build": "npm run ts:export && rollup -c && rollup -c --environment BUILD:min",
     "lint": "tslint -c tslint.json ./src/**/*.ts",
     "prebuild": "npm run test",
     "test": "mocha --compilers ts:ts-node/register test/**.spec.ts test/**/*.spec.ts",

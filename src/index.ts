@@ -3,9 +3,9 @@
  * @description
  * Entry point from which you should import all public appworks APIs.
  */
-export {AWPlugin} from './plugin';
-export {AWProxy, __aw_plugin_proxy} from './proxy';
-export {Util} from './util';
+export {AWPlugin} from './common/plugin';
+export {AWProxy, __aw_plugin_proxy} from './common/proxy';
+export {Util} from './common/util';
 export {AWAccelerometer} from './plugins/accelerometer/accelerometer';
 export {AWAppManager} from './plugins/app-manager/app-manager';
 export {AWAuth} from './plugins/auth/auth';

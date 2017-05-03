@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {AWAccelerometer} from "../../src/plugins/accelerometer/accelerometer";
-import {Util} from "../../src/util";
+import {Util} from "../../src/common/util";
 
 describe('Accelerometer', () => {
     it('should define a getCurrentAcceleration function', () => {
