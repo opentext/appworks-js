@@ -28,11 +28,6 @@ export interface CameraInterface {
     getPicture(cameraSuccess: (data: string) => void,
                cameraError: (message: string) => void,
                cameraOptions?: CameraOptions): void;
-    // Next will work only on iOS
-    //getPicture(
-    //    cameraSuccess: (data: string) => void,
-    //    cameraError: (message: string) => void,
-    //    cameraOptions?: CameraOptions): CameraPopoverHandle;
 }
 
 export interface CameraOptions {
@@ -129,4 +124,3 @@ export interface CameraPopoverOptions {
      */
     arrowDir: number;
 }
-

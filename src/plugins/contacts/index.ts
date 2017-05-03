@@ -35,7 +35,7 @@ export interface Contacts {
      * @param onError Error callback function, invoked when an error occurs.
      */
     pickContact(onSuccess: (contact: Contact) => void,
-                onError: (error: ContactError) => void): void
+                onError: (error: ContactError) => void): void;
 
     /**
      * This allows us to use an enumeration when setting the desired fields for the ContactFindOptions.
@@ -69,7 +69,7 @@ export interface Contacts {
         streetAddress: "streetAddress",
         title: "title",
         urls: "urls"
-    }
+    };
 }
 
 export interface ContactProperties {

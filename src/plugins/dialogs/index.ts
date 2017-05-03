@@ -8,7 +8,7 @@
 
 export interface Navigator {
     /** This plugin provides access to some native dialog UI elements. */
-    notification: Notification
+    notification: Notification;
 }
 
 /** This plugin provides access to some native dialog UI elements. */
