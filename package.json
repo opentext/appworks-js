@@ -29,9 +29,7 @@
   },
   "files": [
     "index.ts",
-    "src/common/**.ts",
-    "src/index.ts",
-    "src/plugins/**/*.ts",
+    "src/**/*",
     "test/mock/*.ts",
     "node_modules/es6-promise"
   ],
