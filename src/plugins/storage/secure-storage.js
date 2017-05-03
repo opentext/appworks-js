@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -9,9 +8,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
-var plugin_1 = require("../../common/plugin");
-var proxy_1 = require("../../common/proxy");
+import { AWPlugin } from '../../common/plugin';
+import { AWProxy } from '../../common/proxy';
 var SecureStorage = (function (_super) {
     __extends(SecureStorage, _super);
     function SecureStorage(successHandler, errorHandler) {
@@ -42,27 +40,27 @@ var SecureStorage = (function (_super) {
                 }
             }
         };
-        proxy_1.AWProxy.exec(progress, (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'store', args);
+        AWProxy.exec(progress, (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'store', args);
     };
     SecureStorage.prototype.retrieve = function (filename, options) {
         var _this = this;
         var args = [filename, options];
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'retrieve', args);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'retrieve', args);
     };
     SecureStorage.prototype.remove = function (target) {
         var _this = this;
         var args = [target];
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'removeFile', args);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'removeFile', args);
     };
     SecureStorage.prototype.fileExistsAtPath = function (target) {
         var _this = this;
         var args = [target];
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'fileExistsAtPath', args);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'fileExistsAtPath', args);
     };
     return SecureStorage;
-}(plugin_1.AWPlugin));
+}(AWPlugin));
+export { SecureStorage };
 SecureStorage.idCounter = 0;
-exports.SecureStorage = SecureStorage;
 var AWSecureStorage = (function (_super) {
     __extends(AWSecureStorage, _super);
     function AWSecureStorage() {
@@ -70,5 +68,5 @@ var AWSecureStorage = (function (_super) {
     }
     return AWSecureStorage;
 }(SecureStorage));
-exports.AWSecureStorage = AWSecureStorage;
+export { AWSecureStorage };
 //# sourceMappingURL=secure-storage.js.map

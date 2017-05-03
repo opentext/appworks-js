@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var MockGeolocation = (function () {
     function MockGeolocation() {
     }
@@ -12,5 +10,5 @@ var MockGeolocation = (function () {
     };
     return MockGeolocation;
 }());
-exports.MockGeolocation = MockGeolocation;
+export { MockGeolocation };
 //# sourceMappingURL=geolocation.js.map

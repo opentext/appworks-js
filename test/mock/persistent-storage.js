@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var PersistentStorageMock = (function () {
     function PersistentStorageMock() {
     }
@@ -11,5 +9,5 @@ var PersistentStorageMock = (function () {
     };
     return PersistentStorageMock;
 }());
-exports.PersistentStorageMock = PersistentStorageMock;
+export { PersistentStorageMock };
 //# sourceMappingURL=persistent-storage.js.map

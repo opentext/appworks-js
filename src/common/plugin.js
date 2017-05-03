@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var AWPlugin = (function () {
     /**
      * Base plugin class. Constructor takes in a success function and error function to be executed upon
@@ -13,5 +11,5 @@ var AWPlugin = (function () {
     }
     return AWPlugin;
 }());
-exports.AWPlugin = AWPlugin;
+export { AWPlugin };
 //# sourceMappingURL=plugin.js.map

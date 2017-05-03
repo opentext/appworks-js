@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var proxy_1 = require("../../common/proxy");
+import { AWProxy } from "../../common/proxy";
 /**
  * The mobile environment implementation of persistent storage.
  */
@@ -10,7 +8,7 @@ var OnDeviceStorage = (function () {
     OnDeviceStorage.prototype.persistLocalStorage = function () {
         var _this = this;
         var i, data = {}, key, value;
-        var storage = proxy_1.AWProxy.storage();
+        var storage = AWProxy.storage();
         for (i = 0; i < storage.length; i += 1) {
             key = storage.key(i);
             value = storage.getItem(key);
@@ -29,7 +27,7 @@ var OnDeviceStorage = (function () {
                     data = JSON.parse(json);
                     for (var item in data) {
                         if (data.hasOwnProperty(item)) {
-                            proxy_1.AWProxy.storage().setItem(item, data[item]);
+                            AWProxy.storage().setItem(item, data[item]);
                         }
                     }
                     resolve();
@@ -39,7 +37,7 @@ var OnDeviceStorage = (function () {
     };
     OnDeviceStorage.prototype.readDataFromPersistentStorage = function () {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.requestFileSystem(proxy_1.AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
+            AWProxy.requestFileSystem(AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
             function gotFS(fileSystem) {
                 fileSystem.root.getFile('appworksjs.cache.json', {
                     create: true,
@@ -64,7 +62,7 @@ var OnDeviceStorage = (function () {
     };
     OnDeviceStorage.prototype.writeDataToPersistentStorage = function (data) {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.requestFileSystem(proxy_1.AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
+            AWProxy.requestFileSystem(AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
             function gotFS(fileSystem) {
                 fileSystem.root.getFile('appworksjs.cache.json', { create: true, exclusive: false }, gotFileEntry, reject);
             }
@@ -82,5 +80,5 @@ var OnDeviceStorage = (function () {
     };
     return OnDeviceStorage;
 }());
-exports.OnDeviceStorage = OnDeviceStorage;
+export { OnDeviceStorage };
 //# sourceMappingURL=on-device-storage.js.map

@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -9,19 +8,18 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
-var plugin_1 = require("../../common/plugin");
-var proxy_1 = require("../../common/proxy");
-var util_1 = require("../../common/util");
+import { AWPlugin } from '../../common/plugin';
+import { AWProxy } from '../../common/proxy';
+import { Util } from '../../common/util';
 var AWVibration = (function (_super) {
     __extends(AWVibration, _super);
     function AWVibration() {
-        return _super.call(this, util_1.Util.noop, util_1.Util.noop) || this;
+        return _super.call(this, Util.noop, Util.noop) || this;
     }
     AWVibration.prototype.vibrate = function (time) {
-        return proxy_1.AWProxy.vibrate(time);
+        return AWProxy.vibrate(time);
     };
     return AWVibration;
-}(plugin_1.AWPlugin));
-exports.AWVibration = AWVibration;
+}(AWPlugin));
+export { AWVibration };
 //# sourceMappingURL=vibration.js.map

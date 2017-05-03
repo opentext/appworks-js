@@ -1,9 +1,4 @@
-"use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(require("./file-chooser"));
-__export(require("./file-system"));
-__export(require("./local-file-system"));
+export * from './file-chooser';
+export * from './file-system';
+export * from './local-file-system';
 //# sourceMappingURL=index.js.map

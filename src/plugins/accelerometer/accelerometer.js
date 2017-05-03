@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -9,9 +8,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
-var plugin_1 = require("../../common/plugin");
-var proxy_1 = require("../../common/proxy");
+import { AWPlugin } from '../../common/plugin';
+import { AWProxy } from '../../common/proxy';
 var AWAccelerometer = (function (_super) {
     __extends(AWAccelerometer, _super);
     function AWAccelerometer() {
@@ -19,16 +17,16 @@ var AWAccelerometer = (function (_super) {
     }
     AWAccelerometer.prototype.getCurrentAcceleration = function () {
         var _this = this;
-        return proxy_1.AWProxy.accelerometer().getCurrentAcceleration((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })());
+        return AWProxy.accelerometer().getCurrentAcceleration((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })());
     };
     AWAccelerometer.prototype.watchAcceleration = function (options) {
         var _this = this;
-        return proxy_1.AWProxy.accelerometer().watchAcceleration((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+        return AWProxy.accelerometer().watchAcceleration((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
     };
     AWAccelerometer.prototype.clearWatch = function (watchId) {
-        return proxy_1.AWProxy.accelerometer().clearWatch(watchId);
+        return AWProxy.accelerometer().clearWatch(watchId);
     };
     return AWAccelerometer;
-}(plugin_1.AWPlugin));
-exports.AWAccelerometer = AWAccelerometer;
+}(AWPlugin));
+export { AWAccelerometer };
 //# sourceMappingURL=accelerometer.js.map

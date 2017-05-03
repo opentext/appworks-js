@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var MockAccelerometer = (function () {
     function MockAccelerometer() {
     }
@@ -13,5 +11,5 @@ var MockAccelerometer = (function () {
     };
     return MockAccelerometer;
 }());
-exports.MockAccelerometer = MockAccelerometer;
+export { MockAccelerometer };
 //# sourceMappingURL=accelerometer.js.map

@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var MockCompass = (function () {
     function MockCompass() {
     }
@@ -12,5 +10,5 @@ var MockCompass = (function () {
     };
     return MockCompass;
 }());
-exports.MockCompass = MockCompass;
+export { MockCompass };
 //# sourceMappingURL=compass.js.map

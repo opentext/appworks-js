@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -9,9 +8,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
-var plugin_1 = require("../../common/plugin");
-var proxy_1 = require("../../common/proxy");
+import { AWPlugin } from '../../common/plugin';
+import { AWProxy } from '../../common/proxy';
 var AWFileChooser = (function (_super) {
     __extends(AWFileChooser, _super);
     function AWFileChooser() {
@@ -20,9 +18,9 @@ var AWFileChooser = (function (_super) {
     AWFileChooser.prototype.selectAndUpload = function (action) {
         var _this = this;
         var args = [action];
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFileChooser', 'open', args);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFileChooser', 'open', args);
     };
     return AWFileChooser;
-}(plugin_1.AWPlugin));
-exports.AWFileChooser = AWFileChooser;
+}(AWPlugin));
+export { AWFileChooser };
 //# sourceMappingURL=file-chooser.js.map

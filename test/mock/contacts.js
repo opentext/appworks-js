@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var MockContacts = (function () {
     function MockContacts() {
         this.fieldType = {};
@@ -13,5 +11,5 @@ var MockContacts = (function () {
     };
     return MockContacts;
 }());
-exports.MockContacts = MockContacts;
+export { MockContacts };
 //# sourceMappingURL=contacts.js.map

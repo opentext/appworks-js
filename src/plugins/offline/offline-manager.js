@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -9,20 +8,19 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
-var cache_1 = require("../storage/cache");
-var plugin_1 = require("../../common/plugin");
-var proxy_1 = require("../../common/proxy");
-var util_1 = require("../../common/util");
+import { AWCache } from "../storage/cache";
+import { AWPlugin } from "../../common/plugin";
+import { AWProxy } from "../../common/proxy";
+import { Util } from "../../common/util";
 var AWOfflineManager = (function (_super) {
     __extends(AWOfflineManager, _super);
     function AWOfflineManager(options) {
-        var _this = _super.call(this, util_1.Util.noop, util_1.Util.noop) || this;
+        var _this = _super.call(this, Util.noop, Util.noop) || this;
         var document;
         _this.cacheKey = '__appworksjs.deferredQueue';
-        _this.cache = new cache_1.AWCache();
+        _this.cache = new AWCache();
         _this.options = options || { preserveEvents: false };
-        document = proxy_1.AWProxy.document();
+        document = AWProxy.document();
         // process deferred queue when network status changes
         document.addEventListener('online', function () {
             _this.processDeferredQueue();
@@ -57,9 +55,9 @@ var AWOfflineManager = (function (_super) {
     };
     AWOfflineManager.prototype.networkStatus = function () {
         return {
-            online: proxy_1.AWProxy.connection().type !== proxy_1.AWProxy.Connection().NONE,
-            offline: proxy_1.AWProxy.connection().type === proxy_1.AWProxy.Connection().NONE,
-            connection: proxy_1.AWProxy.connection()
+            online: AWProxy.connection().type !== AWProxy.Connection().NONE,
+            offline: AWProxy.connection().type === AWProxy.Connection().NONE,
+            connection: AWProxy.connection()
         };
     };
     AWOfflineManager.prototype.saveQueue = function () {
@@ -82,6 +80,6 @@ var AWOfflineManager = (function (_super) {
         document.dispatchEvent(event);
     };
     return AWOfflineManager;
-}(plugin_1.AWPlugin));
-exports.AWOfflineManager = AWOfflineManager;
+}(AWPlugin));
+export { AWOfflineManager };
 //# sourceMappingURL=offline-manager.js.map

@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var proxy_1 = require("../../common/proxy");
+import { AWProxy } from "../../common/proxy";
 var DesktopStorage = (function () {
     function DesktopStorage(desktopPlugin) {
         this.desktopStorage = desktopPlugin;
@@ -12,7 +10,7 @@ var DesktopStorage = (function () {
         }
         return new Promise(function (resolve, reject) {
             var i, data = [], key, value;
-            var storage = proxy_1.AWProxy.storage();
+            var storage = AWProxy.storage();
             for (i = 0; i < storage.length; i += 1) {
                 key = storage.key(i);
                 value = storage.getItem(key);
@@ -31,7 +29,7 @@ var DesktopStorage = (function () {
             try {
                 // get data is actually synchronous
                 var data = _this.desktopStorage.getData();
-                var storage = proxy_1.AWProxy.storage();
+                var storage = AWProxy.storage();
                 for (var key in data) {
                     if (data.hasOwnProperty(key)) {
                         storage.setItem(key, data[key]);
@@ -46,6 +44,6 @@ var DesktopStorage = (function () {
     };
     return DesktopStorage;
 }());
+export { DesktopStorage };
 DesktopStorage.PLUGIN_NOT_FOUND = new Error('Unable to resolve AWStorage desktop plugin');
-exports.DesktopStorage = DesktopStorage;
 //# sourceMappingURL=desktop-storage.js.map

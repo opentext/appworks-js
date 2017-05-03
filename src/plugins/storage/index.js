@@ -1,11 +1,6 @@
-"use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(require("./desktop-storage"));
-__export(require("./on-device-storage"));
-__export(require("./cache"));
-__export(require("./storage"));
-__export(require("./secure-storage"));
+export * from './desktop-storage';
+export * from './on-device-storage';
+export * from './cache';
+export * from './storage';
+export * from './secure-storage';
 //# sourceMappingURL=index.js.map

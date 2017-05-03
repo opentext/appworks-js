@@ -5,6 +5,4 @@
 //
 // Copyright (c) Microsoft Open Technologies Inc
 // Licensed under the MIT license
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 //# sourceMappingURL=index.js.map

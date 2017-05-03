@@ -1,32 +1,30 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var contacts_1 = require("../../test/mock/contacts");
-var accelerometer_1 = require("../../test/mock/accelerometer");
-var camera_1 = require("../../test/mock/camera");
-var compass_1 = require("../../test/mock/compass");
-var geolocation_1 = require("../../test/mock/geolocation");
-var media_1 = require("../../test/mock/media");
-var capture_1 = require("../../test/mock/capture");
-var notifications_1 = require("../../test/mock/notifications");
-var connection_1 = require("../../test/mock/connection");
-var vibrate_1 = require("../../test/mock/vibrate");
-var local_file_system_1 = require("../plugins/file/local-file-system");
-var file_transfer_1 = require("../../test/mock/file-transfer");
-var util_1 = require("./util");
-var storage_1 = require("../plugins/storage/storage");
-var on_device_storage_1 = require("../plugins/storage/on-device-storage");
-var persistent_storage_1 = require("../../test/mock/persistent-storage");
-var desktop_storage_1 = require("../plugins/storage/desktop-storage");
-var desktop_webview_1 = require("../plugins/webview/desktop-webview");
+import { MockContacts } from "../../test/mock/contacts";
+import { MockAccelerometer } from "../../test/mock/accelerometer";
+import { MockCamera } from "../../test/mock/camera";
+import { MockCompass } from "../../test/mock/compass";
+import { MockGeolocation } from "../../test/mock/geolocation";
+import { MockMedia } from "../../test/mock/media";
+import { MockCapture } from "../../test/mock/capture";
+import { MockNotification } from "../../test/mock/notifications";
+import { MockConnection } from "../../test/mock/connection";
+import { MockVibrate } from "../../test/mock/vibrate";
+import { LocalFileSystem } from "../plugins/file/local-file-system";
+import { MockFileTransfer } from "../../test/mock/file-transfer";
+import { Util } from "./util";
+import { AWStorage } from "../plugins/storage/storage";
+import { OnDeviceStorage } from "../plugins/storage/on-device-storage";
+import { PersistentStorageMock } from "../../test/mock/persistent-storage";
+import { DesktopStorage } from "../plugins/storage/desktop-storage";
+import { DesktopWebview } from "../plugins/webview/desktop-webview";
 var AWProxy = (function () {
     function AWProxy() {
     }
     AWProxy.exec = function (successHandler, errorHandler, name, method, args) {
-        if (typeof exports.cordova !== 'undefined') {
-            exports.cordova.exec(successHandler, errorHandler, name, method, args);
+        if (typeof cordova !== 'undefined') {
+            cordova.exec(successHandler, errorHandler, name, method, args);
         }
         else if (AWProxy.isDesktopEnv()) {
-            exports.__aw_plugin_proxy.exec(successHandler, errorHandler, name, method, args);
+            __aw_plugin_proxy.exec(successHandler, errorHandler, name, method, args);
         }
         else {
             console.error('No proxy objects defined - tried [Cordova, __aw_plugin_proxy]');
@@ -36,13 +34,13 @@ var AWProxy = (function () {
         }
     };
     AWProxy.accelerometer = function () {
-        return typeof 'navigator' !== undefined ? exports.navigator.accelerometer : new accelerometer_1.MockAccelerometer();
+        return typeof 'navigator' !== undefined ? navigator.accelerometer : new MockAccelerometer();
     };
     AWProxy.camera = function () {
-        return typeof exports.navigator !== 'undefined' ? exports.navigator.camera : new camera_1.MockCamera();
+        return typeof navigator !== 'undefined' ? navigator.camera : new MockCamera();
     };
     AWProxy.Camera = function () {
-        return (typeof exports.Camera !== 'undefined') ? exports.Camera : {
+        return (typeof Camera !== 'undefined') ? Camera : {
             DestinationType: {
                 DATA_URL: null,
                 FILE_URI: null,
@@ -77,13 +75,13 @@ var AWProxy = (function () {
         };
     };
     AWProxy.compass = function () {
-        return typeof exports.navigator !== 'undefined' ? exports.navigator.compass : new compass_1.MockCompass();
+        return typeof navigator !== 'undefined' ? navigator.compass : new MockCompass();
     };
     AWProxy.connection = function () {
-        return typeof exports.navigator !== 'undefined' ? exports.navigator.connection : new connection_1.MockConnection();
+        return typeof navigator !== 'undefined' ? navigator.connection : new MockConnection();
     };
     AWProxy.Connection = function () {
-        return (typeof exports.Connection !== 'undefined') ? exports.Connection : {
+        return (typeof Connection !== 'undefined') ? Connection : {
             UNKNOWN: null,
             ETHERNET: null,
             WIFI: null,
@@ -95,10 +93,10 @@ var AWProxy = (function () {
         };
     };
     AWProxy.contacts = function () {
-        return typeof exports.navigator !== 'undefined' ? exports.navigator.contacts : new contacts_1.MockContacts();
+        return typeof navigator !== 'undefined' ? navigator.contacts : new MockContacts();
     };
     AWProxy.device = function () {
-        var _device = (typeof exports.device !== 'undefined') ? exports.device : {
+        var _device = (typeof device !== 'undefined') ? device : {
             cordova: null,
             available: true,
             model: null,
@@ -110,22 +108,22 @@ var AWProxy = (function () {
             serial: null,
             capture: null
         };
-        if (typeof exports.navigator !== 'undefined' && exports.navigator.device && exports.navigator.device.capture) {
-            _device.capture = exports.navigator.device.capture;
+        if (typeof navigator !== 'undefined' && navigator.device && navigator.device.capture) {
+            _device.capture = navigator.device.capture;
         }
         else {
-            _device.capture = new capture_1.MockCapture();
+            _device.capture = new MockCapture();
         }
         return _device;
     };
     AWProxy.document = function () {
         return (typeof document !== 'undefined') ? document : {
-            addEventListener: util_1.Util.noop
+            addEventListener: Util.noop
         };
     };
     AWProxy.file = function () {
-        if (typeof exports.cordova !== 'undefined') {
-            return exports.cordova.file;
+        if (typeof cordova !== 'undefined') {
+            return cordova.file;
         }
         else {
             return {
@@ -143,56 +141,56 @@ var AWProxy = (function () {
     AWProxy.doGetFileTransfer = function () {
         if (AWProxy.isDesktopEnv()) {
             var plugin = AWProxy.getDesktopPlugin('AWFileTransfer');
-            return (plugin !== null) ? plugin : new file_transfer_1.MockFileTransfer();
+            return (plugin !== null) ? plugin : new MockFileTransfer();
         }
-        return (typeof exports.FileTransfer !== 'undefined') ? new exports.FileTransfer() : new file_transfer_1.MockFileTransfer();
+        return (typeof FileTransfer !== 'undefined') ? new FileTransfer() : new MockFileTransfer();
     };
     AWProxy.geolocation = function () {
-        return (typeof exports.navigator !== 'undefined') ? exports.navigator.geolocation : new geolocation_1.MockGeolocation();
+        return (typeof navigator !== 'undefined') ? navigator.geolocation : new MockGeolocation();
     };
     AWProxy.localFileSystem = function () {
-        return local_file_system_1.LocalFileSystem;
+        return LocalFileSystem;
     };
     AWProxy.media = function (src, successHandler, errorHandler, statusChangeHandler) {
-        if (typeof exports.Media !== 'undefined') {
-            return new exports.Media(src, successHandler, errorHandler, statusChangeHandler);
+        if (typeof Media !== 'undefined') {
+            return new Media(src, successHandler, errorHandler, statusChangeHandler);
         }
         else {
-            return new media_1.MockMedia(src, successHandler, errorHandler, statusChangeHandler);
+            return new MockMedia(src, successHandler, errorHandler, statusChangeHandler);
         }
     };
     AWProxy.notification = function () {
-        return (typeof exports.navigator !== 'undefined') ? exports.navigator.notification : new notifications_1.MockNotification();
+        return (typeof navigator !== 'undefined') ? navigator.notification : new MockNotification();
     };
     AWProxy.requestFileSystem = function (type, size, successCallback, errorCallback) {
-        if (exports.window.requestFileSystem) {
-            return exports.window.requestFileSystem(type, size, successCallback, errorCallback);
+        if (window.requestFileSystem) {
+            return window.requestFileSystem(type, size, successCallback, errorCallback);
         }
     };
     AWProxy.vibrate = function (time) {
-        if (typeof exports.navigator !== 'undefined' && exports.navigator.vibrate) {
-            return exports.navigator.vibrate(time);
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+            return navigator.vibrate(time);
         }
         else {
-            return new vibrate_1.MockVibrate().vibrate(time);
+            return new MockVibrate().vibrate(time);
         }
     };
     AWProxy.webview = function () {
-        if (typeof exports.cordova !== 'undefined') {
-            return exports.cordova.InAppBrowser;
+        if (typeof cordova !== 'undefined') {
+            return cordova.InAppBrowser;
         }
         else {
-            return new desktop_webview_1.DesktopWebview();
+            return new DesktopWebview();
         }
     };
     AWProxy.storage = function () {
-        return new storage_1.AWStorage();
+        return new AWStorage();
     };
     AWProxy.persistentStorage = function () {
         var desktopPlugin = AWProxy.getDesktopPlugin('AWStorage');
         return desktopPlugin !== null ?
-            new desktop_storage_1.DesktopStorage(desktopPlugin) : (AWProxy.isMobileEnv()) ?
-            new on_device_storage_1.OnDeviceStorage() : new persistent_storage_1.PersistentStorageMock();
+            new DesktopStorage(desktopPlugin) : (AWProxy.isMobileEnv()) ?
+            new OnDeviceStorage() : new PersistentStorageMock();
     };
     /**
      * Are we executing within the AppWorks Desktop context.
@@ -200,7 +198,7 @@ var AWProxy = (function () {
      * @returns {boolean} true if this is a desktop environment, false otherwise
      */
     AWProxy.isDesktopEnv = function () {
-        return typeof exports.__aw_plugin_proxy !== 'undefined';
+        return typeof __aw_plugin_proxy !== 'undefined';
     };
     /**
      * Are we executing within the AppWorks mobile context.
@@ -208,7 +206,7 @@ var AWProxy = (function () {
      * @return {boolean} true if Cordova is available, false otherwise
      */
     AWProxy.isMobileEnv = function () {
-        return typeof exports.cordova !== 'undefined';
+        return typeof cordova !== 'undefined';
     };
     /**
      * Ask the AppWorks desktop environment to retrieve an instance of a specific plugin.
@@ -221,9 +219,9 @@ var AWProxy = (function () {
         if (!AWProxy.isDesktopEnv())
             return null;
         // the proxy exposed by desktop has a method to allow retrieval of plugin instances
-        return exports.__aw_plugin_proxy.getPlugin(pluginName);
+        return __aw_plugin_proxy.getPlugin(pluginName);
     };
     return AWProxy;
 }());
-exports.AWProxy = AWProxy;
+export { AWProxy };
 //# sourceMappingURL=proxy.js.map

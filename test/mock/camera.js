@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var MockCamera = (function () {
     function MockCamera() {
     }
@@ -9,5 +7,5 @@ var MockCamera = (function () {
     };
     return MockCamera;
 }());
-exports.MockCamera = MockCamera;
+export { MockCamera };
 //# sourceMappingURL=camera.js.map
