@@ -1,10 +1,7 @@
-// Type definitions for Apache Cordova Device Orientation plugin
-// Project: https://github.com/apache/cordova-plugin-device-orientation
-// Definitions by: Microsoft Open Technologies Inc <http://msopentech.com>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-//
-// Copyright (c) Microsoft Open Technologies Inc
-// Licensed under the MIT license.
 "use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
 Object.defineProperty(exports, "__esModule", { value: true });
+__export(require("./compass"));
 //# sourceMappingURL=index.js.map

@@ -1,10 +1,4 @@
-// Type definitions for Apache Cordova Globalization plugin
-// Project: https://github.com/apache/cordova-plugin-globalization
-// Definitions by: Microsoft Open Technologies Inc <http://msopentech.com>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-//
-// Copyright (c) Microsoft Open Technologies Inc
-// Licensed under the MIT license.
+export * from './globalization';
 
 export interface Navigator {
     /** This plugin obtains information and performs operations specific to the user's locale and timezone. */

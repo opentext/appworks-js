@@ -1,3 +1,5 @@
+export * from './device';
+
 import {Capture} from '../media-transfer/index';
 /**
  * This plugin defines a global device object, which describes the device's hardware and software.

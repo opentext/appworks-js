@@ -5,6 +5,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./desktop-storage"));
 __export(require("./on-device-storage"));
+__export(require("./cache"));
 __export(require("./storage"));
 __export(require("./secure-storage"));
 //# sourceMappingURL=index.js.map
