@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,8 +9,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { AWPlugin } from '../../common/plugin';
-import { AWProxy } from '../../common/proxy';
+Object.defineProperty(exports, "__esModule", { value: true });
+var plugin_1 = require("../../common/plugin");
+var proxy_1 = require("../../common/proxy");
 var AWAuth = (function (_super) {
     __extends(AWAuth, _super);
     function AWAuth() {
@@ -18,19 +20,19 @@ var AWAuth = (function (_super) {
     AWAuth.prototype.authenticate = function (force) {
         var _this = this;
         force = !!force;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate', [force.toString()]);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate', [force.toString()]);
     };
     AWAuth.prototype.getAuthResponse = function () {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authobject', []);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authobject', []);
     };
     AWAuth.prototype.gateway = function (successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'gateway', []);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'gateway', []);
     };
     AWAuth.prototype.online = function (successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'online', []);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'online', []);
     };
     return AWAuth;
-}(AWPlugin));
-export { AWAuth };
+}(plugin_1.AWPlugin));
+exports.AWAuth = AWAuth;
 //# sourceMappingURL=auth.js.map

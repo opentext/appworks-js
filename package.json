@@ -39,11 +39,12 @@
   ],
   "license": "LICENSE",
   "main": "src/index.js",
+  "module": "",
   "legacy": "dist/appworks.js",
   "legacy:min": "dist/appworks.min.js",
   "repository": "https://github.com/opentext/appworks-js",
   "scripts": {
-    "ts:export": "tsc index.ts --target es5 --sourceMap --moduleResolution classic --module es6",
+    "ts:export": "tsc index.ts --target es5 --sourceMap --moduleResolution node --module commonjs --declaration --lib DOM,ES5",
     "build": "npm run ts:export && rollup -c && rollup -c --environment BUILD:min",
     "lint": "tslint -c tslint.json ./src/**/*.ts",
     "prebuild": "npm run test",

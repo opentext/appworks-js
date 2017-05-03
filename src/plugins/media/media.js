@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,13 +9,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { AWPlugin } from '../../common/plugin';
-import { AWProxy } from '../../common/proxy';
+Object.defineProperty(exports, "__esModule", { value: true });
+var plugin_1 = require("../../common/plugin");
+var proxy_1 = require("../../common/proxy");
 var AWMedia = (function (_super) {
     __extends(AWMedia, _super);
     function AWMedia(src, successHandler, errorHandler, statusChangeHandler) {
         var _this = _super.call(this, successHandler, errorHandler) || this;
-        _this.media = AWProxy.media(src, successHandler, errorHandler, statusChangeHandler);
+        _this.media = proxy_1.AWProxy.media(src, successHandler, errorHandler, statusChangeHandler);
         _this.src = src;
         _this.position = _this.media.position;
         _this.duration = _this.media.duration;
@@ -51,6 +53,6 @@ var AWMedia = (function (_super) {
         return this.media.stopRecord();
     };
     return AWMedia;
-}(AWPlugin));
-export { AWMedia };
+}(plugin_1.AWPlugin));
+exports.AWMedia = AWMedia;
 //# sourceMappingURL=media.js.map

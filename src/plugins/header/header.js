@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,8 +9,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { AWPlugin } from '../../common/plugin';
-import { AWProxy } from '../../common/proxy';
+Object.defineProperty(exports, "__esModule", { value: true });
+var plugin_1 = require("../../common/plugin");
+var proxy_1 = require("../../common/proxy");
 var AWHeaderBar = (function (_super) {
     __extends(AWHeaderBar, _super);
     function AWHeaderBar() {
@@ -27,23 +29,23 @@ var AWHeaderBar = (function (_super) {
         else {
             this.callback = null;
         }
-        AWProxy.exec((function () { return _this.callback; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeader', [config]);
+        proxy_1.AWProxy.exec((function () { return _this.callback; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeader', [config]);
     };
     AWHeaderBar.prototype.getHeader = function () {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'getHeader', []);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'getHeader', []);
     };
     AWHeaderBar.prototype.setHeaderButtons = function (callback, config) {
         var _this = this;
-        AWProxy.exec(callback, (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeaderButtons', [config]);
+        proxy_1.AWProxy.exec(callback, (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeaderButtons', [config]);
     };
     AWHeaderBar.prototype.maskHeader = function (shouldMaskHeader) {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'maskHeader', [shouldMaskHeader]);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'maskHeader', [shouldMaskHeader]);
     };
     return AWHeaderBar;
-}(AWPlugin));
-export { AWHeaderBar };
+}(plugin_1.AWPlugin));
+exports.AWHeaderBar = AWHeaderBar;
 // alias
 var AWHeader = (function (_super) {
     __extends(AWHeader, _super);
@@ -52,5 +54,5 @@ var AWHeader = (function (_super) {
     }
     return AWHeader;
 }(AWHeaderBar));
-export { AWHeader };
+exports.AWHeader = AWHeader;
 //# sourceMappingURL=header.js.map

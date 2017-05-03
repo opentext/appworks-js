@@ -9,7 +9,7 @@ export class AWAccelerometer extends AWPlugin {
         );
     }
 
-    watchAcceleration(options?: any) {
+    watchAcceleration(options?: any): any {
         return AWProxy.accelerometer().watchAcceleration(
             (() => this.successHandler)(),
             (() => this.errorHandler)(),

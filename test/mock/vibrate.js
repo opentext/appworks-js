@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var MockVibrate = (function () {
     function MockVibrate() {
     }
@@ -5,5 +7,5 @@ var MockVibrate = (function () {
     };
     return MockVibrate;
 }());
-export { MockVibrate };
+exports.MockVibrate = MockVibrate;
 //# sourceMappingURL=vibrate.js.map

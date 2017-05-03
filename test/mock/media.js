@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var MockMedia = (function () {
     function MockMedia(src, successHandler, errorHandler, statusChangeHandler) {
     }
@@ -24,5 +26,5 @@ var MockMedia = (function () {
     };
     return MockMedia;
 }());
-export { MockMedia };
+exports.MockMedia = MockMedia;
 //# sourceMappingURL=media.js.map

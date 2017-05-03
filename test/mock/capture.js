@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var MockCapture = (function () {
     function MockCapture() {
     }
@@ -9,5 +11,5 @@ var MockCapture = (function () {
     };
     return MockCapture;
 }());
-export { MockCapture };
+exports.MockCapture = MockCapture;
 //# sourceMappingURL=capture.js.map

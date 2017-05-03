@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,32 +9,33 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { AWPlugin } from '../../common/plugin';
-import { AWProxy } from '../../common/proxy';
-import { Util } from '../../common/util';
+Object.defineProperty(exports, "__esModule", { value: true });
+var plugin_1 = require("../../common/plugin");
+var proxy_1 = require("../../common/proxy");
+var util_1 = require("../../common/util");
 var AWKeyboard = (function (_super) {
     __extends(AWKeyboard, _super);
     function AWKeyboard() {
-        return _super.call(this, Util.noop, Util.noop) || this;
+        return _super.call(this, util_1.Util.noop, util_1.Util.noop) || this;
     }
     AWKeyboard.prototype.hideKeyboardAccessoryBar = function (hide) {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWKeyboard', 'hideKeyboardAccessoryBar', [hide.toString()]);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWKeyboard', 'hideKeyboardAccessoryBar', [hide.toString()]);
     };
     AWKeyboard.prototype.close = function () {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWKeyboard', 'close', []);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWKeyboard', 'close', []);
     };
     AWKeyboard.prototype.show = function () {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWKeyboard', 'show', []);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWKeyboard', 'show', []);
     };
     AWKeyboard.prototype.disableScroll = function (disable) {
         var _this = this;
         disable = !!disable;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWKeyboard', 'disableScroll', [disable.toString()]);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWKeyboard', 'disableScroll', [disable.toString()]);
     };
     return AWKeyboard;
-}(AWPlugin));
-export { AWKeyboard };
+}(plugin_1.AWPlugin));
+exports.AWKeyboard = AWKeyboard;
 //# sourceMappingURL=keyboard.js.map

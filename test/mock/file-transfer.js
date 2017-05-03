@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var MockFileTransfer = (function () {
     function MockFileTransfer() {
     }
@@ -9,5 +11,5 @@ var MockFileTransfer = (function () {
     };
     return MockFileTransfer;
 }());
-export { MockFileTransfer };
+exports.MockFileTransfer = MockFileTransfer;
 //# sourceMappingURL=file-transfer.js.map

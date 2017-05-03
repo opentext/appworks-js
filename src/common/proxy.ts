@@ -28,7 +28,7 @@ import {PersistentStorage} from '../plugins/storage/index';
 import {Device} from '../plugins/device/index';
 import {Notification} from '../plugins/dialogs/index';
 
-export declare const Media: {
+declare const Media: {
     new (src: string,
          mediaSuccess: () => void,
          mediaError?: (error: MediaError) => any,
@@ -40,8 +40,8 @@ export declare const Media: {
     MEDIA_PAUSED: number;
     MEDIA_STOPPED: number
 };
-export declare const FileTransfer: any;
-export declare const Camera: {
+declare const FileTransfer: any;
+declare const Camera: {
     // Camera constants, defined in Camera plugin
     DestinationType: {
         DATA_URL: number;
@@ -76,12 +76,12 @@ export declare const Camera: {
     }
 };
 
-export declare const __aw_plugin_proxy;
-export declare const cordova: any;
-export declare const navigator: any;
-export declare const device: any;
-export declare const window: any;
-export declare const Connection: any;
+declare const __aw_plugin_proxy;
+declare const cordova: any;
+declare const navigator: any;
+declare const device: any;
+declare const window: any;
+declare const Connection: any;
 
 export class AWProxy {
 

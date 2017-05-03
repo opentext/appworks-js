@@ -3,7 +3,7 @@ import {AWProxy} from '../../common/proxy';
 
 export class AWContacts extends AWPlugin {
 
-    create(contact: any) {
+    create(contact: any): any {
         return AWProxy.contacts().create(contact);
     }
 

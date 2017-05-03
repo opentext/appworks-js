@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,19 +9,20 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { AWPlugin } from '../../common/plugin';
-import { AWProxy } from '../../common/proxy';
+Object.defineProperty(exports, "__esModule", { value: true });
+var plugin_1 = require("../../common/plugin");
+var proxy_1 = require("../../common/proxy");
 var Scanner = (function (_super) {
     __extends(Scanner, _super);
     function Scanner() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Scanner.prototype.scanDocument = function (returnType, successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWScanner', 'scanDocument', [returnType]);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWScanner', 'scanDocument', [returnType]);
     };
     return Scanner;
-}(AWPlugin));
-export { Scanner };
+}(plugin_1.AWPlugin));
+exports.Scanner = Scanner;
 var AWScanner = (function (_super) {
     __extends(AWScanner, _super);
     function AWScanner() {
@@ -28,5 +30,5 @@ var AWScanner = (function (_super) {
     }
     return AWScanner;
 }(Scanner));
-export { AWScanner };
+exports.AWScanner = AWScanner;
 //# sourceMappingURL=scanner.js.map

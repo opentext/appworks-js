@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,8 +9,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { AWPlugin } from '../../common/plugin';
-import { AWProxy } from '../../common/proxy';
+Object.defineProperty(exports, "__esModule", { value: true });
+var plugin_1 = require("../../common/plugin");
+var proxy_1 = require("../../common/proxy");
 var AWAppManager = (function (_super) {
     __extends(AWAppManager, _super);
     function AWAppManager() {
@@ -17,9 +19,9 @@ var AWAppManager = (function (_super) {
     }
     AWAppManager.prototype.closeActiveApp = function () {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'closeActiveApp', []);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'closeActiveApp', []);
     };
     return AWAppManager;
-}(AWPlugin));
-export { AWAppManager };
+}(plugin_1.AWPlugin));
+exports.AWAppManager = AWAppManager;
 //# sourceMappingURL=app-manager.js.map

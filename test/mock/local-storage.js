@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var MockLocalStorage = (function () {
     // allow tests to set a value if they need to
     function MockLocalStorage(len) {
@@ -17,5 +19,5 @@ var MockLocalStorage = (function () {
     };
     return MockLocalStorage;
 }());
-export { MockLocalStorage };
+exports.MockLocalStorage = MockLocalStorage;
 //# sourceMappingURL=local-storage.js.map

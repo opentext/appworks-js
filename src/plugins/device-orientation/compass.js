@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,8 +9,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { AWPlugin } from '../../common/plugin';
-import { AWProxy } from '../../common/proxy';
+Object.defineProperty(exports, "__esModule", { value: true });
+var plugin_1 = require("../../common/plugin");
+var proxy_1 = require("../../common/proxy");
 var AWCompass = (function (_super) {
     __extends(AWCompass, _super);
     function AWCompass() {
@@ -17,16 +19,16 @@ var AWCompass = (function (_super) {
     }
     AWCompass.prototype.getCurrentHeading = function () {
         var _this = this;
-        return AWProxy.compass().getCurrentHeading((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })());
+        return proxy_1.AWProxy.compass().getCurrentHeading((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })());
     };
     AWCompass.prototype.watchHeading = function (options) {
         var _this = this;
-        return AWProxy.compass().watchHeading((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+        return proxy_1.AWProxy.compass().watchHeading((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
     };
     AWCompass.prototype.clearWatch = function (watchId) {
-        return AWProxy.compass().clearWatch(watchId);
+        return proxy_1.AWProxy.compass().clearWatch(watchId);
     };
     return AWCompass;
-}(AWPlugin));
-export { AWCompass };
+}(plugin_1.AWPlugin));
+exports.AWCompass = AWCompass;
 //# sourceMappingURL=compass.js.map

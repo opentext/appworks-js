@@ -1,4 +1,6 @@
-import { MockLocalStorage } from "../../../test/mock/local-storage";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var local_storage_1 = require("../../../test/mock/local-storage");
 /**
  * Web local storage wrapper that hooks into the native persistent layer on mobile and desktop
  * The local and persistent storage are kept in, sync with update being flushed, and the local web
@@ -8,7 +10,7 @@ var AWStorage = (function () {
     function AWStorage() {
         // resolve the local storage or fall back onto a mock impl
         this.storage = (typeof window !== 'undefined') ?
-            window.localStorage : new MockLocalStorage();
+            window.localStorage : new local_storage_1.MockLocalStorage();
     }
     Object.defineProperty(AWStorage.prototype, "length", {
         get: function () {
@@ -34,5 +36,5 @@ var AWStorage = (function () {
     };
     return AWStorage;
 }());
-export { AWStorage };
+exports.AWStorage = AWStorage;
 //# sourceMappingURL=storage.js.map

@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var MockNotification = (function () {
     function MockNotification() {
         this.body = null;
@@ -32,5 +34,5 @@ var MockNotification = (function () {
     };
     return MockNotification;
 }());
-export { MockNotification };
+exports.MockNotification = MockNotification;
 //# sourceMappingURL=notifications.js.map

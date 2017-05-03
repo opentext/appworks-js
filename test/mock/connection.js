@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var MockConnection = (function () {
     function MockConnection() {
     }
@@ -7,5 +9,5 @@ var MockConnection = (function () {
     };
     return MockConnection;
 }());
-export { MockConnection };
+exports.MockConnection = MockConnection;
 //# sourceMappingURL=connection.js.map
