@@ -167,4 +167,4 @@ export interface Keyboard {
 
 }
 
-export declare var Keyboard: Keyboard;
+export declare const Keyboard: Keyboard;
