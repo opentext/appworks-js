@@ -37,3 +37,4 @@ var AWStorage = (function () {
     return AWStorage;
 }());
 exports.AWStorage = AWStorage;
+//# sourceMappingURL=storage.js.map

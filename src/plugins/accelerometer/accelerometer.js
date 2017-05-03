@@ -31,3 +31,4 @@ var AWAccelerometer = (function (_super) {
     return AWAccelerometer;
 }(plugin_1.AWPlugin));
 exports.AWAccelerometer = AWAccelerometer;
+//# sourceMappingURL=accelerometer.js.map

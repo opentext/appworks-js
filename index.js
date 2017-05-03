@@ -10,3 +10,4 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./src/index"));
 // This file only reexports content of the `src` folder. Keep it that way. 
+//# sourceMappingURL=index.js.map

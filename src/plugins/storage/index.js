@@ -7,3 +7,4 @@ __export(require("./desktop-storage"));
 __export(require("./on-device-storage"));
 __export(require("./storage"));
 __export(require("./secure-storage"));
+//# sourceMappingURL=index.js.map

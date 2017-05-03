@@ -32,3 +32,4 @@ var AWComponent = (function (_super) {
     return AWComponent;
 }(plugin_1.AWPlugin));
 exports.AWComponent = AWComponent;
+//# sourceMappingURL=component.js.map

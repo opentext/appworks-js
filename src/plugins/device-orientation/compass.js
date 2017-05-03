@@ -31,3 +31,4 @@ var AWCompass = (function (_super) {
     return AWCompass;
 }(plugin_1.AWPlugin));
 exports.AWCompass = AWCompass;
+//# sourceMappingURL=compass.js.map

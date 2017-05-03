@@ -84,3 +84,4 @@ var AWFileSystem = (function (_super) {
     return AWFileSystem;
 }(plugin_1.AWPlugin));
 exports.AWFileSystem = AWFileSystem;
+//# sourceMappingURL=file-system.js.map

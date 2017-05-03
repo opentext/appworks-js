@@ -10,3 +10,4 @@ var MockCamera = (function () {
     return MockCamera;
 }());
 exports.MockCamera = MockCamera;
+//# sourceMappingURL=camera.js.map

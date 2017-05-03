@@ -46,3 +46,4 @@ var AWCamera = (function (_super) {
     return AWCamera;
 }(plugin_1.AWPlugin));
 exports.AWCamera = AWCamera;
+//# sourceMappingURL=camera.js.map

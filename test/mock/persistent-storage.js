@@ -12,3 +12,4 @@ var PersistentStorageMock = (function () {
     return PersistentStorageMock;
 }());
 exports.PersistentStorageMock = PersistentStorageMock;
+//# sourceMappingURL=persistent-storage.js.map

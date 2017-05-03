@@ -8,3 +8,4 @@ var MockVibrate = (function () {
     return MockVibrate;
 }());
 exports.MockVibrate = MockVibrate;
+//# sourceMappingURL=vibrate.js.map

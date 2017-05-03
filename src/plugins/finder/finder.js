@@ -36,3 +36,4 @@ var AWFinder = (function (_super) {
     return AWFinder;
 }(plugin_1.AWPlugin));
 exports.AWFinder = AWFinder;
+//# sourceMappingURL=finder.js.map

@@ -13,3 +13,4 @@ var MockCompass = (function () {
     return MockCompass;
 }());
 exports.MockCompass = MockCompass;
+//# sourceMappingURL=compass.js.map

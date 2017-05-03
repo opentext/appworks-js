@@ -78,3 +78,4 @@ var vibration_1 = require("./plugins/vibration/vibration");
 exports.AWVibration = vibration_1.AWVibration;
 var webview_1 = require("./plugins/webview/webview");
 exports.AWWebView = webview_1.AWWebView;
+//# sourceMappingURL=index.js.map

@@ -55,3 +55,4 @@ var AWHeader = (function (_super) {
     return AWHeader;
 }(AWHeaderBar));
 exports.AWHeader = AWHeader;
+//# sourceMappingURL=header.js.map

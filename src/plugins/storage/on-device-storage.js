@@ -83,3 +83,4 @@ var OnDeviceStorage = (function () {
     return OnDeviceStorage;
 }());
 exports.OnDeviceStorage = OnDeviceStorage;
+//# sourceMappingURL=on-device-storage.js.map

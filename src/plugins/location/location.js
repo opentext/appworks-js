@@ -31,3 +31,4 @@ var AWLocation = (function (_super) {
     return AWLocation;
 }(plugin_1.AWPlugin));
 exports.AWLocation = AWLocation;
+//# sourceMappingURL=location.js.map

@@ -71,3 +71,4 @@ var AWSecureStorage = (function (_super) {
     return AWSecureStorage;
 }(SecureStorage));
 exports.AWSecureStorage = AWSecureStorage;
+//# sourceMappingURL=secure-storage.js.map

@@ -36,3 +36,4 @@ var AWMediaCapture = (function (_super) {
     return AWMediaCapture;
 }(plugin_1.AWPlugin));
 exports.AWMediaCapture = AWMediaCapture;
+//# sourceMappingURL=media-capture.js.map

@@ -12,3 +12,4 @@ var MockFileTransfer = (function () {
     return MockFileTransfer;
 }());
 exports.MockFileTransfer = MockFileTransfer;
+//# sourceMappingURL=file-transfer.js.map

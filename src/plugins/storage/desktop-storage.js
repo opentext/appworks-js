@@ -48,3 +48,4 @@ var DesktopStorage = (function () {
 }());
 DesktopStorage.PLUGIN_NOT_FOUND = new Error('Unable to resolve AWStorage desktop plugin');
 exports.DesktopStorage = DesktopStorage;
+//# sourceMappingURL=desktop-storage.js.map

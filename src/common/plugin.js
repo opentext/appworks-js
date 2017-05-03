@@ -14,3 +14,4 @@ var AWPlugin = (function () {
     return AWPlugin;
 }());
 exports.AWPlugin = AWPlugin;
+//# sourceMappingURL=plugin.js.map

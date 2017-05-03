@@ -65,3 +65,4 @@ var AWFileTransfer = (function (_super) {
     return AWFileTransfer;
 }(plugin_1.AWPlugin));
 exports.AWFileTransfer = AWFileTransfer;
+//# sourceMappingURL=file-transfer.js.map

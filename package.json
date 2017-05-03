@@ -43,7 +43,7 @@
   "legacy:min": "dist/appworks.min.js",
   "repository": "https://github.com/opentext/appworks-js",
   "scripts": {
-    "ts:export": "tsc index.ts --target es5",
+    "ts:export": "tsc index.ts --target es5 --sourceMap",
     "build": "npm run ts:export && rollup -c && rollup -c --environment BUILD:min",
     "lint": "tslint -c tslint.json ./src/**/*.ts",
     "prebuild": "npm run test",

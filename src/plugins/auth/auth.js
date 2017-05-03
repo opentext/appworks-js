@@ -35,3 +35,4 @@ var AWAuth = (function (_super) {
     return AWAuth;
 }(plugin_1.AWPlugin));
 exports.AWAuth = AWAuth;
+//# sourceMappingURL=auth.js.map

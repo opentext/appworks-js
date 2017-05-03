@@ -27,3 +27,4 @@ var MockMedia = (function () {
     return MockMedia;
 }());
 exports.MockMedia = MockMedia;
+//# sourceMappingURL=media.js.map

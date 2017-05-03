@@ -36,3 +36,4 @@ var AWQRReader = (function (_super) {
     return AWQRReader;
 }(QRReader));
 exports.AWQRReader = AWQRReader;
+//# sourceMappingURL=qr-reader.js.map

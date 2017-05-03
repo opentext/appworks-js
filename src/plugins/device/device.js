@@ -28,3 +28,4 @@ var AWDevice = (function (_super) {
     return AWDevice;
 }(plugin_1.AWPlugin));
 exports.AWDevice = AWDevice;
+//# sourceMappingURL=device.js.map

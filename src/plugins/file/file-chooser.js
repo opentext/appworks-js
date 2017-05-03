@@ -25,3 +25,4 @@ var AWFileChooser = (function (_super) {
     return AWFileChooser;
 }(plugin_1.AWPlugin));
 exports.AWFileChooser = AWFileChooser;
+//# sourceMappingURL=file-chooser.js.map

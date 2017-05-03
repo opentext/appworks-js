@@ -84,3 +84,4 @@ var AWOfflineManager = (function (_super) {
     return AWOfflineManager;
 }(plugin_1.AWPlugin));
 exports.AWOfflineManager = AWOfflineManager;
+//# sourceMappingURL=offline-manager.js.map

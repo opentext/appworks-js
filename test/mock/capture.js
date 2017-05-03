@@ -12,3 +12,4 @@ var MockCapture = (function () {
     return MockCapture;
 }());
 exports.MockCapture = MockCapture;
+//# sourceMappingURL=capture.js.map

@@ -10,3 +10,4 @@ var MockConnection = (function () {
     return MockConnection;
 }());
 exports.MockConnection = MockConnection;
+//# sourceMappingURL=connection.js.map

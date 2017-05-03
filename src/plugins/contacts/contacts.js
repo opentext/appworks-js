@@ -31,3 +31,4 @@ var AWContacts = (function (_super) {
     return AWContacts;
 }(plugin_1.AWPlugin));
 exports.AWContacts = AWContacts;
+//# sourceMappingURL=contacts.js.map

@@ -13,3 +13,4 @@ var MockGeolocation = (function () {
     return MockGeolocation;
 }());
 exports.MockGeolocation = MockGeolocation;
+//# sourceMappingURL=geolocation.js.map

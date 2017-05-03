@@ -5,3 +5,4 @@ var LocalFileSystem;
     LocalFileSystem[LocalFileSystem["PERSISTENT"] = 0] = "PERSISTENT";
     LocalFileSystem[LocalFileSystem["TEMPORARY"] = 1] = "TEMPORARY";
 })(LocalFileSystem = exports.LocalFileSystem || (exports.LocalFileSystem = {}));
+//# sourceMappingURL=local-file-system.js.map

@@ -24,3 +24,4 @@ var AWVibration = (function (_super) {
     return AWVibration;
 }(plugin_1.AWPlugin));
 exports.AWVibration = AWVibration;
+//# sourceMappingURL=vibration.js.map

@@ -28,3 +28,4 @@ var AWLauncher = (function (_super) {
     return AWLauncher;
 }(plugin_1.AWPlugin));
 exports.AWLauncher = AWLauncher;
+//# sourceMappingURL=launcher.js.map

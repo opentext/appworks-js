@@ -31,3 +31,4 @@ var AWScanner = (function (_super) {
     return AWScanner;
 }(Scanner));
 exports.AWScanner = AWScanner;
+//# sourceMappingURL=scanner.js.map

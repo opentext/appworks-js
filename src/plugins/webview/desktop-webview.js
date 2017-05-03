@@ -34,3 +34,4 @@ var DesktopWebview = (function () {
     return DesktopWebview;
 }());
 exports.DesktopWebview = DesktopWebview;
+//# sourceMappingURL=desktop-webview.js.map

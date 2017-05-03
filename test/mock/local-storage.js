@@ -20,3 +20,4 @@ var MockLocalStorage = (function () {
     return MockLocalStorage;
 }());
 exports.MockLocalStorage = MockLocalStorage;
+//# sourceMappingURL=local-storage.js.map

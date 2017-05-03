@@ -14,3 +14,4 @@ var MockAccelerometer = (function () {
     return MockAccelerometer;
 }());
 exports.MockAccelerometer = MockAccelerometer;
+//# sourceMappingURL=accelerometer.js.map

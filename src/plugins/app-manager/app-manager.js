@@ -24,3 +24,4 @@ var AWAppManager = (function (_super) {
     return AWAppManager;
 }(plugin_1.AWPlugin));
 exports.AWAppManager = AWAppManager;
+//# sourceMappingURL=app-manager.js.map

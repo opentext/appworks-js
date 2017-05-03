@@ -57,3 +57,4 @@ var AWNotificationManager = (function (_super) {
     return AWNotificationManager;
 }(plugin_1.AWPlugin));
 exports.AWNotificationManager = AWNotificationManager;
+//# sourceMappingURL=notifications.js.map
