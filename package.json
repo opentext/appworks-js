@@ -30,7 +30,7 @@
   "files": [
     "index.ts",
     "src/**/*",
-    "test/mock/*.ts",
+    "test/mock/*",
     "node_modules/es6-promise"
   ],
   "homepage": "https://github.com/opentext/appworks-js",
