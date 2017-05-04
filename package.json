@@ -45,10 +45,11 @@
   "repository": "https://github.com/opentext/appworks-js",
   "scripts": {
     "ts:export": "tsc index.ts --target es5 --sourceMap --moduleResolution node --module commonjs --declaration --lib DOM,ES5",
-    "build": "npm run ts:export && rollup -c && rollup -c --environment BUILD:min",
+    "build": "rollup -c && rollup -c --environment BUILD:min",
     "lint": "tslint -c tslint.json ./src/**/*.ts",
     "prebuild": "npm run test",
     "test": "mocha --compilers ts:ts-node/register test/**.spec.ts test/**/*.spec.ts",
+    "pretest": "npm run ts:export",
     "test:watch": "mocha --compilers ts:ts-node/register test/**.spec.ts test/**/*.spec.ts --watch"
   },
   "types": "index.d.ts"

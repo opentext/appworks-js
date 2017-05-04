@@ -10,6 +10,7 @@ import {AWDevice as _AWDevice} from './plugins/device/device';
 import {AWFileChooser as _AWFileChooser} from './plugins/file/file-chooser';
 import {AWFileTransfer as _AWFileTransfer} from './plugins/file-transfer/file-transfer';
 import {AWFinder as _AWFinder} from './plugins/finder/finder';
+import {AWGlobalization as _AWGlobalization} from './plugins/globalization/globalization';
 import {AWHeaderBar as _AWHeaderBar} from './plugins/header/header';
 import {AWKeyboard as _AWKeyboard} from './plugins/keyboard/keyboard';
 import {AWLauncher as _AWLauncher} from './plugins/launcher/launcher';
@@ -63,6 +64,9 @@ export const AWFileTransfer = _AWFileTransfer;
 // Finder plugin and alias -- [mobile]
 export const Finder = _AWFinder;
 export const AWFinder = _AWFinder;
+// Globalization plugin and alias -- [mobile]
+export const Globalization = _AWGlobalization;
+export const AWGlobalization = _AWGlobalization;
 // Header plugin and alias -- [mobile]
 export const HeaderBar = _AWHeaderBar;
 export const Header = _AWHeaderBar;

@@ -2130,6 +2130,17 @@ var AWFinder$1 = (function (_super) {
     return AWFinder;
 }(AWPlugin));
 
+var AWGlobalization$1 = (function (_super) {
+    __extends(AWGlobalization, _super);
+    function AWGlobalization() {
+        return _super.call(this, Util.noop, Util.noop) || this;
+    }
+    AWGlobalization.prototype.getPreferredLanguage = function (successFn, errorFn) {
+        AWProxy.exec(successFn, errorFn, 'AWGlobalization', 'getPreferredLanguage', []);
+    };
+    return AWGlobalization;
+}(AWPlugin));
+
 var AWHeaderBar$1 = (function (_super) {
     __extends(AWHeaderBar, _super);
     function AWHeaderBar() {
@@ -2715,6 +2726,9 @@ var AWFileTransfer$$1 = AWFileTransfer$1;
 // Finder plugin and alias -- [mobile]
 var Finder = AWFinder$1;
 var AWFinder$$1 = AWFinder$1;
+// Globalization plugin and alias -- [mobile]
+var Globalization = AWGlobalization$1;
+var AWGlobalization$$1 = AWGlobalization$1;
 // Header plugin and alias -- [mobile]
 var HeaderBar = AWHeaderBar$1;
 var Header = AWHeaderBar$1;
@@ -2791,6 +2805,8 @@ exports.FileTransfer = FileTransfer$1;
 exports.AWFileTransfer = AWFileTransfer$$1;
 exports.Finder = Finder;
 exports.AWFinder = AWFinder$$1;
+exports.Globalization = Globalization;
+exports.AWGlobalization = AWGlobalization$$1;
 exports.HeaderBar = HeaderBar;
 exports.Header = Header;
 exports.AWHeader = AWHeader$$1;
