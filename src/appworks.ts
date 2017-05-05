@@ -1,28 +1,32 @@
-import {AWAccelerometer as _AWAccelerometer} from './plugins/accelerometer';
-import {AWAppManager as _AWAppManager} from './plugins/app-manager';
-import {AWAuth as _AWAuth} from './plugins/auth';
-import {AWCache as _AWCache} from './plugins/cache';
-import {AWCamera as _AWCamera} from './plugins/camera';
-import {AWCompass as _AWCompass} from './plugins/compass';
-import {AWComponent as _AWComponent} from './plugins/component';
-import {AWContacts as _AWContacts} from './plugins/contacts';
-import {AWDevice as _AWDevice} from './plugins/device';
-import {AWFileChooser as _AWFileChooser} from './plugins/file-chooser';
-import {AWFileTransfer as _AWFileTransfer} from './plugins/file-transfer';
-import {AWFinder as _AWFinder} from './plugins/finder';
-import {AWHeaderBar as _AWHeaderBar} from './plugins/header';
-import {AWKeyboard as _AWKeyboard} from './plugins/keyboard';
-import {AWLocation as _AWLocation} from './plugins/location';
-import {AWMedia as _AWMedia} from './plugins/media';
-import {AWMediaCapture as _AWMediaCapture} from './plugins/media-capture';
-import {AWMenu as _AWMenu} from './plugins/menu';
-import {AWNotificationManager as _AWNotificationManager} from './plugins/notifications';
-import {AWOfflineManager as _AWOfflineManager} from './plugins/offline-manager';
-import {AWPage as _AWPage} from './plugins/page';
-import {AWQRReader as _AWQRReader} from './plugins/qr-reader';
-import {AWSecureStorage as _AWSecureStorage} from './plugins/secure-storage';
-import {AWVibration as _AWVibration} from './plugins/vibration';
-import {AWWebView as _AWWebView} from './plugins/webview';
+import {AWAccelerometer as _AWAccelerometer} from './plugins/accelerometer/accelerometer';
+import {AWAppManager as _AWAppManager} from './plugins/app-manager/app-manager';
+import {AWAuth as _AWAuth} from './plugins/auth/auth';
+import {AWCache as _AWCache} from './plugins/storage/cache';
+import {AWCamera as _AWCamera} from './plugins/camera/camera';
+import {AWCompass as _AWCompass} from './plugins/device-orientation/compass';
+import {AWComponent as _AWComponent} from './plugins/component/component';
+import {AWContacts as _AWContacts} from './plugins/contacts/contacts';
+import {AWDevice as _AWDevice} from './plugins/device/device';
+import {AWFileChooser as _AWFileChooser} from './plugins/file/file-chooser';
+import {AWFileTransfer as _AWFileTransfer} from './plugins/file-transfer/file-transfer';
+import {AWFinder as _AWFinder} from './plugins/finder/finder';
+import {AWGlobalization as _AWGlobalization} from './plugins/globalization/globalization';
+import {AWHeaderBar as _AWHeaderBar} from './plugins/header/header';
+import {AWKeyboard as _AWKeyboard} from './plugins/keyboard/keyboard';
+import {AWLauncher as _AWLauncher} from './plugins/launcher/launcher';
+import {AWLocation as _AWLocation} from './plugins/location/location';
+import {AWMedia as _AWMedia} from './plugins/media/media';
+import {AWMediaCapture as _AWMediaCapture} from './plugins/media-transfer/media-capture';
+import {AWMenu as _AWMenu} from './plugins/menu/menu';
+import {AWNotificationManager as _AWNotificationManager} from './plugins/notifications/notifications';
+import {AWOfflineManager as _AWOfflineManager} from './plugins/offline/offline-manager';
+import {AWPage as _AWPage} from './plugins/page/page';
+import {AWQRReader as _AWQRReader} from './plugins/qr-reader/qr-reader';
+import {AWScanner as _AWScanner} from './plugins/document-scanner/scanner';
+import {AWSecureStorage as _AWSecureStorage} from './plugins/storage/secure-storage';
+import {AWVibration as _AWVibration} from './plugins/vibration/vibration';
+import {AWWebView as _AWWebView} from './plugins/webview/webview';
+import {AWFileSystem as _AWFileSystem} from './plugins/file/file-system';
 
 // Accelerometer plugin and alias -- [mobile]
 export const Accelerometer = _AWAccelerometer;
@@ -30,10 +34,10 @@ export const AWAccelerometer = _AWAccelerometer;
 // AppManager plugin and alias -- [mobile]
 export const AppManager = _AWAppManager;
 export const AWAppManager = _AWAppManager;
-// Auth plugin and alias -- [mobile]
+// Auth plugin and alias -- [desktop/mobile]
 export const Auth = _AWAuth;
 export const AWAuth = _AWAuth;
-// Cache plugin and alias -- [mobile]
+// Cache plugin and alias -- [desktop/mobile]
 export const Cache = _AWCache;
 export const AWCache = _AWCache;
 // Camera plugin and alias -- [mobile]
@@ -48,18 +52,21 @@ export const AWComponent = _AWComponent;
 // Contacts plugin and alias -- [mobile]
 export const Contacts = _AWContacts;
 export const AWContacts = _AWContacts;
-// Device plugin and alias -- [mobile]
+// Device plugin and alias -- [desktop/mobile]
 export const Device = _AWDevice;
 export const AWDevice = _AWDevice;
 // FileChooser plugin and alias -- [mobile]
 export const FileChooser = _AWFileChooser;
 export const AWFileChooser = _AWFileChooser;
-// FileTransfer plugin and alias -- [mobile]
+// FileTransfer plugin and alias -- [desktop/mobile]
 export const FileTransfer = _AWFileTransfer;
 export const AWFileTransfer = _AWFileTransfer;
 // Finder plugin and alias -- [mobile]
 export const Finder = _AWFinder;
 export const AWFinder = _AWFinder;
+// Globalization plugin and alias -- [mobile]
+export const Globalization = _AWGlobalization;
+export const AWGlobalization = _AWGlobalization;
 // Header plugin and alias -- [mobile]
 export const HeaderBar = _AWHeaderBar;
 export const Header = _AWHeaderBar;
@@ -71,6 +78,9 @@ export const AWKeyboard = _AWKeyboard;
 // Location plugin and alias -- [mobile]
 export const Location = _AWLocation;
 export const AWLocation = _AWLocation;
+// Launcher plugin and alias -- [mobile]
+export const Launcher = _AWLauncher;
+export const AWLauncher = _AWLauncher;
 // Media plugin and alias -- [mobile]
 export const Media = _AWMedia;
 export const AWMedia = _AWMedia;
@@ -94,6 +104,9 @@ export const AWPage = _AWPage;
 // QRReader plugin and alias -- [mobile]
 export const QRReader = _AWQRReader;
 export const AWQRReader = _AWQRReader;
+// Scanner plugin and alias -- [mobile]
+export const Scanner = _AWScanner;
+export const AWScanner = _AWScanner;
 // SecureStorage plugin and alias -- [mobile]
 export const SecureStorage = _AWSecureStorage;
 export const AWSecureStorage = _AWSecureStorage;
@@ -103,5 +116,5 @@ export const AWVibration = _AWVibration;
 // Webview plugin and alias -- [mobile]
 export const WebView = _AWWebView;
 export const AWWebView = _AWWebView;
-export const Webview = _AWWebView;
-export const AWWebview = _AWWebView;
+// FileSystem -- [desktop]
+export const AWFileSystem = _AWFileSystem;

@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {Util} from "../../src/util";
-import {AWComponent} from "../../src/plugins/component";
+import {Util} from "../../src/common/util";
+import {AWComponent} from "../../src/plugins/component/component";
 
 describe('Component', () => {
     it('should define a open function', () => {

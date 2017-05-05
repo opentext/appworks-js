@@ -1,3 +1,5 @@
+import {Compass, CompassError, CompassHeading, CompassOptions} from '../../src/plugins/device-orientation/index';
+
 export class MockCompass implements Compass {
     getCurrentHeading(
         onSuccess: (heading: CompassHeading) => void,

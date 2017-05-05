@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {AWCache} from "../../src/plugins/cache";
+import {AWCache} from "../../src/plugins/storage/cache";
 
 describe('Cache', () => {
     it('should define a setItem function', () => {

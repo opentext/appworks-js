@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {AWVibration} from "../../src/plugins/vibration";
+import {AWVibration} from "../../src/plugins/vibration/vibration";
 
 describe('Vibration', () => {
     it('should define a vibrate function', () => {

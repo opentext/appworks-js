@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {Util} from "../../src/util";
-import {AWFileTransfer} from "../../src/plugins/file-transfer";
+import {Util} from "../../src/common/util";
+import {AWFileTransfer} from "../../src/plugins/file-transfer/file-transfer";
 
 describe('FileTransfer', () => {
     it('should define an abort function', () => {

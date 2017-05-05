@@ -2,23 +2,89 @@
 
 ## What is appworks.js?
 
-appworks.js is a javascript library for building feature rich, hybrid enterprise apps utilizing on device technology while leveraging the power of the OpenText EIM stack.
+appworks.js is a javascript (TypeScript) library for building feature rich, hybrid enterprise apps. The [OpenText AppWorks platform](https://developer.opentext.com/awd/resources/articles/7866/what+is+appworks) provides mobile and desktop clients that support apps that utilize appworks.js.
+
+In a mobile environment the library provides access to on-device technology, and in the desktop environment some features of the underlying host OS (operating system) are exposed.
+
+Supported platforms:
+- mobile
+    - iOS
+    - Android
+- desktop
+    - Windows
+    - OSX
+    - Linux
+
+A limited number of appworks.js plugins are available in the desktop environment. They are marked in the [API Usage and Examples](#api-usage-and-examples) section and are listed for quick reference below: 
+- [AWAuth](#awauth)
+- [AWCache](#awcache)
+- [AWDevice](#awdevice)
+- [AWFileSystem](#awfilesystem)
+- [AWFileTransfer](#awfiletransfer)
+- [AWMenu](#awmenu)
+- [AWNotificationManager](#awnotificationmanager)
 
 ## Installation
 
-#### With bower:
+### NPM:
+```shell
+npm install appworks-js --save
+```
+
+### Yarn
+```shell
+yarn add appworks-js
+```
+
+#### Bower:
 
 ````shell
 bower install --save appworks-js
 ````
-
-You can find the production files in the `dist` directory.
+* You can find the production files in the `dist` directory.
 
 #### Auto install:
 If you are deploying an app to the gateway, the gateway will automatically add appworks.min.js to the root of your
 project. If you opt to use the bundled file make sure your script tag looks like this:
 
 `<script src="appworks.min.js"></script>`
+
+## Table of Contents
+* [API Usage and Examples](#api-usage-and-examples)
+  - [AWAccelerometer](#awaccelerometer)
+  - [AWAppManager](#awappmanager)
+  - [AWAuth](#awauth)
+  - [AWCache](#awcache)
+  - [AWCompass](#awcompass)
+  - [AWComponent](#awcomponent)
+  - [AWContacts](#awcontacts)
+  - [AWDevice](#awdevice)
+  - [AWFileSystem](#awfilesystem)
+  - [AWFileTransfer](#awfiletransfer)
+  - [AWHeaderBar](#awheaderbar)
+  - [AWLauncher](#awlauncher)
+  - [AWLocation](#awlocation)
+  - [AWMedia](#awmedia)
+  - [AWMediaCapture](#awmediacapture)
+  - [AWMenu](#awmenu)
+  - [AWNotificationManager](#awnotificationmanager)
+  - [AWPage](#awpage)
+  - [AWOfflineManager](#awofflinemanager)
+  - [AWScanner](#awscanner)
+  - [AWVibration](#awvibration)
+  - [AWWebView](#awwebview)
+  - [Camera](#camera)
+  - [Contact](#contact)
+  - [ContactAddress](#contactaddress)
+  - [ContactError](#contacterror)
+  - [ContactField](#contactfield)
+  - [ContactOrganization](#contactorganization)
+  - [Finder](#finder)
+  - [FileChooser](#filechooser)
+  - [QRReader](#qrreader)
+  - [SecureStorage](#securestorage)
++ [Events](#events)
+  - [Battery](#battery)
 
 ## API Usage and Examples
 
@@ -65,7 +131,9 @@ camera.takePicture();
 <b>Note</b>: if you are using angularJS, ````$scope.$apply()```` calls will need to be made in your callbacks to ensure
 that scope variables and the DOM get updated.
 
-#### Auth
+#### AWAuth
+<b>**_* available on desktop_**</b>
+
 The Auth plugin allows you to seamlessly authenticate against your backend. Useful for refreshing tokens and gaining
 access rights to make api calls against the gateway.
 
@@ -169,8 +237,13 @@ $('#click-me').click(function () {
 
 
 #### AWWebView
+<b>**_* available on desktop_**</b>
 The web view plugin allows you to open links via the in-app browser. This is great for giving your app a native feel
-when opening external links
+when opening external links. On Desktop, this plugin allows you to open urls either in the system browser, or a new 
+BrowserWindow.
+
+Note: on Desktop, `addEventListener` and `removeEventListener` methods may only be used on BrowserWindow instances
+opened with the target `_self`.
 
 ##### Methods:
 
@@ -185,7 +258,112 @@ Opens the in-app browser with the url provided.
 blank space, and each feature's name/value pairs must be separated by a comma.
 Feature names are case insensitive.
 
+###### addEventListener
+```
+type: string, callback: (event: InAppBrowserEvent) => void
+```
+Add an event listener to the browser window opened with `open`
+- <b> type</b>: the event type
+- <b> callback</b>: a function that will get called when the event with the provided `type` is emitted
+
+###### removeEventListener
+```
+type: string, callback: (event: InAppBrowserEvent) => void
+```
+Remove an event listener from the browser window opened with `open`
+- <b> type</b>: the event type
+- <b> callback</b>: a function that will get called when the event with the provided `type` is emitted
+
+###### show
+
+Show a browser window opened with the `open` method
+
+###### close
+
+Close a browser window opened with the `open` method
+
+###### executeScript
+```
+script: string, callback: (result: any) => void
+```
+Execute javascript on the browser window opened with `open`
+- <b> script</b>: the script to execute. must be a javascript string.
+- <b> callback</b>: a function that will get called when the script is executed
+
+Note: this feature is disabled on Desktop
+
+###### insertCSS
+```
+css: string, callback: (result: any) => void
+```
+Insert CSS on the browser window opened with `open`
+- <b> css</b>: the css to execute. must be a string
+- <b> callback</b>: a function that will get called when the script is executed
+
 Refer to https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-inappbrowser/ for more documentation
+
+On Desktop, refer to https://github.com/electron/electron/blob/master/docs/api/browser-window.md#instance-events for
+a full list of all events available to BrowserWindow instances.
+
+##### Example:
+```typescript
+export class MyWebview {
+
+  alertContent: string;
+  ref: any;
+
+  openInExternal() {
+    const webview = new AWWebView();
+    const url = 'https://www.nytimes.com/';
+    this.ref = webview.open(url, '_blank');
+    this.alertContent = 'You opened a link!';
+    this.ref.addEventListener('close', () => {
+      this.alertContent = 'You closed the webview!';
+    });
+  }
+
+  openInInternal() {
+    const webview = new AWWebView();
+    const url = 'https://www.nytimes.com/';
+    this.ref = webview.open(url, '_self');
+    this.alertContent = 'You opened a link!';
+    this.ref.addEventListener('close', () => {
+        this.alertContent = 'You closed the webview!';
+    });
+  }
+
+  openMinimized() {
+    const webview = new AWWebView();
+    const url = 'https://www.nytimes.com/';
+    this.ref = webview.open(url, '_self', {show: false});
+    this.alertContent = 'You opened a browser window that is "closed"';
+  }
+
+  showMinimized() {
+    if (this.ref) {
+      this.ref.show();
+    }
+  }
+
+  executeScript() {
+    if (this.ref) {
+      const script = `alert('You executed javascript inside a browser window!')`;
+      this.ref.executeScript(script, () => {
+        this.alertContent = 'You executed a script!';
+      });
+    }
+  }
+
+  insertCSS() {
+    if (this.ref) {
+      const css = `* { color: red !important; }`;
+      this.ref.insertCSS(css, () => {
+        this.alertContent = 'You inserted CSS';
+      });
+    }
+  }
+}
+```
 
 #### AWAppManager
 The AppManager plugin allows you to close the current app webview.
@@ -323,6 +501,191 @@ selectAndUpload(action: string)
 select a file and upload
 - <b>action</b>: the action
 
+#### AWFileSystem
+<b>**_* available on desktop_**</b>
+
+The AWFileSystem plugin allows AppWorks Desktop hosted apps to interact with the underlying desktop host. Specifically to make use of the OS file system operations, and also some of the native file browsing dialogs (Windows Explorer, OSX Finder, etc.).
+
+Please note this plugin is only usable in the desktop environment, the plugin methods will throw an error if usage outside of this context is detected. Use of relative paths with this plugin's methods is not advised, and paths beginning with a slash on Windows will assume that they begin at the root drive of the hosts file system. 
+Absolute paths can be retrieved via the AWFileSystem dialog methods, namely [showSaveDialog](#showsavedialog), [showDirSelector](#showdirselector), and [showFileSelector](#showfileselector).
+
+##### Methods:
+
+###### getPath
+````
+    getPath(name: string, successCallback: (result: string), errorCallback?: (result: Error))
+````
+Retrieve the full path of a well-known location via a special name.
+- <b>name</b>: an alias for a well-known disk location
+
+A String path value will be passed to the callback if the alias is recognised, else the error callback will be fired.
+
+You can request the following paths by the name:
+
+* `home` User's home directory.
+* `appData` Per-user application data directory, which by default points to:
+  * `%APPDATA%` on Windows
+  * `$XDG_CONFIG_HOME` or `~/.config` on Linux
+  * `~/Library/Application Support` on macOS
+* `userData` The directory for storing your app's configuration files, which by
+  default it is the `appData` directory appended with your app's name.
+* `temp` Temporary directory.
+* `desktop` The current user's Desktop directory.
+* `documents` Directory for a user's "My Documents".
+* `downloads` Directory for a user's downloads.
+* `music` Directory for a user's music.
+* `pictures` Directory for a user's pictures.
+* `videos` Directory for a user's videos.
+
+###### exists
+````
+    exists(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+````
+Determine if the path provided refers to an existing file or directory. <b>Relative paths should not be used.</b>
+- <b>path</b>: a file path
+
+A boolean value will be passed to the callback if the path does exist, else the error callback will be fired.
+
+###### isDir
+````
+    isDir(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+````
+Determine if the path provided refers to a directory, as opposed to a file. <b>Relative paths should not be used.</b>
+- <b>path</b>: a file path
+
+A boolean value will be passed to the callback if the path does refer to an existing directory, else the error callback will be fired.
+
+###### createFile
+````
+    createFile(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+````
+Create a new file at the provided path. A file extension must be provided (e.g. `../myNewImage.jpg`). Any extra directories specified in the path that do not currently exist will be created for you. 
+This method does not support overwriting existing files. <b>Use of relative paths will result in an error being thrown.</b>
+- <b>path</b>: a new file path that has a non empty file extension
+
+A boolean value will be passed to the callback if the file/directory was created, else the error callback will be fired.
+
+###### createDirectory
+````
+    createDirectory(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+````
+Create a new directory at the provided path. The provided path may contain a trailing slash (both `../myDir/` and `../myDir` are valid). Any extra directories specified in the path that do not currently exist will be created for you. 
+This method does not support overwriting existing directories. <b>Use of relative paths will result in an error being thrown.</b>
+- <b>path</b>: a new directory path that may end with a trailing slash
+
+A boolean value will be passed to the callback if the file/directory was created, else the error callback will be fired.
+
+###### copy
+````
+    open(from: string, to: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+````
+Copy a file from one location to another. The supplied source and destination paths must be non-empty and contain file extensions. 
+The source path has to refer to an existing file, and any directories in the 'to' path that do not exist will be created as part of the copy operation.
+<b>Use of relative paths will result in an error being thrown.</b>
+- <b>from</b>: source file path
+- <b>to</b>: destination file path
+
+A boolean value will be passed to the callback if the file was successfully copied, else the error callback will be fired.
+
+
+###### open
+````
+    open(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+````
+Open a file using the host OS. If the file extension of the existing file is known then the corresponding host application will open, else you will be prompted to choose an application. <b>Relative paths should not be used.</b>
+- <b>path</b>: a file path
+
+A boolean value will be passed to the callback if the OS managed to open the file, else the error callback will be fired.
+
+###### reveal
+````
+    reveal(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+````
+Open the OS file browser at the supplied file path. <b>Relative paths should not be used.</b>
+- <b>path</b>: a file path
+
+A boolean value will be passed to the callback if the OS managed to open the file browser at the supplied location, else the error callback will be fired. <b>Relative paths should not be used.</b>
+
+
+###### getDetails
+````
+    getDetails(path: string, successCallback: (result: FileDetails), errorCallback?: (result: Error))
+````
+Retrieve the details of a specific file/directory at the supplied path. <b>Relative paths should not be used.</b>
+- <b>path</b>: a file path
+
+A [FileDetails](#filedetails) object will be passed to the callback if the path exists, else the error callback will be fired.
+
+
+###### listDirContents
+````
+    listDirContents(path: string, successCallback: (result: FileDetails[]), errorCallback?: (result: Error))
+````
+List the contents of the directory at the supplied path. <b>Relative paths should not be used.</b>
+- <b>path</b>: a file path
+
+An array of [FileDetails](#filedetails) objects will be passed to the callback if the path exists and is a directory, else the error callback will be fired.
+
+###### showSaveDialog
+````
+    showSaveDialog(opts: SaveDialogOptions, successCallback: (result: string), errorCallback?: (result: Error))
+````
+Show the OS 'Save As' file browser, only permitting selection of a single file. A new file name is usually entered otherwise we will overwrite the existing file at the provided path (provide the correct permissions are in place)
+- <b>options</b>: [SaveDialogOptions](#savedialogoptions) save dialog options
+
+The full path of the file indicated in the OS file browser will be returned to the callback on pressing the dialog confirmation button.
+
+
+###### showDirSelector
+````
+    showDirSelector(opts: FileDialogOptions, successCallback: (result: string[]), errorCallback?: (result: Error))
+````
+Show the OS file selection browser, only allowing the selection of directories.
+- <b>opts</b>: [FileDialogOptions](#filedialogoptions) file browser dialog options
+
+The full path to the selected directory will be returned to the callback on pressing the dialog confirmation button.
+
+
+###### showFileSelector
+````
+    showFileSelector(opts: FileDialogOptions, successCallback: (result: string[]), errorCallback?: (result: Error))
+````
+Show the OS file selection browser, allowing the selection of files only. Multiple files can be selected at once as specified in the options.
+- <b>opts</b>: [FileDialogOptions](#filedialogoptions) file browser dialog options
+
+An array of the selected file paths will be returned to the callback on pressing the dialog confirmation button.
+
+
+##### Objects:
+
+These objects are defined as part of the AWFileSystem module.
+
+###### FileDetails
+Basic file details resolved by the host OS.
+- <b>name</b>: file name with extension
+- <b>path</b>: full path to the file
+- <b>isDirectory</b>: is this a directory or file?
+- <b>checksum</b>: MD5 hash checksum of the file (files only)
+- <b>modified</b>: last modified time in millis (since epoch)
+
+###### FileFilter
+A filter that can be applied within a file browser to limit the types of file that are visible
+- <b>name</b>: the name of the filter as it appears in the file browser
+- <b>extensions</b>: an array of file extensions without wildcards or dots (e.g. 'png' is good but '.png' and '*.png' are bad) <b>to show all files, use the '*' wildcard (no other wildcard is supported)</b>
+
+###### SaveDialogOptions
+Options to configure the 'Save As' dialog.
+- <b>title</b>: custom title for the dialog
+- <b>defaultPath</b>: the path at which to open the dialog
+- <b>buttonLabel</b>: custom label for the confirmation button, when left empty the default label will be used
+- <b>filters</b>: an array of [FileFilter](#filefilter) objects
+
+###### FileDialogOptions
+Options to configure the file browser dialog
+- <b>defaultPath</b>: the file path at which the dialog should be opened
+- <b>multiSelections</b>: enable multiple file selection
+- <b>filters</b>: an array of [FileFilter](#filefilter) objects
+
 #### AWHeaderBar
 The AWHeaderBar plugin allows you to hide or show the client header bar,
 update the text, and/or hide or show a back button.
@@ -386,6 +749,255 @@ var getHeader = function () {
 setHeader();
 ````
 
+###### setHeaderButtons
+````
+setHeaderButtons(callback: Function, config: any)
+````
+Set the header buttons to specified images and indicate if their event handler is custom
+- <b>config</b>: an array of objects. The properties of each object must contains:
+- <b>button</b>: The identifier of the button. You can use the AWHeaderBar.ButtonName enumerator for this.
+- <b>image</b>: The identifier of the image. You can use the AWHeaderBar.ButtonImage enumerator for this.
+- <b>function</b>: custom|default - Indicate to AppWorks whether AppWorks will handle the tap event (default) or your app will (custom)
+
+##### Example:
+````js
+var self = this;
+
+function initHeaderButtons() {
+    self.header = new Appworks.AWHeaderBar(null, failFn);
+    setHeaderButtons();
+}
+
+// Tell the client to set the header buttons according to the apps needs
+function setHeaderButtons() {
+  // Button definitions
+  var RightButtonOne = {
+      "button": header.ButtonName.RightOne, // Identifiy the button using an enumerator
+      "image": header.ButtonImage.Dots, // Use an image specified by an enumerator
+      "function" : "custom" // Inform the client this will be handled in the app
+    };
+
+  var RightButtonTwo = {
+      "button": header.ButtonName.RightTwo,
+      "image": header.ButtonImage.Search,
+      "function" : "custom"
+    };
+
+  var LeftButtonOne = {
+      "button": header.ButtonName.LeftOne,
+      "image": header.ButtonImage.Back,
+      "function" : "custom"
+    };
+
+  var LeftButtonTwo = {
+      "button": header.ButtonName.LeftTwo,
+      "function" : "default" // Inform the client this button is to be handled by the client. The image will revert to default.
+    };
+
+  var buttons = [LeftButtonOne, RightButtonOne, RightButtonTwo];
+  header.setHeaderButtons(headerButtonCallback, buttons);
+}
+
+// Tell the client to set each button to their default icons and functions
+function resetHeaderButtons() {
+  var RightButtonOne = {
+      "button": header.ButtonName.RightOne,
+      "function" : "default" // Inform the client this button is to be handled by the client. The image will revert to default.
+    };
+
+  var RightButtonTwo = {
+      "button": header.ButtonName.RightTwo,
+      "function" : "default" // Inform the client this button is to be handled by the client. The image will revert to default.
+    };
+
+  var LeftButtonOne = {
+      "button": header.ButtonName.LeftOne,
+      "function" : "default" // Inform the client this button is to be handled by the client. The image will revert to default.
+    };
+
+  var LeftButtonTwo = {
+      "button": header.ButtonName.LeftTwo,
+      "function" : "default" // Inform the client this button is to be handled by the client. The image will revert to default.
+    };
+
+  var buttons = [LeftButtonOne, LeftButtonTwo, RightButtonOne, RightButtonTwo];
+  header.setHeaderButtons(headerButtonCallback, buttons);
+}
+
+// Callback function called when a button is tapped
+function headerButtonCallback(button){
+  if(button == header.ButtonName.RightOne) {
+    rightButtonOneFunction();
+  }
+
+  if(button == header.ButtonName.RightTwo) {
+    rightButtonTwoFunction();
+  }
+
+  if(button == header.ButtonName.LeftOne) {
+    leftButtonOneFunction();
+  }
+}
+
+function failFn(err) {
+    // called when the header bar fails to set the buttons
+    console.log(err);
+}
+
+// Execute the function to initialize the header buttons
+initHeaderButtons();
+````
+
+###### maskHeader
+````
+maskHeader(shouldMaskHeader: any)
+````
+
+- <b>shouldMaskHeader</b>: A boolean value, true to mask false to unmask
+- Add an overlay to the native header. 
+- The buttons underneath are not usable when when the overlay is visible.
+
+##### Example:
+````js
+document.addEventListener("deviceready", onDeviceReady, false);
+
+var self = this;
+
+function onDeviceReady() {
+  app();
+}
+
+function app() {
+    self.header = new Appworks.AWHeaderBar();
+}
+
+// Invoke the mask header plugin
+// Pass in a boolean (true to mask, false to unmask)
+function maskHeader(shouldMaskHeader) {
+  header.maskHeader(shouldMaskHeader);
+}
+````
+
+###### ButtonName enumerator
+- <b>ButtonName.LeftOne</b>: The left most button, normally the hamburger menu icon
+- <b>ButtonName.LeftTwo</b>: The second left button, no default use.
+- <b>ButtonName.RightOne</b>:  The right most button, normally the app switcher icon in the multi app client
+- <b>ButtonName.RightTwo</b>: The second right button, no default use for apps, but the settings icon on the app library page in the multi app client
+
+###### ButtonImage enumerator
+- <b>ButtonImage.Back</b>: Same image as the back icon. Can be used here as an alternative.
+- <b>ButtonImage.Settings</b>: A settings cog-wheel icon
+- <b>ButtonImage.None</b>: Hides the button
+- <b>ButtonImage.Dots</b>: Three dots stacked vertically icon
+- <b>ButtonImage.Search</b>: Magnifying glass icon
+
+
+#### AWMenu
+* available on Desktop
+The AWMenu plugin allows you to set items in the Desktop or Mobile native menu's.
+
+##### Methods:
+
+###### setMenu
+```typescript
+    setMenu(sections: MenuSection[])
+```
+- <b>sections</b>: MenuSection objects to add to native menu
+
+Pass in a number of MenuSection objects to be added to the native menu. Each MenuSection object contains a number of
+MenuItem objects.
+
+##### MenuSection
+```typescript
+export interface MenuSection {
+    /**
+     * the title of the section
+     */
+    subhead: string;
+    /**
+     * the items to add to this section
+     */
+    items: MenuItem[];
+}
+```
+
+##### MenuItem
+```typescript
+export interface MenuItem {
+    /**
+     * the title text to use for the menu item
+     */
+    title: string;
+    /**
+     * the callback to invoke when the user taps the menu item
+     */
+    action: any;
+    /**
+     * is the menu item visible?
+     */
+    visible: boolean;
+    /**
+     * does the menu item have a badge? e.g. Notifications (1)
+     */
+    hasBadge: boolean;
+}
+```
+##### Example
+```typescript
+addItems() {
+    const menu = new AWMenu(null, (err) => {
+      console.error(err);
+    });
+    const menuSections = [
+        {
+            subhead: 'Breakfast',
+            items: [
+                 {
+                     title: 'Steak & Eggs',
+                     action: () => {
+                         alert('You chose Steak & Eggs. Please watch your cholesterol levels.');
+                     },
+                     visible: true,
+                     hasBadge: true
+                 },
+                 {
+                     title: 'Donuts',
+                     action: () => {
+                         alert('You chose Donuts. Yummy, but gym time is required');
+                     },
+                     visible: true,
+                     hasBadge: true
+                 },
+            ]
+        },
+        {
+            subhead: 'Dinner',
+            items: [
+                {
+                    title: 'Smoked black cod and escarole salad',
+                    action: () => {
+                        alert('Isn\'t this on the menu at Chez Panisse?');
+                    },
+                    visible: true,
+                    hasBadge: false
+                },
+                {
+                    title: 'Cheeseburger, Fries, and a Beer',
+                    action: () => {
+                        alert('Why not');
+                    },
+                    visible: true,
+                    hasBadge: true
+                }
+            ]
+        }
+    ];
+    menu.setMenu(menuSections).then(() => {
+      alert(`Successfully added ${menuSections.length} sections to menu`);
+    });
+  }
+```
+
 #### AWPage
 The AWPage plugin allows you to set the URL of page to an external URL (such as http://www.google.com). This allows the web app to launch a new webView with a specified URL in the current context of the view.
 
@@ -397,6 +1009,27 @@ setPageUrl(url: string)
 ````
 Pass in a URL as a string, starting with http(s):// and a webview will overlay the current webview with that URL. For security reasons no appworks functionality will be available from this URL.
 
+###### openModalAppWebView
+````
+openModalAppWebView(url: string, title: string)
+````
+
+- <b>url</b>: the filename and querystring to be opened
+- <b>title</b>: the title to be displayed in the header
+
+###### setActionButtonCallback
+````
+setActionButtonCallback(callback: any)
+````
+
+- Execute a javascript function in your app when the action button is tapped
+- <b>callback</b>: The callback to run when the action button is tapped.
+
+###### closeModalAppWebView
+````
+closeModalAppWebView()
+````
+
 ##### Example:
 ````js
   var url = "http://www.opentext.com/"
@@ -404,6 +1037,42 @@ Pass in a URL as a string, starting with http(s):// and a webview will overlay t
   awPage.setPageUrl(url);
 ````
 
+#### AWLauncher
+The AWLauncher plugin provides the URL used to open the client in the event it was opened via a custom URL scheme, with the url appended as the launchUrl parameter, e.g. x-otm://?launchUrl=http%3A%2F%2Fmurdoch.opentext.com%2Fnode%2F200
+The launchUrl content must be URL encoded.
+
+If your client and domain are setup to use this functionality, then your client will open when you tap on a corresponding link from another app on your device.
+
+This plugin allows your app to get this URL and also clear it to prevent it from being accessed subsequently.
+
+##### Methods:
+````
+getLaunchURL(successHandler: any, errorHandler: any)
+````
+- <b>successHandler</b> will return the url as a string if one is set
+- <b>errorHandler</b> will return a string if no url is set
+
+````
+clearLaunchURL()
+````
+- No parameters, this will simply set the launch URL to null prevent any further access.
+
+##### Example:
+````js
+  self.launcher = new Appworks.AWLauncher();
+  
+  // Retrieve the launch URL
+  launcher.getLaunchURL(function(url) {
+    // Success, a launch url is set
+    alert(url);
+  }, function(error) {
+    // Error, no launch url is set
+    alert(error);
+  });
+
+  // Clears the launch URL
+  launcher.clearLaunchURL();
+````
 
 #### QRReader
 The QRReader plugin allows you to scan a QR code using the device camera.
@@ -595,6 +1264,8 @@ bind a progress function to be passed progress events while the request is being
 called.
 
 #### AWFileTransfer
+<b>**_* available on desktop_**</b>
+
 The File Transfer plugin allows you to upload and download files to and from the device. Additionally, it allows you
 to download files to a shared container where they may be accessed by third party applications installed on the device.
 
@@ -1034,8 +1705,9 @@ If the ````successHandler```` callback is not invoked within this time, the ````
 Read more on the <a href="https://github.com/apache/cordova-plugin-geolocation">Cordova Documentation</a> page.
 
 #### AWNotificationManager
-The AWNotificationManager plugin gives you access to native notifications targeted to the device and/or a specific
-app.
+<b>**_* available on desktop_**</b>
+
+The AWNotificationManager plugin gives you access to notifications targeted to a specific app.
 
 The constructor does not take any arguments.
 
@@ -1056,10 +1728,10 @@ var notificationManager = new Appworks.AWNotificationManager();
 ````ts
 enablePushNotifications(handler: any, errorHandler?: any)
 ````
-turn on realtime notifications.
+turn on real-time notifications.
 
 Parameters:
-- handler: a callback function that will be passed a new notification in realtime once it reaches the client.
+- handler: a callback function that will be passed a new notification in real-time once it reaches the client.
 - errorHandler: a function to get executed if there is an error in processing a notification
 
 ##### getNotifications
@@ -1076,7 +1748,7 @@ Parameters:
 ````ts
 disablePushNotifications()
 ````
-turn off realtime notifications.
+turn off real-time notifications.
 
 ##### getOpeningNotification
 ````ts
@@ -1119,23 +1791,23 @@ var _notifications = [];
 var notificationManager = new Appworks.AWNotificationManager();
 
 function getNotifications() {
-    // get all notifications. does not care if realtime is enabled or disabled
+    // get all notifications. does not care if real-time is enabled or disabled
     notificationManager.getNotifications(function (notifications) {
         _notifications = notifications;
     });
 }
 
 function enableNotifications() {
-    // register a callback to handle realtime notifications
+    // register a callback to handle real-time notifications
     notificationManager.enablePushNotifications(function (notification) {
-        // realtime notifications will appear here
+        // real-time notifications will appear here
         console.log(notification);
         alert(JSON.stringify(notification);
     });
 }
 
 function disableNotifications() {
-    // turn off realtime notifications
+    // turn off real-time notifications
     notificationManager.disablePushNotifications();
 }
 
@@ -1171,7 +1843,6 @@ function removeNotification(seqNo) {
         console.log("Notification with seqNo " + seqNo + ", could not be deleted: " + error);
     });
 }
- 
 
 ````
 
@@ -1294,7 +1965,9 @@ Get the current network status of the device
 ````
 
 #### AWCache
-The AWCache plugin allows you to temporarily cache data using the device local storage.
+<b>**_* available on desktop_**</b>
+
+The AWCache plugin allows you to temporarily cache JSON data using local storage, or permanently store it using the device/host OS file system.
 
 ##### Methods:
 
@@ -1302,7 +1975,8 @@ The AWCache plugin allows you to temporarily cache data using the device local s
 - getItem
 - clear
 
-All methods are synchronous. The constructor accepts an options object.
+All methods are asynchronous and return a Promise. The constructor accepts an options object with a single property `usePersistentStorage`.
+If the `usePersistentStorage` option is set to `true` then the on-device file system or host OS storage will be used depending on the runtime environment.
 ````js
 var options = {
     usePersistentStorage: true
@@ -1315,7 +1989,7 @@ var cache = new Appworks.AWCache(options);
 ````ts
 setItem(key: string, value: any)
 ````
-set an item in the cache. this method is synchronous.
+set an item in the cache. this method is asynchronous.
 
 parameters:
 - key: the key to store the item under
@@ -1324,14 +1998,20 @@ parameters:
 Example:
 ````js
 var cache = new Appworks.AWCache();
-cache.setItem('myKey', 1234);
+cache.setItem('myKey', 1234).then(
+    function() {
+        console.log('stored 1234 under key "myKey"');
+    },
+    function(err) {
+        console.error('failed to store 1234 under key "myKey" in cache - ' + err);
+    });
 ````
 
 ###### getItem
 ````ts
 getItem(key: string)
 ````
-get an item from the cache. this method is synchronous.
+get an item from the cache. this method is asynchronous.
 
 parameters:
 - key: the key of the item to retrieve
@@ -1339,16 +2019,32 @@ parameters:
 Example:
 ````js
 var cache = new Appworks.AWCache();
-cache.setItem('myKey', 1234);
-
-var item = cache.getItem('myKey');
+cache.getItem('myKey').then(
+    function(item) {
+        console.log('we got the item ' + item + 'from the cache using key "myKey"');
+    },
+    function(err) {
+        console.error(`failed to get 'myKey' from cache - ` + err);
+    });
 ````
 
 ##### removeItem
 ````ts
 removeItem(key: string)
 ````
-remove an item from the cache. this method is synchronous.
+remove an item from the cache. this method is asynchronous.
+
+Example:
+````js
+var cache = new Appworks.AWCache();
+cache.removeItem('myKey').then(
+    function() {
+        console.log('successfully removed "myKey" from the cache');
+    },
+    function(err) {
+        console.error('failed to remove "myKey" from the cache - ' + err);
+    });
+````
 
 ###### clear
 ````ts
@@ -1359,21 +2055,22 @@ clear all items from the cache
 Example:
 ````js
 var cache = new Appworks.AWCache();
-cache.setItem('myKey', 1234);
-
-var item = cache.getItem('myKey');
-
-cache.clear();
-
-// fails
-item = cache.getItem('myKey');
+cache.clear().then(
+    function() {
+        console.log('successfully cleared the cache');
+    },
+    function(err) {
+        console.error('failed to clear the cache - ' + err);
+    });
 ````
 
 #### options
 - usePersistentStorage: guarantees that json written to the cache does not get erased unless explicitly instructed
- by calling ````removeItem````. default is ````false````.
+ by calling ````removeItem````. default is ````false````. This option applies to the mobile environment only.
 
 #### AWDevice
+<b>**_* available on desktop_**</b>
+
 The AWDevice plugin gives you information that describes the device's hardware and software.
 
 ##### Properties:
@@ -1418,6 +2115,46 @@ about device specific quirks.
 var vibe = new Appworks.AWVibration();
 // vibrates the device for 2 seconds
 vibe.vibrate(2000);
+````
+
+#### AWScanner
+The Scanner plugin allows you to scan one or more documents using the device camera to create a PDF file.
+
+##### Methods:
+
+###### scanDocument
+````
+scanDocument(returnType: Number, successHandler: Function, errorHandler: Function)
+````
+Opens the device camera in document scanning mode. A blue rectangle is placed over the document in the view where the user may manually capture the image or let the device automatically capture the image.
+
+Once the image is captured, the document is cropped and transformed into a straightened document with regular A4/A5 dimensions.
+
+The final image is added to a PDF project where the user may add more images (one document per page) in either A4 or A5 and as a portrait or landscape image.
+
+The return type is a numerical value with the following options:
+0. Return the PDF as a filepath
+1. Return the PDF file as a base64 string
+2. Allow the PDF to be sent to another app (e.g. an email app)
+
+##### Example:
+````js
+var scan = function (returnType) {
+        var scanner = new Appworks.Scanner();
+        scanner.scanDocument(
+          returnType, // Set the return type: 0 = filepath, 1 = base64, 2 = doc provider (will return a filepath as well)
+          function(successMessage) {
+            // Called when the scan completes and returns successfully
+            // Success message will be a string
+            console.log(successMessage);
+
+          }, function(errorMessage) {
+            // Called when the scan fails or a cancelled
+            // error message will be string
+            console.log(errorMessage);
+          }
+        );
+};
 ````
 
 #### AWContacts

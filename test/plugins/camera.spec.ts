@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {Util} from "../../src/util";
-import {AWCamera} from "../../src/plugins/camera";
+import {Util} from "../../src/common/util";
+import {AWCamera} from "../../src/plugins/camera/camera";
 
 describe('Camera', () => {
     it('should define an cleanup function', () => {

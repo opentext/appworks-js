@@ -1,3 +1,8 @@
+import {
+    AudioOptions, Capture, CaptureError, ConfigurationData, ImageOptions,
+    MediaFile, VideoOptions
+} from '../../src/plugins/media-transfer/index';
+
 export class MockCapture implements Capture {
     supportedAudioModes: ConfigurationData[];
     supportedImageModes: ConfigurationData[];

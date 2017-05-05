@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {Util} from "../../src/util";
-import {AWCompass} from "../../src/plugins/compass";
+import {Util} from "../../src/common/util";
+import {AWCompass} from "../../src/plugins/device-orientation/compass";
 
 describe('Compass', () => {
     it('should define a getCurrentHeading function', () => {

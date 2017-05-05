@@ -1,26 +1,30 @@
-export class MockLocalStorage implements WindowLocalStorage {
-    localStorage: this;
+import {Storage} from '../../src/plugins/storage/index';
+
+export class MockLocalStorage implements Storage {
     length: number;
     [key: string]: any;
     [index: number]: string;
+
+    // allow tests to set a value if they need to
+    constructor(len?: number) {
+        this.length = isNaN(len) ? 0 : len;
+    }
 
     getItem(key: string): any {
         return null;
     }
 
     setItem(key: string, value: string): void {
-        return null;
     }
 
     removeItem(key: string): void {
-        return null;
     }
 
     clear(): void {
-        return null;
     }
 
     key(index: number): string {
         return null;
     }
+
 }

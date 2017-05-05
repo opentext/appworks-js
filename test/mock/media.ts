@@ -1,4 +1,6 @@
-export class MockMedia implements Media {
+import {IosPlayOptions, MediaInterface} from '../../src/plugins/media/index';
+
+export class MockMedia implements MediaInterface {
     position: number;
     duration: number;
 

@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {Util} from "../../src/util";
-import {AWAppManager} from "../../src/plugins/app-manager";
+import {Util} from "../../src/common/util";
+import {AWAppManager} from "../../src/plugins/app-manager/app-manager";
 
 describe('AppManager', () => {
     it('should define a getCurrentAcceleration function', () => {
