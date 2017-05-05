@@ -1,4 +1,5 @@
 # appworks.js
+<img src="https://travis-ci.org/opentext/appworks-js.svg?branch=master">
 
 ## What is appworks.js?
 
