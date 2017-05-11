@@ -7,6 +7,7 @@ export {AWAccelerometer} from './plugins/accelerometer/index';
 export {AWAppManager} from './plugins/app-manager/index';
 export {AWAuth} from './plugins/auth/index';
 export {AWCache} from './plugins/storage/index';
+export {AWCalendar} from './plugins/calendar/index';
 export {AWCamera} from './plugins/camera/index';
 export {AWCompass} from './plugins/device-orientation/index';
 export {AWComponent} from './plugins/component/index';
