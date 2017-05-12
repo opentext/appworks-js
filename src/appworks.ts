@@ -2,6 +2,7 @@ import {AWAccelerometer as _AWAccelerometer} from './plugins/accelerometer/accel
 import {AWAppManager as _AWAppManager} from './plugins/app-manager/app-manager';
 import {AWAuth as _AWAuth} from './plugins/auth/auth';
 import {AWCache as _AWCache} from './plugins/storage/cache';
+import {AWCalendar as _AWCalendar} from './plugins/calendar/calendar';
 import {AWCamera as _AWCamera} from './plugins/camera/camera';
 import {AWCompass as _AWCompass} from './plugins/device-orientation/compass';
 import {AWComponent as _AWComponent} from './plugins/component/component';
@@ -40,6 +41,9 @@ export const AWAuth = _AWAuth;
 // Cache plugin and alias -- [desktop/mobile]
 export const Cache = _AWCache;
 export const AWCache = _AWCache;
+// Calendar plugin and alias -- [desktop/mobile]
+export const Calendar = _AWCalendar;
+export const AWCalendar = _AWCalendar;
 // Camera plugin and alias -- [mobile]
 export const Camera = _AWCamera;
 export const AWCamera = _AWCamera;
