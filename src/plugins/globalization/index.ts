@@ -2,7 +2,7 @@ export * from './globalization';
 
 export interface Navigator {
     /** This plugin obtains information and performs operations specific to the user's locale and timezone. */
-    globalization: Globalization
+    globalization: Globalization;
 }
 
 /** This plugin obtains information and performs operations specific to the user's locale and timezone. */

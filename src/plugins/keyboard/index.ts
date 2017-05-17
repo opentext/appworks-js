@@ -43,7 +43,7 @@ export interface Keyboard {
      *
      * @param shrink
      */
-    shrinkView(shrink: boolean): void,
+    shrinkView(shrink: boolean): void;
 
     /**
      * Hide the keyboard toolbar.
@@ -59,7 +59,7 @@ export interface Keyboard {
      *
      * @param hide
      */
-    hideFormAccessoryBar(hide: boolean): void,
+    hideFormAccessoryBar(hide: boolean): void;
 
     /**
      * Disable scrolling when the the WebView is shrunk.
@@ -74,7 +74,7 @@ export interface Keyboard {
      *
      * @param disable
      */
-    disableScrollingInShrinkView(disable: boolean): void,
+    disableScrollingInShrinkView(disable: boolean): void;
 
     // Properties
 
@@ -91,7 +91,7 @@ export interface Keyboard {
      * </code>
      *
      */
-    isVisible: boolean,
+    isVisible: boolean;
     /**
      * Specifies whenether content of page would be autoamtically scrolled to the top of the page when keyboard is hiding.
      *
@@ -104,7 +104,7 @@ export interface Keyboard {
      * </code>
      *
      */
-    automaticScrollToTopOnHiding: boolean,
+    automaticScrollToTopOnHiding: boolean;
 
     // Events
 
@@ -121,7 +121,7 @@ export interface Keyboard {
      * </code>
      *
      */
-    onshow(): void,
+    onshow(): void;
     /**
      * If defined, this function is fired when keyboard fully closed.
      *
@@ -135,7 +135,7 @@ export interface Keyboard {
      * </code>
      *
      */
-    onhide(): void,
+    onhide(): void;
     /**
      * If defined, this function is fired before keyboard will be shown.
      *
@@ -149,7 +149,7 @@ export interface Keyboard {
      * </code>
      *
      */
-    onshowing(): void,
+    onshowing(): void;
     /**
      * If defined, this function is fired when keyboard is about to be closed.
      *
@@ -163,7 +163,7 @@ export interface Keyboard {
      * </code>
      *
      */
-    onhiding(): void,
+    onhiding(): void;
 
 }
 
