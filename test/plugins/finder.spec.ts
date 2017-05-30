@@ -17,4 +17,9 @@ describe('Finder', () => {
         let o = new AWFinder(Util.noop, Util.noop);
         expect(o.list).to.not.equal(undefined);
     });
+
+    it('should define a share function', () => {
+        let o = new AWFinder(Util.noop, Util.noop);
+        expect(o.share).to.not.equal(undefined);
+    });
 });

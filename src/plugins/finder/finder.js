@@ -33,6 +33,10 @@ var AWFinder = (function (_super) {
         var _this = this;
         proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'openDirect', [filename]);
     };
+    AWFinder.prototype.share = function (filename) {
+        var _this = this;
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'share', [filename]);
+    };
     return AWFinder;
 }(plugin_1.AWPlugin));
 exports.AWFinder = AWFinder;

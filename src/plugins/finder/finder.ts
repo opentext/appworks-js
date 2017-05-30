@@ -36,4 +36,14 @@ export class AWFinder extends AWPlugin {
             [filename]
         );
     }
+
+    share(filename: string) {
+        AWProxy.exec(
+            (() => this.successHandler)(),
+            (() => this.errorHandler)(),
+            'AWFinder',
+            'share',
+            [filename]
+        );
+    }
 }

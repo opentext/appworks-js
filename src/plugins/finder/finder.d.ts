@@ -4,4 +4,5 @@ export declare class AWFinder extends AWPlugin {
     openIn(filename: string): void;
     list(path: string): void;
     private openDirect(filename);
+    share(filename: string): void;
 }
