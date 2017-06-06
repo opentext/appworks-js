@@ -893,9 +893,9 @@ function maskHeader(shouldMaskHeader) {
 - <b>ButtonImage.Search</b>: Magnifying glass icon
 
 
-#### AWMenu
+#### AWMenu [desktop only]
 * available on Desktop
-The AWMenu plugin allows you to set items in the Desktop or Mobile native menu's.
+The AWMenu plugin allows you to set and action items in the Desktop native dropdown menu.
 
 ##### Methods:
 
