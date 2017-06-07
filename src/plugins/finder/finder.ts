@@ -27,25 +27,22 @@ export class AWFinder extends AWPlugin {
         );
     }
 
+    share(filename: string) {
+        AWProxy.exec(
+            (() => this.successHandler)(),
+            (() => this.errorHandler)(),
+            'AWFinder',
+            'share',
+            [filename]
+        );
+    }
+
     private openDirect(filename: string) {
         AWProxy.exec(
             (() => this.successHandler)(),
             (() => this.errorHandler)(),
             'AWFinder',
             'openDirect',
-            [filename]
-        );
-    }
-
-    share(filename: string) {
-        return this._share(filename);
-    }
-    private _share(filename: string) {
-        AWProxy.exec(
-            (() => this.successHandler)(),
-            (() => this.errorHandler)(),
-            'AWFinder',
-            'share',
             [filename]
         );
     }
