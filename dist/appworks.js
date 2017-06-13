@@ -2311,6 +2311,10 @@ var AWFinder$1 = (function (_super) {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'list', [path]);
     };
+    AWFinder.prototype.share = function (filename) {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'share', [filename]);
+    };
     AWFinder.prototype.openDirect = function (filename) {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'openDirect', [filename]);

@@ -446,6 +446,13 @@ openDirect(filename: string)
 open a file in another iOS app installed on the device
 - <b>filename</b>: the name of the file you would like to open at the application root
 
+###### share
+````
+share(filename: string)
+````
+Share a file to an another app such as an email client
+- <b>filename</b>: the filepath of the file you would like to open at the application root
+
 ###### list
 ````
 list(path: string)
