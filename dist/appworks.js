@@ -2337,7 +2337,15 @@ var AWHeaderBar$1 = (function (_super) {
     __extends(AWHeaderBar, _super);
     function AWHeaderBar() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
+        /**
+         * @deprecated
+         * @type {{LeftOne: number; LeftTwo: number; RightOne: number; RightTwo: number}}
+         */
         _this.ButtonName = { LeftOne: 0, LeftTwo: 1, RightOne: 2, RightTwo: 3 };
+        /**
+         * @deprecated
+         * @type {{Hamburger: number; Back: number; Settings: number; Appmenu: number; None: number; Dots: number; Search: number}}
+         */
         _this.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7 };
         return _this;
     }
@@ -2366,6 +2374,8 @@ var AWHeaderBar$1 = (function (_super) {
     };
     return AWHeaderBar;
 }(AWPlugin));
+AWHeaderBar$1.ButtonName = { LeftOne: 0, LeftTwo: 1, RightOne: 2, RightTwo: 3 };
+AWHeaderBar$1.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7 };
 // alias
 var AWHeader$1 = (function (_super) {
     __extends(AWHeader, _super);

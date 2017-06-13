@@ -780,25 +780,25 @@ function initHeaderButtons() {
 function setHeaderButtons() {
   // Button definitions
   var RightButtonOne = {
-      "button": header.ButtonName.RightOne, // Identifiy the button using an enumerator
-      "image": header.ButtonImage.Dots, // Use an image specified by an enumerator
+      "button": AWHeaderBar.ButtonName.RightOne, // Identifiy the button using an enumerator
+      "image": AWHeaderBar.ButtonImage.Dots, // Use an image specified by an enumerator
       "function" : "custom" // Inform the client this will be handled in the app
     };
 
   var RightButtonTwo = {
-      "button": header.ButtonName.RightTwo,
-      "image": header.ButtonImage.Search,
+      "button": AWHeaderBar.ButtonName.RightTwo,
+      "image": AWHeaderBar.ButtonImage.Search,
       "function" : "custom"
     };
 
   var LeftButtonOne = {
-      "button": header.ButtonName.LeftOne,
-      "image": header.ButtonImage.Back,
+      "button": AWHeaderBar.ButtonName.LeftOne,
+      "image": AWHeaderBar.ButtonImage.Back,
       "function" : "custom"
     };
 
   var LeftButtonTwo = {
-      "button": header.ButtonName.LeftTwo,
+      "button": AWHeaderBar.ButtonName.LeftTwo,
       "function" : "default" // Inform the client this button is to be handled by the client. The image will revert to default.
     };
 
@@ -900,9 +900,9 @@ function maskHeader(shouldMaskHeader) {
 - <b>ButtonImage.Search</b>: Magnifying glass icon
 
 
-#### AWMenu
+#### AWMenu [desktop only]
 * available on Desktop
-The AWMenu plugin allows you to set items in the Desktop or Mobile native menu's.
+The AWMenu plugin allows you to set and action items in the Desktop native dropdown menu.
 
 ##### Methods:
 
