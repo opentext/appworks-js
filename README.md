@@ -1006,6 +1006,19 @@ addItems() {
   }
 ```
 
+#### AWMenu [mobile only]
+The AWMenu features available on Android and iOS
+
+##### Methods:
+
+###### showMenu
+```typescript
+    showMenu(shouldShowMenu: boolean)
+```
+- <b>shouldShowMenu</b>: Set to true to show the menu, set to false to hide the menu, however it's likely only a true value will ever be needed.
+
+This will open (or close) the native side menu.
+
 #### AWPage
 The AWPage plugin allows you to set the URL of page to an external URL (such as http://www.google.com). This allows the web app to launch a new webView with a specified URL in the current context of the view.
 
