@@ -565,11 +565,13 @@ A boolean value will be passed to the callback if the path does refer to an exis
 
 ###### createFile
 ````
-    createFile(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+    createFile(path: string, successCallback: (result: boolean), errorCallback?: (result: Error), data?: string)
 ````
 Create a new file at the provided path. A file extension must be provided (e.g. `../myNewImage.jpg`). Any extra directories specified in the path that do not currently exist will be created for you. 
+If data is supplied it will be written to the file, please ensure the file extension is of suitable format to accept String data.
 This method does not support overwriting existing files. <b>Use of relative paths will result in an error being thrown.</b>
 - <b>path</b>: a new file path that has a non empty file extension
+- <b>data</b>: text data to be written to the new file (optional)
 
 A boolean value will be passed to the callback if the file/directory was created, else the error callback will be fired.
 
