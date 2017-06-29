@@ -3,6 +3,7 @@
  * @description
  * Entry point from which you should import all public appworks APIs.
  */
+import {AWProxy} from './common/proxy';
 export {AWAccelerometer} from './plugins/accelerometer/index';
 export {AWAppManager} from './plugins/app-manager/index';
 export {AWAuth} from './plugins/auth/index';
@@ -40,3 +41,11 @@ export {LocalFileSystem} from './plugins/file/index';
 export {OnDeviceStorage} from './plugins/storage/index';
 export {SecureStorage, AWSecureStorage} from './plugins/storage/index';
 export {Util} from './common/util';
+
+export function isDesktopEnv() {
+    return AWProxy.isDesktopEnv();
+}
+
+export function isMobileEnv() {
+    return AWProxy.isMobileEnv();
+}
