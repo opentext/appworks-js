@@ -2839,9 +2839,9 @@ var AWFileSystem$1 = (function (_super) {
         this.validateEnv();
         AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isDir', [path]);
     };
-    AWFileSystem.prototype.createFile = function (path, successCallback, errorCallback, data) {
+    AWFileSystem.prototype.createFile = function (path, successCallback, errorCallback, data, append) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createFile', [path, data]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createFile', [path, data, append]);
     };
     AWFileSystem.prototype.createDirectory = function (path, successCallback, errorCallback) {
         this.validateEnv();

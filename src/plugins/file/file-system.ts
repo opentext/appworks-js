@@ -1,7 +1,7 @@
 import {AWPlugin} from "../../common/plugin";
 import {AWProxy} from "../../common/proxy";
 import {Util} from "../../common/util";
-import {DesktopHostFileSystem, FileDetails, FileDialogOptions, SaveDialogOptions} from './index';
+import {DesktopHostFileSystem, FileDetails, FileDialogOptions, SaveDialogOptions} from "./index";
 
 export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
 
@@ -53,14 +53,15 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     createFile(path: string,
                successCallback: (result: boolean) => void,
                errorCallback?: (result: Error) => void,
-               data?: any): void {
+               data?: any,
+               append?: boolean): void {
         this.validateEnv();
         AWProxy.exec(
             successCallback,
             errorCallback,
             'AWFileSystem',
             'createFile',
-            [path, data]
+            [path, data, append]
         );
     }
 

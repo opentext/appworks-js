@@ -76,7 +76,8 @@ export interface DesktopHostFileSystem {
     createFile(path: string,
                successCallback: (result: boolean) => void,
                errorCallback?: (result: Error) => void,
-               data?: any): void;
+               data?: any,
+               append?: boolean): void;
 
     createDirectory(path: string,
                     successCallback: (result: boolean) => void,
