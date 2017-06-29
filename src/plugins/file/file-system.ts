@@ -52,14 +52,15 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
 
     createFile(path: string,
                successCallback: (result: boolean) => void,
-               errorCallback?: (result: Error) => void): void {
+               errorCallback?: (result: Error) => void,
+               data?: any): void {
         this.validateEnv();
         AWProxy.exec(
             successCallback,
             errorCallback,
             'AWFileSystem',
             'createFile',
-            [path]
+            [path, data]
         );
     }
 
