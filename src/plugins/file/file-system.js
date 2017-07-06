@@ -36,6 +36,10 @@ var AWFileSystem = (function (_super) {
         this.validateEnv();
         proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createFile', [path, data]);
     };
+    AWFileSystem.prototype.readFile = function (path, successCallback, errorCallback, data) {
+        this.validateEnv();
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'readFile', [path, data]);
+    };
     AWFileSystem.prototype.createDirectory = function (path, successCallback, errorCallback) {
         this.validateEnv();
         proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createDirectory', [path]);

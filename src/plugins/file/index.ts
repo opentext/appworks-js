@@ -78,6 +78,11 @@ export interface DesktopHostFileSystem {
                errorCallback?: (result: Error) => void,
                data?: any): void;
 
+    readFile(path: string,
+               successCallback: (result: any) => void,
+               errorCallback?: (result: Error) => void,
+               data?: any): void;
+
     createDirectory(path: string,
                     successCallback: (result: boolean) => void,
                     errorCallback?: (result: Error) => void): void;

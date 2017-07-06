@@ -62,6 +62,7 @@ export interface DesktopHostFileSystem {
     exists(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     isDir(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     createFile(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void, data?: any): void;
+    readFile(path: string, successCallback: (result: any) => void, errorCallback?: (result: Error) => void, data?: any): void;
     createDirectory(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     copy(from: string, to: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     open(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;

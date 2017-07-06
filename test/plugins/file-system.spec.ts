@@ -26,6 +26,10 @@ describe('FileSystem', () => {
         expect(underTest.createFile).to.not.equal(undefined);
     });
 
+    it('should define a readFile method', () => {
+        expect(underTest.readFile).to.not.equal(undefined);
+    });
+
     it('should define a createDirectory method', () => {
         expect(underTest.createDirectory).to.not.equal(undefined);
     });
