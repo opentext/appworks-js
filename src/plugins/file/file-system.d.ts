@@ -1,12 +1,13 @@
 import { AWPlugin } from "../../common/plugin";
-import { DesktopHostFileSystem, FileDetails, FileDialogOptions, SaveDialogOptions } from "./index";
+import { DesktopHostFileSystem, FileDetails, FileDialogOptions, SaveDialogOptions } from './index';
 export declare class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     desktopEnvError: Error;
     constructor();
     getPath(name: string, successCallback: (result: string) => void, errorCallback?: (result: Error) => void): void;
     exists(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     isDir(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
-    createFile(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void, data?: any, append?: boolean): void;
+    createFile(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void, data?: any): void;
+    readFile(path: string, successCallback: (result: any) => void, errorCallback?: (result: Error) => void, data?: any): void;
     createDirectory(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     copy(from: string, to: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     open(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
