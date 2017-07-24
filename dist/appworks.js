@@ -277,7 +277,7 @@ var es6Promise = createCommonjsModule(function (module, exports) {
  * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
  * @license   Licensed under MIT license
  *            See https://raw.githubusercontent.com/stefanpenner/es6-promise/master/LICENSE
- * @version   4.1.0
+ * @version   4.0.5
  */
 
 (function (global, factory) {
@@ -583,7 +583,6 @@ function handleMaybeThenable(promise, maybeThenable, then$$) {
   } else {
     if (then$$ === GET_THEN_ERROR) {
       _reject(promise, GET_THEN_ERROR.error);
-      GET_THEN_ERROR.error = null;
     } else if (then$$ === undefined) {
       fulfill(promise, maybeThenable);
     } else if (isFunction(then$$)) {
@@ -704,7 +703,7 @@ function invokeCallback(settled, promise, callback, detail) {
     if (value === TRY_CATCH_ERROR) {
       failed = true;
       error = value.error;
-      value.error = null;
+      value = null;
     } else {
       succeeded = true;
     }
@@ -2840,9 +2839,9 @@ var AWFileSystem$1 = (function (_super) {
         this.validateEnv();
         AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isDir', [path]);
     };
-    AWFileSystem.prototype.createFile = function (path, successCallback, errorCallback) {
+    AWFileSystem.prototype.createFile = function (path, successCallback, errorCallback, data, append) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createFile', [path]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createFile', [path, data, append]);
     };
     AWFileSystem.prototype.createDirectory = function (path, successCallback, errorCallback) {
         this.validateEnv();
