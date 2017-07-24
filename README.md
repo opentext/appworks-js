@@ -580,6 +580,18 @@ If data is not supplied then a new empty file will be created, <b>the file shoul
 
 A boolean value will be passed to the callback if the file/directory was created, else the error callback will be fired.
 
+###### readFile
+````
+    readFile(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
+````
+Read the contents of a text based (UTF-8) file into a String and return it.
+ 
+<b>Use of relative paths will result in an error being thrown.</b>
+
+- <b>path</b>: path of the file to open
+
+A String value will be passed to the callback if the file at the supplied path could be read, else the error callback will be fired.
+
 ###### createDirectory
 ````
     createDirectory(path: string, successCallback: (result: boolean), errorCallback?: (result: Error))
