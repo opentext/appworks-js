@@ -1036,13 +1036,32 @@ setPageUrl(url: string)
 ````
 Pass in a URL as a string, starting with http(s):// and a webview will overlay the current webview with that URL. For security reasons no appworks functionality will be available from this URL.
 
+##### Example:
+````js
+  var page = new Appworks.AWPage();
+  var url = "http://www.opentext.com/"
+  var awPage = new Appworks.AWPage();
+  page.setPageUrl(url);
+````
+
 ###### openModalAppWebView
 ````
 openModalAppWebView(url: string, title: string)
 ````
 
+- Open a modal webview of a html file in your app which is appworks enabled with query params such as modal.html?myproperty=myvalue
+- This cannot be an external webpage
 - <b>url</b>: the filename and querystring to be opened
 - <b>title</b>: the title to be displayed in the header
+
+##### Example:
+````js
+  var page = new Appworks.AWPage();
+  var url = "modal.html" + "?property=demonstration";
+  var title = "My Page Title";
+  var closeTitle = "Done";
+  page.openModalAppWebView(url, title, closeTitle);
+````
 
 ###### setActionButtonCallback
 ````
@@ -1057,11 +1076,33 @@ setActionButtonCallback(callback: any)
 closeModalAppWebView()
 ````
 
+- Used by the ModalAppWebView which has just popped open. This allows the modal to close itself.
+
+###### openModalExternalWebView
+````
+openModalExternalWebView(url: string, title: string, closeText: string, options?: object)
+````
+
+- This will open an external webview which is not appworks enabled. Use case: opening your companies website within the app.
+- <b>url</b>: the web URL to be opened
+- <b>title</b>: the title to be displayed in the header
+- <b>closeText</b>: the title to be displayed on the close button
+- <b>options</b>: (optional) a JSON object with a header property and JSON object value to be applied to the web request
+
 ##### Example:
+
 ````js
-  var url = "http://www.opentext.com/"
-  var awPage = new Appworks.AWPage();
-  awPage.setPageUrl(url);
+  var page = new Appworks.AWPage();
+  var url = "http://mywebsite.com/mypage";
+  var title = "My Web Page";
+  var closeTitle = "Dismiss";
+
+  var headers = {};
+      headers["myKey"] = "myValue";
+
+  var options = {"headers" : headers};
+
+  page.openModalExternalWebView(url, title, closeTitle, options);
 ````
 
 #### AWLauncher
