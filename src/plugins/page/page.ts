@@ -22,13 +22,16 @@ export class AWPage extends AWPlugin {
         );
     }
 
-    openModalExternalWebView(url: string, title: string) {
+    openModalExternalWebView(url: string, title: string, closeText: string, options?: object) {
+        if(typeof options === 'undefined' || !options) {
+            options = {};
+        }
         AWProxy.exec(
             (() => this.successHandler)(),
             (() => this.errorHandler)(),
             'AWPage',
             'showModalExternalWebView',
-            [url, title]
+            [url, title, closeText, options]
         );
     }
 

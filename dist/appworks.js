@@ -2666,9 +2666,12 @@ var AWPage$1 = (function (_super) {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'showModalAppWebView', [url, title]);
     };
-    AWPage.prototype.openModalExternalWebView = function (url, title) {
+    AWPage.prototype.openModalExternalWebView = function (url, title, closeText, options) {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'showModalExternalWebView', [url, title]);
+        if (typeof options === 'undefined' || !options) {
+            options = {};
+        }
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'showModalExternalWebView', [url, title, closeText, options]);
     };
     AWPage.prototype.setActionButtonCallback = function (callback) {
         var _this = this;
