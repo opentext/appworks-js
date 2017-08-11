@@ -1853,6 +1853,10 @@ var AWAuth$1 = (function (_super) {
         force = !!force;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate', [force.toString()]);
     };
+    /**
+     *  Marked for depreciation
+     *  Use authenticate(boolean?), which will get the auth object if the session is valid, else it will refresh the auth object and return that.
+     *  */
     AWAuth.prototype.getAuthResponse = function () {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authobject', []);
@@ -1862,6 +1866,9 @@ var AWAuth$1 = (function (_super) {
     };
     AWAuth.prototype.online = function (successHandler, errorHandler) {
         AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'online', []);
+    };
+    AWAuth.prototype.otdsssoticket = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'otdsssoticket', []);
     };
     return AWAuth;
 }(AWPlugin));

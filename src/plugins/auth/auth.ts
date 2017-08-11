@@ -13,6 +13,10 @@ export class AWAuth extends AWPlugin {
         );
     }
 
+    /**
+     *  Marked for depreciation
+     *  Use authenticate(boolean?), which will get the auth object if the session is valid, else it will refresh the auth object and return that.
+     */
     getAuthResponse() {
         AWProxy.exec(
             (() => this.successHandler)(),
@@ -39,6 +43,16 @@ export class AWAuth extends AWPlugin {
             errorHandler,
             'AWAuth',
             'online',
+            []
+        );
+    }
+
+    otdsssoticket(successHandler: any, errorHandler: any) {
+        AWProxy.exec(
+            successHandler,
+            errorHandler,
+            'AWAuth',
+            'otdsssoticket',
             []
         );
     }
