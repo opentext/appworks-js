@@ -1,14 +1,14 @@
 import { AWPlugin } from '../../common/plugin';
 export declare class AWNotificationManager extends AWPlugin {
     constructor();
-    enablePushNotifications(handler: any, errorHandler?: any): void;
+    enablePushNotifications(handler: any, errorHandler: any, includeSeqNo: boolean): void;
     disablePushNotifications(): void;
-    getNotifications(handler: any, errorHandler?: any): void;
-    getOpeningNotification(handler: any, errorHandler?: any): void;
-    notificationDidLaunchApp(handler: any, errorHandler: any): void;
-    openListener(handler: any, errorHandler: any): void;
-    didTapNotificationFromActivityView(handler: any, errorHandler: any): void;
-    removeNotification(seqNo: any, handler: any, errorHandler?: any): void;
+    getNotifications(handler: any, errorHandler: any, includeSeqNo: boolean): void;
+    getOpeningNotification(handler: any, errorHandler: any, includeSeqNo: boolean): void;
+    notificationDidLaunchApp(handler: any, errorHandler: any, includeSeqNo: boolean): void;
+    openListener(handler: any, errorHandler: any, includeSeqNo: boolean): void;
+    didTapNotificationFromActivityView(handler: any, errorHandler: any, includeSeqNo: boolean): void;
+    removeNotification(seqNo: string, handler: any, errorHandler?: any): void;
     alert(message: string, alertCallback: any, title?: string, buttonName?: string): void;
     beep(times: number): void;
     confirm(message: string, confirmCallback: any, title?: string, buttonLabels?: string[]): void;
