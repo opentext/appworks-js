@@ -2539,6 +2539,80 @@ var AWMenu$1 = (function (_super) {
     return AWMenu;
 }(AWPlugin));
 
+var AWMobileFileSystem$1 = (function (_super) {
+    __extends(AWMobileFileSystem, _super);
+    function AWMobileFileSystem() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    // File listing
+    AWMobileFileSystem.prototype.list = function (directory, shared, success, error) {
+        var args = [directory, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'list', args);
+    };
+    // Imports
+    AWMobileFileSystem.prototype.listImports = function (success, error) {
+        var args = [];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'listImports', args);
+    };
+    AWMobileFileSystem.prototype.moveImport = function (source, destination, shared, success, error) {
+        var args = [source, destination, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'moveImport', args);
+    };
+    // File IO
+    AWMobileFileSystem.prototype.exists = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'exists', args);
+    };
+    AWMobileFileSystem.prototype.rename = function (source, destination, shared, success, error) {
+        var args = [source, destination, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'rename', args);
+    };
+    AWMobileFileSystem.prototype.copy = function (source, sourceShared, destination, destinationShared, success, error) {
+        var args = [source, sourceShared, destination, destinationShared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'copy', args);
+    };
+    AWMobileFileSystem.prototype.move = function (source, sourceShared, destination, destinationShared, success, error) {
+        var args = [source, sourceShared, destination, destinationShared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'move', args);
+    };
+    AWMobileFileSystem.prototype.remove = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'remove', args);
+    };
+    // File sharing
+    AWMobileFileSystem.prototype.open = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'open', args);
+    };
+    AWMobileFileSystem.prototype.share = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'share', args);
+    };
+    AWMobileFileSystem.prototype.quicklook = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'quicklook', args);
+    };
+    // File transfer
+    AWMobileFileSystem.prototype.download = function (source, destination, headers, shared, success, error) {
+        var args = [source, destination, headers, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'download', args);
+    };
+    AWMobileFileSystem.prototype.upload = function (source, destination, headers, shared, success, error) {
+        // TODO: Implement upload functionality
+        /*
+        let args = [source, destination, headers, shared];
+        AWProxy.exec(
+            success,
+            error,
+            'AWMobileFileSystem',
+            'upload',
+            args
+        );
+        */
+    };
+    return AWMobileFileSystem;
+}(AWPlugin));
+
 var AWNotificationManager$1 = (function (_super) {
     __extends(AWNotificationManager, _super);
     function AWNotificationManager() {
@@ -2962,6 +3036,9 @@ var Menu = AWMenu$1;
 var AWMenu$$1 = AWMenu$1;
 var AWHamburgerMenu = AWMenu$1;
 var HamburgerMenu = AWMenu$1;
+// MobileFileSystem plugin and alias -- [mobile]
+var MobileFileSystem = AWMobileFileSystem$1;
+var AWMobileFileSystem$$1 = AWMobileFileSystem$1;
 // NotificationManager plugin and alias -- [mobile]
 var NotificationManager = AWNotificationManager$1;
 var AWNotificationManager$$1 = AWNotificationManager$1;
@@ -3035,6 +3112,8 @@ exports.Menu = Menu;
 exports.AWMenu = AWMenu$$1;
 exports.AWHamburgerMenu = AWHamburgerMenu;
 exports.HamburgerMenu = HamburgerMenu;
+exports.MobileFileSystem = MobileFileSystem;
+exports.AWMobileFileSystem = AWMobileFileSystem$$1;
 exports.NotificationManager = NotificationManager;
 exports.AWNotificationManager = AWNotificationManager$$1;
 exports.OfflineManager = OfflineManager;
