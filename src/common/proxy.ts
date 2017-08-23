@@ -27,6 +27,7 @@ import {FileError, FileSystem} from '../plugins/file/index';
 import {PersistentStorage} from '../plugins/storage/index';
 import {Device} from '../plugins/device/index';
 import {Notification} from '../plugins/dialogs/index';
+import {isUndefined, isFunction} from 'lodash';
 
 declare const Media: {
     new (src: string,
@@ -86,14 +87,14 @@ declare const Connection: any;
 export class AWProxy {
 
     static exec(successHandler: any, errorHandler: any, name: string, method: string, args: any[]): void {
-        if (typeof cordova !== 'undefined') {
-            cordova.exec(successHandler, errorHandler, name, method, args);
-        } else if (AWProxy.isDesktopEnv()) {
+        if (AWProxy.isDesktopEnv()) {
             __aw_plugin_proxy.exec(successHandler, errorHandler, name, method, args);
+        } else if (!isUndefined(cordova) && isFunction(cordova.exec)) {
+            cordova.exec(successHandler, errorHandler, name, method, args);
         } else {
-            console.error('No proxy objects defined - tried [Cordova, __aw_plugin_proxy]');
+            console.error('No proxy objects defined - tried [cordova, __aw_plugin_proxy]');
             if (typeof errorHandler === 'function') {
-                errorHandler('No proxy objects defined - tried [Cordova, __aw_plugin_proxy]');
+                errorHandler('No proxy objects defined - tried [cordova, __aw_plugin_proxy]');
             }
         }
     }
@@ -275,7 +276,7 @@ export class AWProxy {
         const desktopPlugin = AWProxy.getDesktopPlugin('AWStorage');
         return desktopPlugin !== null ?
             new DesktopStorage(desktopPlugin) : (AWProxy.isMobileEnv()) ?
-            new OnDeviceStorage() : new PersistentStorageMock();
+                new OnDeviceStorage() : new PersistentStorageMock();
     }
 
     /**
