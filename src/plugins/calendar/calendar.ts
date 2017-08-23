@@ -1,7 +1,7 @@
 import {AWPlugin} from '../../common/plugin';
 import {AWProxy} from '../../common/proxy';
 import {AWCalendarInterface, CalendarArgs, CalendarCreateOptions, CalendarOptions} from './index';
-import {Util} from '../../common/util';
+import {noop} from '../../common/util';
 
 export class AWCalendar extends AWPlugin implements AWCalendarInterface {
 
@@ -23,7 +23,7 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
     }
 
     constructor() {
-        super(Util.noop, Util.noop);
+        super(noop, noop);
     }
 
     hasReadPermission(successHandler?: any, errorHandler?: any) {

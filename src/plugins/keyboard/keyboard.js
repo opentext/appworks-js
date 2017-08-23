@@ -16,7 +16,7 @@ var util_1 = require("../../common/util");
 var AWKeyboard = (function (_super) {
     __extends(AWKeyboard, _super);
     function AWKeyboard() {
-        return _super.call(this, util_1.Util.noop, util_1.Util.noop) || this;
+        return _super.call(this, util_1.noop, util_1.noop) || this;
     }
     AWKeyboard.prototype.hideKeyboardAccessoryBar = function (hide) {
         var _this = this;

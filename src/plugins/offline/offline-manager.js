@@ -17,7 +17,7 @@ var util_1 = require("../../common/util");
 var AWOfflineManager = (function (_super) {
     __extends(AWOfflineManager, _super);
     function AWOfflineManager(options) {
-        var _this = _super.call(this, util_1.Util.noop, util_1.Util.noop) || this;
+        var _this = _super.call(this, util_1.noop, util_1.noop) || this;
         var document;
         _this.cacheKey = '__appworksjs.deferredQueue';
         _this.cache = new cache_1.AWCache();

@@ -16,7 +16,7 @@ var util_1 = require("../../common/util");
 var AWGlobalization = (function (_super) {
     __extends(AWGlobalization, _super);
     function AWGlobalization() {
-        return _super.call(this, util_1.Util.noop, util_1.Util.noop) || this;
+        return _super.call(this, util_1.noop, util_1.noop) || this;
     }
     AWGlobalization.prototype.getPreferredLanguage = function (successFn, errorFn) {
         proxy_1.AWProxy.exec(successFn, errorFn, 'AWGlobalization', 'getPreferredLanguage', []);

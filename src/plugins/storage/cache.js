@@ -16,7 +16,7 @@ var util_1 = require("../../common/util");
 var AWCache = (function (_super) {
     __extends(AWCache, _super);
     function AWCache(options) {
-        var _this = _super.call(this, util_1.Util.noop, util_1.Util.noop) || this;
+        var _this = _super.call(this, util_1.noop, util_1.noop) || this;
         _this.options = options || { usePersistentStorage: false };
         _this.preloadCache();
         return _this;

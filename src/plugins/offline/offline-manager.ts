@@ -1,7 +1,7 @@
 import {AWCache} from "../storage/cache";
 import {AWPlugin} from "../../common/plugin";
 import {AWProxy} from "../../common/proxy";
-import {Util} from "../../common/util";
+import {noop} from "../../common/util";
 
 export class AWOfflineManager extends AWPlugin {
 
@@ -14,7 +14,7 @@ export class AWOfflineManager extends AWPlugin {
     options: any;
 
     constructor(options?: any) {
-        super(Util.noop, Util.noop);
+        super(noop, noop);
 
         let document;
         this.cacheKey = '__appworksjs.deferredQueue';

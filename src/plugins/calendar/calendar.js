@@ -16,7 +16,7 @@ var util_1 = require("../../common/util");
 var AWCalendar = (function (_super) {
     __extends(AWCalendar, _super);
     function AWCalendar() {
-        return _super.call(this, util_1.Util.noop, util_1.Util.noop) || this;
+        return _super.call(this, util_1.noop, util_1.noop) || this;
     }
     AWCalendar.getCalendarOptions = function () {
         return {

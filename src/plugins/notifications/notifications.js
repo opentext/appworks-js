@@ -16,7 +16,7 @@ var util_1 = require("../../common/util");
 var AWNotificationManager = (function (_super) {
     __extends(AWNotificationManager, _super);
     function AWNotificationManager() {
-        return _super.call(this, util_1.Util.noop, util_1.Util.noop) || this;
+        return _super.call(this, util_1.noop, util_1.noop) || this;
     }
     AWNotificationManager.prototype.enablePushNotifications = function (handler, errorHandler) {
         proxy_1.AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'enablePushNotifications', proxy_1.AWProxy.isDesktopEnv() ? [handler] : []);

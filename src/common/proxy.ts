@@ -10,7 +10,7 @@ import {MockConnection} from "../../test/mock/connection";
 import {MockVibrate} from "../../test/mock/vibrate";
 import {LocalFileSystem} from "../plugins/file/local-file-system";
 import {MockFileTransfer} from "../../test/mock/file-transfer";
-import {Util} from "./util";
+import {isFunction, noop} from "./util";
 import {AWStorage} from "../plugins/storage/storage";
 import {OnDeviceStorage} from "../plugins/storage/on-device-storage";
 import {PersistentStorageMock} from "../../test/mock/persistent-storage";
@@ -27,7 +27,6 @@ import {FileError, FileSystem} from '../plugins/file/index';
 import {PersistentStorage} from '../plugins/storage/index';
 import {Device} from '../plugins/device/index';
 import {Notification} from '../plugins/dialogs/index';
-import {isUndefined, isFunction} from 'lodash';
 
 declare const Media: {
     new (src: string,
@@ -84,17 +83,24 @@ declare const device: any;
 declare const window: any;
 declare const Connection: any;
 
+const callbackQueue:  (() => any)[] = [];
+let deviceReady: boolean = false;
+
+setupDeviceInitializationForMobile();
+
 export class AWProxy {
 
     static exec(successHandler: any, errorHandler: any, name: string, method: string, args: any[]): void {
-        if (AWProxy.isDesktopEnv()) {
-            __aw_plugin_proxy.exec(successHandler, errorHandler, name, method, args);
-        } else if (!isUndefined(cordova) && isFunction(cordova.exec)) {
-            cordova.exec(successHandler, errorHandler, name, method, args);
-        } else {
-            console.error('No proxy objects defined - tried [cordova, __aw_plugin_proxy]');
-            if (typeof errorHandler === 'function') {
-                errorHandler('No proxy objects defined - tried [cordova, __aw_plugin_proxy]');
+        try {
+            if (AWProxy.isDesktopEnv()) {
+                AWProxy.execDesktop(successHandler, errorHandler, name, method, args);
+            } else {
+                AWProxy.execMobile(successHandler, errorHandler, name, method, args);
+            }
+        } catch (err) {
+            console.error('No proxy objects defined - tried [cordova, __aw_plugin_proxy]', err);
+            if (isFunction(errorHandler)) {
+                errorHandler(err);
             }
         }
     }
@@ -192,7 +198,7 @@ export class AWProxy {
 
     static document(): any {
         return (typeof document !== 'undefined') ? document : {
-            addEventListener: Util.noop
+            addEventListener: noop
         };
     }
 
@@ -308,5 +314,32 @@ export class AWProxy {
         if (!AWProxy.isDesktopEnv()) return null;
         // the proxy exposed by desktop has a method to allow retrieval of plugin instances
         return __aw_plugin_proxy.getPlugin(pluginName);
+    }
+
+    private static execMobile(successHandler: any, errorHandler: any, name: string, method: string, args: any[]) {
+        if (deviceReady) {
+            cordova.exec(successHandler, errorHandler, name, method, args);
+        } else {
+            callbackQueue.push(() => {
+                AWProxy.exec(successHandler, errorHandler, name, method, args);
+            });
+        }
+    }
+
+    private static execDesktop(successHandler: any, errorHandler: any, name: string, method: string, args: any[]) {
+        __aw_plugin_proxy.exec(successHandler, errorHandler, name, method, args);
+    }
+}
+
+function setupDeviceInitializationForMobile() {
+    try {
+        document.addEventListener('deviceready', () => {
+            deviceReady = true;
+            callbackQueue.forEach((callback) => {
+                callback();
+            });
+        });
+    } catch (e) {
+        // unsupported environment
     }
 }
