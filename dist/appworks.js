@@ -2554,8 +2554,8 @@ var AWMobileFileSystem$1 = (function (_super) {
         var args = [];
         AWProxy.exec(success, error, 'AWMobileFileSystem', 'listImports', args);
     };
-    AWMobileFileSystem.prototype.moveImport = function (source, destination, shared, success, error) {
-        var args = [source, destination, shared];
+    AWMobileFileSystem.prototype.moveImport = function (source, destination, desintationShared, success, error) {
+        var args = [source, destination, desintationShared];
         AWProxy.exec(success, error, 'AWMobileFileSystem', 'moveImport', args);
     };
     // File IO
@@ -2597,18 +2597,9 @@ var AWMobileFileSystem$1 = (function (_super) {
         var args = [source, destination, headers, shared];
         AWProxy.exec(success, error, 'AWMobileFileSystem', 'download', args);
     };
-    AWMobileFileSystem.prototype.upload = function (source, destination, headers, shared, success, error) {
-        // TODO: Implement upload functionality
-        /*
-        let args = [source, destination, headers, shared];
-        AWProxy.exec(
-            success,
-            error,
-            'AWMobileFileSystem',
-            'upload',
-            args
-        );
-        */
+    AWMobileFileSystem.prototype.upload = function (source, destination, fileParameterName, formData, headers, shared, success, error) {
+        var args = [source, destination, fileParameterName, formData, headers, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'upload', args);
     };
     return AWMobileFileSystem;
 }(AWPlugin));

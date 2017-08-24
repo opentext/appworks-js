@@ -24,8 +24,8 @@ export class AWMobileFileSystem extends AWPlugin {
             args
         );
     }
-    moveImport(source: string, destination: string, shared: boolean, success: any, error: any) {
-        let args = [source, destination, shared];
+    moveImport(source: string, destination: string, desintationShared: boolean, success: any, error: any) {
+        let args = [source, destination, desintationShared];
         AWProxy.exec(
             success,
             error,
@@ -127,10 +127,8 @@ export class AWMobileFileSystem extends AWPlugin {
             args
         );
     }
-    upload(source: string, destination: string, headers: any, shared: boolean, success: any, error: any) {
-        // TODO: Implement upload functionality
-        /*
-        let args = [source, destination, headers, shared];
+    upload(source: string, destination: string, fileParameterName: string, formData: any, headers: any, shared: boolean, success: any, error: any) {
+        let args = [source, destination, fileParameterName, formData, headers, shared];
         AWProxy.exec(
             success,
             error,
@@ -138,6 +136,5 @@ export class AWMobileFileSystem extends AWPlugin {
             'upload',
             args
         );
-        */
     }
 }
