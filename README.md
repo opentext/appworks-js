@@ -175,9 +175,13 @@ $('#click-me').click(function () {
 ````
 
 ###### getAuthResponse
+    Marked for depreciation
+    Use authenticate(boolean?), which will get the auth object if the session is valid, 
+    else it will refresh the auth object and return the new auth object.
 ````
 getAuthResponse()
 ````
+    
 Returns the auth response to the callback registered upon creation of the instance without sending a reauthentication
 request.
 
@@ -236,6 +240,35 @@ $('#click-me').click(function () {
 });
 ````
 
+###### otdsssoticket
+````
+otdsssoticket(successHandler: any, errorHandler?: any)
+````
+Added so that clients connected to an OAuth2 based gateway are able to specifically request an OTDS SSO Ticket for legacy systems.
+
+If the property "otdsticket" is not in the auth object returned in Auth.authenticate(boolean?), then you are using an OAuth2 setup.
+
+Request an OTDS SSO Ticket by calling this function. It will return the ticket in this functions successHandler, and it will then be in available in the Auth.authenticate(boolean?) response for the life of the OAuth token.
+
+Upon expiry of the OAuth2 session, a new OTDS SSO Ticket must be requested.
+
+##### Example
+````js
+function getOtdsSsoTicket() {
+  // Create the Auth instance as normal
+  var auth = new Appworks.Auth(function(response){}, function(error){});
+
+  // Call otdsssoticket with a success handler and an error handler
+  auth.otdsssoticket(function(ticket) {
+    // "ticket" is the OTDS SSO Ticket
+    console.log("Got Ticket: " + ticket);
+  }, function(error) {
+    console.log("Error: " + error);
+  });
+}
+````
+
+Non OAuth2 systems can still use this method, it will simply return the current OTDS SSO Ticket available from Auth.authenticate(boolean?).
 
 #### AWWebView
 <b>**_* available on desktop_**</b>
