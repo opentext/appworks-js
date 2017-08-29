@@ -1827,23 +1827,29 @@ var notificationManager = new Appworks.AWNotificationManager();
 
 ##### enablePushNotifications
 ````ts
-enablePushNotifications(handler: any, errorHandler?: any)
+enablePushNotifications(handler: any, errorHandler: any, includeSeqNo: boolean)
 ````
 turn on real-time notifications.
 
 Parameters:
 - handler: a callback function that will be passed a new notification in real-time once it reaches the client.
 - errorHandler: a function to get executed if there is an error in processing a notification
+- includeSeqNo: 
+  - false: notification message (string) will be returned
+  - true: notification message (string) and seqno (string) will be returned as object
 
 ##### getNotifications
 ````ts
-getNotifications(handler: any, errorHandler?: any)
+getNotifications(handler: any, errorHandler: any, includeSeqNo: boolean)
 ````
 get all notifications.
 
 Parameters:
 - handler: a callback function that will be passed all of the notifications for this app.
 - errorHandler: a function to get executed if there is an error in processing notifications
+- includeSeqNo: 
+  - false: array of notification messages (string) will be returned
+  - true: array of notification message (string) and seqno (string) will be returned as objects
 
 ##### disablePushNotifications
 ````ts
@@ -1853,13 +1859,16 @@ turn off real-time notifications.
 
 ##### getOpeningNotification
 ````ts
-getOpeningNotification(handler: any, errorHandler?: any)
+getOpeningNotification(handler: any, errorHandler: any, includeSeqNo: boolean)
 ````
 Obtain the data of the notification used to open the app.
 
 Parameters:
 - handler: a callback function that will be passed the opening notification when the app is opening via a notification tap.
 - errorHandler: a function to get executed if there is no opening notification
+- includeSeqNo: 
+  - false: notification message (string) will be returned
+  - true: notification message (string) and seqno (string) will be returned as object
 
 ##### removeNotification
 ````ts
@@ -1875,7 +1884,7 @@ Parameters:
 
 ##### openListener
 ````ts
-openListener(handler: any)
+openListener(handler: any, includeSeqNo: boolean)
 ````
 Create a listener which will receive notification data which can enter your app by tapping on a native notification when your app is running, or by tapping on a notification in the activity screen, or by tapping on a notification in the app notification screen.
 
@@ -1883,6 +1892,9 @@ This is different to push notifications as they require the user to tap the noti
 
 Parameters:
 - handler: a callback function that will be passed the notifications data.
+- includeSeqNo: 
+  - false: notification message (string) will be returned
+  - true: notification message (string) and seqno (string) will be returned as object
 
 
 ##### Example:
@@ -1943,6 +1955,33 @@ function removeNotification(seqNo) {
         // error function
         console.log("Notification with seqNo " + seqNo + ", could not be deleted: " + error);
     });
+}
+
+// Using includeSeqNo parameter, 
+function getOpeningNotification() {
+    
+    // with includeSeqNo = false
+    notificationManager.getOpeningNotification(
+        function (notification) {
+            // notification is a string, e.g:
+            // "{\"prop1\" : \"data1\"}"
+        }
+        , function (error) {
+        }, false
+     );
+    
+    // with includeSeqNo = true
+    notificationManager.getOpeningNotification(
+        function (notification) {
+            // notification is an object consisting of message and seqno properties, e.g:
+            // {
+            //      "message" : "{\"prop1\" : \"data1\"}"
+            //      ,"seqno" : "1234"
+            // }
+        }
+        , function (error) {
+        }, true
+     );
 }
 
 ````
