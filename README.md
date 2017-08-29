@@ -1058,6 +1058,165 @@ addItems() {
   }
 ```
 
+#### AWMobileFileSystem [mobile only]
+The AWMobileFileSystem plugin allows you to interact with the file system within the appworks mobile client.
+
+You are able to perform file transfer requests such as upload and download, open and share files, and also copy, move, rename and delete files.
+
+Each method has a <b>shared</b> boolean parameter, indicating whether the file location you are targeting is in the documents directory (shared) or file provider storage directory (non shared).
+
+Shared (true) means to share the file with other apps in the appworks container
+
+Shared (false) means to store privately in your apps file provider storage location. This can still be accessed via the file provider and open in methods.
+
+###### list
+list returns a list of files in a given directory relative to the shared/non shared directory
+````
+list(directory: string, shared: boolean, success: any, error: any)
+````
+- <b>directory</b>: the directory relative to the shared/non shared directory
+- <b>shared</b>: source relative to shared or non shared
+- <b>success</b>: callback called returning a list of <b>file objects</b>
+- <b>error</b>: callback called if there is a client side error
+
+##### File I/O Methods:
+
+###### exists
+exists allows you check check if a file exists at a given directory
+````
+exists(source: string, shared: boolean, success: any, error: any)
+````
+- <b>source</b>: the filepath relative to the shared/non shared directory
+- <b>shared</b>: source relative to shared or non shared
+- <b>success</b>: callback called if the file exists
+- <b>error</b>: callback called if the file does not exist
+
+###### rename
+rename allows you rename a file
+````
+rename(source: string, destination: string, shared: boolean, success: any, error: any)
+````
+- <b>source</b>: the source filepath relative to the shared/non shared directory
+- <b>destination</b>: the destination filepath relative to the shared/non shared directory
+- <b>shared</b>: source relative to shared or non shared
+- <b>success</b>: callback called if the file was renamed successfully
+- <b>error</b>: callback called if the file was not renamed
+
+###### copy
+copy allows you copy a file
+````
+copy(source: string, sourceShared: boolean, destination: string, desintationShared: boolean, success: any, error: any)
+````
+- <b>source</b>: the source filepath relative to the shared/non shared directory
+- <b>source shared</b>: source relative to shared or non shared
+- <b>destination</b>: the destination filepath relative to the shared/non shared directory
+- <b>destination shared</b>: destination relative to shared or non shared
+- <b>success</b>: callback called if the file was copied successfully
+- <b>error</b>: callback called if the file was not copied
+
+###### move
+move allows you move a file
+````
+move(source: string, sourceShared: boolean, destination: string, desintationShared: boolean, success: any, error: any)
+````
+- <b>source</b>: the source filepath relative to the shared/non shared directory
+- <b>source shared</b>: source relative to shared or non shared
+- <b>destination</b>: the destination filepath relative to the shared/non shared directory
+- <b>destination shared</b>: destination relative to shared or non shared
+- <b>success</b>: callback called if the file was moved successfully
+- <b>error</b>: callback called if the file was not moved
+
+###### remove
+remove allows you remove/delete a file
+````
+remove(source: string, shared: boolean, success: any, error: any)
+````
+- <b>source</b>: the filepath relative to the shared/non shared directory
+- <b>shared</b>: source relative to shared or non shared
+- <b>success</b>: callback called if the file is removed
+- <b>error</b>: callback called if the file is not removed
+
+##### File Import Methods:
+
+###### listImports
+listImports returns a list of files in your apps import directory
+````
+listImports(success: any, error: any)
+````
+- <b>success</b>: callback called returning a list of <b>file objects</b>
+- <b>error</b>: callback called if there is a client side error
+
+###### moveImport
+moveImport allows you move a file from the imports directory to a directory of your choosing
+````
+moveImport(source: string, destination: string, desintationShared: boolean, success: any, error: any)
+````
+- <b>source</b>: the source filename in the imports directory
+- <b>destination</b>: the destination filepath relative to the shared/non shared directory
+- <b>destination shared</b>: destination relative to shared or non shared
+- <b>success</b>: callback called if the file was moved successfully
+- <b>error</b>: callback called if the file was not moved
+
+##### File Open Methods:
+
+###### open
+open allows you open the file in a third party app
+````
+open(source: string, shared: boolean, success: any, error: any)
+````
+- <b>source</b>: the filepath relative to the shared/non shared directory
+- <b>shared</b>: source relative to shared or non shared
+- <b>success</b>: callback called if the file opens successfully
+- <b>error</b>: callback called if the file was not opened
+
+###### share
+share allows you open the file in a third party app, much the same as open, but Android handles this slighty different, warranting a second method 
+````
+share(source: string, shared: boolean, success: any, error: any)
+````
+- <b>source</b>: the filepath relative to the shared/non shared directory
+- <b>shared</b>: source relative to shared or non shared
+- <b>success</b>: callback called if the file opens successfully
+- <b>error</b>: callback called if the file was not opened
+
+###### quicklook
+quicklook allows you open the file in iOS using the QuickLook framework with MS office documents and PDFs supported, on Android, you can only use this with PDFs
+````
+quicklook(source: string, shared: boolean, success: any, error: any)
+````
+- <b>source</b>: the filepath relative to the shared/non shared directory
+- <b>shared</b>: source relative to shared or non shared
+- <b>success</b>: callback called if the file opens successfully
+- <b>error</b>: callback called if the file was not opened
+
+##### File Transfer Methods:
+
+###### download
+download allows you to download a file from a URL to a destination filepath 
+````
+download(source: string, destination: string, headers: any, shared: boolean, success: any, error: any)
+````
+- <b>source</b>: the URL of the file to be downloaded
+- <b>destination</b>: the destination filepath relative to the shared/non shared directory
+- <b>headers</b>: any additional headers besides the standard auth tokens automatically injected
+- <b>shared</b>: destination relative to shared or non shared
+- <b>success</b>: callback called if the file downloaded successfully
+- <b>error</b>: callback called if the file was not downloaded
+
+###### upload
+upload allows you to upload a file to a URL
+````
+upload(source: string, destination: string, fileParameterName: string, formData: any, headers: any, shared: boolean, success: any, error: any)
+````
+- <b>source</b>: the source filepath relative to the shared/non shared directory
+- <b>destination</b>: the destination URL
+- <b>fileParameterName</b>: the file parameter name used to identify the file in the request
+- <b>formData</b>: a json object of the form data to be added to the request
+- <b>headers</b>: any additional headers besides the standard auth tokens automatically injected
+- <b>shared</b>: source relative to shared or non shared
+- <b>success</b>: callback called if the file uploaded successfully
+- <b>error</b>: callback called if the file was not uploaded
+
 #### AWPage
 The AWPage plugin allows you to set the URL of page to an external URL (such as http://www.google.com). This allows the web app to launch a new webView with a specified URL in the current context of the view.
 

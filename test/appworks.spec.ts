@@ -7,7 +7,7 @@ import {
     AWFinder, Finder, AWHeaderBar, HeaderBar,
     AWKeyboard, Keyboard, AWLocation, AWMedia, AWMediaCapture, MediaCapture, AWMenu, Menu, AWNotificationManager,
     NotificationManager, AWOfflineManager, OfflineManager, AWPage, Page, QRReader, AWSecureStorage, SecureStorage,
-    AWVibration, AWWebView, AWQRReader, AWFileSystem,
+    AWVibration, AWWebView, AWQRReader, AWFileSystem, AWMobileFileSystem, MobileFileSystem
 } from "../src/appworks";
 
 describe('Appworks namespace', () => {
@@ -138,5 +138,10 @@ describe('Appworks namespace', () => {
 
     it('should define AWFileSystem as a global relative to the Appworks namespace', () => {
         expect(AWFileSystem).to.not.equal(undefined);
+    });
+
+    it('should define AWMobileFileSystem and MobileFileSystem as a global relative to the Appworks namespace', () => {
+        expect(AWMobileFileSystem).to.not.equal(undefined);
+        expect(MobileFileSystem).to.not.equal(undefined);
     });
 });
