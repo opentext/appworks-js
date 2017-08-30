@@ -46,6 +46,16 @@ export class AWMenu extends AWPlugin {
         );
     }
 
+    showMenu(shouldShowMenu: boolean) {
+        AWProxy.exec(
+            (() => this.successHandler)(),
+            (() => this.errorHandler)(),
+            'AWMenu',
+            'showMenu',
+            [shouldShowMenu]
+        );
+    }
+
     didTapMenuItem(listener: any) {
         return this.openListener(listener);
     }

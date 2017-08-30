@@ -5,5 +5,6 @@ export declare class AWMenu extends AWPlugin {
     setMenu(menuSections: MenuSection[]): Promise<{}>;
     didOpenMenuItem(callback: any): void;
     openListener(listener: any): void;
+    showMenu(shouldShowMenu: boolean): void;
     didTapMenuItem(listener: any): void;
 }
