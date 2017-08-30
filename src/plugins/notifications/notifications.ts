@@ -8,13 +8,13 @@ export class AWNotificationManager extends AWPlugin {
         super(noop, noop);
     }
 
-    enablePushNotifications(handler: any, errorHandler?: any) {
+    enablePushNotifications(handler: any, errorHandler: any, includeSeqNo: boolean) {
         AWProxy.exec(
             handler,
             errorHandler,
             'AWNotificationManager',
             'enablePushNotifications',
-            AWProxy.isDesktopEnv() ? [handler] : []
+            AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]
         );
     }
 
@@ -28,45 +28,45 @@ export class AWNotificationManager extends AWPlugin {
         );
     }
 
-    getNotifications(handler: any, errorHandler?: any) {
+    getNotifications(handler: any, errorHandler: any, includeSeqNo: boolean) {
         AWProxy.exec(
             handler,
             errorHandler,
             'AWNotificationManager',
             'getPushNotifications',
-            []
+            [includeSeqNo]
         );
     }
 
-    getOpeningNotification(handler: any, errorHandler?: any) {
+    getOpeningNotification(handler: any, errorHandler: any, includeSeqNo: boolean) {
         AWProxy.exec(
             handler,
             errorHandler,
             'AWNotificationManager',
             'getOpeningNotification',
-            []
+            [includeSeqNo]
         );
     }
 
-    notificationDidLaunchApp(handler: any, errorHandler: any) {
-        this.getOpeningNotification(handler, errorHandler);
+    notificationDidLaunchApp(handler: any, errorHandler: any, includeSeqNo: boolean) {
+        this.getOpeningNotification(handler, errorHandler, includeSeqNo);
     }
 
-    openListener(handler: any, errorHandler: any) {
+    openListener(handler: any, errorHandler: any, includeSeqNo: boolean) {
         AWProxy.exec(
             handler,
             errorHandler,
             'AWNotificationManager',
             'openListener',
-            AWProxy.isDesktopEnv() ? [handler] : []
+            AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]
         );
     }
 
-    didTapNotificationFromActivityView(handler: any, errorHandler: any) {
-        this.openListener(handler, errorHandler);
+    didTapNotificationFromActivityView(handler: any, errorHandler: any, includeSeqNo: boolean) {
+        this.openListener(handler, errorHandler, includeSeqNo);
     }
 
-    removeNotification(seqNo, handler, errorHandler?: any) {
+    removeNotification(seqNo: string, handler: any, errorHandler?: any) {
         AWProxy.exec(
             handler,
             errorHandler,

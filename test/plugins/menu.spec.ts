@@ -13,6 +13,11 @@ describe('Menu', () => {
         expect(o.openListener).to.not.equal(undefined);
     });
 
+    it('should define a showMenu function', () => {
+        let o = new AWMenu(Util.noop, Util.noop);
+        expect(o.showMenu).to.not.equal(undefined);
+    });
+
     it('should define a didTapMenuItem function', () => {
         let o = new AWMenu(noop, noop);
         expect(o.didTapMenuItem).to.not.equal(undefined);

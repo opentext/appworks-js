@@ -18,26 +18,26 @@ var AWNotificationManager = (function (_super) {
     function AWNotificationManager() {
         return _super.call(this, util_1.noop, util_1.noop) || this;
     }
-    AWNotificationManager.prototype.enablePushNotifications = function (handler, errorHandler) {
-        proxy_1.AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'enablePushNotifications', proxy_1.AWProxy.isDesktopEnv() ? [handler] : []);
+    AWNotificationManager.prototype.enablePushNotifications = function (handler, errorHandler, includeSeqNo) {
+        proxy_1.AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'enablePushNotifications', proxy_1.AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]);
     };
     AWNotificationManager.prototype.disablePushNotifications = function () {
         proxy_1.AWProxy.exec(null, null, 'AWNotificationManager', 'disablePushNotifications', []);
     };
-    AWNotificationManager.prototype.getNotifications = function (handler, errorHandler) {
-        proxy_1.AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'getPushNotifications', []);
+    AWNotificationManager.prototype.getNotifications = function (handler, errorHandler, includeSeqNo) {
+        proxy_1.AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'getPushNotifications', [includeSeqNo]);
     };
-    AWNotificationManager.prototype.getOpeningNotification = function (handler, errorHandler) {
-        proxy_1.AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'getOpeningNotification', []);
+    AWNotificationManager.prototype.getOpeningNotification = function (handler, errorHandler, includeSeqNo) {
+        proxy_1.AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'getOpeningNotification', [includeSeqNo]);
     };
-    AWNotificationManager.prototype.notificationDidLaunchApp = function (handler, errorHandler) {
-        this.getOpeningNotification(handler, errorHandler);
+    AWNotificationManager.prototype.notificationDidLaunchApp = function (handler, errorHandler, includeSeqNo) {
+        this.getOpeningNotification(handler, errorHandler, includeSeqNo);
     };
-    AWNotificationManager.prototype.openListener = function (handler, errorHandler) {
-        proxy_1.AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'openListener', proxy_1.AWProxy.isDesktopEnv() ? [handler] : []);
+    AWNotificationManager.prototype.openListener = function (handler, errorHandler, includeSeqNo) {
+        proxy_1.AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'openListener', proxy_1.AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]);
     };
-    AWNotificationManager.prototype.didTapNotificationFromActivityView = function (handler, errorHandler) {
-        this.openListener(handler, errorHandler);
+    AWNotificationManager.prototype.didTapNotificationFromActivityView = function (handler, errorHandler, includeSeqNo) {
+        this.openListener(handler, errorHandler, includeSeqNo);
     };
     AWNotificationManager.prototype.removeNotification = function (seqNo, handler, errorHandler) {
         proxy_1.AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'removeNotification', [seqNo]);

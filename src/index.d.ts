@@ -20,6 +20,7 @@ export { AWLocation } from './plugins/location/index';
 export { AWMedia } from './plugins/media/index';
 export { AWMediaCapture } from './plugins/media-transfer/index';
 export { AWMenu } from './plugins/menu/index';
+export { AWMobileFileSystem } from './plugins/mobile-file-system/index';
 export { AWNotificationManager } from './plugins/notifications/index';
 export { AWOfflineManager } from './plugins/offline/index';
 export { AWPage } from './plugins/page/index';

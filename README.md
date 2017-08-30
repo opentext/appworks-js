@@ -175,9 +175,13 @@ $('#click-me').click(function () {
 ````
 
 ###### getAuthResponse
+    Marked for depreciation
+    Use authenticate(boolean?), which will get the auth object if the session is valid, 
+    else it will refresh the auth object and return the new auth object.
 ````
 getAuthResponse()
 ````
+    
 Returns the auth response to the callback registered upon creation of the instance without sending a reauthentication
 request.
 
@@ -236,6 +240,35 @@ $('#click-me').click(function () {
 });
 ````
 
+###### otdsssoticket
+````
+otdsssoticket(successHandler: any, errorHandler?: any)
+````
+Added so that clients connected to an OAuth2 based gateway are able to specifically request an OTDS SSO Ticket for legacy systems.
+
+If the property "otdsticket" is not in the auth object returned in Auth.authenticate(boolean?), then you are using an OAuth2 setup.
+
+Request an OTDS SSO Ticket by calling this function. It will return the ticket in this functions successHandler, and it will then be in available in the Auth.authenticate(boolean?) response for the life of the OAuth token.
+
+Upon expiry of the OAuth2 session, a new OTDS SSO Ticket must be requested.
+
+##### Example
+````js
+function getOtdsSsoTicket() {
+  // Create the Auth instance as normal
+  var auth = new Appworks.Auth(function(response){}, function(error){});
+
+  // Call otdsssoticket with a success handler and an error handler
+  auth.otdsssoticket(function(ticket) {
+    // "ticket" is the OTDS SSO Ticket
+    console.log("Got Ticket: " + ticket);
+  }, function(error) {
+    console.log("Error: " + error);
+  });
+}
+````
+
+Non OAuth2 systems can still use this method, it will simply return the current OTDS SSO Ticket available from Auth.authenticate(boolean?).
 
 #### AWWebView
 <b>**_* available on desktop_**</b>
@@ -1025,6 +1058,178 @@ addItems() {
   }
 ```
 
+#### AWMobileFileSystem [mobile only]
+The AWMobileFileSystem plugin allows you to interact with the file system within the appworks mobile client.
+
+You are able to perform file transfer requests such as upload and download, open and share files, and also copy, move, rename and delete files.
+
+Each method has a <b>shared</b> boolean parameter, indicating whether the file location you are targeting is in the documents directory (shared) or file provider storage directory (non shared).
+
+Shared (true) means to share the file with other apps in the appworks container
+
+Shared (false) means to store privately in your apps file provider storage location. This can still be accessed via the file provider and open in methods.
+
+###### list
+list returns a list of files in a given directory relative to the shared/non shared directory
+````
+list(directory: string, shared: boolean, success: any, error: any)
+````
+- <b>directory</b>: the directory relative to the shared/non shared directory
+- <b>shared</b>: source relative to shared or non shared
+- <b>success</b>: callback called returning a list of <b>file objects</b>
+- <b>error</b>: callback called if there is a client side error
+
+##### File I/O Methods:
+
+###### exists
+exists allows you check check if a file exists at a given directory
+````
+exists(source: string, shared: boolean, success: any, error: any)
+````
+- <b>source</b>: the filepath relative to the shared/non shared directory
+- <b>shared</b>: source relative to shared or non shared
+- <b>success</b>: callback called if the file exists
+- <b>error</b>: callback called if the file does not exist
+
+###### rename
+rename allows you rename a file
+````
+rename(source: string, destination: string, shared: boolean, success: any, error: any)
+````
+- <b>source</b>: the source filepath relative to the shared/non shared directory
+- <b>destination</b>: the destination filepath relative to the shared/non shared directory
+- <b>shared</b>: source relative to shared or non shared
+- <b>success</b>: callback called if the file was renamed successfully
+- <b>error</b>: callback called if the file was not renamed
+
+###### copy
+copy allows you copy a file
+````
+copy(source: string, sourceShared: boolean, destination: string, desintationShared: boolean, success: any, error: any)
+````
+- <b>source</b>: the source filepath relative to the shared/non shared directory
+- <b>source shared</b>: source relative to shared or non shared
+- <b>destination</b>: the destination filepath relative to the shared/non shared directory
+- <b>destination shared</b>: destination relative to shared or non shared
+- <b>success</b>: callback called if the file was copied successfully
+- <b>error</b>: callback called if the file was not copied
+
+###### move
+move allows you move a file
+````
+move(source: string, sourceShared: boolean, destination: string, desintationShared: boolean, success: any, error: any)
+````
+- <b>source</b>: the source filepath relative to the shared/non shared directory
+- <b>source shared</b>: source relative to shared or non shared
+- <b>destination</b>: the destination filepath relative to the shared/non shared directory
+- <b>destination shared</b>: destination relative to shared or non shared
+- <b>success</b>: callback called if the file was moved successfully
+- <b>error</b>: callback called if the file was not moved
+
+###### remove
+remove allows you remove/delete a file
+````
+remove(source: string, shared: boolean, success: any, error: any)
+````
+- <b>source</b>: the filepath relative to the shared/non shared directory
+- <b>shared</b>: source relative to shared or non shared
+- <b>success</b>: callback called if the file is removed
+- <b>error</b>: callback called if the file is not removed
+
+##### File Import Methods:
+
+###### listImports
+listImports returns a list of files in your apps import directory
+````
+listImports(success: any, error: any)
+````
+- <b>success</b>: callback called returning a list of <b>file objects</b>
+- <b>error</b>: callback called if there is a client side error
+
+###### moveImport
+moveImport allows you move a file from the imports directory to a directory of your choosing
+````
+moveImport(source: string, destination: string, desintationShared: boolean, success: any, error: any)
+````
+- <b>source</b>: the source filename in the imports directory
+- <b>destination</b>: the destination filepath relative to the shared/non shared directory
+- <b>destination shared</b>: destination relative to shared or non shared
+- <b>success</b>: callback called if the file was moved successfully
+- <b>error</b>: callback called if the file was not moved
+
+##### File Open Methods:
+
+###### open
+open allows you open the file in a third party app
+````
+open(source: string, shared: boolean, success: any, error: any)
+````
+- <b>source</b>: the filepath relative to the shared/non shared directory
+- <b>shared</b>: source relative to shared or non shared
+- <b>success</b>: callback called if the file opens successfully
+- <b>error</b>: callback called if the file was not opened
+
+###### share
+share allows you open the file in a third party app, much the same as open, but Android handles this slighty different, warranting a second method 
+````
+share(source: string, shared: boolean, success: any, error: any)
+````
+- <b>source</b>: the filepath relative to the shared/non shared directory
+- <b>shared</b>: source relative to shared or non shared
+- <b>success</b>: callback called if the file opens successfully
+- <b>error</b>: callback called if the file was not opened
+
+###### quicklook
+quicklook allows you open the file in iOS using the QuickLook framework with MS office documents and PDFs supported, on Android, you can only use this with PDFs
+````
+quicklook(source: string, shared: boolean, success: any, error: any)
+````
+- <b>source</b>: the filepath relative to the shared/non shared directory
+- <b>shared</b>: source relative to shared or non shared
+- <b>success</b>: callback called if the file opens successfully
+- <b>error</b>: callback called if the file was not opened
+
+##### File Transfer Methods:
+
+###### download
+download allows you to download a file from a URL to a destination filepath 
+````
+download(source: string, destination: string, headers: any, shared: boolean, success: any, error: any)
+````
+- <b>source</b>: the URL of the file to be downloaded
+- <b>destination</b>: the destination filepath relative to the shared/non shared directory
+- <b>headers</b>: any additional headers besides the standard auth tokens automatically injected
+- <b>shared</b>: destination relative to shared or non shared
+- <b>success</b>: callback called if the file downloaded successfully
+- <b>error</b>: callback called if the file was not downloaded
+
+###### upload
+upload allows you to upload a file to a URL
+````
+upload(source: string, destination: string, fileParameterName: string, formData: any, headers: any, shared: boolean, success: any, error: any)
+````
+- <b>source</b>: the source filepath relative to the shared/non shared directory
+- <b>destination</b>: the destination URL
+- <b>fileParameterName</b>: the file parameter name used to identify the file in the request
+- <b>formData</b>: a json object of the form data to be added to the request
+- <b>headers</b>: any additional headers besides the standard auth tokens automatically injected
+- <b>shared</b>: source relative to shared or non shared
+- <b>success</b>: callback called if the file uploaded successfully
+- <b>error</b>: callback called if the file was not uploaded
+
+#### AWMenu [mobile only]
+The AWMenu features available on Android and iOS
+
+##### Methods:
+
+###### showMenu
+```typescript
+    showMenu(shouldShowMenu: boolean)
+```
+- <b>shouldShowMenu</b>: Set to true to show the menu, set to false to hide the menu, however it's likely only a true value will ever be needed.
+
+This will open (or close) the native side menu.
+
 #### AWPage
 The AWPage plugin allows you to set the URL of page to an external URL (such as http://www.google.com). This allows the web app to launch a new webView with a specified URL in the current context of the view.
 
@@ -1036,13 +1241,32 @@ setPageUrl(url: string)
 ````
 Pass in a URL as a string, starting with http(s):// and a webview will overlay the current webview with that URL. For security reasons no appworks functionality will be available from this URL.
 
+##### Example:
+````js
+  var page = new Appworks.AWPage();
+  var url = "http://www.opentext.com/"
+  var awPage = new Appworks.AWPage();
+  page.setPageUrl(url);
+````
+
 ###### openModalAppWebView
 ````
 openModalAppWebView(url: string, title: string)
 ````
 
+- Open a modal webview of a html file in your app which is appworks enabled with query params such as modal.html?myproperty=myvalue
+- This cannot be an external webpage
 - <b>url</b>: the filename and querystring to be opened
 - <b>title</b>: the title to be displayed in the header
+
+##### Example:
+````js
+  var page = new Appworks.AWPage();
+  var url = "modal.html" + "?property=demonstration";
+  var title = "My Page Title";
+  var closeTitle = "Done";
+  page.openModalAppWebView(url, title, closeTitle);
+````
 
 ###### setActionButtonCallback
 ````
@@ -1057,11 +1281,33 @@ setActionButtonCallback(callback: any)
 closeModalAppWebView()
 ````
 
+- Used by the ModalAppWebView which has just popped open. This allows the modal to close itself.
+
+###### openModalExternalWebView
+````
+openModalExternalWebView(url: string, title: string, closeText: string, options?: object)
+````
+
+- This will open an external webview which is not appworks enabled. Use case: opening your companies website within the app.
+- <b>url</b>: the web URL to be opened
+- <b>title</b>: the title to be displayed in the header
+- <b>closeText</b>: the title to be displayed on the close button
+- <b>options</b>: (optional) a JSON object with a header property and JSON object value to be applied to the web request
+
 ##### Example:
+
 ````js
-  var url = "http://www.opentext.com/"
-  var awPage = new Appworks.AWPage();
-  awPage.setPageUrl(url);
+  var page = new Appworks.AWPage();
+  var url = "http://mywebsite.com/mypage";
+  var title = "My Web Page";
+  var closeTitle = "Dismiss";
+
+  var headers = {};
+      headers["myKey"] = "myValue";
+
+  var options = {"headers" : headers};
+
+  page.openModalExternalWebView(url, title, closeTitle, options);
 ````
 
 #### AWLauncher
@@ -1753,23 +1999,29 @@ var notificationManager = new Appworks.AWNotificationManager();
 
 ##### enablePushNotifications
 ````ts
-enablePushNotifications(handler: any, errorHandler?: any)
+enablePushNotifications(handler: any, errorHandler: any, includeSeqNo: boolean)
 ````
 turn on real-time notifications.
 
 Parameters:
 - handler: a callback function that will be passed a new notification in real-time once it reaches the client.
 - errorHandler: a function to get executed if there is an error in processing a notification
+- includeSeqNo: 
+  - false: notification message (string) will be returned
+  - true: notification message (string) and seqno (string) will be returned as object
 
 ##### getNotifications
 ````ts
-getNotifications(handler: any, errorHandler?: any)
+getNotifications(handler: any, errorHandler: any, includeSeqNo: boolean)
 ````
 get all notifications.
 
 Parameters:
 - handler: a callback function that will be passed all of the notifications for this app.
 - errorHandler: a function to get executed if there is an error in processing notifications
+- includeSeqNo: 
+  - false: array of notification messages (string) will be returned
+  - true: array of notification message (string) and seqno (string) will be returned as objects
 
 ##### disablePushNotifications
 ````ts
@@ -1779,13 +2031,16 @@ turn off real-time notifications.
 
 ##### getOpeningNotification
 ````ts
-getOpeningNotification(handler: any, errorHandler?: any)
+getOpeningNotification(handler: any, errorHandler: any, includeSeqNo: boolean)
 ````
 Obtain the data of the notification used to open the app.
 
 Parameters:
 - handler: a callback function that will be passed the opening notification when the app is opening via a notification tap.
 - errorHandler: a function to get executed if there is no opening notification
+- includeSeqNo: 
+  - false: notification message (string) will be returned
+  - true: notification message (string) and seqno (string) will be returned as object
 
 ##### removeNotification
 ````ts
@@ -1801,7 +2056,7 @@ Parameters:
 
 ##### openListener
 ````ts
-openListener(handler: any)
+openListener(handler: any, includeSeqNo: boolean)
 ````
 Create a listener which will receive notification data which can enter your app by tapping on a native notification when your app is running, or by tapping on a notification in the activity screen, or by tapping on a notification in the app notification screen.
 
@@ -1809,6 +2064,9 @@ This is different to push notifications as they require the user to tap the noti
 
 Parameters:
 - handler: a callback function that will be passed the notifications data.
+- includeSeqNo: 
+  - false: notification message (string) will be returned
+  - true: notification message (string) and seqno (string) will be returned as object
 
 
 ##### Example:
@@ -1869,6 +2127,33 @@ function removeNotification(seqNo) {
         // error function
         console.log("Notification with seqNo " + seqNo + ", could not be deleted: " + error);
     });
+}
+
+// Using includeSeqNo parameter, 
+function getOpeningNotification() {
+    
+    // with includeSeqNo = false
+    notificationManager.getOpeningNotification(
+        function (notification) {
+            // notification is a string, e.g:
+            // "{\"prop1\" : \"data1\"}"
+        }
+        , function (error) {
+        }, false
+     );
+    
+    // with includeSeqNo = true
+    notificationManager.getOpeningNotification(
+        function (notification) {
+            // notification is an object consisting of message and seqno properties, e.g:
+            // {
+            //      "message" : "{\"prop1\" : \"data1\"}"
+            //      ,"seqno" : "1234"
+            // }
+        }
+        , function (error) {
+        }, true
+     );
 }
 
 ````

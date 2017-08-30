@@ -19,6 +19,7 @@ import {AWLocation as _AWLocation} from './plugins/location/location';
 import {AWMedia as _AWMedia} from './plugins/media/media';
 import {AWMediaCapture as _AWMediaCapture} from './plugins/media-transfer/media-capture';
 import {AWMenu as _AWMenu} from './plugins/menu/menu';
+import {AWMobileFileSystem as _AWMobileFileSystem} from './plugins/mobile-file-system/mobile-file-system';
 import {AWNotificationManager as _AWNotificationManager} from './plugins/notifications/notifications';
 import {AWOfflineManager as _AWOfflineManager} from './plugins/offline/offline-manager';
 import {AWPage as _AWPage} from './plugins/page/page';
@@ -96,6 +97,9 @@ export const Menu = _AWMenu;
 export const AWMenu = _AWMenu;
 export const AWHamburgerMenu = _AWMenu;
 export const HamburgerMenu = _AWMenu;
+// MobileFileSystem plugin and alias -- [mobile]
+export const MobileFileSystem = _AWMobileFileSystem;
+export const AWMobileFileSystem = _AWMobileFileSystem;
 // NotificationManager plugin and alias -- [mobile]
 export const NotificationManager = _AWNotificationManager;
 export const AWNotificationManager = _AWNotificationManager;
