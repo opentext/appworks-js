@@ -14,7 +14,7 @@ describe('Menu', () => {
     });
 
     it('should define a showMenu function', () => {
-        let o = new AWMenu(Util.noop, Util.noop);
+        let o = new AWMenu(noop, noop);
         expect(o.showMenu).to.not.equal(undefined);
     });
 

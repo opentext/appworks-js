@@ -27,7 +27,7 @@ describe('Auth', () => {
     });
 
     it('should define a otdsssoticket function', () => {
-        let auth = new AWAuth(Util.noop, Util.noop);
+        let auth = new AWAuth(noop, noop);
         expect(auth.otdsssoticket).to.not.equal(undefined);
     });
 });

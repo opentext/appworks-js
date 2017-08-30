@@ -1886,6 +1886,10 @@ var AWAuth$1 = (function (_super) {
         force = !!force;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate', [force.toString()]);
     };
+    /**
+     *  Marked for depreciation
+     *  Use authenticate(boolean?), which will get the auth object if the session is valid, else it will refresh the auth object and return that.
+     */
     AWAuth.prototype.getAuthResponse = function () {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authobject', []);
@@ -1895,6 +1899,9 @@ var AWAuth$1 = (function (_super) {
     };
     AWAuth.prototype.online = function (successHandler, errorHandler) {
         AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'online', []);
+    };
+    AWAuth.prototype.otdsssoticket = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'otdsssoticket', []);
     };
     return AWAuth;
 }(AWPlugin));
@@ -2566,10 +2573,79 @@ var AWMenu$1 = (function (_super) {
         var _this = this;
         AWProxy.exec(listener, (function () { return _this.errorHandler; })(), 'AWMenu', 'receive', []);
     };
+    AWMenu.prototype.showMenu = function (shouldShowMenu) {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWMenu', 'showMenu', [shouldShowMenu]);
+    };
     AWMenu.prototype.didTapMenuItem = function (listener) {
         return this.openListener(listener);
     };
     return AWMenu;
+}(AWPlugin));
+
+var AWMobileFileSystem$1 = (function (_super) {
+    __extends(AWMobileFileSystem, _super);
+    function AWMobileFileSystem() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    // File listing
+    AWMobileFileSystem.prototype.list = function (directory, shared, success, error) {
+        var args = [directory, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'list', args);
+    };
+    // Imports
+    AWMobileFileSystem.prototype.listImports = function (success, error) {
+        var args = [];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'listImports', args);
+    };
+    AWMobileFileSystem.prototype.moveImport = function (source, destination, desintationShared, success, error) {
+        var args = [source, destination, desintationShared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'moveImport', args);
+    };
+    // File IO
+    AWMobileFileSystem.prototype.exists = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'exists', args);
+    };
+    AWMobileFileSystem.prototype.rename = function (source, destination, shared, success, error) {
+        var args = [source, destination, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'rename', args);
+    };
+    AWMobileFileSystem.prototype.copy = function (source, sourceShared, destination, destinationShared, success, error) {
+        var args = [source, sourceShared, destination, destinationShared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'copy', args);
+    };
+    AWMobileFileSystem.prototype.move = function (source, sourceShared, destination, destinationShared, success, error) {
+        var args = [source, sourceShared, destination, destinationShared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'move', args);
+    };
+    AWMobileFileSystem.prototype.remove = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'remove', args);
+    };
+    // File sharing
+    AWMobileFileSystem.prototype.open = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'open', args);
+    };
+    AWMobileFileSystem.prototype.share = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'share', args);
+    };
+    AWMobileFileSystem.prototype.quicklook = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'quicklook', args);
+    };
+    // File transfer
+    AWMobileFileSystem.prototype.download = function (source, destination, headers, shared, success, error) {
+        var args = [source, destination, headers, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'download', args);
+    };
+    AWMobileFileSystem.prototype.upload = function (source, destination, fileParameterName, formData, headers, shared, success, error) {
+        var args = [source, destination, fileParameterName, formData, headers, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'upload', args);
+    };
+    return AWMobileFileSystem;
 }(AWPlugin));
 
 var AWNotificationManager$1 = (function (_super) {
@@ -2577,26 +2653,26 @@ var AWNotificationManager$1 = (function (_super) {
     function AWNotificationManager() {
         return _super.call(this, noop, noop) || this;
     }
-    AWNotificationManager.prototype.enablePushNotifications = function (handler, errorHandler) {
-        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'enablePushNotifications', AWProxy.isDesktopEnv() ? [handler] : []);
+    AWNotificationManager.prototype.enablePushNotifications = function (handler, errorHandler, includeSeqNo) {
+        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'enablePushNotifications', AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]);
     };
     AWNotificationManager.prototype.disablePushNotifications = function () {
         AWProxy.exec(null, null, 'AWNotificationManager', 'disablePushNotifications', []);
     };
-    AWNotificationManager.prototype.getNotifications = function (handler, errorHandler) {
-        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'getPushNotifications', []);
+    AWNotificationManager.prototype.getNotifications = function (handler, errorHandler, includeSeqNo) {
+        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'getPushNotifications', [includeSeqNo]);
     };
-    AWNotificationManager.prototype.getOpeningNotification = function (handler, errorHandler) {
-        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'getOpeningNotification', []);
+    AWNotificationManager.prototype.getOpeningNotification = function (handler, errorHandler, includeSeqNo) {
+        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'getOpeningNotification', [includeSeqNo]);
     };
-    AWNotificationManager.prototype.notificationDidLaunchApp = function (handler, errorHandler) {
-        this.getOpeningNotification(handler, errorHandler);
+    AWNotificationManager.prototype.notificationDidLaunchApp = function (handler, errorHandler, includeSeqNo) {
+        this.getOpeningNotification(handler, errorHandler, includeSeqNo);
     };
-    AWNotificationManager.prototype.openListener = function (handler, errorHandler) {
-        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'openListener', AWProxy.isDesktopEnv() ? [handler] : []);
+    AWNotificationManager.prototype.openListener = function (handler, errorHandler, includeSeqNo) {
+        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'openListener', AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]);
     };
-    AWNotificationManager.prototype.didTapNotificationFromActivityView = function (handler, errorHandler) {
-        this.openListener(handler, errorHandler);
+    AWNotificationManager.prototype.didTapNotificationFromActivityView = function (handler, errorHandler, includeSeqNo) {
+        this.openListener(handler, errorHandler, includeSeqNo);
     };
     AWNotificationManager.prototype.removeNotification = function (seqNo, handler, errorHandler) {
         AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'removeNotification', [seqNo]);
@@ -2699,9 +2775,12 @@ var AWPage$1 = (function (_super) {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'showModalAppWebView', [url, title]);
     };
-    AWPage.prototype.openModalExternalWebView = function (url, title) {
+    AWPage.prototype.openModalExternalWebView = function (url, title, closeText, options) {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'showModalExternalWebView', [url, title]);
+        if (typeof options === 'undefined' || !options) {
+            options = {};
+        }
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'showModalExternalWebView', [url, title, closeText, options]);
     };
     AWPage.prototype.setActionButtonCallback = function (callback) {
         var _this = this;
@@ -2995,6 +3074,9 @@ var Menu = AWMenu$1;
 var AWMenu$$1 = AWMenu$1;
 var AWHamburgerMenu = AWMenu$1;
 var HamburgerMenu = AWMenu$1;
+// MobileFileSystem plugin and alias -- [mobile]
+var MobileFileSystem = AWMobileFileSystem$1;
+var AWMobileFileSystem$$1 = AWMobileFileSystem$1;
 // NotificationManager plugin and alias -- [mobile]
 var NotificationManager = AWNotificationManager$1;
 var AWNotificationManager$$1 = AWNotificationManager$1;
@@ -3068,6 +3150,8 @@ exports.Menu = Menu;
 exports.AWMenu = AWMenu$$1;
 exports.AWHamburgerMenu = AWHamburgerMenu;
 exports.HamburgerMenu = HamburgerMenu;
+exports.MobileFileSystem = MobileFileSystem;
+exports.AWMobileFileSystem = AWMobileFileSystem$$1;
 exports.NotificationManager = NotificationManager;
 exports.AWNotificationManager = AWNotificationManager$$1;
 exports.OfflineManager = OfflineManager;
