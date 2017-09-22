@@ -12,17 +12,17 @@ export class AWPage extends AWPlugin {
         );
     }
 
-    openModalAppWebView(url: string, title: string) {
+    openModalAppWebView(url: string, title: string, closeTitle: string) {
         AWProxy.exec(
             (() => this.successHandler)(),
             (() => this.errorHandler)(),
             'AWPage',
             'showModalAppWebView',
-            [url, title]
+            [url, title, closeTitle]
         );
     }
 
-    openModalExternalWebView(url: string, title: string, closeText: string, options?: object) {
+    openModalExternalWebView(url: string, title: string, closeTitle: string, options?: object) {
         if(typeof options === 'undefined' || !options) {
             options = {};
         }
@@ -31,17 +31,17 @@ export class AWPage extends AWPlugin {
             (() => this.errorHandler)(),
             'AWPage',
             'showModalExternalWebView',
-            [url, title, closeText, options]
+            [url, title, closeTitle, options]
         );
     }
 
-    setActionButtonCallback(callback: any) {
+    setActionButtonCallback(callback: any, actionTitle: string) {
         AWProxy.exec(
             callback,
             (() => this.errorHandler)(),
             'AWPage',
             'setModalAppWebViewActionCallback',
-            []
+            [actionTitle]
         );
     }
 
@@ -52,6 +52,16 @@ export class AWPage extends AWPlugin {
             'AWPage',
             'closeModalAppWebView',
             []
+        );
+    }
+
+    video(success: any, error: any, url: string) {
+        AWProxy.exec(
+            success,
+            error,
+            'AWPage',
+            'video',
+            [url]
         );
     }
 

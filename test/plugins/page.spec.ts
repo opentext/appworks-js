@@ -27,4 +27,9 @@ describe('Page', () => {
         let o = new AWPage(Util.noop, Util.noop);
         expect(o.closeModalAppWebView).to.not.equal(undefined);
     });
+
+    it('should define a video function', () => {
+        let o = new AWPage(Util.noop, Util.noop);
+        expect(o.video).to.not.equal(undefined);
+    });
 });
