@@ -1,7 +1,7 @@
 {
   "name": "appworks-js",
   "description": "JavaScript library providing an interface for native bindings provided by AppWorks mobile and desktop clients.",
-  "version": "16.2.8",
+  "version": "16.3.0",
   "author": "OpenText Inc",
   "bugs": "https://github.com/opentext/appworks-js/issues",
   "dependencies": {

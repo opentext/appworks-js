@@ -29,7 +29,7 @@ describe('Page', () => {
     });
 
     it('should define a video function', () => {
-        let o = new AWPage(Util.noop, Util.noop);
+        let o = new AWPage(noop, noop);
         expect(o.video).to.not.equal(undefined);
     });
 });
