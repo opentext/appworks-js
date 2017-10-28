@@ -18,20 +18,25 @@ var on_device_storage_1 = require("../plugins/storage/on-device-storage");
 var persistent_storage_1 = require("../../test/mock/persistent-storage");
 var desktop_storage_1 = require("../plugins/storage/desktop-storage");
 var desktop_webview_1 = require("../plugins/webview/desktop-webview");
+var callbackQueue = [];
+var deviceReady = false;
+setupDeviceInitializationForMobile();
 var AWProxy = (function () {
     function AWProxy() {
     }
     AWProxy.exec = function (successHandler, errorHandler, name, method, args) {
-        if (typeof cordova !== 'undefined') {
-            cordova.exec(successHandler, errorHandler, name, method, args);
+        try {
+            if (AWProxy.isDesktopEnv()) {
+                AWProxy.execDesktop(successHandler, errorHandler, name, method, args);
+            }
+            else {
+                AWProxy.execMobile(successHandler, errorHandler, name, method, args);
+            }
         }
-        else if (AWProxy.isDesktopEnv()) {
-            __aw_plugin_proxy.exec(successHandler, errorHandler, name, method, args);
-        }
-        else {
-            console.error('No proxy objects defined - tried [Cordova, __aw_plugin_proxy]');
-            if (typeof errorHandler === 'function') {
-                errorHandler('No proxy objects defined - tried [Cordova, __aw_plugin_proxy]');
+        catch (err) {
+            console.error('No proxy objects defined - tried [cordova, __aw_plugin_proxy]', err);
+            if (util_1.isFunction(errorHandler)) {
+                errorHandler(err);
             }
         }
     };
@@ -120,7 +125,7 @@ var AWProxy = (function () {
     };
     AWProxy.document = function () {
         return (typeof document !== 'undefined') ? document : {
-            addEventListener: util_1.Util.noop
+            addEventListener: util_1.noop
         };
     };
     AWProxy.file = function () {
@@ -223,7 +228,33 @@ var AWProxy = (function () {
         // the proxy exposed by desktop has a method to allow retrieval of plugin instances
         return __aw_plugin_proxy.getPlugin(pluginName);
     };
+    AWProxy.execMobile = function (successHandler, errorHandler, name, method, args) {
+        if (deviceReady) {
+            cordova.exec(successHandler, errorHandler, name, method, args);
+        }
+        else {
+            callbackQueue.push(function () {
+                AWProxy.exec(successHandler, errorHandler, name, method, args);
+            });
+        }
+    };
+    AWProxy.execDesktop = function (successHandler, errorHandler, name, method, args) {
+        __aw_plugin_proxy.exec(successHandler, errorHandler, name, method, args);
+    };
     return AWProxy;
 }());
 exports.AWProxy = AWProxy;
+function setupDeviceInitializationForMobile() {
+    try {
+        document.addEventListener('deviceready', function () {
+            deviceReady = true;
+            callbackQueue.forEach(function (callback) {
+                callback();
+            });
+        });
+    }
+    catch (e) {
+        // unsupported environment
+    }
+}
 //# sourceMappingURL=proxy.js.map

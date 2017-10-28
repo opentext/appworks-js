@@ -1,11 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @module
- * @description
- * Entry point from which you should import all public appworks APIs.
- */
-var proxy_1 = require("./common/proxy");
 var index_1 = require("./plugins/accelerometer/index");
 exports.AWAccelerometer = index_1.AWAccelerometer;
 var index_2 = require("./plugins/app-manager/index");
@@ -61,8 +55,8 @@ var index_26 = require("./plugins/page/index");
 exports.AWPage = index_26.AWPage;
 var plugin_1 = require("./common/plugin");
 exports.AWPlugin = plugin_1.AWPlugin;
-var proxy_2 = require("./common/proxy");
-exports.AWProxy = proxy_2.AWProxy;
+var proxy_1 = require("./common/proxy");
+exports.AWProxy = proxy_1.AWProxy;
 var index_27 = require("./plugins/qr-reader/index");
 exports.AWQRReader = index_27.AWQRReader;
 var index_28 = require("./plugins/document-scanner/index");
@@ -83,13 +77,8 @@ var index_35 = require("./plugins/storage/index");
 exports.SecureStorage = index_35.SecureStorage;
 exports.AWSecureStorage = index_35.AWSecureStorage;
 var util_1 = require("./common/util");
-exports.Util = util_1.Util;
-function isDesktopEnv() {
-    return proxy_1.AWProxy.isDesktopEnv();
-}
-exports.isDesktopEnv = isDesktopEnv;
-function isMobileEnv() {
-    return proxy_1.AWProxy.isMobileEnv();
-}
-exports.isMobileEnv = isMobileEnv;
+exports.isFunction = util_1.isFunction;
+exports.noop = util_1.noop;
+exports.isDesktopEnv = util_1.isDesktopEnv;
+exports.isMobileEnv = util_1.isMobileEnv;
 //# sourceMappingURL=index.js.map

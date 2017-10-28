@@ -195,13 +195,15 @@ var MockFileTransfer = (function () {
     return MockFileTransfer;
 }());
 
-var Util = (function () {
-    function Util() {
-    }
-    Util.noop = function () {
-    };
-    return Util;
-}());
+/**
+ * Collection of utility functions
+ */
+function noop() {
+}
+function isFunction(functionToCheck) {
+    var getType = {};
+    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+}
 
 var MockLocalStorage = (function () {
     // allow tests to set a value if they need to
@@ -1580,44 +1582,49 @@ var DesktopWebview = (function () {
         this.id = DesktopWebviewSequenceStore.seqNo++;
     }
     DesktopWebview.prototype.addEventListener = function (type, callback) {
-        AWProxy.exec(Util.noop, Util.noop, 'AWWebView', 'addEventListener', [this.id, type, callback]);
+        AWProxy.exec(noop, noop, 'AWWebView', 'addEventListener', [this.id, type, callback]);
     };
     DesktopWebview.prototype.removeEventListener = function (type, callback) {
-        AWProxy.exec(Util.noop, Util.noop, 'AWWebView', 'removeEventListener', [this.id, type, callback]);
+        AWProxy.exec(noop, noop, 'AWWebView', 'removeEventListener', [this.id, type, callback]);
     };
     DesktopWebview.prototype.close = function () {
-        AWProxy.exec(Util.noop, Util.noop, 'AWWebView', 'close', [this.id]);
+        AWProxy.exec(noop, noop, 'AWWebView', 'close', [this.id]);
     };
     DesktopWebview.prototype.show = function () {
-        AWProxy.exec(Util.noop, Util.noop, 'AWWebView', 'show', [this.id]);
+        AWProxy.exec(noop, noop, 'AWWebView', 'show', [this.id]);
     };
     DesktopWebview.prototype.open = function (url, target, options) {
-        AWProxy.exec(Util.noop, Util.noop, 'AWWebView', 'open', [this.id, url, target, options]);
+        AWProxy.exec(noop, noop, 'AWWebView', 'open', [this.id, url, target, options]);
         return this;
     };
     DesktopWebview.prototype.executeScript = function (script, callback) {
-        AWProxy.exec(callback, Util.noop, 'AWWebView', 'executeScript', [this.id, script]);
+        AWProxy.exec(callback, noop, 'AWWebView', 'executeScript', [this.id, script]);
     };
     DesktopWebview.prototype.insertCSS = function (css, callback) {
-        AWProxy.exec(callback, Util.noop, 'AWWebView', 'insertCSS', [this.id, css]);
+        AWProxy.exec(callback, noop, 'AWWebView', 'insertCSS', [this.id, css]);
     };
     return DesktopWebview;
 }());
 
+var callbackQueue = [];
+var deviceReady = false;
+setupDeviceInitializationForMobile();
 var AWProxy = (function () {
     function AWProxy() {
     }
     AWProxy.exec = function (successHandler, errorHandler, name, method, args) {
-        if (typeof cordova !== 'undefined') {
-            cordova.exec(successHandler, errorHandler, name, method, args);
+        try {
+            if (AWProxy.isDesktopEnv()) {
+                AWProxy.execDesktop(successHandler, errorHandler, name, method, args);
+            }
+            else {
+                AWProxy.execMobile(successHandler, errorHandler, name, method, args);
+            }
         }
-        else if (AWProxy.isDesktopEnv()) {
-            __aw_plugin_proxy.exec(successHandler, errorHandler, name, method, args);
-        }
-        else {
-            console.error('No proxy objects defined - tried [Cordova, __aw_plugin_proxy]');
-            if (typeof errorHandler === 'function') {
-                errorHandler('No proxy objects defined - tried [Cordova, __aw_plugin_proxy]');
+        catch (err) {
+            console.error('No proxy objects defined - tried [cordova, __aw_plugin_proxy]', err);
+            if (isFunction(errorHandler)) {
+                errorHandler(err);
             }
         }
     };
@@ -1706,7 +1713,7 @@ var AWProxy = (function () {
     };
     AWProxy.document = function () {
         return (typeof document !== 'undefined') ? document : {
-            addEventListener: Util.noop
+            addEventListener: noop
         };
     };
     AWProxy.file = function () {
@@ -1809,8 +1816,34 @@ var AWProxy = (function () {
         // the proxy exposed by desktop has a method to allow retrieval of plugin instances
         return __aw_plugin_proxy.getPlugin(pluginName);
     };
+    AWProxy.execMobile = function (successHandler, errorHandler, name, method, args) {
+        if (deviceReady) {
+            cordova.exec(successHandler, errorHandler, name, method, args);
+        }
+        else {
+            callbackQueue.push(function () {
+                AWProxy.exec(successHandler, errorHandler, name, method, args);
+            });
+        }
+    };
+    AWProxy.execDesktop = function (successHandler, errorHandler, name, method, args) {
+        __aw_plugin_proxy.exec(successHandler, errorHandler, name, method, args);
+    };
     return AWProxy;
 }());
+function setupDeviceInitializationForMobile() {
+    try {
+        document.addEventListener('deviceready', function () {
+            deviceReady = true;
+            callbackQueue.forEach(function (callback) {
+                callback();
+            });
+        });
+    }
+    catch (e) {
+        // unsupported environment
+    }
+}
 
 var AWAccelerometer$1 = (function (_super) {
     __extends(AWAccelerometer, _super);
@@ -1876,7 +1909,7 @@ var AWAuth$1 = (function (_super) {
 var AWCache$1 = (function (_super) {
     __extends(AWCache, _super);
     function AWCache(options) {
-        var _this = _super.call(this, Util.noop, Util.noop) || this;
+        var _this = _super.call(this, noop, noop) || this;
         _this.options = options || { usePersistentStorage: false };
         _this.preloadCache();
         return _this;
@@ -1941,7 +1974,7 @@ var AWCache$1 = (function (_super) {
 var AWCalendar$1 = (function (_super) {
     __extends(AWCalendar, _super);
     function AWCalendar() {
-        return _super.call(this, Util.noop, Util.noop) || this;
+        return _super.call(this, noop, noop) || this;
     }
     AWCalendar.getCalendarOptions = function () {
         return {
@@ -2331,7 +2364,7 @@ var AWFinder$1 = (function (_super) {
 var AWGlobalization$1 = (function (_super) {
     __extends(AWGlobalization, _super);
     function AWGlobalization() {
-        return _super.call(this, Util.noop, Util.noop) || this;
+        return _super.call(this, noop, noop) || this;
     }
     AWGlobalization.prototype.getPreferredLanguage = function (successFn, errorFn) {
         AWProxy.exec(successFn, errorFn, 'AWGlobalization', 'getPreferredLanguage', []);
@@ -2394,7 +2427,7 @@ var AWHeader$1 = (function (_super) {
 var AWKeyboard$1 = (function (_super) {
     __extends(AWKeyboard, _super);
     function AWKeyboard() {
-        return _super.call(this, Util.noop, Util.noop) || this;
+        return _super.call(this, noop, noop) || this;
     }
     AWKeyboard.prototype.hideKeyboardAccessoryBar = function (hide) {
         var _this = this;
@@ -2419,7 +2452,7 @@ var AWKeyboard$1 = (function (_super) {
 var AWLauncher$1 = (function (_super) {
     __extends(AWLauncher, _super);
     function AWLauncher(successHandler, errorHandler) {
-        return _super.call(this, successHandler || Util.noop, errorHandler || Util.noop) || this;
+        return _super.call(this, successHandler || noop, errorHandler || noop) || this;
     }
     AWLauncher.prototype.getLaunchURL = function (successHandler, errorHandler) {
         AWProxy.exec(successHandler, errorHandler, 'AWLauncher', 'getLaunchURL', []);
@@ -2618,7 +2651,7 @@ var AWMobileFileSystem$1 = (function (_super) {
 var AWNotificationManager$1 = (function (_super) {
     __extends(AWNotificationManager, _super);
     function AWNotificationManager() {
-        return _super.call(this, Util.noop, Util.noop) || this;
+        return _super.call(this, noop, noop) || this;
     }
     AWNotificationManager.prototype.enablePushNotifications = function (handler, errorHandler, includeSeqNo) {
         AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'enablePushNotifications', AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]);
@@ -2662,7 +2695,7 @@ var AWNotificationManager$1 = (function (_super) {
 var AWOfflineManager$1 = (function (_super) {
     __extends(AWOfflineManager, _super);
     function AWOfflineManager(options) {
-        var _this = _super.call(this, Util.noop, Util.noop) || this;
+        var _this = _super.call(this, noop, noop) || this;
         var document;
         _this.cacheKey = '__appworksjs.deferredQueue';
         _this.cache = new AWCache$1();
@@ -2865,7 +2898,7 @@ var AWSecureStorage$1 = (function (_super) {
 var AWVibration$1 = (function (_super) {
     __extends(AWVibration, _super);
     function AWVibration() {
-        return _super.call(this, Util.noop, Util.noop) || this;
+        return _super.call(this, noop, noop) || this;
     }
     AWVibration.prototype.vibrate = function (time) {
         return AWProxy.vibrate(time);
@@ -2876,7 +2909,7 @@ var AWVibration$1 = (function (_super) {
 var AWWebView$1 = (function (_super) {
     __extends(AWWebView, _super);
     function AWWebView() {
-        return _super.call(this, Util.noop, Util.noop) || this;
+        return _super.call(this, noop, noop) || this;
     }
     AWWebView.prototype.open = function (url, target, options) {
         return AWProxy.webview().open(url, target, options);
@@ -2905,7 +2938,7 @@ var AWWebView$1 = (function (_super) {
 var AWFileSystem$1 = (function (_super) {
     __extends(AWFileSystem, _super);
     function AWFileSystem() {
-        var _this = _super.call(this, Util.noop, Util.noop) || this;
+        var _this = _super.call(this, noop, noop) || this;
         _this.desktopEnvError = new Error('This method is only available in the AppWorks Desktop environment');
         return _this;
     }

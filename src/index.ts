@@ -41,12 +41,4 @@ export {DesktopStorage} from './plugins/storage/index';
 export {LocalFileSystem} from './plugins/file/index';
 export {OnDeviceStorage} from './plugins/storage/index';
 export {SecureStorage, AWSecureStorage} from './plugins/storage/index';
-export {Util} from './common/util';
-
-export function isDesktopEnv() {
-    return AWProxy.isDesktopEnv();
-}
-
-export function isMobileEnv() {
-    return AWProxy.isMobileEnv();
-}
+export {isFunction, noop, isDesktopEnv, isMobileEnv} from './common/util';

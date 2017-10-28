@@ -1,13 +1,13 @@
 import {AWPlugin} from "../../common/plugin";
 import {AWProxy} from "../../common/proxy";
-import {Util} from "../../common/util";
+import {noop} from "../../common/util";
 
 export class AWCache extends AWPlugin {
 
     private options: any;
 
     constructor(options?: any) {
-        super(Util.noop, Util.noop);
+        super(noop, noop);
         this.options = options || {usePersistentStorage: false};
         this.preloadCache();
     }

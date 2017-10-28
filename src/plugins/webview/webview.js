@@ -16,7 +16,7 @@ var util_1 = require("../../common/util");
 var AWWebView = (function (_super) {
     __extends(AWWebView, _super);
     function AWWebView() {
-        return _super.call(this, util_1.Util.noop, util_1.Util.noop) || this;
+        return _super.call(this, util_1.noop, util_1.noop) || this;
     }
     AWWebView.prototype.open = function (url, target, options) {
         return proxy_1.AWProxy.webview().open(url, target, options);

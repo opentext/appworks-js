@@ -16,7 +16,7 @@ var util_1 = require("../../common/util");
 var AWFileSystem = (function (_super) {
     __extends(AWFileSystem, _super);
     function AWFileSystem() {
-        var _this = _super.call(this, util_1.Util.noop, util_1.Util.noop) || this;
+        var _this = _super.call(this, util_1.noop, util_1.noop) || this;
         _this.desktopEnvError = new Error('This method is only available in the AppWorks Desktop environment');
         return _this;
     }

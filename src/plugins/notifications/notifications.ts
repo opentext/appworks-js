@@ -1,11 +1,11 @@
 import {AWPlugin} from '../../common/plugin';
 import {AWProxy} from '../../common/proxy';
-import {Util} from '../../common/util';
+import {noop} from '../../common/util';
 
 export class AWNotificationManager extends AWPlugin {
 
     constructor() {
-        super(Util.noop, Util.noop);
+        super(noop, noop);
     }
 
     enablePushNotifications(handler: any, errorHandler: any, includeSeqNo: boolean) {

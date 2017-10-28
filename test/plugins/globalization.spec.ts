@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Util} from "../../src/common/util";
+import {noop} from "../../src/common/util";
 import {AWFinder} from "../../src/plugins/finder/finder";
 import {AWGlobalization} from '../../src/plugins/globalization/globalization';
 
@@ -10,12 +10,12 @@ describe('AWGlobalization', () => {
     });
 
     it('should define an openIn function', () => {
-        let o = new AWFinder(Util.noop, Util.noop);
+        let o = new AWFinder(noop, noop);
         expect(o.openIn).to.not.equal(undefined);
     });
 
     it('should define an list function', () => {
-        let o = new AWFinder(Util.noop, Util.noop);
+        let o = new AWFinder(noop, noop);
         expect(o.list).to.not.equal(undefined);
     });
 });

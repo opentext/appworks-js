@@ -16,7 +16,7 @@ var util_1 = require("../../common/util");
 var AWVibration = (function (_super) {
     __extends(AWVibration, _super);
     function AWVibration() {
-        return _super.call(this, util_1.Util.noop, util_1.Util.noop) || this;
+        return _super.call(this, util_1.noop, util_1.noop) || this;
     }
     AWVibration.prototype.vibrate = function (time) {
         return proxy_1.AWProxy.vibrate(time);

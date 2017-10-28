@@ -54,4 +54,6 @@ export declare class AWProxy {
      *                called outside of the desktop client context
      */
     static getDesktopPlugin(pluginName: string): any;
+    private static execMobile(successHandler, errorHandler, name, method, args);
+    private static execDesktop(successHandler, errorHandler, name, method, args);
 }

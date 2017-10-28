@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Util} from "../../src/common/util";
+import {noop} from "../../src/common/util";
 import {AWLauncher} from "../../src/plugins/launcher/launcher";
 
 describe('Launcher', () => {
@@ -9,7 +9,7 @@ describe('Launcher', () => {
     });
 
     it('should define a clearLaunchURL function', () => {
-        let o = new AWLauncher(Util.noop, Util.noop);
+        let o = new AWLauncher(noop, noop);
         expect(o.clearLaunchURL).to.not.equal(undefined);
     });
 });

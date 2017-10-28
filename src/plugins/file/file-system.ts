@@ -1,6 +1,6 @@
 import {AWPlugin} from "../../common/plugin";
 import {AWProxy} from "../../common/proxy";
-import {Util} from "../../common/util";
+import {noop} from "../../common/util";
 import {DesktopHostFileSystem, FileDetails, FileDialogOptions, SaveDialogOptions} from "./index";
 
 export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
@@ -8,7 +8,7 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     desktopEnvError: Error = new Error('This method is only available in the AppWorks Desktop environment');
 
     constructor() {
-        super(Util.noop, Util.noop);
+        super(noop, noop);
     }
 
     getPath(name: string,

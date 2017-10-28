@@ -16,7 +16,7 @@ var util_1 = require("../../common/util");
 var AWLauncher = (function (_super) {
     __extends(AWLauncher, _super);
     function AWLauncher(successHandler, errorHandler) {
-        return _super.call(this, successHandler || util_1.Util.noop, errorHandler || util_1.Util.noop) || this;
+        return _super.call(this, successHandler || util_1.noop, errorHandler || util_1.noop) || this;
     }
     AWLauncher.prototype.getLaunchURL = function (successHandler, errorHandler) {
         proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWLauncher', 'getLaunchURL', []);

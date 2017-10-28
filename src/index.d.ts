@@ -35,6 +35,4 @@ export { DesktopStorage } from './plugins/storage/index';
 export { LocalFileSystem } from './plugins/file/index';
 export { OnDeviceStorage } from './plugins/storage/index';
 export { SecureStorage, AWSecureStorage } from './plugins/storage/index';
-export { Util } from './common/util';
-export declare function isDesktopEnv(): boolean;
-export declare function isMobileEnv(): boolean;
+export { isFunction, noop, isDesktopEnv, isMobileEnv } from './common/util';
