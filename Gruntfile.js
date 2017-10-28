@@ -11,7 +11,7 @@ module.exports = function (grunt) {
         clean: ['tmp'],
 
         jshint: {
-            files: ['Gruntfile.js', 'src/*.js', 'test/**/*.js'],
+            files: ['Gruntfile.js', 'test/**/*.js'],
             options: {
                 globals: {
                     angular: true
@@ -21,7 +21,7 @@ module.exports = function (grunt) {
 
         uglify: {
             options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> copyright OpenText Inc */\n'
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> copyright Jason Ibrahim */\n'
             },
             build: {
                 src: 'dist/appworks.js',
@@ -32,18 +32,12 @@ module.exports = function (grunt) {
         concat: {
             options: {
                 // define a string to put between each file in the concatenated output
-                separator: '\n'
+                separator: ';\n'
             },
             dist: {
                 // the files to concatenate
                 src: [
-                    'src/appworks-core.js',
-                    'src/appworks-cache.js',
-                    'src/appworks-comms.js',
-                    'src/appworks-storage.js',
-                    'src/appworks-offline.js',
-                    'src/appworks-notifications.js',
-                    'src/appworks-global.js'
+                    'src/appworks.js'
                 ],
                 // the location of the resulting JS file
                 dest: 'dist/appworks.js'
@@ -51,14 +45,26 @@ module.exports = function (grunt) {
         },
         // this task moves all files that get installed by npm into a local "lib" directory
         copy: {
-            blackberry: {
+            map: {
                 files: [
                     {
                         expand: false,
-                        src: ['src/cordova/cordova-blackberry/cordova.js'],
-                        dest: 'lib/cordova/cordova.js'
+                        src: 'src/appworks.js.map',
+                        dest: 'dist/appworks.js.map'
                     }
                 ]
+            }
+        },
+        typescript: {
+            base: {
+                src: ['src/*.ts', 'src/*.d.ts'],
+                dest: 'dist',
+                options: {
+                    module: 'amd', //or commonjs
+                    target: 'es5', //or es3
+                    sourceMap: true,
+                    declaration: true
+                }
             }
         }
     });
@@ -70,13 +76,14 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-run');
+    grunt.loadNpmTasks('grunt-typescript');
 
     // Default task.
     // first build all of the cordova js files by running a shell script,
     // then copy all dependencies from node_modules to the "lib" directory",
     // concatenate all of our dependencies from "lib" into a single file in a particular order in "src/appworks.js",
     // compress that concatenated file into a single appworks.min.js distribution in the "dist" directory
-    grunt.registerTask('default', ['jshint', 'compress']);
+    grunt.registerTask('default', ['jshint', 'copy', 'compress']);
     // clean up task: concatenate assets, compress, then clean project
     grunt.registerTask('compress', ['concat', 'uglify', 'clean']);
 };

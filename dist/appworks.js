@@ -1,1267 +1,3177 @@
-// define the AMD module
-function AppWorksCore() {
-    'use strict';
+(function (exports) {
+'use strict';
 
-    // private variables
-    var callbacks = [],
-        errorCallbacks = [];
-
-    function createRequestString(action) {
-        return JSON.stringify({
-            action: action,
-            callbackID: aw.getNewCallbackId()
-        });
-    }
-
-    String.random = function () {
-        var length = 16;
-        return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1);
-    };
-
-    // module definition
-    var aw = {
-        /**
-         * Communication with the BB Cascades framework (QML documents).
-         *
-         * A Cascades WebView component onMessageReceived: handle intercepts the calls.
-         * We register a callback to receive the asyn communication that comes back
-         * from that layer.
-         *
-         * @param message 		the message object to pass to the BB native code
-         * @param callback 		callback
-         * @param errorCallback errorCallback
-         * */
-        blackberryCommunication: function (message, callback, errorCallback) {
-            if (callback) {
-                callbacks.push(callback);
-            }
-            // Add our error callback if supplied
-            if (errorCallback) {
-                errorCallbacks.push(errorCallback);
-            }
-            navigator.cascades.postMessage(encodeURIComponent(message));
-        },
-        /**
-         * Callbacks are handled via their sequential id which forms the index back into
-         * our callbacks array.
-         */
-        getNewCallbackId: function () {
-            // use the unique page id assigned by our native layer if its available
-            // within the otag object
-            if (window.otag && window.otag.pageUUID) {
-                return window.otag.pageUUID + "_" + callbacks.length;
-            }
-
-            return callbacks.length;
-        },
-        /**
-         * Get the next sequential id from the error callbacks array.
-         */
-        getNewErrorCallbackId: function () {
-            return errorCallbacks.length;
-        },
-        /**
-         * Is the device hosting this app currently connected to the network?
-         */
-        isOnline: function (callback) {
-            var req = createRequestString('isOnline');
-            this.blackberryCommunication(req, callback);
-        },
-        /**
-         * Get the available (installed) components, and return them along with the
-         * values stored in their component.properties file.
-         *
-         * @param callback callback
-         *
-         * @return 	response {
-	     *				"components" : {
-	     *					"comp1Name" : {
-	     *						properties : {
-	     *							"prop1" : "prop1Value",
-	     *							"prop2" : "prop2Value",
-	     *							...
-	     *						}
-	     *					},
-	     *					"component2Name" : {
-	     *						...
-	     *					},
-	     *					...
-	     *				}
-	     * 			}
-         */
-        getComponents: function (callback) {
-            var req = createRequestString('getComponents');
-            this.blackberryCommunication(req, callback);
-        },
-        /**
-         * Download a file using the supplied request object. Use
-         * createDownloadRequest to form the request object.
-         *
-         * @param requestObj 	download request
-         * @param successFn		success callback
-         * @param errorFn 		error callback
-         *
-         * @return response {
-         *              filePath : {on_device_path},
-	     * 		        fileSize : {int_in_bytes},
-	     * 		            fileData : {Base64_encoded_string}
-	     * 		            headers : {
-	     * 			            responseHeader1 : {val},
-         *			            responseHeader2 : {val},
-	     *			            ...
-	     *		            },
-	     *		            responseJson : { possibly empty }
-	     *              }
-         */
-        downloadFile: function (requestObj, successFn, errorFn) {
-            this.blackberryCommunication(JSON.stringify(requestObj),
-                function (params) {
-                    successFn(params.data);
-                },
-                function (params) {
-                    errorFn(params.data);
-                });
-        },
-        /**
-         * Create a request object that can be used to download a file, and optinally cache it
-         * in the local cache provided by the runtime, and also display it using the device's
-         * installed apps if one is available that supports the downloaded files type.
-         *
-         * The only optional argument is the cacheRequest, you may supply empty objects for the
-         * headers and query parameters. If no cacheRequest argument is specified then we will
-         * not attempt to cache the item for you. See AppWorksCache#getBaseCacheRequest.
-         *
-         * @param fileName 			the name of the file
-         * @param relativePath		url path relative from the base Gateway URL
-         * @param headers			headers to use in the request (can be empty)
-         * @param queryParams		query params to add to the request url (can be empty)
-         * @param openOnReturn		should we attempt to open the file
-         * @param cacheRequest		data on how we should cache the downloaded item (optional)
-         * @param destinationPath	the on-device path that the file should be downloaded to (optional)
-         */
-        createDownloadRequest: function (fileName, relativePath, headers, queryParams, openOnReturn, cacheRequest, destinationPath) {
-            // cacheRequest is not mandatory but we want to make sure we have values (empty or not) for the rest
-            if (arguments.length < 5) {
-                throw new Error('insufficient arguments supplied');
-            }
-
-            var downloadRequest = {
-                action: 'downloadFile',
-                callbackID: this.getNewCallbackId(),
-                errorCallbackID: this.getNewErrorCallbackId(),
-                fileName: fileName,
-                relativePath: relativePath,
-                headers: headers,
-                queryParams: queryParams,
-                openOnReturn: openOnReturn
-            };
-
-            if (typeof cacheRequest != 'undefined') {
-                downloadRequest.cacheRequest = cacheRequest;
-            }
-
-            if (typeof destinationPath != 'undefined') {
-                downloadRequest.destinationPath = destinationPath;
-            }
-
-            return downloadRequest;
-        },
-        /**
-         * Upload a file using the supplied request object. Use createUploadRequest and
-         * the other helpers for form construction to create the upload request.
-         *
-         * @param requestObj 	upload request
-         * @param successFn		success callback
-         * @param errorFn 		error callback
-         *
-         * @return response {
-	     * 		        message : {reponse_status_message},
-	     * 		        headers : {
-	     * 			        responseHeader1 : {val},
-	     *			        responseHeader2 : {val},
-	     *			        ...
-	     *		        },
-	     *		        responseJson : { possibly empty }
-	     *          }
-         */
-        uploadFile: function (requestObj, successFn, errorFn) {
-            this.blackberryCommunication(JSON.stringify(requestObj),
-                function (params) {
-                    successFn(params.data);
-                },
-                function (params) {
-                    errorFn(params.data);
-                });
-        },
-        /**
-         * Create the request object that can be used to perform a form based upload. A JSON
-         * representation of the form, plus the URL and any headers/params should be included.
-         *
-         * We currently support a single file input per form and expect the files content to
-         * be provided as the value of the form field in Base64 encoded form.
-         *
-         * @param relativePath	url path relative from the base Gateway URL
-         * @param headers		headers to use in the request (can be empty)
-         * @param queryParams	query params to add to the request url (can be empty)
-         * @param formFields	an array of form field objects
-         */
-        createUploadRequest: function (relativePath, headers, queryParams, formFields) {
-
-            var uploadRequest = {
-                action: 'uploadFile',
-                relativePath: relativePath,
-                headers: headers,
-                queryParams: queryParams,
-                formData: formFields,
-                callbackID: this.getNewCallbackId(),
-                errorCallbackID: this.getNewErrorCallbackId()
-            };
-
-            return uploadRequest;
-        },
-        /**
-         * Create a form field that we can pass with an upload request.
-         *
-         * @param name 			the name of the form field
-         * @param type			the type, text, file, etc... of the form field
-         * @param value 		the value of the field, use a base64 encoded String for file content
-         * @param fileName 		the name of the file (optional, for file type form fields)
-         * @param contentType	the MIME type of file content (optional, for file type form fields)
-         */
-        createFormField: function (name, type, value, fileName, contentType) {
-            // base form field
-            var formField = {
-                name: name,
-                inputType: type,
-                value: value
-            };
-
-            // file input extras, these are the values used in the Content Disposition
-            // section for the file input
-            if (typeof fileName !== 'undefined') {
-                formField.fileName = fileName;
-            }
-
-            if (typeof contentType !== 'undefined') {
-                formField.contentType = contentType;
-            }
-
-            return formField;
-        },
-        /**
-         * Open a folder picker to allow users to reference an area of the device
-         * that they may be interested in. If the user cancels this operation then
-         * the reponse will contain an empty filePath property, and success will be
-         * set to 'false'. Cancelling is not considered an error so will be handled
-         * by the sole callback provided.
-         *
-         * @param callback callback
-         *
-         * @return 	response {
-	     *              cmd : "selectFilePath",
-	     * 	 			success : true,
-	     * 				callbackID : callbackID,
-	     *				filePath : {file_path_value}
-	     * 			}
-         */
-        selectFilePath: function (callback) {
-            var req = createRequestString('selectFilePath');
-            this.blackberryCommunication(req, callback);
-        },
-        camera: {
-            /**
-             * open the device camera to take a picture. takes a success callback, error callback, and options parameter
-             * for options such as quality, save location, and more. by default, success callback will take the dataUrl
-             * of the image as a parameter.
-             * @param callback
-             * @param errorCallback
-             * @param options
-             */
-            takePicture: function (callback, errorCallback, options) {
-                options = options || {
-                    destinationType: Camera.DestinationType.FILE_URI,
-                    encodingType: Camera.EncodingType.JPEG,
-                    mediaType: Camera.MediaType.ALLMEDIA,
-                    correctOrientation: true,
-                    saveToPhotoAlbum: true
-                };
-
-                navigator.camera.getPicture(((aw.storage && onCameraSuccess) || callback), errorCallback, options);
-
-                function onCameraSuccess(fileUrl) {
-                    var options = {
-                        fileSystem: LocalFileSystem.TEMPORARY,
-                        resolveLocalFileSystemURL: true
-                    };
-                    aw.storage.getFile(fileUrl, callback, errorCallback, options);
-                }
-            },
-            chooseFromLibrary: function (callback, errorCallback, options) {
-                options = options || {sourceType: Camera.PictureSourceType.PHOTOLIBRARY};
-
-                navigator.camera.getPicture(((aw.storage && onCameraSuccess) || callback), errorCallback, options);
-
-                function onCameraSuccess(fileUrl) {
-                    var options = {
-                        fileSystem: LocalFileSystem.TEMPORARY,
-                        resolveLocalFileSystemURL: true
-                    };
-                    aw.storage.getFile(fileUrl, callback, errorCallback, options);
-                }
-            }
-        }
-    };
-
-    return aw;
+function __extends(d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
-function AppWorksCache(aw) {
-    'use strict';
 
-    // private variables
-    var requestPrefix = 'cache.',
-        callbackIdPrefix = 'cacheReq.';
-
-    function createCacheRequestString(action, cacheRequest) {
-        return JSON.stringify({
-            action: requestPrefix + action,
-            callbackID: aw.getNewCallbackId(),
-            cacheRequest: JSON.stringify(cacheRequest)
-        });
+var AWPlugin = (function () {
+    /**
+     * Base plugin class. Constructor takes in a success function and error function to be executed upon
+     * return from call to native layer
+     * @param successHandler - the function to be executed when the native call succeeds. passes an object as arg
+     * @param errorHandler - the function to be executed when the native call fails. passes an object as arg.
+     */
+    function AWPlugin(successHandler, errorHandler) {
+        this.successHandler = successHandler;
+        this.errorHandler = errorHandler;
     }
+    return AWPlugin;
+}());
 
-    function errorHandler(e) {
-        var msg = '';
-
-        switch (e.code) {
-            case FileError.QUOTA_EXCEEDED_ERR:
-                msg = 'QUOTA_EXCEEDED_ERR';
-                break;
-            case FileError.NOT_FOUND_ERR:
-                msg = 'NOT_FOUND_ERR';
-                break;
-            case FileError.SECURITY_ERR:
-                msg = 'SECURITY_ERR';
-                break;
-            case FileError.INVALID_MODIFICATION_ERR:
-                msg = 'INVALID_MODIFICATION_ERR';
-                break;
-            case FileError.INVALID_STATE_ERR:
-                msg = 'INVALID_STATE_ERR';
-                break;
-            default:
-                msg = 'Unknown Error';
-                break;
-        }
-
-        alert('Error: ' + msg);
+var MockContacts = (function () {
+    function MockContacts() {
+        this.fieldType = {};
     }
-
-    // module definition
-    var awCache = {
-        /**
-         * Build the basic cache request, make sure you use nulls where
-         * appropriate to ensure object is fully populated. Input is
-         * validated.
-         *
-         * @param fileName 	file name
-         * @param app 		the app the cache request is on behalf of, a unique partition
-         *					within the cache, this is optional but if set to null or blank
-         * 					will result in general cache access where there is a risk of file
-         * 					name clashes occurring
-         * @param version 	the version of the file (optional)
-         */
-        getBaseCacheRequest: function (fileName, app, version) {
-            if (fileName === null) {
-                throw new Error('fileName cannot be null');
-            }
-
-            if (typeof fileName === 'undefined' || typeof app === 'undefined' || typeof version === 'undefined') {
-                throw new Error('All arguments must be defined, they can be null apart from fileName');
-            }
-
-            var namespace = (app !== null) ? app : 'general',
-                itemVersion = (version !== null) ? version : 'default';
-
-            return {
-                fileName: fileName,
-                app: namespace,
-                version: itemVersion
-            };
-        },
-        /**
-         * Get the maximum size, current used and free in bytes.
-         *
-         * @param callback callback
-         *
-         * @return 	response {
-		 * 				"callbackID" : "val",
-		 *				"cacheInfo" : {
-		 *					"maxSize" : "0",
-		 *					"currentSize" : "0",
-		 *					"freeSpace" : "0"
-		 *				}
-		 * 			}
-         */
-        getCacheInfo: function (callback) {
-            var req = createCacheRequestString('getCacheInfo');
-            aw.blackberryCommunication(req, callback);
-        },
-        /**
-         * Get a cache items details, if the item, identified
-         * by the request object details, exists.
-         *
-         * @param cacheRequest	cache request (see getBaseCacheRequest())
-         * @param callback 		callback
-         *
-         * @return 	response {
-	 	 * 				"callbackID" : "val",
-		 *				"cacheItem" : {
-		 * 					"fileName" : "val",
-		 * 					"app" : "val",
-		 *					"modifiedDate" : "val",
-		 *					"expires" : "val",
-		 *					"version" : "val"
-		 *				}
-		 * 			}
-         */
-        getCacheItemInfo: function (cacheRequest, callback) {
-            var req = createCacheRequestString('getCacheItemInfo', cacheRequest);
-            aw.blackberryCommunication(req, callback);
-        },
-        /**
-         * Retrieve the cache item info plus the actual data as a Base64 encoded String.
-         *
-         * @param cacheRequest	cache request (see getBaseCacheRequest())
-         * @param openOnReturn	should we attempt to open the file in a native handler on return
-         * @param callback 		callback
-         *
-         * @return 	response {
-	 	 * 				"callbackID" : "val",
-		 *				"cacheItem" : {
-		 * 					"fileName" : "val",
-		 * 					"app" : "val",
-		 *					"fileDataString" : "base64EncodedString",
-		 *					"modifiedDate" : "val",
-		 *					"expires" : "val",
-		 *					"version" : "val"
-		 *				}
-		 * 			}
-         */
-        getCacheItem: function (cacheRequest, openOnReturn, callback) {
-            if (typeof openOnReturn !== 'boolean') {
-                throw new Error('openOnReturn must be specified as a boolean value');
-            }
-
-            var req;
-
-            cacheRequest.openOnReturn = openOnReturn;
-
-            req = createCacheRequestString('getCacheItem', cacheRequest);
-            aw.blackberryCommunication(req, callback);
-        },
-        /**
-         * Determine if a given item exists in the cache.
-         *
-         * @param cacheRequest	cache request (see getBaseCacheRequest())
-         * @param callback 		callback
-         *
-         * @return 	response {
-		 * 				"callbackID" : "val",
-		 *				"itemIsInCache" : "true"
-		 * 			}
-         */
-        isItemInCache: function (cacheRequest, callback) {
-            var req = createCacheRequestString('isItemInCache', cacheRequest);
-            AppWorks.blackberryCommunication(req, callback);
-        },
-        /**
-         * cache an item using the localstorage cache on the device. cache will be cleared when the app is closed.
-         * @param key - the key to store the item under
-         * @param value - the data to store
-         * @param options - an options hash provided to set an expiration date on items. defaults to 24 hours.
-         */
-        setItem: function (key, value, options) {
-            options = options || {};
-
-            var expiry = options.expiry || (new Date().getTime() + (86400000)),
-                data = JSON.stringify({value: value, expires: expiry});
-
-            return window.localStorage.setItem(key, data);
-        },
-        setObj: function (key, value, options) {
-            return this.setItem(key, JSON.stringify(value), options);
-        },
-        /**
-         * return a cached item
-         * @param key - the key the item was stored under
-         * @param callback - a function to evaluate the retrieved item
-         */
-        getItem: function (key, callback) {
-            var data = JSON.parse(window.localStorage.getItem(key));
-            // if item exists and has not expired, execute the callback on the value
-            // otherwise, remove the item from the cache and execute the callback on null
-            if (data && data.expires > new Date().getTime()) {
-                return callback ? callback(data.value) : data.value;
-            }
-            // item does not exist or has expired
-            window.localStorage.removeItem(key);
-            return callback ? callback(null) : null;
-        },
-        getObj: function (key, callback) {
-            var item = this.getItem(key);
-            if (item) {
-                item = JSON.parse(item);
-                return callback ? callback(item) : item;
-            }
-        },
-        /**
-         * remove an item by key from the cache
-         * @param key
-         */
-        removeItem: function (key) {
-            return window.localStorage.removeItem(key);
-        },
-        removeObj: function (key) {
-            return self.removeItem(key);
-        },
-        /**
-         * clear all items from the cache
-         */
-        clear: function () {
-            return window.localStorage.clear();
-        }
+    MockContacts.prototype.create = function (properties) {
+        return null;
     };
-
-    return awCache;
-}
-// define the AMD module
-function AppWorksComms(aw) {
-    'use strict';
-
-    // module definition
-    var awComms = {
-        /**
-         * Open another app deployed within the AppWorks client container and pass it
-         * data. We set info in the URL of the web view using this data so it can be parsed
-         * by the destination app/component. Apps and components are uniquely identified by
-         * name so a caller must know the specific name/s of its collaborating apps/components.
-         *
-         * We also allow clients to specify a function name ('method') that should be called
-         * on arrival at the destination. You can also tell us to refresh the calling app when
-         * control is returned to it.
-         *
-         * We expect the request object to be in a particular format, please use the supplied
-         * convenience function, getOpenAppRequest, to form requests.
-         *
-         * @param requestObj the request
-         */
-        openApp: function (requestObj) {
-            if (!requestObj || !requestObj.name) {
-                throw new Error('Unable to open another app without the name of the app/component to open');
-            }
-
-            var json =
-                '{'+
-                '"action": "openApp", ' +
-                '"commsRequest": ' +
-                JSON.stringify(requestObj) +
-                '}';
-
-            // this is a one-way communication as we alter the URL of the web view
-            // if there is an error though it will get returned to the cascades.onmessage
-            // handler
-            aw.blackberryCommunication(json);
-        },
-        /**
-         * Check the window.location for the appWorksComms object, parse it contents and respond to the
-         * the request if we are a reciever or the response if we are recieving a callback from a
-         * component we have called.
-         *
-         * @param callback a callback we pass the resolved received or returned data to
-         */
-        processComms: function (callback) {
-            // read the window.location
-            var commsData = this.getCommsData();
-
-            // check for the appworks item in the URL's params
-            if (typeof commsData !== 'undefined') {
-                if (commsData.method) {
-                    this.callMethodFromComms(commsData.method, commsData.data);
-                }
-                if (typeof(callback) === 'function') {
-                    callback(commsData.data);
-                }
-            }
-
-        },
-        /*jslint evil: true */
-        callMethodFromComms: function (methodName, data) {
-            // form a String for eval using the supplied function name and
-            // optional data
-            var toEval = 'window.';
-            if (methodName) {
-                toEval += methodName + '(';
-
-                if (data) {
-                    toEval += JSON.stringify(data);
-                }
-
-                // close off call
-                toEval += ')';
-
-                eval(toEval);
-            } else {
-                console.log('Unable lo callMethodFromComms as no methodName was supplied');
-            }
-
-        },
-        /**
-         * Extract the data passed from another app via the web view's window.location.search.
-         */
-        getCommsData: function () {
-
-            var commsObj = null,
-                decoded = null;
-
-            try {
-                // pull the contents after ?, it should only contain the
-                decoded = decodeURIComponent(window.location.search.toString().substring(1));
-
-                commsObj = JSON.parse(decoded);
-
-                if (!commsObj.appWorksComms) {
-                    console.log('parsed the window.location.search but did not find the appWorksComms data');
-                    return {};
-                }
-            } catch(e) {
-                console.log('failed to parse comms object from window.location - ' + decoded);
-            }
-
-            return (commsObj  && commsObj.appWorksComms) ? {} : commsObj.appWorksComms;
-        },
-        /**
-         * Create a request to open another AppWorks app/component. Be sure to pass an empty
-         * object or null to the function if you want to define the onReturnMethod argument.
-         *
-         * @param toName			the name of the app/component to open (mandatory)
-         * @param toMethod			the name of the method (function) to call on opening
-         * 							the destination app/component
-         * @param refreshOnReturn	should we refresh this page when we come back to it?
-         *
-         * @return open app request object
-         */
-        getOpenAppRequest: function (toName, toMethod, toData, refreshOnReturn) {
-
-            if (!toName) {
-                throw new Error('"toName" is mandatory');
-            }
-
-            if (typeof refreshOnReturn !== 'boolean') {
-                refreshOnReturn = false;
-            }
-
-            // form basic request with mandatory fields
-            var openAppRequest = {
-                name : toName,
-                method : "",
-                data : {},
-                refreshOnReturn : refreshOnReturn
-            };
-
-            // the function to call when we get to the other app
-            if (toMethod) {
-                openAppRequest.method = toMethod;
-            }
-
-            // set the data to pass to the other app/component, it can decide
-            // if it wants to pass it to the above function if defined
-            if (toData) {
-                openAppRequest.data = toData;
-            }
-
-            return openAppRequest;
-        }
+    MockContacts.prototype.find = function (fields, onSuccess, onError, options) {
     };
+    MockContacts.prototype.pickContact = function (onSuccess, onError) {
+    };
+    return MockContacts;
+}());
 
-    return awComms;
-}
+var MockAccelerometer = (function () {
+    function MockAccelerometer() {
+    }
+    MockAccelerometer.prototype.getCurrentAcceleration = function (accelerometerSuccess, accelerometerError, accelerometerOptions) {
+        return null;
+    };
+    MockAccelerometer.prototype.watchAcceleration = function (accelerometerSuccess, accelerometerError, accelerometerOptions) {
+        return null;
+    };
+    MockAccelerometer.prototype.clearWatch = function (watchID) {
+    };
+    return MockAccelerometer;
+}());
+
+var MockCamera = (function () {
+    function MockCamera() {
+    }
+    MockCamera.prototype.cleanup = function (onSuccess, onError) {
+    };
+    MockCamera.prototype.getPicture = function (cameraSuccess, cameraError, cameraOptions) {
+    };
+    return MockCamera;
+}());
+
+var MockCompass = (function () {
+    function MockCompass() {
+    }
+    MockCompass.prototype.getCurrentHeading = function (onSuccess, onError, options) {
+    };
+    MockCompass.prototype.watchHeading = function (onSuccess, onError, options) {
+        return null;
+    };
+    MockCompass.prototype.clearWatch = function (id) {
+    };
+    return MockCompass;
+}());
+
+var MockGeolocation = (function () {
+    function MockGeolocation() {
+    }
+    MockGeolocation.prototype.clearWatch = function (watchId) {
+    };
+    MockGeolocation.prototype.getCurrentPosition = function (successCallback, errorCallback, options) {
+    };
+    MockGeolocation.prototype.watchPosition = function (successCallback, errorCallback, options) {
+        return null;
+    };
+    return MockGeolocation;
+}());
+
+var MockMedia = (function () {
+    function MockMedia(src, successHandler, errorHandler, statusChangeHandler) {
+    }
+    MockMedia.prototype.getCurrentPosition = function (mediaSuccess, mediaError) {
+    };
+    MockMedia.prototype.getDuration = function () {
+        return null;
+    };
+    MockMedia.prototype.play = function (iosPlayOptions) {
+    };
+    MockMedia.prototype.pause = function () {
+    };
+    MockMedia.prototype.release = function () {
+    };
+    MockMedia.prototype.seekTo = function (position) {
+    };
+    MockMedia.prototype.setVolume = function (volume) {
+    };
+    MockMedia.prototype.startRecord = function () {
+    };
+    MockMedia.prototype.stopRecord = function () {
+    };
+    MockMedia.prototype.stop = function () {
+    };
+    return MockMedia;
+}());
+
+var MockCapture = (function () {
+    function MockCapture() {
+    }
+    MockCapture.prototype.captureAudio = function (onSuccess, onError, options) {
+    };
+    MockCapture.prototype.captureImage = function (onSuccess, onError, options) {
+    };
+    MockCapture.prototype.captureVideo = function (onSuccess, onError, options) {
+    };
+    return MockCapture;
+}());
+
+var MockNotification = (function () {
+    function MockNotification() {
+        this.body = null;
+        this.dir = null;
+        this.icon = null;
+        this.lang = null;
+        this.onclick = null;
+        this.onclose = null;
+        this.onerror = null;
+        this.onshow = null;
+        this.permission = null;
+        this.title = null;
+        this.tag = null;
+        this.close = null;
+        this.addEventListener = function (name) { };
+        this.removeEventListener = function (name) { };
+        this.dispatchEvent = function (name) { };
+    }
+    MockNotification.prototype.alert = function (message, alertCallback, title, buttonName) {
+    };
+    MockNotification.prototype.beep = function (times) {
+    };
+    MockNotification.prototype.confirm = function (message, confirmCallback, title, buttonLabels) {
+    };
+    MockNotification.prototype.prompt = function (message, promptCallback, title, buttonLabels, defaultText) {
+    };
+    MockNotification.prototype.vibrate = function () {
+    };
+    MockNotification.prototype.vibrateWithPattern = function () {
+    };
+    MockNotification.prototype.cancelVibration = function () {
+    };
+    return MockNotification;
+}());
+
+var MockConnection = (function () {
+    function MockConnection() {
+    }
+    MockConnection.prototype.addEventListener = function (type, listener, useCapture) {
+    };
+    MockConnection.prototype.removeEventListener = function (type, listener, useCapture) {
+    };
+    return MockConnection;
+}());
+
+var MockVibrate = (function () {
+    function MockVibrate() {
+    }
+    MockVibrate.prototype.vibrate = function (time) {
+    };
+    return MockVibrate;
+}());
+
+var LocalFileSystem;
+(function (LocalFileSystem) {
+    LocalFileSystem[LocalFileSystem["PERSISTENT"] = 0] = "PERSISTENT";
+    LocalFileSystem[LocalFileSystem["TEMPORARY"] = 1] = "TEMPORARY";
+})(LocalFileSystem || (LocalFileSystem = {}));
+
+var MockFileTransfer = (function () {
+    function MockFileTransfer() {
+    }
+    MockFileTransfer.prototype.upload = function (fileURL, server, successCallback, errorCallback, options, trustAllHosts) {
+    };
+    MockFileTransfer.prototype.download = function (source, target, successCallback, errorCallback, trustAllHosts, options) {
+    };
+    MockFileTransfer.prototype.abort = function () {
+    };
+    return MockFileTransfer;
+}());
+
 /**
- * General light-weight JSON data storage solution. This client creates user defined "dataTypes"
- * within an apps dedicated storage area on the device. A more persistent version of HTML5 local
- * storage essentially.
- *
- * It is assumed that we are persisting String data only, dates should there be represented using
- * millisecond Strings, a utility function (see millisToDate) is provided for convenience.
+ * Collection of utility functions
  */
-function AppWorksStorage(aw) {
-    'use strict';
+function noop() {
+}
+function isFunction(functionToCheck) {
+    var getType = {};
+    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+}
 
-    // private variables
-    var requestPrefix = 'storage.',
-        callbackIdPrefix = 'storageReq.',
-        invalidRequestMessage = 'Invalid request object passed to function.';
+var MockLocalStorage = (function () {
+    // allow tests to set a value if they need to
+    function MockLocalStorage(len) {
+        this.length = isNaN(len) ? 0 : len;
+    }
+    MockLocalStorage.prototype.getItem = function (key) {
+        return null;
+    };
+    MockLocalStorage.prototype.setItem = function (key, value) {
+    };
+    MockLocalStorage.prototype.removeItem = function (key) {
+    };
+    MockLocalStorage.prototype.clear = function () {
+    };
+    MockLocalStorage.prototype.key = function (index) {
+        return null;
+    };
+    return MockLocalStorage;
+}());
 
-    function createStorageRequestString(action, data, options) {
+/**
+ * Web local storage wrapper that hooks into the native persistent layer on mobile and desktop
+ * The local and persistent storage are kept in, sync with update being flushed, and the local web
+ * storage always acting as the reference.
+ */
+var AWStorage = (function () {
+    function AWStorage() {
+        // resolve the local storage or fall back onto a mock impl
+        this.storage = (typeof window !== 'undefined') ?
+            window.localStorage : new MockLocalStorage();
+    }
+    Object.defineProperty(AWStorage.prototype, "length", {
+        get: function () {
+            return this.storage ? this.storage.length : -1;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    AWStorage.prototype.clear = function () {
+        this.storage.clear();
+    };
+    AWStorage.prototype.getItem = function (key) {
+        return this.storage.getItem(key);
+    };
+    AWStorage.prototype.key = function (index) {
+        return this.storage.key(index);
+    };
+    AWStorage.prototype.removeItem = function (key) {
+        return this.storage.removeItem(key);
+    };
+    AWStorage.prototype.setItem = function (key, data) {
+        return this.storage.setItem(key, data);
+    };
+    return AWStorage;
+}());
 
-        function merge(obj1, obj2) {
-            var finalobj={}, _obj;
-            for(_obj in obj1) finalobj[_obj ] = obj1[_obj];
-            for(_obj in obj2) finalobj[_obj ] = obj2[_obj];
-            return finalobj;
-        }
+var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-        return JSON.stringify(merge({
-            action: requestPrefix + action,
-            callbackID: aw.getNewCallbackId(),
-            data: JSON.stringify(data)
-        }, (options || {})));
+function commonjsRequire () {
+	throw new Error('Dynamic requires are not currently supported by rollup-plugin-commonjs');
+}
+
+
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var es6Promise = createCommonjsModule(function (module, exports) {
+/*!
+ * @overview es6-promise - a tiny implementation of Promises/A+.
+ * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
+ * @license   Licensed under MIT license
+ *            See https://raw.githubusercontent.com/stefanpenner/es6-promise/master/LICENSE
+ * @version   4.0.5
+ */
+
+(function (global, factory) {
+    module.exports = factory();
+}(commonjsGlobal, (function () { 'use strict';
+
+function objectOrFunction(x) {
+  return typeof x === 'function' || typeof x === 'object' && x !== null;
+}
+
+function isFunction(x) {
+  return typeof x === 'function';
+}
+
+var _isArray = undefined;
+if (!Array.isArray) {
+  _isArray = function (x) {
+    return Object.prototype.toString.call(x) === '[object Array]';
+  };
+} else {
+  _isArray = Array.isArray;
+}
+
+var isArray = _isArray;
+
+var len = 0;
+var vertxNext = undefined;
+var customSchedulerFn = undefined;
+
+var asap = function asap(callback, arg) {
+  queue[len] = callback;
+  queue[len + 1] = arg;
+  len += 2;
+  if (len === 2) {
+    // If len is 2, that means that we need to schedule an async flush.
+    // If additional callbacks are queued before the queue is flushed, they
+    // will be processed by this flush that we are scheduling.
+    if (customSchedulerFn) {
+      customSchedulerFn(flush);
+    } else {
+      scheduleFlush();
+    }
+  }
+};
+
+function setScheduler(scheduleFn) {
+  customSchedulerFn = scheduleFn;
+}
+
+function setAsap(asapFn) {
+  asap = asapFn;
+}
+
+var browserWindow = typeof window !== 'undefined' ? window : undefined;
+var browserGlobal = browserWindow || {};
+var BrowserMutationObserver = browserGlobal.MutationObserver || browserGlobal.WebKitMutationObserver;
+var isNode = typeof self === 'undefined' && typeof process !== 'undefined' && ({}).toString.call(process) === '[object process]';
+
+// test for web worker but not in IE10
+var isWorker = typeof Uint8ClampedArray !== 'undefined' && typeof importScripts !== 'undefined' && typeof MessageChannel !== 'undefined';
+
+// node
+function useNextTick() {
+  // node version 0.10.x displays a deprecation warning when nextTick is used recursively
+  // see https://github.com/cujojs/when/issues/410 for details
+  return function () {
+    return process.nextTick(flush);
+  };
+}
+
+// vertx
+function useVertxTimer() {
+  if (typeof vertxNext !== 'undefined') {
+    return function () {
+      vertxNext(flush);
+    };
+  }
+
+  return useSetTimeout();
+}
+
+function useMutationObserver() {
+  var iterations = 0;
+  var observer = new BrowserMutationObserver(flush);
+  var node = document.createTextNode('');
+  observer.observe(node, { characterData: true });
+
+  return function () {
+    node.data = iterations = ++iterations % 2;
+  };
+}
+
+// web worker
+function useMessageChannel() {
+  var channel = new MessageChannel();
+  channel.port1.onmessage = flush;
+  return function () {
+    return channel.port2.postMessage(0);
+  };
+}
+
+function useSetTimeout() {
+  // Store setTimeout reference so es6-promise will be unaffected by
+  // other code modifying setTimeout (like sinon.useFakeTimers())
+  var globalSetTimeout = setTimeout;
+  return function () {
+    return globalSetTimeout(flush, 1);
+  };
+}
+
+var queue = new Array(1000);
+function flush() {
+  for (var i = 0; i < len; i += 2) {
+    var callback = queue[i];
+    var arg = queue[i + 1];
+
+    callback(arg);
+
+    queue[i] = undefined;
+    queue[i + 1] = undefined;
+  }
+
+  len = 0;
+}
+
+function attemptVertx() {
+  try {
+    var r = commonjsRequire;
+    var vertx = r('vertx');
+    vertxNext = vertx.runOnLoop || vertx.runOnContext;
+    return useVertxTimer();
+  } catch (e) {
+    return useSetTimeout();
+  }
+}
+
+var scheduleFlush = undefined;
+// Decide what async method to use to triggering processing of queued callbacks:
+if (isNode) {
+  scheduleFlush = useNextTick();
+} else if (BrowserMutationObserver) {
+  scheduleFlush = useMutationObserver();
+} else if (isWorker) {
+  scheduleFlush = useMessageChannel();
+} else if (browserWindow === undefined && typeof commonjsRequire === 'function') {
+  scheduleFlush = attemptVertx();
+} else {
+  scheduleFlush = useSetTimeout();
+}
+
+function then(onFulfillment, onRejection) {
+  var _arguments = arguments;
+
+  var parent = this;
+
+  var child = new this.constructor(noop);
+
+  if (child[PROMISE_ID] === undefined) {
+    makePromise(child);
+  }
+
+  var _state = parent._state;
+
+  if (_state) {
+    (function () {
+      var callback = _arguments[_state - 1];
+      asap(function () {
+        return invokeCallback(_state, child, callback, parent._result);
+      });
+    })();
+  } else {
+    subscribe(parent, child, onFulfillment, onRejection);
+  }
+
+  return child;
+}
+
+/**
+  `Promise.resolve` returns a promise that will become resolved with the
+  passed `value`. It is shorthand for the following:
+
+  ```javascript
+  let promise = new Promise(function(resolve, reject){
+    resolve(1);
+  });
+
+  promise.then(function(value){
+    // value === 1
+  });
+  ```
+
+  Instead of writing the above, your code now simply becomes the following:
+
+  ```javascript
+  let promise = Promise.resolve(1);
+
+  promise.then(function(value){
+    // value === 1
+  });
+  ```
+
+  @method resolve
+  @static
+  @param {Any} value value that the returned promise will be resolved with
+  Useful for tooling.
+  @return {Promise} a promise that will become fulfilled with the given
+  `value`
+*/
+function resolve(object) {
+  /*jshint validthis:true */
+  var Constructor = this;
+
+  if (object && typeof object === 'object' && object.constructor === Constructor) {
+    return object;
+  }
+
+  var promise = new Constructor(noop);
+  _resolve(promise, object);
+  return promise;
+}
+
+var PROMISE_ID = Math.random().toString(36).substring(16);
+
+function noop() {}
+
+var PENDING = void 0;
+var FULFILLED = 1;
+var REJECTED = 2;
+
+var GET_THEN_ERROR = new ErrorObject();
+
+function selfFulfillment() {
+  return new TypeError("You cannot resolve a promise with itself");
+}
+
+function cannotReturnOwn() {
+  return new TypeError('A promises callback cannot return that same promise.');
+}
+
+function getThen(promise) {
+  try {
+    return promise.then;
+  } catch (error) {
+    GET_THEN_ERROR.error = error;
+    return GET_THEN_ERROR;
+  }
+}
+
+function tryThen(then, value, fulfillmentHandler, rejectionHandler) {
+  try {
+    then.call(value, fulfillmentHandler, rejectionHandler);
+  } catch (e) {
+    return e;
+  }
+}
+
+function handleForeignThenable(promise, thenable, then) {
+  asap(function (promise) {
+    var sealed = false;
+    var error = tryThen(then, thenable, function (value) {
+      if (sealed) {
+        return;
+      }
+      sealed = true;
+      if (thenable !== value) {
+        _resolve(promise, value);
+      } else {
+        fulfill(promise, value);
+      }
+    }, function (reason) {
+      if (sealed) {
+        return;
+      }
+      sealed = true;
+
+      _reject(promise, reason);
+    }, 'Settle: ' + (promise._label || ' unknown promise'));
+
+    if (!sealed && error) {
+      sealed = true;
+      _reject(promise, error);
+    }
+  }, promise);
+}
+
+function handleOwnThenable(promise, thenable) {
+  if (thenable._state === FULFILLED) {
+    fulfill(promise, thenable._result);
+  } else if (thenable._state === REJECTED) {
+    _reject(promise, thenable._result);
+  } else {
+    subscribe(thenable, undefined, function (value) {
+      return _resolve(promise, value);
+    }, function (reason) {
+      return _reject(promise, reason);
+    });
+  }
+}
+
+function handleMaybeThenable(promise, maybeThenable, then$$) {
+  if (maybeThenable.constructor === promise.constructor && then$$ === then && maybeThenable.constructor.resolve === resolve) {
+    handleOwnThenable(promise, maybeThenable);
+  } else {
+    if (then$$ === GET_THEN_ERROR) {
+      _reject(promise, GET_THEN_ERROR.error);
+    } else if (then$$ === undefined) {
+      fulfill(promise, maybeThenable);
+    } else if (isFunction(then$$)) {
+      handleForeignThenable(promise, maybeThenable, then$$);
+    } else {
+      fulfill(promise, maybeThenable);
+    }
+  }
+}
+
+function _resolve(promise, value) {
+  if (promise === value) {
+    _reject(promise, selfFulfillment());
+  } else if (objectOrFunction(value)) {
+    handleMaybeThenable(promise, value, getThen(value));
+  } else {
+    fulfill(promise, value);
+  }
+}
+
+function publishRejection(promise) {
+  if (promise._onerror) {
+    promise._onerror(promise._result);
+  }
+
+  publish(promise);
+}
+
+function fulfill(promise, value) {
+  if (promise._state !== PENDING) {
+    return;
+  }
+
+  promise._result = value;
+  promise._state = FULFILLED;
+
+  if (promise._subscribers.length !== 0) {
+    asap(publish, promise);
+  }
+}
+
+function _reject(promise, reason) {
+  if (promise._state !== PENDING) {
+    return;
+  }
+  promise._state = REJECTED;
+  promise._result = reason;
+
+  asap(publishRejection, promise);
+}
+
+function subscribe(parent, child, onFulfillment, onRejection) {
+  var _subscribers = parent._subscribers;
+  var length = _subscribers.length;
+
+  parent._onerror = null;
+
+  _subscribers[length] = child;
+  _subscribers[length + FULFILLED] = onFulfillment;
+  _subscribers[length + REJECTED] = onRejection;
+
+  if (length === 0 && parent._state) {
+    asap(publish, parent);
+  }
+}
+
+function publish(promise) {
+  var subscribers = promise._subscribers;
+  var settled = promise._state;
+
+  if (subscribers.length === 0) {
+    return;
+  }
+
+  var child = undefined,
+      callback = undefined,
+      detail = promise._result;
+
+  for (var i = 0; i < subscribers.length; i += 3) {
+    child = subscribers[i];
+    callback = subscribers[i + settled];
+
+    if (child) {
+      invokeCallback(settled, child, callback, detail);
+    } else {
+      callback(detail);
+    }
+  }
+
+  promise._subscribers.length = 0;
+}
+
+function ErrorObject() {
+  this.error = null;
+}
+
+var TRY_CATCH_ERROR = new ErrorObject();
+
+function tryCatch(callback, detail) {
+  try {
+    return callback(detail);
+  } catch (e) {
+    TRY_CATCH_ERROR.error = e;
+    return TRY_CATCH_ERROR;
+  }
+}
+
+function invokeCallback(settled, promise, callback, detail) {
+  var hasCallback = isFunction(callback),
+      value = undefined,
+      error = undefined,
+      succeeded = undefined,
+      failed = undefined;
+
+  if (hasCallback) {
+    value = tryCatch(callback, detail);
+
+    if (value === TRY_CATCH_ERROR) {
+      failed = true;
+      error = value.error;
+      value = null;
+    } else {
+      succeeded = true;
     }
 
-    function errorHandler(e) {
-        var msg = '';
-
-        switch (e.code) {
-            case FileError.QUOTA_EXCEEDED_ERR:
-                msg = 'QUOTA_EXCEEDED_ERR';
-                break;
-            case FileError.NOT_FOUND_ERR:
-                msg = 'NOT_FOUND_ERR';
-                break;
-            case FileError.SECURITY_ERR:
-                msg = 'SECURITY_ERR';
-                break;
-            case FileError.INVALID_MODIFICATION_ERR:
-                msg = 'INVALID_MODIFICATION_ERR';
-                break;
-            case FileError.INVALID_STATE_ERR:
-                msg = 'INVALID_STATE_ERR';
-                break;
-            default:
-                msg = 'Unknown Error';
-                break;
-        }
-
-        alert('Error: ' + msg);
+    if (promise === value) {
+      _reject(promise, cannotReturnOwn());
+      return;
     }
+  } else {
+    value = detail;
+    succeeded = true;
+  }
 
-    var awStorage = {
-        /**
-         * Add some JSON to the device store, this operation will automatically overwrite
-         * the value identified in the request with the new data supplied (hence 'put' not
-         * 'add'). Generate a basic request object via the getBaseStorageRequest function, and
-         * add any other properties to the data as you see fit, they will all be persisted.
-         *
-         * @return 	response {
-	     * 				"callbackID" : "val",
-	     *				"success" : "true|false"
-	     * 			}
-         *
-         * @param requestObj 	the request, the contents of which will be validated
-         * @param callback 		callback
-         */
-        put: function (requestObj, callback) {
-            // these fields are mandatory when adding data
-            if (!requestObj.app || !requestObj.dataType || !requestObj.id) {
-                throw new Error(invalidRequestMessage);
-            }
+  if (promise._state !== PENDING) {
+    // noop
+  } else if (hasCallback && succeeded) {
+      _resolve(promise, value);
+    } else if (failed) {
+      _reject(promise, error);
+    } else if (settled === FULFILLED) {
+      fulfill(promise, value);
+    } else if (settled === REJECTED) {
+      _reject(promise, value);
+    }
+}
 
-            var req = createStorageRequestString('put', requestObj);
-            aw.blackberryCommunication(req, callback);
-        },
-        /**
-         * Lookup a single item (by id) in the persistent JSON store.
-         *
-         * @return 	response {
-         *              "callbackID" : "val",
- 	     *				"app" : "val",
-	     *				"dataType" : "some.type",
-	     *				"id" : "val",
-	     *				"data" : {
-	     *					"prop1" : "val1",
-	     *					"prop2" : "val2",
-	     *					...
-	     *				}
-	     * 			}
-         *
-         * @param app 		the app the data belongs to
-         * @param dataType	the data type
-         * @param id 		unique identifier
-         * @param callback 	callback
-         */
-        getItemFromStore: function (app, dataType, id, callback) {
-            if (!app || !dataType || !id) {
-                throw new Error(invalidRequestMessage);
-            }
+function initializePromise(promise, resolver) {
+  try {
+    resolver(function resolvePromise(value) {
+      _resolve(promise, value);
+    }, function rejectPromise(reason) {
+      _reject(promise, reason);
+    });
+  } catch (e) {
+    _reject(promise, e);
+  }
+}
 
-            var req = createStorageRequestString('getItem', null, {
-                app: app,
-                dataType: dataType,
-                id: id
-            });
-            aw.blackberryCommunication(req, callback);
-        },
-        /**
-         * Lookup all data stored under a type. Returns a (potentially empty) list of items.
-         *
-         * @return 	response {
- 	     * 				"callbackID" : "val",
-	     *				"data" : [
-	     *					{
-	     * 						"app" : "val",
-	     *						"dataType" : "some.type",
-	     *						"id" : "val",
-	     *						"data" : {
-	     *							"prop1" : "val1",
-	     *							"prop2" : "val2",
-	     *							...
-	     *						}
-	     *					},
-	     *					{
-	     *						"app" : "val",
-	     *						...
-	     *					},
-	     *					...]
-	     * 			}
-         *
-         * @param requestObj 	the request, will be validated for "app" and "dataType"
-         * @param callback 		callback
-         */
-        getByTypeFromStore: function (app, dataType, callback) {
-            // this time "id" must nit
-            if (!app || !dataType) {
-                throw new Error(invalidRequestMessage);
-            }
+var id = 0;
+function nextId() {
+  return id++;
+}
 
-            var req = createStorageRequestString('getByType', null, {
-                app: app,
-                dataType: dataType
-            });
-            aw.blackberryCommunication(req, callback);
-        },
-        /**
-         * Build the basic JSON storage request. All fields are mandatory.
-         *
-         * @param dataType 	data type name
-         * @param app 		the app the data should be stored for (use a unique key your
-         *       			app knows about)
-         * @param id 		the identifier for the data item (optional)
-         * @param dataObj	extra properties to add to the request (optional)
-         */
-        getStorageRequest: function (dataType, app, id, dataObj) {
-            if (app === null) {
-                throw new Error('app cannot be null');
-            }
+function makePromise(promise) {
+  promise[PROMISE_ID] = id++;
+  promise._state = undefined;
+  promise._result = undefined;
+  promise._subscribers = [];
+}
 
-            if (dataType === null) {
-                throw new Error('dataType cannot be null');
-            }
+function Enumerator(Constructor, input) {
+  this._instanceConstructor = Constructor;
+  this.promise = new Constructor(noop);
 
-            var baseReq = {
-                app: app,
-                dataType: dataType
-            };
+  if (!this.promise[PROMISE_ID]) {
+    makePromise(this.promise);
+  }
 
-            if (id !== null) {
-                baseReq.id = id;
-            }
+  if (isArray(input)) {
+    this._input = input;
+    this.length = input.length;
+    this._remaining = input.length;
 
-            if (dataObj) {
-                baseReq.data = dataObj;
-            }
+    this._result = new Array(this.length);
 
-            return baseReq;
-        },
-        /**
-         * Constructs a JavaScript Date from a millisecond String. This is the format
-         * used by this cache to represent time values (modified, expires).
-         */
-        millisToDate: function (millisString) {
-            return new Date(parseInt(millisString, 10));
-        },
-        /**
-         * store a file on the device securely.
-         * usage example:
-         *
-         *      appworks.storage.storeFile('file.png', 'http://i.imgur.com/DLunVNs.jpg', onSuccess, onError);
-         *
-         *      function onSuccess(entry) {}
-         *      function onError(err) {}
-         *
-         * @param filename - the name to store the file on the device as
-         * @param downloadUri - the url to download the file from
-         * @param onSuccess - a success handler to run when the execution completes successfully
-         * @param onError - an error handler to run when the execution encounters an error
-         * @param options - an options object to set headers and params on the request
-         */
-        storeFile: function (filename, downloadUrl, onSuccess, onError, options) {
+    if (this.length === 0) {
+      fulfill(this.promise, this._result);
+    } else {
+      this.length = this.length || 0;
+      this._enumerate();
+      if (this._remaining === 0) {
+        fulfill(this.promise, this._result);
+      }
+    }
+  } else {
+    _reject(this.promise, validationError());
+  }
+}
 
-            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileTransfer, errorHandler);
+function validationError() {
+  return new Error('Array Methods must be provided an Array');
+}
 
-            function fileTransfer() {
-                var ft = new FileTransfer(),
-                    uri = encodeURI(downloadUrl),
-                    fileUrl = 'cdvfile://localhost/persistent/' + filename;
+Enumerator.prototype._enumerate = function () {
+  var length = this.length;
+  var _input = this._input;
 
-                return ft.download(uri, fileUrl, onSuccess, onError, options);
-            }
+  for (var i = 0; this._state === PENDING && i < length; i++) {
+    this._eachEntry(_input[i], i);
+  }
+};
 
-        },
-        /**
-         * retrieve a file that has been stored on the device and upload it to a server
-         *
-         * usage example:
-         *
-         *      appworks.storage.upload('file.png', 'http://my-content-server/nodes', onSuccess, onError);
-         *
-         *      function onSuccess(entry) {}
-         *      function onError(err) {}
-         *
-         * @param filename - the name of the file to retrieve from the device storage
-         * @param uploadUrl - the url of the server to receive the file
-         * @param onSuccess - a success handler to run when the execution completes successfully
-         * @param onError - an error handler to run when the execution encounters an error
-         * @param options - an options object to set headers and params on the request
-         */
-        uploadFile: function (filename, uploadUrl, onSuccess, onError, options) {
+Enumerator.prototype._eachEntry = function (entry, i) {
+  var c = this._instanceConstructor;
+  var resolve$$ = c.resolve;
 
-            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileTransfer, errorHandler);
+  if (resolve$$ === resolve) {
+    var _then = getThen(entry);
 
-            function fileTransfer() {
-                var ft = new FileTransfer(),
-                    url = encodeURI(uploadUrl),
-                    fileUrl = 'cdvfile://localhost/persistent/' + filename;
+    if (_then === then && entry._state !== PENDING) {
+      this._settledAt(entry._state, i, entry._result);
+    } else if (typeof _then !== 'function') {
+      this._remaining--;
+      this._result[i] = entry;
+    } else if (c === Promise) {
+      var promise = new c(noop);
+      handleMaybeThenable(promise, entry, _then);
+      this._willSettleAt(promise, i);
+    } else {
+      this._willSettleAt(new c(function (resolve$$) {
+        return resolve$$(entry);
+      }), i);
+    }
+  } else {
+    this._willSettleAt(resolve$$(entry), i);
+  }
+};
 
-                return ft.upload(fileUrl, url, onSuccess, onError, options);
-            }
-        },
-        /**
-         * retrieve a file that has been stored previously on the device as a base 64 string
-         * @param filename - the name of the file stored
-         * @param callback - a function to execute with the base 64 string representation of the file
-         * @param errorCallback - a function to execute when the process encounters an error
-         * @param options - an options object to set the type of storage (temporary or persistent)
-         */
-        getFile: function (filename, callback, errorCallback, options) {
+Enumerator.prototype._settledAt = function (state, i, value) {
+  var promise = this.promise;
 
-            options = options || {};
-            options.fileSystem = options.fileSystem || LocalFileSystem.PERSISTENT;
+  if (promise._state === PENDING) {
+    this._remaining--;
 
-            if (options.resolveLocalFileSystemURL) {
-                window.resolveLocalFileSystemURL(filename, fileHandler, errorCallback);
+    if (state === REJECTED) {
+      _reject(promise, value);
+    } else {
+      this._result[i] = value;
+    }
+  }
+
+  if (this._remaining === 0) {
+    fulfill(promise, this._result);
+  }
+};
+
+Enumerator.prototype._willSettleAt = function (promise, i) {
+  var enumerator = this;
+
+  subscribe(promise, undefined, function (value) {
+    return enumerator._settledAt(FULFILLED, i, value);
+  }, function (reason) {
+    return enumerator._settledAt(REJECTED, i, reason);
+  });
+};
+
+/**
+  `Promise.all` accepts an array of promises, and returns a new promise which
+  is fulfilled with an array of fulfillment values for the passed promises, or
+  rejected with the reason of the first passed promise to be rejected. It casts all
+  elements of the passed iterable to promises as it runs this algorithm.
+
+  Example:
+
+  ```javascript
+  let promise1 = resolve(1);
+  let promise2 = resolve(2);
+  let promise3 = resolve(3);
+  let promises = [ promise1, promise2, promise3 ];
+
+  Promise.all(promises).then(function(array){
+    // The array here would be [ 1, 2, 3 ];
+  });
+  ```
+
+  If any of the `promises` given to `all` are rejected, the first promise
+  that is rejected will be given as an argument to the returned promises's
+  rejection handler. For example:
+
+  Example:
+
+  ```javascript
+  let promise1 = resolve(1);
+  let promise2 = reject(new Error("2"));
+  let promise3 = reject(new Error("3"));
+  let promises = [ promise1, promise2, promise3 ];
+
+  Promise.all(promises).then(function(array){
+    // Code here never runs because there are rejected promises!
+  }, function(error) {
+    // error.message === "2"
+  });
+  ```
+
+  @method all
+  @static
+  @param {Array} entries array of promises
+  @param {String} label optional string for labeling the promise.
+  Useful for tooling.
+  @return {Promise} promise that is fulfilled when all `promises` have been
+  fulfilled, or rejected if any of them become rejected.
+  @static
+*/
+function all(entries) {
+  return new Enumerator(this, entries).promise;
+}
+
+/**
+  `Promise.race` returns a new promise which is settled in the same way as the
+  first passed promise to settle.
+
+  Example:
+
+  ```javascript
+  let promise1 = new Promise(function(resolve, reject){
+    setTimeout(function(){
+      resolve('promise 1');
+    }, 200);
+  });
+
+  let promise2 = new Promise(function(resolve, reject){
+    setTimeout(function(){
+      resolve('promise 2');
+    }, 100);
+  });
+
+  Promise.race([promise1, promise2]).then(function(result){
+    // result === 'promise 2' because it was resolved before promise1
+    // was resolved.
+  });
+  ```
+
+  `Promise.race` is deterministic in that only the state of the first
+  settled promise matters. For example, even if other promises given to the
+  `promises` array argument are resolved, but the first settled promise has
+  become rejected before the other promises became fulfilled, the returned
+  promise will become rejected:
+
+  ```javascript
+  let promise1 = new Promise(function(resolve, reject){
+    setTimeout(function(){
+      resolve('promise 1');
+    }, 200);
+  });
+
+  let promise2 = new Promise(function(resolve, reject){
+    setTimeout(function(){
+      reject(new Error('promise 2'));
+    }, 100);
+  });
+
+  Promise.race([promise1, promise2]).then(function(result){
+    // Code here never runs
+  }, function(reason){
+    // reason.message === 'promise 2' because promise 2 became rejected before
+    // promise 1 became fulfilled
+  });
+  ```
+
+  An example real-world use case is implementing timeouts:
+
+  ```javascript
+  Promise.race([ajax('foo.json'), timeout(5000)])
+  ```
+
+  @method race
+  @static
+  @param {Array} promises array of promises to observe
+  Useful for tooling.
+  @return {Promise} a promise which settles in the same way as the first passed
+  promise to settle.
+*/
+function race(entries) {
+  /*jshint validthis:true */
+  var Constructor = this;
+
+  if (!isArray(entries)) {
+    return new Constructor(function (_, reject) {
+      return reject(new TypeError('You must pass an array to race.'));
+    });
+  } else {
+    return new Constructor(function (resolve, reject) {
+      var length = entries.length;
+      for (var i = 0; i < length; i++) {
+        Constructor.resolve(entries[i]).then(resolve, reject);
+      }
+    });
+  }
+}
+
+/**
+  `Promise.reject` returns a promise rejected with the passed `reason`.
+  It is shorthand for the following:
+
+  ```javascript
+  let promise = new Promise(function(resolve, reject){
+    reject(new Error('WHOOPS'));
+  });
+
+  promise.then(function(value){
+    // Code here doesn't run because the promise is rejected!
+  }, function(reason){
+    // reason.message === 'WHOOPS'
+  });
+  ```
+
+  Instead of writing the above, your code now simply becomes the following:
+
+  ```javascript
+  let promise = Promise.reject(new Error('WHOOPS'));
+
+  promise.then(function(value){
+    // Code here doesn't run because the promise is rejected!
+  }, function(reason){
+    // reason.message === 'WHOOPS'
+  });
+  ```
+
+  @method reject
+  @static
+  @param {Any} reason value that the returned promise will be rejected with.
+  Useful for tooling.
+  @return {Promise} a promise rejected with the given `reason`.
+*/
+function reject(reason) {
+  /*jshint validthis:true */
+  var Constructor = this;
+  var promise = new Constructor(noop);
+  _reject(promise, reason);
+  return promise;
+}
+
+function needsResolver() {
+  throw new TypeError('You must pass a resolver function as the first argument to the promise constructor');
+}
+
+function needsNew() {
+  throw new TypeError("Failed to construct 'Promise': Please use the 'new' operator, this object constructor cannot be called as a function.");
+}
+
+/**
+  Promise objects represent the eventual result of an asynchronous operation. The
+  primary way of interacting with a promise is through its `then` method, which
+  registers callbacks to receive either a promise's eventual value or the reason
+  why the promise cannot be fulfilled.
+
+  Terminology
+  -----------
+
+  - `promise` is an object or function with a `then` method whose behavior conforms to this specification.
+  - `thenable` is an object or function that defines a `then` method.
+  - `value` is any legal JavaScript value (including undefined, a thenable, or a promise).
+  - `exception` is a value that is thrown using the throw statement.
+  - `reason` is a value that indicates why a promise was rejected.
+  - `settled` the final resting state of a promise, fulfilled or rejected.
+
+  A promise can be in one of three states: pending, fulfilled, or rejected.
+
+  Promises that are fulfilled have a fulfillment value and are in the fulfilled
+  state.  Promises that are rejected have a rejection reason and are in the
+  rejected state.  A fulfillment value is never a thenable.
+
+  Promises can also be said to *resolve* a value.  If this value is also a
+  promise, then the original promise's settled state will match the value's
+  settled state.  So a promise that *resolves* a promise that rejects will
+  itself reject, and a promise that *resolves* a promise that fulfills will
+  itself fulfill.
+
+
+  Basic Usage:
+  ------------
+
+  ```js
+  let promise = new Promise(function(resolve, reject) {
+    // on success
+    resolve(value);
+
+    // on failure
+    reject(reason);
+  });
+
+  promise.then(function(value) {
+    // on fulfillment
+  }, function(reason) {
+    // on rejection
+  });
+  ```
+
+  Advanced Usage:
+  ---------------
+
+  Promises shine when abstracting away asynchronous interactions such as
+  `XMLHttpRequest`s.
+
+  ```js
+  function getJSON(url) {
+    return new Promise(function(resolve, reject){
+      let xhr = new XMLHttpRequest();
+
+      xhr.open('GET', url);
+      xhr.onreadystatechange = handler;
+      xhr.responseType = 'json';
+      xhr.setRequestHeader('Accept', 'application/json');
+      xhr.send();
+
+      function handler() {
+        if (this.readyState === this.DONE) {
+          if (this.status === 200) {
+            resolve(this.response);
+          } else {
+            reject(new Error('getJSON: `' + url + '` failed with status: [' + this.status + ']'));
+          }
+        }
+      };
+    });
+  }
+
+  getJSON('/posts.json').then(function(json) {
+    // on fulfillment
+  }, function(reason) {
+    // on rejection
+  });
+  ```
+
+  Unlike callbacks, promises are great composable primitives.
+
+  ```js
+  Promise.all([
+    getJSON('/posts'),
+    getJSON('/comments')
+  ]).then(function(values){
+    values[0] // => postsJSON
+    values[1] // => commentsJSON
+
+    return values;
+  });
+  ```
+
+  @class Promise
+  @param {function} resolver
+  Useful for tooling.
+  @constructor
+*/
+function Promise(resolver) {
+  this[PROMISE_ID] = nextId();
+  this._result = this._state = undefined;
+  this._subscribers = [];
+
+  if (noop !== resolver) {
+    typeof resolver !== 'function' && needsResolver();
+    this instanceof Promise ? initializePromise(this, resolver) : needsNew();
+  }
+}
+
+Promise.all = all;
+Promise.race = race;
+Promise.resolve = resolve;
+Promise.reject = reject;
+Promise._setScheduler = setScheduler;
+Promise._setAsap = setAsap;
+Promise._asap = asap;
+
+Promise.prototype = {
+  constructor: Promise,
+
+  /**
+    The primary way of interacting with a promise is through its `then` method,
+    which registers callbacks to receive either a promise's eventual value or the
+    reason why the promise cannot be fulfilled.
+  
+    ```js
+    findUser().then(function(user){
+      // user is available
+    }, function(reason){
+      // user is unavailable, and you are given the reason why
+    });
+    ```
+  
+    Chaining
+    --------
+  
+    The return value of `then` is itself a promise.  This second, 'downstream'
+    promise is resolved with the return value of the first promise's fulfillment
+    or rejection handler, or rejected if the handler throws an exception.
+  
+    ```js
+    findUser().then(function (user) {
+      return user.name;
+    }, function (reason) {
+      return 'default name';
+    }).then(function (userName) {
+      // If `findUser` fulfilled, `userName` will be the user's name, otherwise it
+      // will be `'default name'`
+    });
+  
+    findUser().then(function (user) {
+      throw new Error('Found user, but still unhappy');
+    }, function (reason) {
+      throw new Error('`findUser` rejected and we're unhappy');
+    }).then(function (value) {
+      // never reached
+    }, function (reason) {
+      // if `findUser` fulfilled, `reason` will be 'Found user, but still unhappy'.
+      // If `findUser` rejected, `reason` will be '`findUser` rejected and we're unhappy'.
+    });
+    ```
+    If the downstream promise does not specify a rejection handler, rejection reasons will be propagated further downstream.
+  
+    ```js
+    findUser().then(function (user) {
+      throw new PedagogicalException('Upstream error');
+    }).then(function (value) {
+      // never reached
+    }).then(function (value) {
+      // never reached
+    }, function (reason) {
+      // The `PedgagocialException` is propagated all the way down to here
+    });
+    ```
+  
+    Assimilation
+    ------------
+  
+    Sometimes the value you want to propagate to a downstream promise can only be
+    retrieved asynchronously. This can be achieved by returning a promise in the
+    fulfillment or rejection handler. The downstream promise will then be pending
+    until the returned promise is settled. This is called *assimilation*.
+  
+    ```js
+    findUser().then(function (user) {
+      return findCommentsByAuthor(user);
+    }).then(function (comments) {
+      // The user's comments are now available
+    });
+    ```
+  
+    If the assimliated promise rejects, then the downstream promise will also reject.
+  
+    ```js
+    findUser().then(function (user) {
+      return findCommentsByAuthor(user);
+    }).then(function (comments) {
+      // If `findCommentsByAuthor` fulfills, we'll have the value here
+    }, function (reason) {
+      // If `findCommentsByAuthor` rejects, we'll have the reason here
+    });
+    ```
+  
+    Simple Example
+    --------------
+  
+    Synchronous Example
+  
+    ```javascript
+    let result;
+  
+    try {
+      result = findResult();
+      // success
+    } catch(reason) {
+      // failure
+    }
+    ```
+  
+    Errback Example
+  
+    ```js
+    findResult(function(result, err){
+      if (err) {
+        // failure
+      } else {
+        // success
+      }
+    });
+    ```
+  
+    Promise Example;
+  
+    ```javascript
+    findResult().then(function(result){
+      // success
+    }, function(reason){
+      // failure
+    });
+    ```
+  
+    Advanced Example
+    --------------
+  
+    Synchronous Example
+  
+    ```javascript
+    let author, books;
+  
+    try {
+      author = findAuthor();
+      books  = findBooksByAuthor(author);
+      // success
+    } catch(reason) {
+      // failure
+    }
+    ```
+  
+    Errback Example
+  
+    ```js
+  
+    function foundBooks(books) {
+  
+    }
+  
+    function failure(reason) {
+  
+    }
+  
+    findAuthor(function(author, err){
+      if (err) {
+        failure(err);
+        // failure
+      } else {
+        try {
+          findBoooksByAuthor(author, function(books, err) {
+            if (err) {
+              failure(err);
             } else {
-                window.requestFileSystem(options.fileSystem, 0, fileSystemHandler, errorHandler);
+              try {
+                foundBooks(books);
+              } catch(reason) {
+                failure(reason);
+              }
             }
+          });
+        } catch(error) {
+          failure(err);
+        }
+        // success
+      }
+    });
+    ```
+  
+    Promise Example;
+  
+    ```javascript
+    findAuthor().
+      then(findBooksByAuthor).
+      then(function(books){
+        // found books
+    }).catch(function(reason){
+      // something went wrong
+    });
+    ```
+  
+    @method then
+    @param {Function} onFulfilled
+    @param {Function} onRejected
+    Useful for tooling.
+    @return {Promise}
+  */
+  then: then,
 
-            function fileSystemHandler(fileSystem) {
-                fileSystem.root.getFile(filename, null, fileHandler, errorHandler);
+  /**
+    `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
+    as the catch block of a try/catch statement.
+  
+    ```js
+    function findAuthor(){
+      throw new Error('couldn't find that author');
+    }
+  
+    // synchronous
+    try {
+      findAuthor();
+    } catch(reason) {
+      // something went wrong
+    }
+  
+    // async with promises
+    findAuthor().catch(function(reason){
+      // something went wrong
+    });
+    ```
+  
+    @method catch
+    @param {Function} onRejection
+    Useful for tooling.
+    @return {Promise}
+  */
+  'catch': function _catch(onRejection) {
+    return this.then(null, onRejection);
+  }
+};
+
+function polyfill() {
+    var local = undefined;
+
+    if (typeof commonjsGlobal !== 'undefined') {
+        local = commonjsGlobal;
+    } else if (typeof self !== 'undefined') {
+        local = self;
+    } else {
+        try {
+            local = Function('return this')();
+        } catch (e) {
+            throw new Error('polyfill failed because global object is unavailable in this environment');
+        }
+    }
+
+    var P = local.Promise;
+
+    if (P) {
+        var promiseToString = null;
+        try {
+            promiseToString = Object.prototype.toString.call(P.resolve());
+        } catch (e) {
+            // silently ignored
+        }
+
+        if (promiseToString === '[object Promise]' && !P.cast) {
+            return;
+        }
+    }
+
+    local.Promise = Promise;
+}
+
+// Strange compat..
+Promise.polyfill = polyfill;
+Promise.Promise = Promise;
+
+return Promise;
+
+})));
+
+});
+
+var es6Promise_1 = es6Promise.Promise;
+
+/**
+ * The mobile environment implementation of persistent storage.
+ */
+var OnDeviceStorage = (function () {
+    function OnDeviceStorage() {
+    }
+    OnDeviceStorage.prototype.persistLocalStorage = function () {
+        var _this = this;
+        var i, data = {}, key, value;
+        var storage = AWProxy.storage();
+        for (i = 0; i < storage.length; i += 1) {
+            key = storage.key(i);
+            value = storage.getItem(key);
+            data[key] = value;
+        }
+        return new es6Promise_1(function (resolve, reject) {
+            _this.writeDataToPersistentStorage(JSON.stringify(data)).then(resolve, reject);
+        });
+    };
+    OnDeviceStorage.prototype.loadPersistentData = function () {
+        var _this = this;
+        return new es6Promise_1(function (resolve, reject) {
+            _this.readDataFromPersistentStorage().then(function (json) {
+                var data;
+                if (json) {
+                    data = JSON.parse(json);
+                    for (var item in data) {
+                        if (data.hasOwnProperty(item)) {
+                            AWProxy.storage().setItem(item, data[item]);
+                        }
+                    }
+                    resolve();
+                }
+            }, reject);
+        });
+    };
+    OnDeviceStorage.prototype.readDataFromPersistentStorage = function () {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.requestFileSystem(AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
+            function gotFS(fileSystem) {
+                fileSystem.root.getFile('appworksjs.cache.json', {
+                    create: true,
+                    exclusive: false
+                }, gotFileEntry, reject);
             }
-
-            function fileHandler(entry) {
-                entry.file(readAsDataUrl, errorCallback);
+            function gotFileEntry(entry) {
+                entry.file(gotFile, reject);
             }
-
-            function readAsDataUrl(file) {
+            function gotFile(file) {
+                readAsText(file);
+            }
+            function readAsText(file) {
                 var reader = new FileReader();
                 reader.onloadend = function (evt) {
-                    callback(evt.target.result);
+                    console.log(evt);
+                    resolve(evt.target.result);
                 };
-                reader.readAsDataURL(file);
-            }
-        }
-    };
-
-    return awStorage;
-}
-function AppWorksOffline(aw) {
-    'use strict';
-
-    // add identifier to global appworks object
-    aw.network = {
-        online: 'onLine' in navigator && navigator.onLine,
-        offline: 'onLine' in navigator && !navigator.onLine
-    };
-    // watch for online event and send all requests queued while device was offline.
-    document.addEventListener('online', sendQueuedRequests);
-    // watch for online event and set global identifier
-    document.addEventListener('online', networkOnline);
-    // watch for offline event and set global identifier
-    document.addEventListener('offline', networkOffline);
-
-    var xhr = new XMLHttpRequest(),
-        CACHE_REQUESTS_ID = '_storedRequests';
-
-    function networkOnline() {
-        aw.network = aw.network || {};
-        aw.network.online = true;
-        aw.network.offline = false;
-        //// put a buffer of time between when the network says it is online to ensure that we can make requests
-        setTimeout(sendQueuedRequests, 2000);
-    }
-
-    function networkOffline() {
-        aw.network = aw.network || {};
-        aw.network.online = false;
-        aw.network.offline = true;
-    }
-
-    function getStoredRequests(callback) {
-        aw.cache.getItem(CACHE_REQUESTS_ID, callback);
-    }
-
-    function clearQueue() {
-        aw.cache.removeItem(CACHE_REQUESTS_ID);
-    }
-
-    function sendQueuedRequests() {
-        if (aw.network.online) {
-            getStoredRequests(onGetStoredRequests);
-        }
-
-        function onGetStoredRequests(storedRequests) {
-            if (storedRequests) {
-                for (var i = storedRequests.length - 1; i >= 0; i -= 1) {
-                    makeRequest(storedRequests[i]);
-                }
-                // clear the queue
-                clearQueue();
-            }
-        }
-    }
-
-    function findRequestById(requests, id) {
-        for (var i = 0; i < requests.length; i += 1) {
-            if (requests[i].id === id) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    function removeRequest(requests, index) {
-        requests.splice(index, 1);
-    }
-
-    function setRequestHeaders(options) {
-        for (var option in options) {
-            xhr.setRequestHeader(option, options[option]);
-        }
-    }
-
-    function makeRequest(req) {
-        var event;
-            xhr = new XMLHttpRequest();
-
-        xhr.addEventListener('load', function () {
-            var response = {detail: {data: xhr.response, status: xhr.status}};
-            if (xhr.status === 200) {
-                event = new CustomEvent(req.id, response);
-                event.data = xhr.response;
-                document.dispatchEvent(event);
-            } else if (xhr.status !== 200) {
-                event = new CustomEvent(req.id + '__error', response);
-                event.data = xhr.response;
-                document.dispatchEvent(event);
+                reader.readAsText(file);
             }
         });
-        xhr.open(req.options.method, req.url, true);
-        setRequestHeaders(req.options);
-        xhr.send(req.data || null);
-    }
-
-    function registerEventHandler(eventName, handler) {
-        return document.addEventListener(eventName, handler);
-    }
-
-    function removeEventHandler(eventName, handler) {
-        return document.removeEventListener(eventName, handler);
-    }
-
-    var awOffline = {
-
-        registerEventHandler: registerEventHandler,
-        removeEventHandler: removeEventHandler,
-        flush: sendQueuedRequests,
-        queuedRequests: getStoredRequests,
-        id: String.random,
-        /**
-         * example:
-         *  var headers = {},
-         *      options = {method: 'GET', eventListener: 'myEventListener', headers: headers};
-         *
-         *  appworks.offline.queue('http://thecatapi.com/api/images/get', options)
-         *          .success(function (data) {})
-         *          .error(function (err) {});
-         *
-         *
-         * @param url
-         * @param options
-         * @returns {{success: successFn, error: errorFn, then: promiseFn}}
-         */
-        queue: function (url, options) {
-
-            var requestId = options.eventListener || String.random(),
-                request = {id: requestId, url: url, options: options};
-
-            setOptions();
-
-            if (aw.network.offline) {
-                // we are offline, store the request to be made later
-                aw.cache.getItem(CACHE_REQUESTS_ID, onGetStoredRequests);
+    };
+    OnDeviceStorage.prototype.writeDataToPersistentStorage = function (data) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.requestFileSystem(AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
+            function gotFS(fileSystem) {
+                fileSystem.root.getFile('appworksjs.cache.json', { create: true, exclusive: false }, gotFileEntry, reject);
             }
-
-            function onGetStoredRequests(storedRequests) {
-                if (storedRequests && findRequestById(storedRequests, request.id) === -1) {
-                    storedRequests.push(request);
-                    aw.cache.setItem(CACHE_REQUESTS_ID, storedRequests);
-                } else {
-                    aw.cache.setItem(CACHE_REQUESTS_ID, [request]);
-                }
+            function gotFileEntry(fileEntry) {
+                fileEntry.createWriter(gotFileWriter, reject);
             }
-
-            function setOptions() {
-                options = options || {};
-                options.eventListener = options.eventListener || requestId;
-                options.method = options.method || 'GET';
-                options.headers = options.headers || {};
-            }
-
-            function successFn(handler) {
-                // pass callback to event that will be fired when the request is made
-                registerEventHandler(requestId, handler);
-
-                if (aw.network.online) {
-                    makeRequest(request);
-                }
-
-                return {
-                    error: errorFn
+            function gotFileWriter(writer) {
+                writer.onwriteend = function () {
+                    console.info('cache data backed up successfully');
                 };
+                writer.write(data);
+                resolve();
             }
+        });
+    };
+    return OnDeviceStorage;
+}());
 
-            function errorFn(errorHandler) {
-                registerEventHandler(requestId + '__error', errorHandler);
+var PersistentStorageMock = (function () {
+    function PersistentStorageMock() {
+    }
+    PersistentStorageMock.prototype.persistLocalStorage = function () {
+        return es6Promise_1.resolve();
+    };
+    PersistentStorageMock.prototype.loadPersistentData = function () {
+        return es6Promise_1.resolve();
+    };
+    return PersistentStorageMock;
+}());
+
+var DesktopStorage = (function () {
+    function DesktopStorage(desktopPlugin) {
+        this.desktopStorage = desktopPlugin;
+    }
+    DesktopStorage.prototype.persistLocalStorage = function () {
+        var _this = this;
+        if (this.desktopStorage === null) {
+            return es6Promise_1.reject(DesktopStorage.PLUGIN_NOT_FOUND);
+        }
+        return new es6Promise_1(function (resolve, reject) {
+            var i, data = [], key, value;
+            var storage = AWProxy.storage();
+            for (i = 0; i < storage.length; i += 1) {
+                key = storage.key(i);
+                value = storage.getItem(key);
+                data.push({ key: key, value: value });
             }
-
-            function promiseFn(successHandler, errorHandler) {
-                successFn(successHandler);
-                errorFn(errorHandler);
+            var setter = function (obj) { return _this.desktopStorage.setItem(obj.key, obj.value); };
+            es6Promise_1.all(data.map(setter)).then(resolve, reject);
+        });
+    };
+    DesktopStorage.prototype.loadPersistentData = function () {
+        var _this = this;
+        if (this.desktopStorage === null) {
+            return es6Promise_1.reject(DesktopStorage.PLUGIN_NOT_FOUND);
+        }
+        return new es6Promise_1(function (resolve, reject) {
+            try {
+                // get data is actually synchronous
+                var data = _this.desktopStorage.getData();
+                var storage = AWProxy.storage();
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        storage.setItem(key, data[key]);
+                    }
+                }
+                resolve();
             }
+            catch (e) {
+                reject(e);
+            }
+        });
+    };
+    return DesktopStorage;
+}());
+DesktopStorage.PLUGIN_NOT_FOUND = new Error('Unable to resolve AWStorage desktop plugin');
 
+var DesktopWebviewSequenceStore = {
+    seqNo: 0
+};
+var DesktopWebview = (function () {
+    function DesktopWebview() {
+        this.id = DesktopWebviewSequenceStore.seqNo++;
+    }
+    DesktopWebview.prototype.addEventListener = function (type, callback) {
+        AWProxy.exec(noop, noop, 'AWWebView', 'addEventListener', [this.id, type, callback]);
+    };
+    DesktopWebview.prototype.removeEventListener = function (type, callback) {
+        AWProxy.exec(noop, noop, 'AWWebView', 'removeEventListener', [this.id, type, callback]);
+    };
+    DesktopWebview.prototype.close = function () {
+        AWProxy.exec(noop, noop, 'AWWebView', 'close', [this.id]);
+    };
+    DesktopWebview.prototype.show = function () {
+        AWProxy.exec(noop, noop, 'AWWebView', 'show', [this.id]);
+    };
+    DesktopWebview.prototype.open = function (url, target, options) {
+        AWProxy.exec(noop, noop, 'AWWebView', 'open', [this.id, url, target, options]);
+        return this;
+    };
+    DesktopWebview.prototype.executeScript = function (script, callback) {
+        AWProxy.exec(callback, noop, 'AWWebView', 'executeScript', [this.id, script]);
+    };
+    DesktopWebview.prototype.insertCSS = function (css, callback) {
+        AWProxy.exec(callback, noop, 'AWWebView', 'insertCSS', [this.id, css]);
+    };
+    return DesktopWebview;
+}());
+
+var callbackQueue = [];
+var deviceReady = false;
+setupDeviceInitializationForMobile();
+var AWProxy = (function () {
+    function AWProxy() {
+    }
+    AWProxy.exec = function (successHandler, errorHandler, name, method, args) {
+        try {
+            if (AWProxy.isDesktopEnv()) {
+                AWProxy.execDesktop(successHandler, errorHandler, name, method, args);
+            }
+            else {
+                AWProxy.execMobile(successHandler, errorHandler, name, method, args);
+            }
+        }
+        catch (err) {
+            console.error('No proxy objects defined - tried [cordova, __aw_plugin_proxy]', err);
+            if (isFunction(errorHandler)) {
+                errorHandler(err);
+            }
+        }
+    };
+    AWProxy.accelerometer = function () {
+        return typeof 'navigator' !== undefined ? navigator.accelerometer : new MockAccelerometer();
+    };
+    AWProxy.camera = function () {
+        return typeof navigator !== 'undefined' ? navigator.camera : new MockCamera();
+    };
+    AWProxy.Camera = function () {
+        return (typeof Camera !== 'undefined') ? Camera : {
+            DestinationType: {
+                DATA_URL: null,
+                FILE_URI: null,
+                NATIVE_URI: null,
+            },
+            Direction: {
+                BACK: null,
+                FRONT: null,
+            },
+            EncodingType: {
+                JPEG: null,
+                PNG: null,
+            },
+            MediaType: {
+                PICTURE: null,
+                VIDEO: null,
+                ALLMEDIA: null,
+            },
+            PictureSourceType: {
+                PHOTOLIBRARY: null,
+                CAMERA: null,
+                SAVEDPHOTOALBUM: null,
+            },
+            // Used only on iOS
+            PopoverArrowDirection: {
+                ARROW_UP: null,
+                ARROW_DOWN: null,
+                ARROW_LEFT: null,
+                ARROW_RIGHT: null,
+                ARROW_ANY: null
+            }
+        };
+    };
+    AWProxy.compass = function () {
+        return typeof navigator !== 'undefined' ? navigator.compass : new MockCompass();
+    };
+    AWProxy.connection = function () {
+        return typeof navigator !== 'undefined' ? navigator.connection : new MockConnection();
+    };
+    AWProxy.Connection = function () {
+        return (typeof Connection !== 'undefined') ? Connection : {
+            UNKNOWN: null,
+            ETHERNET: null,
+            WIFI: null,
+            CELL_2G: null,
+            CELL_3G: null,
+            CELL_4G: null,
+            CELL: null,
+            NONE: null
+        };
+    };
+    AWProxy.contacts = function () {
+        return typeof navigator !== 'undefined' ? navigator.contacts : new MockContacts();
+    };
+    AWProxy.device = function () {
+        var _device = (typeof device !== 'undefined') ? device : {
+            cordova: null,
+            available: true,
+            model: null,
+            platform: null,
+            uuid: null,
+            version: null,
+            manufacturer: null,
+            isVirtual: null,
+            serial: null,
+            capture: null
+        };
+        if (typeof navigator !== 'undefined' && navigator.device && navigator.device.capture) {
+            _device.capture = navigator.device.capture;
+        }
+        else {
+            _device.capture = new MockCapture();
+        }
+        return _device;
+    };
+    AWProxy.document = function () {
+        return (typeof document !== 'undefined') ? document : {
+            addEventListener: noop
+        };
+    };
+    AWProxy.file = function () {
+        if (typeof cordova !== 'undefined') {
+            return cordova.file;
+        }
+        else {
             return {
-                success: successFn,
-                error: errorFn,
-                then: promiseFn
+                documentsDirectory: ''
             };
-
         }
     };
-
-    return awOffline;
-}
-function AppWorksNotifications(aw) {
-    'use strict';
-
-    var wsProtocol = 'appworks',
-        wsHost =  '127.0.0.1',
-        wsPort = '9000',
-        wsFull = 'ws://' + wsHost + ':' + wsPort,
-        websocket = new WebSocket(wsFull, wsProtocol),
-        notifications = [],
-        userCallback;
-
-    // notifications enabled by default
-    on();
-
-    function onNotification(message) {
-        var notification = JSON.parse(message.data);
-        if (notification['appworksjs.stopListening']) {
-            return off();
+    AWProxy.filetransfer = function () {
+        return AWProxy.doGetFileTransfer();
+    };
+    // alias name
+    AWProxy.fileTransfer = function () {
+        return AWProxy.doGetFileTransfer();
+    };
+    AWProxy.doGetFileTransfer = function () {
+        if (AWProxy.isDesktopEnv()) {
+            var plugin = AWProxy.getDesktopPlugin('AWFileTransfer');
+            return (plugin !== null) ? plugin : new MockFileTransfer();
         }
-        if (notification['appworksjs.auth']) {
-            return bindGlobalAuthObject(notification['appworksjs.auth']);
+        return (typeof FileTransfer !== 'undefined') ? new FileTransfer() : new MockFileTransfer();
+    };
+    AWProxy.geolocation = function () {
+        return (typeof navigator !== 'undefined') ? navigator.geolocation : new MockGeolocation();
+    };
+    AWProxy.localFileSystem = function () {
+        return LocalFileSystem;
+    };
+    AWProxy.media = function (src, successHandler, errorHandler, statusChangeHandler) {
+        if (typeof Media !== 'undefined') {
+            return new Media(src, successHandler, errorHandler, statusChangeHandler);
         }
-        // TODO determine if this notification is intended for this app
-        notifications.push(notification);
-        // execute the user defined callback
-        if (userCallback) {
-            userCallback(notification);
+        else {
+            return new MockMedia(src, successHandler, errorHandler, statusChangeHandler);
         }
+    };
+    AWProxy.notification = function () {
+        return (typeof navigator !== 'undefined') ? navigator.notification : new MockNotification();
+    };
+    AWProxy.requestFileSystem = function (type, size, successCallback, errorCallback) {
+        if (window.requestFileSystem) {
+            return window.requestFileSystem(type, size, successCallback, errorCallback);
+        }
+    };
+    AWProxy.vibrate = function (time) {
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+            return navigator.vibrate(time);
+        }
+        else {
+            return new MockVibrate().vibrate(time);
+        }
+    };
+    AWProxy.webview = function () {
+        if (typeof cordova !== 'undefined') {
+            return cordova.InAppBrowser;
+        }
+        else {
+            return new DesktopWebview();
+        }
+    };
+    AWProxy.storage = function () {
+        return new AWStorage();
+    };
+    AWProxy.persistentStorage = function () {
+        var desktopPlugin = AWProxy.getDesktopPlugin('AWStorage');
+        return desktopPlugin !== null ?
+            new DesktopStorage(desktopPlugin) : (AWProxy.isMobileEnv()) ?
+            new OnDeviceStorage() : new PersistentStorageMock();
+    };
+    /**
+     * Are we executing within the AppWorks Desktop context.
+     *
+     * @returns {boolean} true if this is a desktop environment, false otherwise
+     */
+    AWProxy.isDesktopEnv = function () {
+        return typeof __aw_plugin_proxy !== 'undefined';
+    };
+    /**
+     * Are we executing within the AppWorks mobile context.
+     *
+     * @return {boolean} true if Cordova is available, false otherwise
+     */
+    AWProxy.isMobileEnv = function () {
+        return typeof cordova !== 'undefined';
+    };
+    /**
+     * Ask the AppWorks desktop environment to retrieve an instance of a specific plugin.
+     *
+     * @param pluginName plugin identifier
+     * @returns {any} plugin instance or null if no such plugin exists or the method was
+     *                called outside of the desktop client context
+     */
+    AWProxy.getDesktopPlugin = function (pluginName) {
+        if (!AWProxy.isDesktopEnv())
+            return null;
+        // the proxy exposed by desktop has a method to allow retrieval of plugin instances
+        return __aw_plugin_proxy.getPlugin(pluginName);
+    };
+    AWProxy.execMobile = function (successHandler, errorHandler, name, method, args) {
+        if (deviceReady) {
+            cordova.exec(successHandler, errorHandler, name, method, args);
+        }
+        else {
+            callbackQueue.push(function () {
+                AWProxy.exec(successHandler, errorHandler, name, method, args);
+            });
+        }
+    };
+    AWProxy.execDesktop = function (successHandler, errorHandler, name, method, args) {
+        __aw_plugin_proxy.exec(successHandler, errorHandler, name, method, args);
+    };
+    return AWProxy;
+}());
+function setupDeviceInitializationForMobile() {
+    try {
+        document.addEventListener('deviceready', function () {
+            deviceReady = true;
+            callbackQueue.forEach(function (callback) {
+                callback();
+            });
+        });
     }
+    catch (e) {
+        // unsupported environment
+    }
+}
 
-    function bindGlobalAuthObject(auth) {
-        var event = new CustomEvent('appworksjs.auth');
-        window.otagtoken = auth.otagtoken;
-        window.otdsticket = auth.otdsticket;
-        window.gatewayUrl = auth.gatewayUrl;
-        aw.auth = auth;
-        event.data = auth;
+var AWAccelerometer$1 = (function (_super) {
+    __extends(AWAccelerometer, _super);
+    function AWAccelerometer() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    AWAccelerometer.prototype.getCurrentAcceleration = function () {
+        var _this = this;
+        return AWProxy.accelerometer().getCurrentAcceleration((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })());
+    };
+    AWAccelerometer.prototype.watchAcceleration = function (options) {
+        var _this = this;
+        return AWProxy.accelerometer().watchAcceleration((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+    };
+    AWAccelerometer.prototype.clearWatch = function (watchId) {
+        return AWProxy.accelerometer().clearWatch(watchId);
+    };
+    return AWAccelerometer;
+}(AWPlugin));
+
+var AWAppManager$1 = (function (_super) {
+    __extends(AWAppManager, _super);
+    function AWAppManager() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    AWAppManager.prototype.closeActiveApp = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'closeActiveApp', []);
+    };
+    return AWAppManager;
+}(AWPlugin));
+
+var AWAuth$1 = (function (_super) {
+    __extends(AWAuth, _super);
+    function AWAuth() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    AWAuth.prototype.authenticate = function (force) {
+        var _this = this;
+        force = !!force;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate', [force.toString()]);
+    };
+    /**
+     *  Marked for depreciation
+     *  Use authenticate(boolean?), which will get the auth object if the session is valid, else it will refresh the auth object and return that.
+     */
+    AWAuth.prototype.getAuthResponse = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authobject', []);
+    };
+    AWAuth.prototype.gateway = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'gateway', []);
+    };
+    AWAuth.prototype.online = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'online', []);
+    };
+    AWAuth.prototype.otdsssoticket = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'otdsssoticket', []);
+    };
+    return AWAuth;
+}(AWPlugin));
+
+var AWCache$1 = (function (_super) {
+    __extends(AWCache, _super);
+    function AWCache(options) {
+        var _this = _super.call(this, noop, noop) || this;
+        _this.options = options || { usePersistentStorage: false };
+        _this.preloadCache();
+        return _this;
+    }
+    AWCache.prototype.setItem = function (key, value) {
+        var _this = this;
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.storage().setItem(key, value);
+            if (_this.usePersistentStorage()) {
+                AWProxy.persistentStorage().persistLocalStorage()
+                    .then(resolve, reject);
+            }
+            else {
+                resolve();
+            }
+        });
+    };
+    AWCache.prototype.getItem = function (key) {
+        return AWProxy.storage().getItem(key);
+    };
+    AWCache.prototype.removeItem = function (key) {
+        var _this = this;
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.storage().removeItem(key);
+            if (_this.usePersistentStorage()) {
+                AWProxy.persistentStorage().persistLocalStorage()
+                    .then(resolve, reject);
+            }
+            else {
+                resolve();
+            }
+        });
+    };
+    AWCache.prototype.clear = function () {
+        var _this = this;
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.storage().clear();
+            if (_this.usePersistentStorage()) {
+                AWProxy.persistentStorage().persistLocalStorage()
+                    .then(resolve, reject);
+            }
+            else {
+                resolve();
+            }
+        });
+    };
+    AWCache.prototype.preloadCache = function () {
+        if (this.usePersistentStorage())
+            AWProxy.persistentStorage().loadPersistentData()
+                .then(function () {
+                return console.log('AWCache: Successfully loaded persistent data into local storage');
+            }, function (err) {
+                return console.error("AWCache: Failed to load persistent data into local storage - " + err.toString());
+            });
+    };
+    AWCache.prototype.usePersistentStorage = function () {
+        return this.options.usePersistentStorage;
+    };
+    return AWCache;
+}(AWPlugin));
+
+var AWCalendar$1 = (function (_super) {
+    __extends(AWCalendar, _super);
+    function AWCalendar() {
+        return _super.call(this, noop, noop) || this;
+    }
+    AWCalendar.getCalendarOptions = function () {
+        return {
+            firstReminderMinutes: 60,
+            secondReminderMinutes: null,
+            recurrence: null,
+            recurrenceInterval: 1,
+            recurrenceWeekstart: "MO",
+            recurrenceByDay: null,
+            recurrenceByMonthDay: null,
+            recurrenceEndDate: null,
+            recurrenceCount: null,
+            calendarName: null,
+            calendarId: null,
+            url: null
+        };
+    };
+    AWCalendar.prototype.hasReadPermission = function (successHandler, errorHandler) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'hasReadPermission', []);
+        });
+    };
+    AWCalendar.prototype.requestReadPermission = function (successHandler, errorHandler) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'requestReadPermission', []);
+        });
+    };
+    AWCalendar.prototype.hasWritePermission = function (successHandler, errorHandler) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'hasWritePermission', []);
+        });
+    };
+    AWCalendar.prototype.requestWritePermission = function (successHandler, errorHandler) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'requestWritePermission', []);
+        });
+    };
+    AWCalendar.prototype.hasReadWritePermission = function (successHandler, errorHandler) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'hasReadWritePermission', []);
+        });
+    };
+    AWCalendar.prototype.requestReadWritePermission = function (successHandler, errorHandler) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'requestReadWritePermission', []);
+        });
+    };
+    AWCalendar.prototype.createCalendar = function (options, successHandler, errorHandler) {
+        if (options === void 0) { options = {
+            calendarName: null,
+            calendarColor: null
+        }; }
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'createCalendar', [options]);
+        });
+    };
+    AWCalendar.prototype.deleteCalendar = function (calendarName, successHandler, errorHandler) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'deleteCalendar', [{ calendarName: calendarName }]);
+        });
+    };
+    AWCalendar.prototype.openCalendar = function (date, successHandler, errorHandler) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'openCalendar', [{ date: date.getTime() }]);
+        });
+    };
+    AWCalendar.prototype.createEventWithOptions = function (title, location, notes, startDate, endDate, options, successHandler, errorHandler) {
+        if (options === void 0) { options = AWCalendar.getCalendarOptions(); }
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'createEventWithOptions', [{
+                    title: title,
+                    location: location,
+                    notes: notes,
+                    startTime: startDate.getTime(),
+                    endTime: endDate.getTime(),
+                    options: options
+                }]);
+        });
+    };
+    AWCalendar.prototype.createEvent = function (title, location, notes, startDate, endDate, successHandler, errorHandler) {
+        return this.createEventWithOptions(title, location, notes, startDate, endDate, AWCalendar.getCalendarOptions(), successHandler, errorHandler);
+    };
+    AWCalendar.prototype.createEventInteractivelyWithOptions = function (title, location, notes, startDate, endDate, options, successHandler, errorHandler) {
+        if (options === void 0) { options = AWCalendar.getCalendarOptions(); }
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'createEventInteractively', [{
+                    title: title,
+                    location: location,
+                    notes: notes,
+                    startTime: startDate.getTime(),
+                    endTime: endDate.getTime(),
+                    options: options
+                }]);
+        });
+    };
+    AWCalendar.prototype.createEventInteractively = function (title, location, notes, startDate, endDate, successHandler, errorHandler) {
+        return this.createEventInteractivelyWithOptions(title, location, notes, startDate, endDate, AWCalendar.getCalendarOptions(), successHandler, errorHandler);
+    };
+    AWCalendar.prototype.findEventWithOptions = function (title, location, notes, startDate, endDate, options, successHandler, errorHandler) {
+        if (options === void 0) { options = AWCalendar.getCalendarOptions(); }
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'findEventWithOptions', [{
+                    title: title,
+                    location: location,
+                    notes: notes,
+                    startTime: startDate.getTime(),
+                    endTime: endDate.getTime(),
+                    options: options
+                }]);
+        });
+    };
+    AWCalendar.prototype.findEvent = function (title, location, notes, startDate, endDate, successHandler, errorHandler) {
+        return this.findEventWithOptions(title, location, notes, startDate, endDate, AWCalendar.getCalendarOptions(), successHandler, errorHandler);
+    };
+    AWCalendar.prototype.findAllEventsInNamedCalendar = function (calendarName, successHandler, errorHandler) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'findAllEventsInNamedCalendar', [{ calendarName: calendarName }]);
+        });
+    };
+    AWCalendar.prototype.deleteEvent = function (title, location, notes, startDate, endDate, successHandler, errorHandler) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'deleteEvent', [{
+                    title: title,
+                    location: location,
+                    startTime: startDate.getTime(),
+                    endTime: endDate.getTime(),
+                }]);
+        });
+    };
+    AWCalendar.prototype.deleteEventFromNamedCalendar = function (title, location, notes, startDate, endDate, calendarName, successHandler, errorHandler) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'deleteEventFromNamedCalendar', [{
+                    title: title,
+                    location: location,
+                    startTime: startDate.getTime(),
+                    endTime: endDate.getTime(),
+                    calendarName: calendarName
+                }]);
+        });
+    };
+    AWCalendar.prototype.modifyEventWithOptions = function (title, location, notes, startDate, endDate, newTitle, newLocation, newNotes, newStartDate, newEndDate, options, newOptions, successHandler, errorHandler) {
+        if (options === void 0) { options = AWCalendar.getCalendarOptions(); }
+        if (newOptions === void 0) { newOptions = AWCalendar.getCalendarOptions(); }
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'modifyEventWithOptions', [{
+                    title: title,
+                    location: location,
+                    notes: notes,
+                    startTime: startDate.getTime(),
+                    endTime: endDate.getTime(),
+                    newTitle: newTitle,
+                    newLocation: newLocation,
+                    newNotes: newNotes,
+                    newStartTime: newStartDate.getTime(),
+                    newEndDate: newEndDate.getTime(),
+                    options: options,
+                    newOptions: newOptions
+                }]);
+        });
+    };
+    AWCalendar.prototype.modifyEvent = function (title, location, notes, startDate, endDate, newTitle, newLocation, newNotes, newStartDate, newEndDate, successHandler, errorHandler) {
+        return this.modifyEventWithOptions(title, location, notes, startDate, endDate, newTitle, newLocation, newNotes, newStartDate, newEndDate, AWCalendar.getCalendarOptions(), AWCalendar.getCalendarOptions(), successHandler, errorHandler);
+    };
+    AWCalendar.prototype.modifyEventInNamedCalendar = function (title, location, notes, startDate, endDate, newTitle, newLocation, newNotes, newStartDate, newEndDate, calendarName, successHandler, errorHandler) {
+        var options = AWCalendar.getCalendarOptions();
+        options.calendarName = calendarName;
+        return this.modifyEventWithOptions(title, location, notes, startDate, endDate, newTitle, newLocation, newNotes, newStartDate, newEndDate, options, successHandler, errorHandler);
+    };
+    AWCalendar.prototype.listCalendars = function (successHandler, errorHandler) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'listCalendars', []);
+        });
+    };
+    AWCalendar.prototype.listEventsInRange = function (startDate, endDate, successHandler, errorHandler) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'listEventsInRange', [{
+                    startTime: startDate.getTime(),
+                    endTime: endDate.getTime()
+                }]);
+        });
+    };
+    return AWCalendar;
+}(AWPlugin));
+
+var AWCamera$1 = (function (_super) {
+    __extends(AWCamera, _super);
+    function AWCamera() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    AWCamera.prototype.cleanup = function (onSuccess, onError) {
+        return AWProxy.camera().cleanup(onSuccess, onError);
+    };
+    AWCamera.prototype.getPicture = function (cameraSuccess, cameraError, cameraOptions) {
+        return AWProxy.camera().getPicture(cameraSuccess, cameraError, cameraOptions);
+    };
+    AWCamera.prototype.openGallery = function (options) {
+        var _this = this;
+        options = options || {
+            destinationType: AWProxy.Camera().DestinationType.FILE_URI
+        };
+        options.sourceType = AWProxy.Camera().PictureSourceType.PHOTOLIBRARY;
+        return this.getPicture((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+    };
+    AWCamera.prototype.takePicture = function (options) {
+        var _this = this;
+        options = options || {
+            destinationType: AWProxy.Camera().DestinationType.FILE_URI,
+            encodingType: AWProxy.Camera().EncodingType.JPEG,
+            mediaType: AWProxy.Camera().MediaType.ALLMEDIA,
+            correctOrientation: true,
+            saveToPhotoAlbum: true
+        };
+        options.sourceType = AWProxy.Camera().PictureSourceType.CAMERA;
+        return this.getPicture((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+    };
+    return AWCamera;
+}(AWPlugin));
+
+var AWCompass$1 = (function (_super) {
+    __extends(AWCompass, _super);
+    function AWCompass() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    AWCompass.prototype.getCurrentHeading = function () {
+        var _this = this;
+        return AWProxy.compass().getCurrentHeading((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })());
+    };
+    AWCompass.prototype.watchHeading = function (options) {
+        var _this = this;
+        return AWProxy.compass().watchHeading((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+    };
+    AWCompass.prototype.clearWatch = function (watchId) {
+        return AWProxy.compass().clearWatch(watchId);
+    };
+    return AWCompass;
+}(AWPlugin));
+
+var AWComponent$1 = (function (_super) {
+    __extends(AWComponent, _super);
+    function AWComponent() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    AWComponent.prototype.open = function (successHandler, errorHandler, args) {
+        AWProxy.exec(successHandler, errorHandler, 'AWComponent', 'open', args || []);
+    };
+    AWComponent.prototype.list = function (successHandler, errorHandler, args) {
+        AWProxy.exec(successHandler, errorHandler, 'AWComponent', 'list', args || []);
+    };
+    AWComponent.prototype.check = function (successHandler, errorHandler, args) {
+        AWProxy.exec(successHandler, errorHandler, 'AWComponent', 'check', args || []);
+    };
+    AWComponent.prototype.close = function (successHandler, errorHandler, args) {
+        AWProxy.exec(successHandler, errorHandler, 'AWComponent', 'close', args || []);
+    };
+    return AWComponent;
+}(AWPlugin));
+
+var AWContacts$1 = (function (_super) {
+    __extends(AWContacts, _super);
+    function AWContacts() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    AWContacts.prototype.create = function (contact) {
+        return AWProxy.contacts().create(contact);
+    };
+    AWContacts.prototype.find = function (fields, options) {
+        var _this = this;
+        return AWProxy.contacts().find(fields, (function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+    };
+    AWContacts.prototype.pickContact = function () {
+        var _this = this;
+        return AWProxy.contacts().pickContact((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })());
+    };
+    return AWContacts;
+}(AWPlugin));
+
+var AWDevice$1 = (function (_super) {
+    __extends(AWDevice, _super);
+    function AWDevice() {
+        var _this = _super.call(this, function () { }, function () { }) || this;
+        _this.cordova = AWProxy.device().cordova;
+        _this.model = AWProxy.device().model;
+        _this.platform = AWProxy.device().platform;
+        _this.uuid = AWProxy.device().uuid;
+        _this.version = AWProxy.device().version;
+        _this.manufacturer = AWProxy.device().manufacturer;
+        _this.capture = AWProxy.device().capture;
+        return _this;
+    }
+    return AWDevice;
+}(AWPlugin));
+
+var AWFileChooser$1 = (function (_super) {
+    __extends(AWFileChooser, _super);
+    function AWFileChooser() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    AWFileChooser.prototype.selectAndUpload = function (action) {
+        var _this = this;
+        var args = [action];
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFileChooser', 'open', args);
+    };
+    return AWFileChooser;
+}(AWPlugin));
+
+var AWFileTransfer$1 = (function (_super) {
+    __extends(AWFileTransfer, _super);
+    function AWFileTransfer(successHandler, errorHandler) {
+        var _this = _super.call(this, successHandler, errorHandler) || this;
+        _this.fileTransfer = AWProxy.filetransfer();
+        _this.onprogress = null;
+        return _this;
+    }
+    AWFileTransfer.prototype.abort = function () {
+        this.fileTransfer.abort();
+    };
+    AWFileTransfer.prototype.download = function (url, target, options, shared) {
+        var _this = this;
+        var successHandler = this.successHandler, errorHandler = this.errorHandler;
+        options = options || {};
+        if (shared && !AWProxy.isDesktopEnv()) {
+            AWProxy.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), 'AWSharedDocumentProvider', 'containerForCurrentApp', []);
+        }
+        else {
+            this.fileTransfer.download(encodeURI(url), this.toEnvFilePath(target), successHandler, errorHandler, false, options);
+        }
+        return this.fileTransfer;
+        function gotSharedContainerUrl(containerUrl) {
+            AWProxy.filetransfer().download(encodeURI(url), containerUrl + '/' + target, successHandler, errorHandler, false, options);
+        }
+    };
+    AWFileTransfer.prototype.progressHandler = function (handler) {
+        this.fileTransfer.onprogress = handler;
+    };
+    AWFileTransfer.prototype.upload = function (source, url, options, shared) {
+        var _this = this;
+        var successHandler = this.successHandler, errorHandler = this.errorHandler;
+        options = options || {};
+        if (shared && !AWProxy.isDesktopEnv()) {
+            AWProxy.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), 'AWSharedDocumentProvider', 'containerForCurrentApp', []);
+        }
+        else {
+            this.fileTransfer.upload(this.toEnvFilePath(source), encodeURI(url), successHandler, errorHandler, options, false);
+        }
+        return this.fileTransfer;
+        function gotSharedContainerUrl(containerUrl) {
+            AWProxy.filetransfer().upload(
+            // valid use of slash here as shared container is a mobile only concept
+            containerUrl + '/' + source, encodeURI(url), successHandler, errorHandler, options, false);
+        }
+    };
+    AWFileTransfer.prototype.toEnvFilePath = function (fileUrl) {
+        // use a path relative to the Cordova defined sandbox in a mobile environment
+        return AWProxy.isDesktopEnv() ? fileUrl : AWProxy.file().documentsDirectory + '/' + fileUrl;
+    };
+    return AWFileTransfer;
+}(AWPlugin));
+
+var AWFinder$1 = (function (_super) {
+    __extends(AWFinder, _super);
+    function AWFinder() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    AWFinder.prototype.open = function (path, filename) {
+        var _this = this;
+        var args = [path, filename];
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'open', args);
+    };
+    AWFinder.prototype.openIn = function (filename) {
+        return this.openDirect(filename);
+    };
+    AWFinder.prototype.list = function (path) {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'list', [path]);
+    };
+    AWFinder.prototype.share = function (filename) {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'share', [filename]);
+    };
+    AWFinder.prototype.openDirect = function (filename) {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'openDirect', [filename]);
+    };
+    return AWFinder;
+}(AWPlugin));
+
+var AWGlobalization$1 = (function (_super) {
+    __extends(AWGlobalization, _super);
+    function AWGlobalization() {
+        return _super.call(this, noop, noop) || this;
+    }
+    AWGlobalization.prototype.getPreferredLanguage = function (successFn, errorFn) {
+        AWProxy.exec(successFn, errorFn, 'AWGlobalization', 'getPreferredLanguage', []);
+    };
+    return AWGlobalization;
+}(AWPlugin));
+
+var AWHeaderBar$1 = (function (_super) {
+    __extends(AWHeaderBar, _super);
+    function AWHeaderBar() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        /**
+         * @deprecated
+         * @type {{LeftOne: number; LeftTwo: number; RightOne: number; RightTwo: number}}
+         */
+        _this.ButtonName = { LeftOne: 0, LeftTwo: 1, RightOne: 2, RightTwo: 3 };
+        /**
+         * @deprecated
+         * @type {{Hamburger: number; Back: number; Settings: number; Appmenu: number; None: number; Dots: number; Search: number}}
+         */
+        _this.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7 };
+        return _this;
+    }
+    AWHeaderBar.prototype.setHeader = function (config) {
+        var _this = this;
+        if (config && config.callback) {
+            this.callback = config.callback;
+            config.callback = true;
+        }
+        else {
+            this.callback = null;
+        }
+        AWProxy.exec((function () { return _this.callback; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeader', [config]);
+    };
+    AWHeaderBar.prototype.getHeader = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'getHeader', []);
+    };
+    AWHeaderBar.prototype.setHeaderButtons = function (callback, config) {
+        var _this = this;
+        AWProxy.exec(callback, (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeaderButtons', [config]);
+    };
+    AWHeaderBar.prototype.maskHeader = function (shouldMaskHeader) {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'maskHeader', [shouldMaskHeader]);
+    };
+    return AWHeaderBar;
+}(AWPlugin));
+AWHeaderBar$1.ButtonName = { LeftOne: 0, LeftTwo: 1, RightOne: 2, RightTwo: 3 };
+AWHeaderBar$1.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7 };
+// alias
+var AWHeader$1 = (function (_super) {
+    __extends(AWHeader, _super);
+    function AWHeader() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return AWHeader;
+}(AWHeaderBar$1));
+
+var AWKeyboard$1 = (function (_super) {
+    __extends(AWKeyboard, _super);
+    function AWKeyboard() {
+        return _super.call(this, noop, noop) || this;
+    }
+    AWKeyboard.prototype.hideKeyboardAccessoryBar = function (hide) {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWKeyboard', 'hideKeyboardAccessoryBar', [hide.toString()]);
+    };
+    AWKeyboard.prototype.close = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWKeyboard', 'close', []);
+    };
+    AWKeyboard.prototype.show = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWKeyboard', 'show', []);
+    };
+    AWKeyboard.prototype.disableScroll = function (disable) {
+        var _this = this;
+        disable = !!disable;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWKeyboard', 'disableScroll', [disable.toString()]);
+    };
+    return AWKeyboard;
+}(AWPlugin));
+
+var AWLauncher$1 = (function (_super) {
+    __extends(AWLauncher, _super);
+    function AWLauncher(successHandler, errorHandler) {
+        return _super.call(this, successHandler || noop, errorHandler || noop) || this;
+    }
+    AWLauncher.prototype.getLaunchURL = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWLauncher', 'getLaunchURL', []);
+    };
+    AWLauncher.prototype.clearLaunchURL = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWLauncher', 'clearLaunchURL', []);
+    };
+    return AWLauncher;
+}(AWPlugin));
+
+var AWLocation$1 = (function (_super) {
+    __extends(AWLocation, _super);
+    function AWLocation() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    AWLocation.prototype.getCurrentPosition = function (options) {
+        var _this = this;
+        return AWProxy.geolocation().getCurrentPosition((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+    };
+    AWLocation.prototype.watchPosition = function (options) {
+        var _this = this;
+        return AWProxy.geolocation().watchPosition((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+    };
+    AWLocation.prototype.clearWatch = function (watchId) {
+        AWProxy.geolocation().clearWatch(watchId);
+    };
+    return AWLocation;
+}(AWPlugin));
+
+var AWMedia$1 = (function (_super) {
+    __extends(AWMedia, _super);
+    function AWMedia(src, successHandler, errorHandler, statusChangeHandler) {
+        var _this = _super.call(this, successHandler, errorHandler) || this;
+        _this.media = AWProxy.media(src, successHandler, errorHandler, statusChangeHandler);
+        _this.src = src;
+        _this.position = _this.media.position;
+        _this.duration = _this.media.duration;
+        return _this;
+    }
+    AWMedia.prototype.getCurrentPosition = function (successHandler, errorHandler) {
+        return this.media.getCurrentPosition(successHandler, errorHandler);
+    };
+    AWMedia.prototype.getDuration = function () {
+        return this.media.getDuration();
+    };
+    AWMedia.prototype.pause = function () {
+        return this.media.pause();
+    };
+    AWMedia.prototype.play = function () {
+        return this.media.play();
+    };
+    AWMedia.prototype.release = function () {
+        return this.media.release();
+    };
+    AWMedia.prototype.seekTo = function (value) {
+        return this.media.seekTo(value);
+    };
+    AWMedia.prototype.setVolume = function (value) {
+        return this.media.setVolume(value);
+    };
+    AWMedia.prototype.startRecord = function () {
+        return this.media.startRecord();
+    };
+    AWMedia.prototype.stop = function () {
+        return this.media.stop();
+    };
+    AWMedia.prototype.stopRecord = function () {
+        return this.media.stopRecord();
+    };
+    return AWMedia;
+}(AWPlugin));
+
+var AWMediaCapture$1 = (function (_super) {
+    __extends(AWMediaCapture, _super);
+    function AWMediaCapture(successHandler, errorHandler) {
+        var _this = _super.call(this, successHandler, errorHandler) || this;
+        _this.supportedAudioModes = AWProxy.device().capture.supportedAudioModes;
+        _this.supportedImageModes = AWProxy.device().capture.supportedImageModes;
+        _this.supportedVideoModes = AWProxy.device().capture.supportedVideoModes;
+        return _this;
+    }
+    AWMediaCapture.prototype.captureAudio = function (options) {
+        var _this = this;
+        AWProxy.device().capture.captureAudio((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+    };
+    AWMediaCapture.prototype.captureImage = function (options) {
+        var _this = this;
+        AWProxy.device().capture.captureImage((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+    };
+    AWMediaCapture.prototype.captureVideo = function (options) {
+        var _this = this;
+        AWProxy.device().capture.captureVideo((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), options);
+    };
+    return AWMediaCapture;
+}(AWPlugin));
+
+var AWMenu$1 = (function (_super) {
+    __extends(AWMenu, _super);
+    function AWMenu() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    AWMenu.prototype.push = function (items) {
+        var _this = this;
+        var args = [items];
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWMenu', 'push', args);
+    };
+    AWMenu.prototype.setMenu = function (menuSections) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.exec(resolve, reject, 'AWMenu', 'setMenu', [menuSections]);
+        });
+    };
+    AWMenu.prototype.didOpenMenuItem = function (callback) {
+        var _this = this;
+        AWProxy.exec(callback, (function () { return _this.errorHandler; })(), 'AWMenu', 'receive', []);
+    };
+    AWMenu.prototype.openListener = function (listener) {
+        var _this = this;
+        AWProxy.exec(listener, (function () { return _this.errorHandler; })(), 'AWMenu', 'receive', []);
+    };
+    AWMenu.prototype.showMenu = function (shouldShowMenu) {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWMenu', 'showMenu', [shouldShowMenu]);
+    };
+    AWMenu.prototype.didTapMenuItem = function (listener) {
+        return this.openListener(listener);
+    };
+    return AWMenu;
+}(AWPlugin));
+
+var AWMobileFileSystem$1 = (function (_super) {
+    __extends(AWMobileFileSystem, _super);
+    function AWMobileFileSystem() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    // File listing
+    AWMobileFileSystem.prototype.list = function (directory, shared, success, error) {
+        var args = [directory, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'list', args);
+    };
+    // Imports
+    AWMobileFileSystem.prototype.listImports = function (success, error) {
+        var args = [];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'listImports', args);
+    };
+    AWMobileFileSystem.prototype.moveImport = function (source, destination, desintationShared, success, error) {
+        var args = [source, destination, desintationShared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'moveImport', args);
+    };
+    // File IO
+    AWMobileFileSystem.prototype.exists = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'exists', args);
+    };
+    AWMobileFileSystem.prototype.rename = function (source, destination, shared, success, error) {
+        var args = [source, destination, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'rename', args);
+    };
+    AWMobileFileSystem.prototype.copy = function (source, sourceShared, destination, destinationShared, success, error) {
+        var args = [source, sourceShared, destination, destinationShared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'copy', args);
+    };
+    AWMobileFileSystem.prototype.move = function (source, sourceShared, destination, destinationShared, success, error) {
+        var args = [source, sourceShared, destination, destinationShared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'move', args);
+    };
+    AWMobileFileSystem.prototype.remove = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'remove', args);
+    };
+    // File sharing
+    AWMobileFileSystem.prototype.open = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'open', args);
+    };
+    AWMobileFileSystem.prototype.share = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'share', args);
+    };
+    AWMobileFileSystem.prototype.quicklook = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'quicklook', args);
+    };
+    // File transfer
+    AWMobileFileSystem.prototype.download = function (source, destination, headers, shared, success, error) {
+        var args = [source, destination, headers, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'download', args);
+    };
+    AWMobileFileSystem.prototype.upload = function (source, destination, fileParameterName, formData, headers, shared, success, error) {
+        var args = [source, destination, fileParameterName, formData, headers, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'upload', args);
+    };
+    return AWMobileFileSystem;
+}(AWPlugin));
+
+var AWNotificationManager$1 = (function (_super) {
+    __extends(AWNotificationManager, _super);
+    function AWNotificationManager() {
+        return _super.call(this, noop, noop) || this;
+    }
+    AWNotificationManager.prototype.enablePushNotifications = function (handler, errorHandler, includeSeqNo) {
+        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'enablePushNotifications', AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]);
+    };
+    AWNotificationManager.prototype.disablePushNotifications = function () {
+        AWProxy.exec(null, null, 'AWNotificationManager', 'disablePushNotifications', []);
+    };
+    AWNotificationManager.prototype.getNotifications = function (handler, errorHandler, includeSeqNo) {
+        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'getPushNotifications', [includeSeqNo]);
+    };
+    AWNotificationManager.prototype.getOpeningNotification = function (handler, errorHandler, includeSeqNo) {
+        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'getOpeningNotification', [includeSeqNo]);
+    };
+    AWNotificationManager.prototype.notificationDidLaunchApp = function (handler, errorHandler, includeSeqNo) {
+        this.getOpeningNotification(handler, errorHandler, includeSeqNo);
+    };
+    AWNotificationManager.prototype.openListener = function (handler, errorHandler, includeSeqNo) {
+        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'openListener', AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]);
+    };
+    AWNotificationManager.prototype.didTapNotificationFromActivityView = function (handler, errorHandler, includeSeqNo) {
+        this.openListener(handler, errorHandler, includeSeqNo);
+    };
+    AWNotificationManager.prototype.removeNotification = function (seqNo, handler, errorHandler) {
+        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'removeNotification', [seqNo]);
+    };
+    AWNotificationManager.prototype.alert = function (message, alertCallback, title, buttonName) {
+        AWProxy.notification().alert(message, alertCallback, title, buttonName);
+    };
+    AWNotificationManager.prototype.beep = function (times) {
+        AWProxy.notification().beep(times);
+    };
+    AWNotificationManager.prototype.confirm = function (message, confirmCallback, title, buttonLabels) {
+        AWProxy.notification().confirm(message, confirmCallback, title, buttonLabels);
+    };
+    AWNotificationManager.prototype.prompt = function (message, promptCallback, title, buttonLabels, defaultText) {
+        AWProxy.notification().prompt(message, promptCallback, title, buttonLabels, defaultText);
+    };
+    return AWNotificationManager;
+}(AWPlugin));
+
+var AWOfflineManager$1 = (function (_super) {
+    __extends(AWOfflineManager, _super);
+    function AWOfflineManager(options) {
+        var _this = _super.call(this, noop, noop) || this;
+        var document;
+        _this.cacheKey = '__appworksjs.deferredQueue';
+        _this.cache = new AWCache$1();
+        _this.options = options || { preserveEvents: false };
+        document = AWProxy.document();
+        // process deferred queue when network status changes
+        document.addEventListener('online', function () {
+            _this.processDeferredQueue();
+        });
+        var queue = _this.cache.getItem(_this.cacheKey);
+        if (queue) {
+            _this.queue = JSON.parse(queue);
+        }
+        else {
+            _this.queue = [];
+            _this.saveQueue();
+        }
+        // process the deferred queue upon object instantiation if we are currently online
+        if (_this.networkStatus().online) {
+            _this.processDeferredQueue();
+        }
+        return _this;
+    }
+    AWOfflineManager.prototype.defer = function (eventName, args) {
+        this.queue.push({
+            event: eventName,
+            args: JSON.stringify(args)
+        });
+        this.saveQueue();
+        return (this.queue.length - 1);
+    };
+    AWOfflineManager.prototype.cancel = function (id) {
+        if (id > -1) {
+            this.queue.splice(id, 1);
+            this.saveQueue();
+        }
+    };
+    AWOfflineManager.prototype.networkStatus = function () {
+        return {
+            online: AWProxy.connection().type !== AWProxy.Connection().NONE,
+            offline: AWProxy.connection().type === AWProxy.Connection().NONE,
+            connection: AWProxy.connection()
+        };
+    };
+    AWOfflineManager.prototype.saveQueue = function () {
+        this.cache.setItem(this.cacheKey, JSON.stringify(this.queue));
+    };
+    AWOfflineManager.prototype.processDeferredQueue = function () {
+        var self = this;
+        setTimeout(function () {
+            self.queue.forEach(function (deferred) {
+                self.dispatchEvent(deferred);
+            });
+            if (!self.options.preserveEvents) {
+                self.queue = [];
+                self.saveQueue();
+            }
+        }, 5000);
+    };
+    AWOfflineManager.prototype.dispatchEvent = function (data) {
+        var event = new CustomEvent(data.event, { detail: data.args });
         document.dispatchEvent(event);
-    }
-
-    function registerUserCallback(callback) {
-        userCallback = callback;
-    }
-
-    function get() {
-        return notifications;
-    }
-
-    function clear() {
-        notifications = [];
-    }
-
-    function on() {
-        websocket.onmessage = onNotification;
-    }
-
-    function off() {
-        clear();
-        websocket.onmessage = null;
-    }
-
-    var awNotifications = {
-        get: get,
-        clear: clear,
-        on: on,
-        off: off,
-        handler: registerUserCallback
     };
+    return AWOfflineManager;
+}(AWPlugin));
 
-    return awNotifications;
-}
-(function (global) {
-    'use strict';
-
-    var aw = new AppWorksCore();
-    aw.cache = new AppWorksCache(aw);
-    document.addEventListener('deviceready', bindDependentModules);
-
-    function bindDependentModules() {
-        // add appworks plugins
-        aw.storage = new AppWorksStorage(aw);
-        aw.comms = new AppWorksComms(aw);
-        aw.offline = new AppWorksOffline(aw);
-        aw.notifications = new AppWorksNotifications(aw);
-
-        // error checking
-        if (!global.cordova) {
-            throw new Error('cordova not found. deviceready should not have been fired but it was');
-        }
-        // add cordova plugins to mask calls
-        aw.accelerometer = global.navigator.accelerometer;
-        aw.battery = global.navigator.battery;
-        aw.cancelVibration = global.navigator.cancelVibration;
-        aw.compass = global.navigator.compass;
-        aw.connection = global.navigator.connection;
-        aw.contacts = global.navigator.contacts;
-        aw.device = global.navigator.device;
-        aw.globalization = global.navigator.globalization;
-        aw.getStorageUpdates = global.navigator.getStorageUpdates;
-        aw.geolocation = global.navigator.geolocation;
-
-        global.appworks = aw;
+var AWPage$1 = (function (_super) {
+    __extends(AWPage, _super);
+    function AWPage() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
+    AWPage.prototype.setPageUrl = function (url) {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'setPageUrl', [url]);
+    };
+    AWPage.prototype.openModalAppWebView = function (url, title, closeTitle) {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'showModalAppWebView', [url, title, closeTitle]);
+    };
+    AWPage.prototype.openModalExternalWebView = function (url, title, closeTitle, options) {
+        var _this = this;
+        if (typeof options === 'undefined' || !options) {
+            options = {};
+        }
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'showModalExternalWebView', [url, title, closeTitle, options]);
+    };
+    AWPage.prototype.setActionButtonCallback = function (callback, actionTitle) {
+        var _this = this;
+        AWProxy.exec(callback, (function () { return _this.errorHandler; })(), 'AWPage', 'setModalAppWebViewActionCallback', [actionTitle]);
+    };
+    AWPage.prototype.closeModalAppWebView = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPage', 'closeModalAppWebView', []);
+    };
+    AWPage.prototype.video = function (success, error, url) {
+        AWProxy.exec(success, error, 'AWPage', 'video', [url]);
+    };
+    return AWPage;
+}(AWPlugin));
 
-    global.appworks = aw;
+var QRReader$1 = (function (_super) {
+    __extends(QRReader, _super);
+    function QRReader() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    QRReader.prototype.scan = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'scan', []);
+    };
+    QRReader.prototype.rename = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'rename', []);
+    };
+    return QRReader;
+}(AWPlugin));
+var AWQRReader$1 = (function (_super) {
+    __extends(AWQRReader, _super);
+    function AWQRReader() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return AWQRReader;
+}(QRReader$1));
 
-})(window);
+var Scanner$1 = (function (_super) {
+    __extends(Scanner, _super);
+    function Scanner() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Scanner.prototype.scanDocument = function (returnType, successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWScanner', 'scanDocument', [returnType]);
+    };
+    return Scanner;
+}(AWPlugin));
+var AWScanner$1 = (function (_super) {
+    __extends(AWScanner, _super);
+    function AWScanner() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return AWScanner;
+}(Scanner$1));
+
+var SecureStorage$1 = (function (_super) {
+    __extends(SecureStorage, _super);
+    function SecureStorage(successHandler, errorHandler) {
+        var _this = _super.call(this, successHandler, errorHandler) || this;
+        _this.seqNo = ++SecureStorage.idCounter;
+        _this.onprogress = null;
+        return _this;
+    }
+    SecureStorage.prototype.store = function (url, target, options) {
+        var _this = this;
+        var args = [encodeURI(url), target, false, this.seqNo, options && options.headers], completionHandler = function () { return _this.successHandler; }, progressHandler = this.onprogress, progress;
+        function newProgressEvent(result) {
+            var pe = new ProgressEvent(null);
+            pe.lengthComputable = result.lengthComputable;
+            pe.loaded = result.loaded;
+            pe.total = result.total;
+            return pe;
+        }
+        progress = function (result) {
+            if (typeof result.lengthComputable !== 'undefined') {
+                if (progressHandler) {
+                    progressHandler(newProgressEvent(result));
+                }
+            }
+            else {
+                if (completionHandler) {
+                    completionHandler()(result);
+                }
+            }
+        };
+        AWProxy.exec(progress, (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'store', args);
+    };
+    SecureStorage.prototype.retrieve = function (filename, options) {
+        var _this = this;
+        var args = [filename, options];
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'retrieve', args);
+    };
+    SecureStorage.prototype.remove = function (target) {
+        var _this = this;
+        var args = [target];
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'removeFile', args);
+    };
+    SecureStorage.prototype.fileExistsAtPath = function (target) {
+        var _this = this;
+        var args = [target];
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'fileExistsAtPath', args);
+    };
+    return SecureStorage;
+}(AWPlugin));
+SecureStorage$1.idCounter = 0;
+var AWSecureStorage$1 = (function (_super) {
+    __extends(AWSecureStorage, _super);
+    function AWSecureStorage() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return AWSecureStorage;
+}(SecureStorage$1));
+
+var AWVibration$1 = (function (_super) {
+    __extends(AWVibration, _super);
+    function AWVibration() {
+        return _super.call(this, noop, noop) || this;
+    }
+    AWVibration.prototype.vibrate = function (time) {
+        return AWProxy.vibrate(time);
+    };
+    return AWVibration;
+}(AWPlugin));
+
+var AWWebView$1 = (function (_super) {
+    __extends(AWWebView, _super);
+    function AWWebView() {
+        return _super.call(this, noop, noop) || this;
+    }
+    AWWebView.prototype.open = function (url, target, options) {
+        return AWProxy.webview().open(url, target, options);
+    };
+    AWWebView.prototype.addEventListener = function (type, callback) {
+        AWProxy.webview().addEventListener(type, callback);
+    };
+    AWWebView.prototype.removeEventListener = function (type, callback) {
+        AWProxy.webview().removeEventListener(type, callback);
+    };
+    AWWebView.prototype.show = function () {
+        AWProxy.webview().show();
+    };
+    AWWebView.prototype.close = function () {
+        AWProxy.webview().close();
+    };
+    AWWebView.prototype.executeScript = function (script, callback) {
+        AWProxy.webview().executeScript(script, callback);
+    };
+    AWWebView.prototype.insertCSS = function (script, callback) {
+        AWProxy.webview().insertCSS(script, callback);
+    };
+    return AWWebView;
+}(AWPlugin));
+
+var AWFileSystem$1 = (function (_super) {
+    __extends(AWFileSystem, _super);
+    function AWFileSystem() {
+        var _this = _super.call(this, noop, noop) || this;
+        _this.desktopEnvError = new Error('This method is only available in the AppWorks Desktop environment');
+        return _this;
+    }
+    AWFileSystem.prototype.getPath = function (name, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'getPath', [name]);
+    };
+    AWFileSystem.prototype.exists = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'exists', [path]);
+    };
+    AWFileSystem.prototype.isDir = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isDir', [path]);
+    };
+    AWFileSystem.prototype.createFile = function (path, successCallback, errorCallback, data, append) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createFile', [path, data, append]);
+    };
+    AWFileSystem.prototype.readFile = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'readFile', [path]);
+    };
+    AWFileSystem.prototype.createDirectory = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createDirectory', [path]);
+    };
+    AWFileSystem.prototype.copy = function (from, to, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'copy', [from, to]);
+    };
+    AWFileSystem.prototype.open = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'open', [path]);
+    };
+    AWFileSystem.prototype.reveal = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'reveal', [path]);
+    };
+    AWFileSystem.prototype.getDetails = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'getDetails', [path]);
+    };
+    AWFileSystem.prototype.listDirContents = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'listDirContents', [path]);
+    };
+    AWFileSystem.prototype.showSaveDialog = function (opts, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showSaveDialog', [opts]);
+    };
+    AWFileSystem.prototype.showDirSelector = function (opts, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showDirSelector', [opts]);
+    };
+    AWFileSystem.prototype.showFileSelector = function (opts, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showFileSelector', [opts]);
+    };
+    /**
+     * The methods of this class should only be called from within an AppWorks desktop
+     * environment.
+     */
+    AWFileSystem.prototype.validateEnv = function () {
+        if (!AWProxy.isDesktopEnv()) {
+            throw this.desktopEnvError;
+        }
+    };
+    return AWFileSystem;
+}(AWPlugin));
+
+// Accelerometer plugin and alias -- [mobile]
+var Accelerometer = AWAccelerometer$1;
+var AWAccelerometer$$1 = AWAccelerometer$1;
+// AppManager plugin and alias -- [mobile]
+var AppManager = AWAppManager$1;
+var AWAppManager$$1 = AWAppManager$1;
+// Auth plugin and alias -- [desktop/mobile]
+var Auth = AWAuth$1;
+var AWAuth$$1 = AWAuth$1;
+// Cache plugin and alias -- [desktop/mobile]
+var Cache = AWCache$1;
+var AWCache$$1 = AWCache$1;
+// Calendar plugin and alias -- [desktop/mobile]
+var Calendar = AWCalendar$1;
+var AWCalendar$$1 = AWCalendar$1;
+// Camera plugin and alias -- [mobile]
+var Camera$1 = AWCamera$1;
+var AWCamera$$1 = AWCamera$1;
+// Compass plugin and alias -- [mobile]
+var Compass = AWCompass$1;
+var AWCompass$$1 = AWCompass$1;
+// Component plugin and alias -- [mobile]
+var Component = AWComponent$1;
+var AWComponent$$1 = AWComponent$1;
+// Contacts plugin and alias -- [mobile]
+var Contacts = AWContacts$1;
+var AWContacts$$1 = AWContacts$1;
+// Device plugin and alias -- [desktop/mobile]
+var Device = AWDevice$1;
+var AWDevice$$1 = AWDevice$1;
+// FileChooser plugin and alias -- [mobile]
+var FileChooser = AWFileChooser$1;
+var AWFileChooser$$1 = AWFileChooser$1;
+// FileTransfer plugin and alias -- [desktop/mobile]
+var FileTransfer$1 = AWFileTransfer$1;
+var AWFileTransfer$$1 = AWFileTransfer$1;
+// Finder plugin and alias -- [mobile]
+var Finder = AWFinder$1;
+var AWFinder$$1 = AWFinder$1;
+// Globalization plugin and alias -- [mobile]
+var Globalization = AWGlobalization$1;
+var AWGlobalization$$1 = AWGlobalization$1;
+// Header plugin and alias -- [mobile]
+var HeaderBar = AWHeaderBar$1;
+var Header = AWHeaderBar$1;
+var AWHeader$$1 = AWHeaderBar$1;
+var AWHeaderBar$$1 = AWHeaderBar$1;
+// Keyboard plugin and alias -- [mobile]
+var Keyboard = AWKeyboard$1;
+var AWKeyboard$$1 = AWKeyboard$1;
+// Location plugin and alias -- [mobile]
+var Location = AWLocation$1;
+var AWLocation$$1 = AWLocation$1;
+// Launcher plugin and alias -- [mobile]
+var Launcher = AWLauncher$1;
+var AWLauncher$$1 = AWLauncher$1;
+// Media plugin and alias -- [mobile]
+var Media$1 = AWMedia$1;
+var AWMedia$$1 = AWMedia$1;
+// MediaCapture plugin and alias -- [mobile]
+var MediaCapture = AWMediaCapture$1;
+var AWMediaCapture$$1 = AWMediaCapture$1;
+// Menu plugin and alias -- [mobile]
+var Menu = AWMenu$1;
+var AWMenu$$1 = AWMenu$1;
+var AWHamburgerMenu = AWMenu$1;
+var HamburgerMenu = AWMenu$1;
+// MobileFileSystem plugin and alias -- [mobile]
+var MobileFileSystem = AWMobileFileSystem$1;
+var AWMobileFileSystem$$1 = AWMobileFileSystem$1;
+// NotificationManager plugin and alias -- [mobile]
+var NotificationManager = AWNotificationManager$1;
+var AWNotificationManager$$1 = AWNotificationManager$1;
+// OfflineManager plugin and alias -- [mobile]
+var OfflineManager = AWOfflineManager$1;
+var AWOfflineManager$$1 = AWOfflineManager$1;
+// Page plugin and alias -- [mobile]
+var Page = AWPage$1;
+var AWPage$$1 = AWPage$1;
+// QRReader plugin and alias -- [mobile]
+var QRReader$$1 = AWQRReader$1;
+var AWQRReader$$1 = AWQRReader$1;
+// Scanner plugin and alias -- [mobile]
+var Scanner$$1 = AWScanner$1;
+var AWScanner$$1 = AWScanner$1;
+// SecureStorage plugin and alias -- [mobile]
+var SecureStorage$$1 = AWSecureStorage$1;
+var AWSecureStorage$$1 = AWSecureStorage$1;
+// Vibration plugin and alias -- [mobile]
+var Vibration = AWVibration$1;
+var AWVibration$$1 = AWVibration$1;
+// Webview plugin and alias -- [mobile]
+var WebView = AWWebView$1;
+var AWWebView$$1 = AWWebView$1;
+// FileSystem -- [desktop]
+var AWFileSystem$$1 = AWFileSystem$1;
+
+exports.Accelerometer = Accelerometer;
+exports.AWAccelerometer = AWAccelerometer$$1;
+exports.AppManager = AppManager;
+exports.AWAppManager = AWAppManager$$1;
+exports.Auth = Auth;
+exports.AWAuth = AWAuth$$1;
+exports.Cache = Cache;
+exports.AWCache = AWCache$$1;
+exports.Calendar = Calendar;
+exports.AWCalendar = AWCalendar$$1;
+exports.Camera = Camera$1;
+exports.AWCamera = AWCamera$$1;
+exports.Compass = Compass;
+exports.AWCompass = AWCompass$$1;
+exports.Component = Component;
+exports.AWComponent = AWComponent$$1;
+exports.Contacts = Contacts;
+exports.AWContacts = AWContacts$$1;
+exports.Device = Device;
+exports.AWDevice = AWDevice$$1;
+exports.FileChooser = FileChooser;
+exports.AWFileChooser = AWFileChooser$$1;
+exports.FileTransfer = FileTransfer$1;
+exports.AWFileTransfer = AWFileTransfer$$1;
+exports.Finder = Finder;
+exports.AWFinder = AWFinder$$1;
+exports.Globalization = Globalization;
+exports.AWGlobalization = AWGlobalization$$1;
+exports.HeaderBar = HeaderBar;
+exports.Header = Header;
+exports.AWHeader = AWHeader$$1;
+exports.AWHeaderBar = AWHeaderBar$$1;
+exports.Keyboard = Keyboard;
+exports.AWKeyboard = AWKeyboard$$1;
+exports.Location = Location;
+exports.AWLocation = AWLocation$$1;
+exports.Launcher = Launcher;
+exports.AWLauncher = AWLauncher$$1;
+exports.Media = Media$1;
+exports.AWMedia = AWMedia$$1;
+exports.MediaCapture = MediaCapture;
+exports.AWMediaCapture = AWMediaCapture$$1;
+exports.Menu = Menu;
+exports.AWMenu = AWMenu$$1;
+exports.AWHamburgerMenu = AWHamburgerMenu;
+exports.HamburgerMenu = HamburgerMenu;
+exports.MobileFileSystem = MobileFileSystem;
+exports.AWMobileFileSystem = AWMobileFileSystem$$1;
+exports.NotificationManager = NotificationManager;
+exports.AWNotificationManager = AWNotificationManager$$1;
+exports.OfflineManager = OfflineManager;
+exports.AWOfflineManager = AWOfflineManager$$1;
+exports.Page = Page;
+exports.AWPage = AWPage$$1;
+exports.QRReader = QRReader$$1;
+exports.AWQRReader = AWQRReader$$1;
+exports.Scanner = Scanner$$1;
+exports.AWScanner = AWScanner$$1;
+exports.SecureStorage = SecureStorage$$1;
+exports.AWSecureStorage = AWSecureStorage$$1;
+exports.Vibration = Vibration;
+exports.AWVibration = AWVibration$$1;
+exports.WebView = WebView;
+exports.AWWebView = AWWebView$$1;
+exports.AWFileSystem = AWFileSystem$$1;
+
+}((this.Appworks = this.Appworks || {})));
+//# sourceMappingURL=appworks.js.map

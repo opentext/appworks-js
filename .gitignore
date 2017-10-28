@@ -1,3 +1,5 @@
 node_modules/
+typings/
 lib/
 .idea/
+npm-debug.log
