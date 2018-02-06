@@ -7,13 +7,19 @@ import {
     AWFinder, Finder, AWHeaderBar, HeaderBar,
     AWKeyboard, Keyboard, AWLocation, AWMedia, AWMediaCapture, MediaCapture, AWMenu, Menu, AWNotificationManager,
     NotificationManager, AWOfflineManager, OfflineManager, AWPage, Page, QRReader, AWSecureStorage, SecureStorage,
-    AWVibration, AWWebView, AWQRReader, AWFileSystem, AWMobileFileSystem, MobileFileSystem
+    AWVibration, AWWebView, AWQRReader, AWFileSystem, AWMobileFileSystem, MobileFileSystem,
+    AWAnonymous, Anonymous
 } from "../src/appworks";
 
 describe('Appworks namespace', () => {
     it('should define Accelerometer as a global relative to the Appworks namespace', () => {
         expect(AWAccelerometer).to.not.equal(undefined);
         expect(Accelerometer).to.not.equal(undefined);
+    });
+
+    it('should define Anonymous as a global relative to the Appworks namespace', () => {
+        expect(AWAnonymous).to.not.equal(undefined);
+        expect(Anonymous).to.not.equal(undefined);
     });
 
     it('should define AppManager as a global relative to the Appworks namespace', () => {

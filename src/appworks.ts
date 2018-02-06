@@ -1,4 +1,5 @@
 import {AWAccelerometer as _AWAccelerometer} from './plugins/accelerometer/accelerometer';
+import {AWAnonymous as _AWAnonymous} from './plugins/anonymous/anonymous';
 import {AWAppManager as _AWAppManager} from './plugins/app-manager/app-manager';
 import {AWAuth as _AWAuth} from './plugins/auth/auth';
 import {AWCache as _AWCache} from './plugins/storage/cache';
@@ -33,6 +34,9 @@ import {AWFileSystem as _AWFileSystem} from './plugins/file/file-system';
 // Accelerometer plugin and alias -- [mobile]
 export const Accelerometer = _AWAccelerometer;
 export const AWAccelerometer = _AWAccelerometer;
+// Anonymous plugin and alias -- [mobile]
+export const Anonymous = _AWAnonymous;
+export const AWAnonymous = _AWAnonymous;
 // AppManager plugin and alias -- [mobile]
 export const AppManager = _AWAppManager;
 export const AWAppManager = _AWAppManager;
