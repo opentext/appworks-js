@@ -2454,8 +2454,15 @@ var AWLauncher$1 = (function (_super) {
     function AWLauncher(successHandler, errorHandler) {
         return _super.call(this, successHandler || noop, errorHandler || noop) || this;
     }
+    AWLauncher.prototype.getLaunchData = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWLauncher', 'getLaunchData', []);
+    };
     AWLauncher.prototype.getLaunchURL = function (successHandler, errorHandler) {
         AWProxy.exec(successHandler, errorHandler, 'AWLauncher', 'getLaunchURL', []);
+    };
+    AWLauncher.prototype.clearLaunchData = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWLauncher', 'clearLaunchData', []);
     };
     AWLauncher.prototype.clearLaunchURL = function () {
         var _this = this;

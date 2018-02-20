@@ -18,8 +18,15 @@ var AWLauncher = (function (_super) {
     function AWLauncher(successHandler, errorHandler) {
         return _super.call(this, successHandler || util_1.noop, errorHandler || util_1.noop) || this;
     }
+    AWLauncher.prototype.getLaunchData = function (successHandler, errorHandler) {
+        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWLauncher', 'getLaunchData', []);
+    };
     AWLauncher.prototype.getLaunchURL = function (successHandler, errorHandler) {
         proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWLauncher', 'getLaunchURL', []);
+    };
+    AWLauncher.prototype.clearLaunchData = function () {
+        var _this = this;
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWLauncher', 'clearLaunchData', []);
     };
     AWLauncher.prototype.clearLaunchURL = function () {
         var _this = this;

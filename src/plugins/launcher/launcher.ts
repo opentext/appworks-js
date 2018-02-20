@@ -8,12 +8,32 @@ export class AWLauncher extends AWPlugin {
         super(successHandler || noop, errorHandler || noop);
     }
 
+    getLaunchData(successHandler: any, errorHandler: any) {
+        AWProxy.exec(
+            successHandler,
+            errorHandler,
+            'AWLauncher',
+            'getLaunchData',
+            []
+        );
+    }
+
     getLaunchURL(successHandler: any, errorHandler: any) {
         AWProxy.exec(
             successHandler,
             errorHandler,
             'AWLauncher',
             'getLaunchURL',
+            []
+        );
+    }
+
+    clearLaunchData() {
+        AWProxy.exec(
+            (() => this.successHandler)(),
+            (() => this.errorHandler)(),
+            'AWLauncher',
+            'clearLaunchData',
             []
         );
     }
