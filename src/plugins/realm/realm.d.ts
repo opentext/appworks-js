@@ -21,6 +21,9 @@ export declare class Realm extends AWPlugin {
     FIELD_TYPE_DATE: string;
     QUERY_TYPE: string;
     QUERY_FIELD: string;
+    QUERY_SORT: string;
+    QUERY_SORT_ASC: string;
+    QUERY_SORT_DESC: string;
     QUERY_VALUE: string;
     QUERY_VALUE_2: string;
     QUERY_TYPE_BEGIN_GROUP: string;
@@ -49,7 +52,7 @@ export declare class Realm extends AWPlugin {
     getFieldType(objectName: string, fieldName: string, successHandler: any, errorHandler: any): void;
     insert(objectName: string, dataObject: object, successHandler: any, errorHandler: any): void;
     update(objectName: string, dataObject: object, queryArray: Array<object>, successHandler: any, errorHandler: any): void;
-    select(objectName: string, queryArray: Array<object>, successHandler: any, errorHandler: any): void;
+    select(objectName: string, queryArray: Array<object>, sort: object, successHandler: any, errorHandler: any): void;
     remove(objectName: string, queryArray: Array<object>, successHandler: any, errorHandler: any): void;
     removeAll(objectName: string, successHandler: any, errorHandler: any): void;
     queryBuilder: {

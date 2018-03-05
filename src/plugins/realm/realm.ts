@@ -26,6 +26,10 @@ export class Realm extends AWPlugin {
 
     QUERY_TYPE = "type";
     QUERY_FIELD = "field";
+    QUERY_SORT = "sort";
+    QUERY_SORT_ASC = "asc";
+    QUERY_SORT_DESC = "desc";
+
     QUERY_VALUE = "value";
     QUERY_VALUE_2 = "value2";
 
@@ -155,13 +159,13 @@ export class Realm extends AWPlugin {
         );
     }
 
-    select(objectName: string, queryArray: Array<object>, successHandler: any, errorHandler: any) {
+    select(objectName: string, queryArray: Array<object>, sort: object, successHandler: any, errorHandler: any) {
         AWProxy.exec(
             successHandler,
             errorHandler,
             'AWRealm',
             'select',
-            [objectName, queryArray]
+            [objectName, queryArray, sort]
         );
     }
 

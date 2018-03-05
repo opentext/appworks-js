@@ -2844,6 +2844,9 @@ var Realm$1 = (function (_super) {
         _this.FIELD_TYPE_DATE = "DATE";
         _this.QUERY_TYPE = "type";
         _this.QUERY_FIELD = "field";
+        _this.QUERY_SORT = "sort";
+        _this.QUERY_SORT_ASC = "asc";
+        _this.QUERY_SORT_DESC = "desc";
         _this.QUERY_VALUE = "value";
         _this.QUERY_VALUE_2 = "value2";
         _this.QUERY_TYPE_BEGIN_GROUP = "beginGroup";
@@ -3043,8 +3046,8 @@ var Realm$1 = (function (_super) {
     Realm.prototype.update = function (objectName, dataObject, queryArray, successHandler, errorHandler) {
         AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'update', [objectName, dataObject, queryArray]);
     };
-    Realm.prototype.select = function (objectName, queryArray, successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'select', [objectName, queryArray]);
+    Realm.prototype.select = function (objectName, queryArray, sort, successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'select', [objectName, queryArray, sort]);
     };
     Realm.prototype.remove = function (objectName, queryArray, successHandler, errorHandler) {
         AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'remove', [objectName, queryArray]);
