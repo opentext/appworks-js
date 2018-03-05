@@ -27,6 +27,7 @@ export { AWPage } from './plugins/page/index';
 export { AWPlugin } from './common/plugin';
 export { AWProxy } from './common/proxy';
 export { AWQRReader } from './plugins/qr-reader/index';
+export { AWRealm } from './plugins/realm/index';
 export { AWScanner } from './plugins/document-scanner/index';
 export { AWStorage } from './plugins/storage/index';
 export { AWVibration } from './plugins/vibration/index';

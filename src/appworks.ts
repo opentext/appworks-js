@@ -24,6 +24,7 @@ import {AWNotificationManager as _AWNotificationManager} from './plugins/notific
 import {AWOfflineManager as _AWOfflineManager} from './plugins/offline/offline-manager';
 import {AWPage as _AWPage} from './plugins/page/page';
 import {AWQRReader as _AWQRReader} from './plugins/qr-reader/qr-reader';
+import {AWRealm as _AWRealm} from './plugins/realm/realm';
 import {AWScanner as _AWScanner} from './plugins/document-scanner/scanner';
 import {AWSecureStorage as _AWSecureStorage} from './plugins/storage/secure-storage';
 import {AWVibration as _AWVibration} from './plugins/vibration/vibration';
@@ -112,6 +113,9 @@ export const AWPage = _AWPage;
 // QRReader plugin and alias -- [mobile]
 export const QRReader = _AWQRReader;
 export const AWQRReader = _AWQRReader;
+// Realm plugin and alias -- [mobile]
+export const Realm = _AWRealm;
+export const AWRealm = _AWRealm;
 // Scanner plugin and alias -- [mobile]
 export const Scanner = _AWScanner;
 export const AWScanner = _AWScanner;

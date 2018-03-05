@@ -7,7 +7,7 @@ import {
     AWFinder, Finder, AWHeaderBar, HeaderBar,
     AWKeyboard, Keyboard, AWLocation, AWMedia, AWMediaCapture, MediaCapture, AWMenu, Menu, AWNotificationManager,
     NotificationManager, AWOfflineManager, OfflineManager, AWPage, Page, QRReader, AWSecureStorage, SecureStorage,
-    AWVibration, AWWebView, AWQRReader, AWFileSystem, AWMobileFileSystem, MobileFileSystem
+    AWVibration, AWWebView, AWQRReader, AWFileSystem, AWMobileFileSystem, MobileFileSystem, AWRealm, Realm
 } from "../src/appworks";
 
 describe('Appworks namespace', () => {
@@ -119,6 +119,11 @@ describe('Appworks namespace', () => {
     it('should define QRReader as a global relative to the Appworks namespace', () => {
         expect(AWQRReader).to.not.equal(undefined);
         expect(QRReader).to.not.equal(undefined);
+    });
+
+    it('should define Realm as a global relative to the Appworks namespace', () => {
+        expect(AWRealm).to.not.equal(undefined);
+        expect(Realm).to.not.equal(undefined);
     });
 
     it('should define SecureStorage as a global relative to the Appworks namespace', () => {
