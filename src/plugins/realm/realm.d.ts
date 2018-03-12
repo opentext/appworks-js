@@ -4,6 +4,7 @@ export declare class Realm extends AWPlugin {
     FIELD_OBJECT_TYPE: string;
     FIELD_OBJECT_PRIMARYKEY: string;
     FIELD_OBJECT_INDEX: string;
+    FIELD_OBJECT_RELATIONSHIP: string;
     OBJECT_DESCRIPTION_NAME: string;
     OBJECT_DESCRIPTION_TYPE: string;
     OBJECT_DESCRIPTION_FIELDS: string;
@@ -13,12 +14,15 @@ export declare class Realm extends AWPlugin {
     FIELD_TYPE_INTEGER: string;
     FIELD_TYPE_BOOLEAN: string;
     FIELD_TYPE_LONG: string;
+    FIELD_TYPE_SHORT: string;
     FIELD_TYPE_DOUBLE: string;
     FIELD_TYPE_FLOAT: string;
     FIELD_TYPE_BINARY: string;
+    FIELD_TYPE_BYTE: string;
     FIELD_TYPE_OBJECT: string;
     FIELD_TYPE_LIST: string;
     FIELD_TYPE_DATE: string;
+    QUERY_OBJECT_NAME: string;
     QUERY_TYPE: string;
     QUERY_FIELD: string;
     QUERY_SORT: string;
@@ -41,6 +45,7 @@ export declare class Realm extends AWPlugin {
     QUERY_TYPE_LESS_THAN: string;
     QUERY_TYPE_LESS_THAN_OR_EQUAL_TO: string;
     QUERY_TYPE_LIKE: string;
+    QUERY_TYPE_IN: string;
     startRealm(successHandler: any, errorHandler: any): void;
     getAllObjectNames(successHandler: any, errorHandler: any): void;
     objectExists(objectName: string, successHandler: any, errorHandler: any): void;

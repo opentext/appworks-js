@@ -6,6 +6,7 @@ export class Realm extends AWPlugin {
     FIELD_OBJECT_TYPE = "type";
     FIELD_OBJECT_PRIMARYKEY = "key";
     FIELD_OBJECT_INDEX = "index";
+    FIELD_OBJECT_RELATIONSHIP = "relationship";
 
     OBJECT_DESCRIPTION_NAME = "name";
     OBJECT_DESCRIPTION_TYPE = "type";
@@ -17,13 +18,16 @@ export class Realm extends AWPlugin {
     FIELD_TYPE_INTEGER = "INTEGER";
     FIELD_TYPE_BOOLEAN = "BOOLEAN";
     FIELD_TYPE_LONG = "LONG";
+    FIELD_TYPE_SHORT = "SHORT";
     FIELD_TYPE_DOUBLE = "DOUBLE";
     FIELD_TYPE_FLOAT = "FLOAT";
     FIELD_TYPE_BINARY = "BINARY";
+    FIELD_TYPE_BYTE = "BYTE";
     FIELD_TYPE_OBJECT = "OBJECT";
     FIELD_TYPE_LIST= "LIST";
     FIELD_TYPE_DATE = "DATE";
 
+    QUERY_OBJECT_NAME = "object";
     QUERY_TYPE = "type";
     QUERY_FIELD = "field";
     QUERY_SORT = "sort";
@@ -49,6 +53,8 @@ export class Realm extends AWPlugin {
     QUERY_TYPE_LESS_THAN = "lessThan";
     QUERY_TYPE_LESS_THAN_OR_EQUAL_TO = "lessThanOrEqualTo";
     QUERY_TYPE_LIKE = "like";
+    QUERY_TYPE_IN = "in";
+
     startRealm(successHandler: any, errorHandler: any) {
         AWProxy.exec(
             successHandler,
