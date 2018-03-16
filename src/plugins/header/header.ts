@@ -4,7 +4,7 @@ import {AWProxy} from '../../common/proxy';
 export class AWHeaderBar extends AWPlugin {
 
     static readonly ButtonName = {LeftOne: 0, LeftTwo: 1, RightOne: 2, RightTwo: 3};
-    static readonly ButtonImage = {Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7};
+    static readonly ButtonImage = {Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7, AppmenuHighlight: 8, Close: 9, DismissAll: 10, Edit: 11};
 
     /**
      * @deprecated
@@ -13,9 +13,9 @@ export class AWHeaderBar extends AWPlugin {
     ButtonName = {LeftOne: 0, LeftTwo: 1, RightOne: 2, RightTwo: 3};
     /**
      * @deprecated
-     * @type {{Hamburger: number; Back: number; Settings: number; Appmenu: number; None: number; Dots: number; Search: number}}
+     * @type {{Hamburger: number; Back: number; Settings: number; Appmenu: number; None: number; Dots: number; Search: number, AppmenuHighlight: number, Close: number, DismissAll: number, Edit: number}}
      */
-    ButtonImage = {Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7};
+    ButtonImage = {Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7, AppmenuHighlight: 8, Close: 9, DismissAll: 10, Edit: 11};
 
     private callback: any;
 

@@ -14,6 +14,10 @@ export declare class AWHeaderBar extends AWPlugin {
         None: number;
         Dots: number;
         Search: number;
+        AppmenuHighlight: number;
+        Close: number;
+        DismissAll: number;
+        Edit: number;
     };
     /**
      * @deprecated
@@ -27,7 +31,7 @@ export declare class AWHeaderBar extends AWPlugin {
     };
     /**
      * @deprecated
-     * @type {{Hamburger: number; Back: number; Settings: number; Appmenu: number; None: number; Dots: number; Search: number}}
+     * @type {{Hamburger: number; Back: number; Settings: number; Appmenu: number; None: number; Dots: number; Search: number, AppmenuHighlight: number, Close: number, DismissAll: number, Edit: number}}
      */
     ButtonImage: {
         Hamburger: number;
@@ -37,6 +41,10 @@ export declare class AWHeaderBar extends AWPlugin {
         None: number;
         Dots: number;
         Search: number;
+        AppmenuHighlight: number;
+        Close: number;
+        DismissAll: number;
+        Edit: number;
     };
     private callback;
     setHeader(config: any): void;

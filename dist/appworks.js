@@ -2383,9 +2383,9 @@ var AWHeaderBar$1 = (function (_super) {
         _this.ButtonName = { LeftOne: 0, LeftTwo: 1, RightOne: 2, RightTwo: 3 };
         /**
          * @deprecated
-         * @type {{Hamburger: number; Back: number; Settings: number; Appmenu: number; None: number; Dots: number; Search: number}}
+         * @type {{Hamburger: number; Back: number; Settings: number; Appmenu: number; None: number; Dots: number; Search: number, AppmenuHighlight: number, Close: number, DismissAll: number, Edit: number}}
          */
-        _this.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7 };
+        _this.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7, AppmenuHighlight: 8, Close: 9, DismissAll: 10, Edit: 11 };
         return _this;
     }
     AWHeaderBar.prototype.setHeader = function (config) {
@@ -2414,7 +2414,7 @@ var AWHeaderBar$1 = (function (_super) {
     return AWHeaderBar;
 }(AWPlugin));
 AWHeaderBar$1.ButtonName = { LeftOne: 0, LeftTwo: 1, RightOne: 2, RightTwo: 3 };
-AWHeaderBar$1.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7 };
+AWHeaderBar$1.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7, AppmenuHighlight: 8, Close: 9, DismissAll: 10, Edit: 11 };
 // alias
 var AWHeader$1 = (function (_super) {
     __extends(AWHeader, _super);
