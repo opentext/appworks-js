@@ -52,6 +52,10 @@ var AWMobileFileSystem = (function (_super) {
         var args = [source, shared];
         proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'remove', args);
     };
+    AWMobileFileSystem.prototype.read = function (source, shared, success, error) {
+        var args = [source, shared];
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'read', args);
+    };
     // File sharing
     AWMobileFileSystem.prototype.open = function (source, shared, success, error) {
         var args = [source, shared];

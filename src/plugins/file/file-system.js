@@ -32,6 +32,10 @@ var AWFileSystem = (function (_super) {
         this.validateEnv();
         proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isDir', [path]);
     };
+    AWFileSystem.prototype.chmod = function (path, permissions, successCallback, errorCallback) {
+        this.validateEnv();
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'chmod', [path, permissions]);
+    };
     AWFileSystem.prototype.createFile = function (path, successCallback, errorCallback, data, append) {
         this.validateEnv();
         proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createFile', [path, data, append]);

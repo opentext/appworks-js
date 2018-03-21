@@ -85,6 +85,16 @@ export class AWMobileFileSystem extends AWPlugin {
             args
         );
     }
+    read(source: string, shared: boolean, success: any, error: any) {
+      let args = [source, shared];
+      AWProxy.exec(
+          success,
+          error,
+          'AWMobileFileSystem',
+          'read',
+          args
+      );
+    }
     // File sharing
     open(source: string, shared: boolean, success: any, error: any) {
         let args = [source, shared];

@@ -2623,6 +2623,10 @@ var AWMobileFileSystem$1 = (function (_super) {
         var args = [source, shared];
         AWProxy.exec(success, error, 'AWMobileFileSystem', 'remove', args);
     };
+    AWMobileFileSystem.prototype.read = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'read', args);
+    };
     // File sharing
     AWMobileFileSystem.prototype.open = function (source, shared, success, error) {
         var args = [source, shared];
@@ -2953,6 +2957,10 @@ var AWFileSystem$1 = (function (_super) {
     AWFileSystem.prototype.isDir = function (path, successCallback, errorCallback) {
         this.validateEnv();
         AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isDir', [path]);
+    };
+    AWFileSystem.prototype.chmod = function (path, permissions, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'chmod', [path, permissions]);
     };
     AWFileSystem.prototype.createFile = function (path, successCallback, errorCallback, data, append) {
         this.validateEnv();
