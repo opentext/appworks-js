@@ -2958,9 +2958,9 @@ var AWFileSystem$1 = (function (_super) {
         this.validateEnv();
         AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isDir', [path]);
     };
-    AWFileSystem.prototype.chmod = function (path, permissions, successCallback, errorCallback) {
+    AWFileSystem.prototype.setReadOnly = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'chmod', [path, permissions]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'setReadOnly', [path]);
     };
     AWFileSystem.prototype.createFile = function (path, successCallback, errorCallback, data, append) {
         this.validateEnv();

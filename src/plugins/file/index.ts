@@ -73,6 +73,10 @@ export interface DesktopHostFileSystem {
           successCallback: (result: boolean) => void,
           errorCallback?: (result: Error) => void): void;
 
+    setReadOnly(path: string,
+          successCallback: (result: boolean) => void,
+          errorCallback?: (result: Error) => void): void;
+
     createFile(path: string,
                successCallback: (result: boolean) => void,
                errorCallback?: (result: Error) => void,

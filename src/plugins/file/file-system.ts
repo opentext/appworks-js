@@ -50,7 +50,7 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
         );
     }
 
-    chmod(path: string, permissions: number,
+    setReadOnly(path: string,
            successCallback: (result: boolean) => void,
            errorCallback?: (result: Error) => void): void {
         this.validateEnv();
@@ -58,8 +58,8 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
             successCallback,
             errorCallback,
             'AWFileSystem',
-            'chmod',
-            [path, permissions]
+            'setReadOnly',
+            [path]
         );
     }
 
