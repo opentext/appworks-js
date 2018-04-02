@@ -18,6 +18,7 @@ export declare class AWFileSystem extends AWPlugin implements DesktopHostFileSys
     showSaveDialog(opts: SaveDialogOptions, successCallback: (result: string) => void, errorCallback?: (result: Error) => void): void;
     showDirSelector(opts: FileDialogOptions, successCallback: (result: string[]) => void, errorCallback?: (result: Error) => void): void;
     showFileSelector(opts: FileDialogOptions, successCallback: (result: string[]) => void, errorCallback?: (result: Error) => void): void;
+    onFileOpen(openFileCallback: (filePath: string) => void, successCallback: (result: string[]) => void, errorCallback?: (result: Error) => void): void;
     /**
      * The methods of this class should only be called from within an AppWorks desktop
      * environment.

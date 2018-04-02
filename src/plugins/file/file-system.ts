@@ -208,6 +208,19 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
         );
     }
 
+    onFileOpen(openFileCallback: (filePath: string )=> void,
+               successCallback: (result: string[]) => void,
+               errorCallback?: (result: Error) => void): void {
+      this.validateEnv();
+      AWProxy.exec(
+          successCallback,
+          errorCallback,
+          'AWFileSystem',
+          'onFileOpen',
+          [openFileCallback]
+      );
+    }
+
     /**
      * The methods of this class should only be called from within an AppWorks desktop
      * environment.

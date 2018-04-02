@@ -73,6 +73,7 @@ export interface DesktopHostFileSystem {
     showSaveDialog(opts: FileDialogOptions, successCallback: (result: string) => void, errorCallback?: (result: Error) => void): void;
     showDirSelector(opts: FileDialogOptions, successCallback: (result: string[]) => void, errorCallback?: (result: Error) => void): void;
     showFileSelector(opts: SaveDialogOptions, successCallback: (result: string[]) => void, errorCallback?: (result: Error) => void): void;
+    onFileOpen(openFileCallback: (filePath: string) => void, successCallback: (result: string[]) => void, errorCallback?: (result: Error) => void): void;
 }
 export interface Window {
     /**

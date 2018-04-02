@@ -3006,6 +3006,10 @@ var AWFileSystem$1 = (function (_super) {
         this.validateEnv();
         AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showFileSelector', [opts]);
     };
+    AWFileSystem.prototype.onFileOpen = function (openFileCallback, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'onFileOpen', [openFileCallback]);
+    };
     /**
      * The methods of this class should only be called from within an AppWorks desktop
      * environment.
