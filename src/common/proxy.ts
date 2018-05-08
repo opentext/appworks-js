@@ -106,17 +106,17 @@ export class AWProxy {
     }
 
     static accelerometer(): Accelerometer {
-        let _accelerometer =  typeof 'navigator' !== undefined ? navigator.accelerometer : new MockAccelerometer();
+        const _accelerometer =  typeof 'navigator' !== undefined ? navigator.accelerometer : new MockAccelerometer();
         return _accelerometer;
     }
 
     static camera(): CameraInterface {
-        let _camera = typeof navigator !== 'undefined' ? navigator.camera : new MockCamera();
+        const _camera = typeof navigator !== 'undefined' ? navigator.camera : new MockCamera();
         return _camera;
     }
 
     static Camera(): any {
-        let _Camera = (typeof Camera !== 'undefined') ? Camera : {
+        const _Camera = (typeof Camera !== 'undefined') ? Camera : {
             DestinationType: {
                 DATA_URL: null,
                 FILE_URI: null,
@@ -153,17 +153,17 @@ export class AWProxy {
     }
 
     static compass(): Compass {
-        let _Compass = typeof navigator !== 'undefined' ? navigator.compass : new MockCompass();
+        const _Compass = typeof navigator !== 'undefined' ? navigator.compass : new MockCompass();
         return _Compass;
     }
 
     static connection(): ConnectionInterface {
-        let _connection = typeof navigator !== 'undefined' ? navigator.connection : new MockConnection();
+        const _connection = typeof navigator !== 'undefined' ? navigator.connection : new MockConnection();
         return _connection;
     }
 
     static Connection(): any {
-        let _Connection = (typeof Connection !== 'undefined') ? Connection : {
+        const _Connection = (typeof Connection !== 'undefined') ? Connection : {
             UNKNOWN: null,
             ETHERNET: null,
             WIFI: null,
@@ -177,12 +177,12 @@ export class AWProxy {
     }
 
     static contacts(): Contacts {
-        let _contacts = typeof navigator !== 'undefined' ? navigator.contacts : new MockContacts();
+        const _contacts = typeof navigator !== 'undefined' ? navigator.contacts : new MockContacts();
         return _contacts;
     }
 
     static device(): Device {
-        let _device: Device = (typeof device !== 'undefined') ? device : {
+        const _device: Device = (typeof device !== 'undefined') ? device : {
             cordova: null,
             available: true,
             model: null,
@@ -204,7 +204,7 @@ export class AWProxy {
     }
 
     static document(): any {
-        let _document = (typeof document !== 'undefined') ? document : {
+        const _document = (typeof document !== 'undefined') ? document : {
             addEventListener: noop
         };
         return _document;
@@ -238,7 +238,7 @@ export class AWProxy {
     }
 
     static geolocation(): Geolocation {
-        let _geolocation = (typeof navigator !== 'undefined') ? navigator.geolocation : new MockGeolocation();
+        const _geolocation = (typeof navigator !== 'undefined') ? navigator.geolocation : new MockGeolocation();
         return _geolocation;
     }
 
@@ -255,7 +255,7 @@ export class AWProxy {
     }
 
     static notification(): Notification {
-        let _notification = (typeof navigator !== 'undefined') ? navigator.notification : new MockNotification();
+        const _notification = (typeof navigator !== 'undefined') ? navigator.notification : new MockNotification();
         return _notification;
     }
 
@@ -270,7 +270,7 @@ export class AWProxy {
 
     static vibrate(time: number): void {
         if (typeof navigator !== 'undefined' && navigator.vibrate) {
-            let _vibrate =  navigator.vibrate(time);
+            const _vibrate =  navigator.vibrate(time);
             return _vibrate;
         } else {
             return new MockVibrate().vibrate(time);
