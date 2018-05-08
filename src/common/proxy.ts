@@ -296,31 +296,14 @@ export class AWProxy {
                 new OnDeviceStorage() : new PersistentStorageMock();
     }
 
-    /**
-     * Are we executing within the AppWorks Desktop context.
-     *
-     * @returns {boolean} true if this is a desktop environment, false otherwise
-     */
     static isDesktopEnv(): boolean {
         return typeof __aw_plugin_proxy !== 'undefined';
     }
 
-    /**
-     * Are we executing within the AppWorks mobile context.
-     *
-     * @return {boolean} true if Cordova is available, false otherwise
-     */
     static isMobileEnv(): boolean {
         return typeof cordova !== 'undefined';
     }
 
-    /**
-     * Ask the AppWorks desktop environment to retrieve an instance of a specific plugin.
-     *
-     * @param pluginName plugin identifier
-     * @returns {any} plugin instance or null if no such plugin exists or the method was
-     *                called outside of the desktop client context
-     */
     static getDesktopPlugin(pluginName: string): any {
         if (!AWProxy.isDesktopEnv()) return null;
         // the proxy exposed by desktop has a method to allow retrieval of plugin instances

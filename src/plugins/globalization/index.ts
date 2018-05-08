@@ -83,14 +83,7 @@ export interface Globalization {
         onSuccess: (names: { value: string[]; }) => void,
         onError: (error: GlobalizationError) => void,
         options?: { type?: string; item?: string; }): void;
-    /**
-     * Indicates whether daylight savings time is in effect for a given date using the client's time zone and calendar.
-     * @param {Date}                   date Date to check
-     * @param onSuccess Called on success with a properties object,
-     *                  that should have a dst property with a boolean value.
-     * @param onError   Called on error with a GlobalizationError object.
-     *                  The error's expected code is GlobalizationError.UNKNOWN_ERROR.
-     */
+        
     isDaylightSavingsTime(
         date: Date,
         onSuccess: (result: { dst: boolean; }) => void,
