@@ -106,15 +106,17 @@ export class AWProxy {
     }
 
     static accelerometer(): Accelerometer {
-        return typeof 'navigator' !== undefined ? navigator.accelerometer : new MockAccelerometer();
+        const _accelerometer =  typeof 'navigator' !== undefined ? navigator.accelerometer : new MockAccelerometer();
+        return _accelerometer;
     }
 
     static camera(): CameraInterface {
-        return typeof navigator !== 'undefined' ? navigator.camera : new MockCamera();
+        const _camera = typeof navigator !== 'undefined' ? navigator.camera : new MockCamera();
+        return _camera;
     }
 
     static Camera(): any {
-        return (typeof Camera !== 'undefined') ? Camera : {
+        const _Camera = (typeof Camera !== 'undefined') ? Camera : {
             DestinationType: {
                 DATA_URL: null,
                 FILE_URI: null,
@@ -147,18 +149,21 @@ export class AWProxy {
                 ARROW_ANY: null
             }
         };
+        return _Camera;
     }
 
     static compass(): Compass {
-        return typeof navigator !== 'undefined' ? navigator.compass : new MockCompass();
+        const _Compass = typeof navigator !== 'undefined' ? navigator.compass : new MockCompass();
+        return _Compass;
     }
 
     static connection(): ConnectionInterface {
-        return typeof navigator !== 'undefined' ? navigator.connection : new MockConnection();
+        const _connection = typeof navigator !== 'undefined' ? navigator.connection : new MockConnection();
+        return _connection;
     }
 
     static Connection(): any {
-        return (typeof Connection !== 'undefined') ? Connection : {
+        const _Connection = (typeof Connection !== 'undefined') ? Connection : {
             UNKNOWN: null,
             ETHERNET: null,
             WIFI: null,
@@ -168,14 +173,16 @@ export class AWProxy {
             CELL: null,
             NONE: null
         };
+        return _Connection;
     }
 
     static contacts(): Contacts {
-        return typeof navigator !== 'undefined' ? navigator.contacts : new MockContacts();
+        const _contacts = typeof navigator !== 'undefined' ? navigator.contacts : new MockContacts();
+        return _contacts;
     }
 
     static device(): Device {
-        let _device: Device = (typeof device !== 'undefined') ? device : {
+        const _device: Device = (typeof device !== 'undefined') ? device : {
             cordova: null,
             available: true,
             model: null,
@@ -197,9 +204,10 @@ export class AWProxy {
     }
 
     static document(): any {
-        return (typeof document !== 'undefined') ? document : {
+        const _document = (typeof document !== 'undefined') ? document : {
             addEventListener: noop
         };
+        return _document;
     }
 
     static file(): any {
@@ -230,7 +238,8 @@ export class AWProxy {
     }
 
     static geolocation(): Geolocation {
-        return (typeof navigator !== 'undefined') ? navigator.geolocation : new MockGeolocation();
+        const _geolocation = (typeof navigator !== 'undefined') ? navigator.geolocation : new MockGeolocation();
+        return _geolocation;
     }
 
     static localFileSystem(): any {
@@ -246,7 +255,8 @@ export class AWProxy {
     }
 
     static notification(): Notification {
-        return (typeof navigator !== 'undefined') ? navigator.notification : new MockNotification();
+        const _notification = (typeof navigator !== 'undefined') ? navigator.notification : new MockNotification();
+        return _notification;
     }
 
     static requestFileSystem(type: LocalFileSystem,
@@ -260,7 +270,8 @@ export class AWProxy {
 
     static vibrate(time: number): void {
         if (typeof navigator !== 'undefined' && navigator.vibrate) {
-            return navigator.vibrate(time);
+            const _vibrate =  navigator.vibrate(time);
+            return _vibrate;
         } else {
             return new MockVibrate().vibrate(time);
         }
@@ -285,31 +296,14 @@ export class AWProxy {
                 new OnDeviceStorage() : new PersistentStorageMock();
     }
 
-    /**
-     * Are we executing within the AppWorks Desktop context.
-     *
-     * @returns {boolean} true if this is a desktop environment, false otherwise
-     */
     static isDesktopEnv(): boolean {
         return typeof __aw_plugin_proxy !== 'undefined';
     }
 
-    /**
-     * Are we executing within the AppWorks mobile context.
-     *
-     * @return {boolean} true if Cordova is available, false otherwise
-     */
     static isMobileEnv(): boolean {
         return typeof cordova !== 'undefined';
     }
 
-    /**
-     * Ask the AppWorks desktop environment to retrieve an instance of a specific plugin.
-     *
-     * @param pluginName plugin identifier
-     * @returns {any} plugin instance or null if no such plugin exists or the method was
-     *                called outside of the desktop client context
-     */
     static getDesktopPlugin(pluginName: string): any {
         if (!AWProxy.isDesktopEnv()) return null;
         // the proxy exposed by desktop has a method to allow retrieval of plugin instances
