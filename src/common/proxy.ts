@@ -106,15 +106,17 @@ export class AWProxy {
     }
 
     static accelerometer(): Accelerometer {
-        return typeof 'navigator' !== undefined ? navigator.accelerometer : new MockAccelerometer();
+        let _accelerometer =  typeof 'navigator' !== undefined ? navigator.accelerometer : new MockAccelerometer();
+        return _accelerometer;
     }
 
     static camera(): CameraInterface {
-        return typeof navigator !== 'undefined' ? navigator.camera : new MockCamera();
+        let _camera = typeof navigator !== 'undefined' ? navigator.camera : new MockCamera();
+        return _camera;
     }
 
     static Camera(): any {
-        return (typeof Camera !== 'undefined') ? Camera : {
+        let _Camera = (typeof Camera !== 'undefined') ? Camera : {
             DestinationType: {
                 DATA_URL: null,
                 FILE_URI: null,
@@ -147,18 +149,21 @@ export class AWProxy {
                 ARROW_ANY: null
             }
         };
+        return _Camera;
     }
 
     static compass(): Compass {
-        return typeof navigator !== 'undefined' ? navigator.compass : new MockCompass();
+        let _Compass = typeof navigator !== 'undefined' ? navigator.compass : new MockCompass();
+        return _Compass;
     }
 
     static connection(): ConnectionInterface {
-        return typeof navigator !== 'undefined' ? navigator.connection : new MockConnection();
+        let _connection = typeof navigator !== 'undefined' ? navigator.connection : new MockConnection();
+        return _connection;
     }
 
     static Connection(): any {
-        return (typeof Connection !== 'undefined') ? Connection : {
+        let _Connection = (typeof Connection !== 'undefined') ? Connection : {
             UNKNOWN: null,
             ETHERNET: null,
             WIFI: null,
@@ -168,10 +173,12 @@ export class AWProxy {
             CELL: null,
             NONE: null
         };
+        return _Connection;
     }
 
     static contacts(): Contacts {
-        return typeof navigator !== 'undefined' ? navigator.contacts : new MockContacts();
+        let _contacts = typeof navigator !== 'undefined' ? navigator.contacts : new MockContacts();
+        return _contacts;
     }
 
     static device(): Device {
@@ -197,9 +204,10 @@ export class AWProxy {
     }
 
     static document(): any {
-        return (typeof document !== 'undefined') ? document : {
+        let _document = (typeof document !== 'undefined') ? document : {
             addEventListener: noop
         };
+        return _document;
     }
 
     static file(): any {
@@ -230,7 +238,8 @@ export class AWProxy {
     }
 
     static geolocation(): Geolocation {
-        return (typeof navigator !== 'undefined') ? navigator.geolocation : new MockGeolocation();
+        let _geolocation = (typeof navigator !== 'undefined') ? navigator.geolocation : new MockGeolocation();
+        return _geolocation;
     }
 
     static localFileSystem(): any {
@@ -246,7 +255,8 @@ export class AWProxy {
     }
 
     static notification(): Notification {
-        return (typeof navigator !== 'undefined') ? navigator.notification : new MockNotification();
+        let _notification = (typeof navigator !== 'undefined') ? navigator.notification : new MockNotification();
+        return _notification;
     }
 
     static requestFileSystem(type: LocalFileSystem,
@@ -260,7 +270,8 @@ export class AWProxy {
 
     static vibrate(time: number): void {
         if (typeof navigator !== 'undefined' && navigator.vibrate) {
-            return navigator.vibrate(time);
+            let _vibrate =  navigator.vibrate(time);
+            return _vibrate;
         } else {
             return new MockVibrate().vibrate(time);
         }
