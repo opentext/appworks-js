@@ -7,17 +7,7 @@ export * from './secure-storage';
  * Desktop persistent storage.
  */
 export interface PersistentStorage {
-    /**
-     * Write the contents of the local web storage to the persistent store.
-     *
-     * @return {Promise} a promise that will resolve if the operation was successful
-     */
     persistLocalStorage(): Promise<any>;
-    /**
-     * Load the set of keys stored in persistent storage into local web storage.
-     *
-     * @return {Promise} a promise that will resolve if the operation was successful
-     */
     loadPersistentData(): Promise<any>;
 }
 /**

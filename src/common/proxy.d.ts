@@ -34,25 +34,8 @@ export declare class AWProxy {
     static webview(): any;
     static storage(): Storage;
     static persistentStorage(): PersistentStorage;
-    /**
-     * Are we executing within the AppWorks Desktop context.
-     *
-     * @returns {boolean} true if this is a desktop environment, false otherwise
-     */
     static isDesktopEnv(): boolean;
-    /**
-     * Are we executing within the AppWorks mobile context.
-     *
-     * @return {boolean} true if Cordova is available, false otherwise
-     */
     static isMobileEnv(): boolean;
-    /**
-     * Ask the AppWorks desktop environment to retrieve an instance of a specific plugin.
-     *
-     * @param pluginName plugin identifier
-     * @returns {any} plugin instance or null if no such plugin exists or the method was
-     *                called outside of the desktop client context
-     */
     static getDesktopPlugin(pluginName: string): any;
     private static execMobile(successHandler, errorHandler, name, method, args);
     private static execDesktop(successHandler, errorHandler, name, method, args);

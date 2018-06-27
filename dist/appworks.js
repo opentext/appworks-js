@@ -1629,13 +1629,15 @@ var AWProxy = (function () {
         }
     };
     AWProxy.accelerometer = function () {
-        return typeof 'navigator' !== undefined ? navigator.accelerometer : new MockAccelerometer();
+        var _accelerometer = typeof 'navigator' !== undefined ? navigator.accelerometer : new MockAccelerometer();
+        return _accelerometer;
     };
     AWProxy.camera = function () {
-        return typeof navigator !== 'undefined' ? navigator.camera : new MockCamera();
+        var _camera = typeof navigator !== 'undefined' ? navigator.camera : new MockCamera();
+        return _camera;
     };
     AWProxy.Camera = function () {
-        return (typeof Camera !== 'undefined') ? Camera : {
+        var _Camera = (typeof Camera !== 'undefined') ? Camera : {
             DestinationType: {
                 DATA_URL: null,
                 FILE_URI: null,
@@ -1668,15 +1670,18 @@ var AWProxy = (function () {
                 ARROW_ANY: null
             }
         };
+        return _Camera;
     };
     AWProxy.compass = function () {
-        return typeof navigator !== 'undefined' ? navigator.compass : new MockCompass();
+        var _Compass = typeof navigator !== 'undefined' ? navigator.compass : new MockCompass();
+        return _Compass;
     };
     AWProxy.connection = function () {
-        return typeof navigator !== 'undefined' ? navigator.connection : new MockConnection();
+        var _connection = typeof navigator !== 'undefined' ? navigator.connection : new MockConnection();
+        return _connection;
     };
     AWProxy.Connection = function () {
-        return (typeof Connection !== 'undefined') ? Connection : {
+        var _Connection = (typeof Connection !== 'undefined') ? Connection : {
             UNKNOWN: null,
             ETHERNET: null,
             WIFI: null,
@@ -1686,9 +1691,11 @@ var AWProxy = (function () {
             CELL: null,
             NONE: null
         };
+        return _Connection;
     };
     AWProxy.contacts = function () {
-        return typeof navigator !== 'undefined' ? navigator.contacts : new MockContacts();
+        var _contacts = typeof navigator !== 'undefined' ? navigator.contacts : new MockContacts();
+        return _contacts;
     };
     AWProxy.device = function () {
         var _device = (typeof device !== 'undefined') ? device : {
@@ -1712,9 +1719,10 @@ var AWProxy = (function () {
         return _device;
     };
     AWProxy.document = function () {
-        return (typeof document !== 'undefined') ? document : {
+        var _document = (typeof document !== 'undefined') ? document : {
             addEventListener: noop
         };
+        return _document;
     };
     AWProxy.file = function () {
         if (typeof cordova !== 'undefined') {
@@ -1741,7 +1749,8 @@ var AWProxy = (function () {
         return (typeof FileTransfer !== 'undefined') ? new FileTransfer() : new MockFileTransfer();
     };
     AWProxy.geolocation = function () {
-        return (typeof navigator !== 'undefined') ? navigator.geolocation : new MockGeolocation();
+        var _geolocation = (typeof navigator !== 'undefined') ? navigator.geolocation : new MockGeolocation();
+        return _geolocation;
     };
     AWProxy.localFileSystem = function () {
         return LocalFileSystem;
@@ -1755,7 +1764,8 @@ var AWProxy = (function () {
         }
     };
     AWProxy.notification = function () {
-        return (typeof navigator !== 'undefined') ? navigator.notification : new MockNotification();
+        var _notification = (typeof navigator !== 'undefined') ? navigator.notification : new MockNotification();
+        return _notification;
     };
     AWProxy.requestFileSystem = function (type, size, successCallback, errorCallback) {
         if (window.requestFileSystem) {
@@ -1764,7 +1774,8 @@ var AWProxy = (function () {
     };
     AWProxy.vibrate = function (time) {
         if (typeof navigator !== 'undefined' && navigator.vibrate) {
-            return navigator.vibrate(time);
+            var _vibrate = navigator.vibrate(time);
+            return _vibrate;
         }
         else {
             return new MockVibrate().vibrate(time);
@@ -1787,29 +1798,12 @@ var AWProxy = (function () {
             new DesktopStorage(desktopPlugin) : (AWProxy.isMobileEnv()) ?
             new OnDeviceStorage() : new PersistentStorageMock();
     };
-    /**
-     * Are we executing within the AppWorks Desktop context.
-     *
-     * @returns {boolean} true if this is a desktop environment, false otherwise
-     */
     AWProxy.isDesktopEnv = function () {
         return typeof __aw_plugin_proxy !== 'undefined';
     };
-    /**
-     * Are we executing within the AppWorks mobile context.
-     *
-     * @return {boolean} true if Cordova is available, false otherwise
-     */
     AWProxy.isMobileEnv = function () {
         return typeof cordova !== 'undefined';
     };
-    /**
-     * Ask the AppWorks desktop environment to retrieve an instance of a specific plugin.
-     *
-     * @param pluginName plugin identifier
-     * @returns {any} plugin instance or null if no such plugin exists or the method was
-     *                called outside of the desktop client context
-     */
     AWProxy.getDesktopPlugin = function (pluginName) {
         if (!AWProxy.isDesktopEnv())
             return null;
@@ -2376,15 +2370,7 @@ var AWHeaderBar$1 = (function (_super) {
     __extends(AWHeaderBar, _super);
     function AWHeaderBar() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        /**
-         * @deprecated
-         * @type {{LeftOne: number; LeftTwo: number; RightOne: number; RightTwo: number}}
-         */
         _this.ButtonName = { LeftOne: 0, LeftTwo: 1, RightOne: 2, RightTwo: 3 };
-        /**
-         * @deprecated
-         * @type {{Hamburger: number; Back: number; Settings: number; Appmenu: number; None: number; Dots: number; Search: number}}
-         */
         _this.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7 };
         return _this;
     }
@@ -2819,6 +2805,33 @@ var AWQRReader$1 = (function (_super) {
     return AWQRReader;
 }(QRReader$1));
 
+var Print$1 = (function (_super) {
+    __extends(Print, _super);
+    function Print() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Print.prototype.print = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPrint', 'print', []);
+    };
+    Print.prototype.getPrinters = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPrint', 'getPrinters', []);
+    };
+    Print.prototype.printToPDF = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPrint', 'printToPDF', []);
+    };
+    return Print;
+}(AWPlugin));
+var AWPrint$1 = (function (_super) {
+    __extends(AWPrint, _super);
+    function AWPrint() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return AWPrint;
+}(Print$1));
+
 var Scanner$1 = (function (_super) {
     __extends(Scanner, _super);
     function Scanner() {
@@ -3089,6 +3102,9 @@ var AWOfflineManager$$1 = AWOfflineManager$1;
 // Page plugin and alias -- [mobile]
 var Page = AWPage$1;
 var AWPage$$1 = AWPage$1;
+//Print plugin and alias --[desktop]
+var Print$$1 = AWPrint$1;
+var AWPrint$$1 = AWPrint$1;
 // QRReader plugin and alias -- [mobile]
 var QRReader$$1 = AWQRReader$1;
 var AWQRReader$$1 = AWQRReader$1;
@@ -3161,6 +3177,8 @@ exports.OfflineManager = OfflineManager;
 exports.AWOfflineManager = AWOfflineManager$$1;
 exports.Page = Page;
 exports.AWPage = AWPage$$1;
+exports.Print = Print$$1;
+exports.AWPrint = AWPrint$$1;
 exports.QRReader = QRReader$$1;
 exports.AWQRReader = AWQRReader$$1;
 exports.Scanner = Scanner$$1;
