@@ -2,6 +2,8 @@ export * from './file-chooser';
 export * from './file-system';
 export * from './local-file-system';
 
+import {LocalFileSystem} from './local-file-system';
+
 export interface FileDetails {
     /**
      * File name.
@@ -483,8 +485,3 @@ export interface Cordova {
     };
 }
 
-
-export declare enum LocalFileSystem {
-    PERSISTENT = 0,
-    TEMPORARY = 1
-}
