@@ -2,13 +2,13 @@ import {AWPlugin} from '../../common/plugin';
 import {AWProxy} from '../../common/proxy';
 
 export class Print extends AWPlugin {
-    print() {
+    print(options?: any) {
         AWProxy.exec(
             (() => this.successHandler)(),
             (() => this.errorHandler)(),
             'AWPrint',
             'print',
-            []
+            [options]
         );
     }
 
@@ -22,13 +22,13 @@ export class Print extends AWPlugin {
         );
     }
 
-    printToPDF() {
+    printToPDF(options?: any) {
         AWProxy.exec(
             (() => this.successHandler)(),
             (() => this.errorHandler)(),
             'AWPrint',
             'printToPDF',
-            []
+            [options]
         );
     }
 }
