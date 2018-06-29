@@ -7,7 +7,7 @@ import {
     AWFinder, Finder, AWHeaderBar, HeaderBar,
     AWKeyboard, Keyboard, AWLocation, AWMedia, AWMediaCapture, MediaCapture, AWMenu, Menu, AWNotificationManager,
     NotificationManager, AWOfflineManager, OfflineManager, AWPage, Page, QRReader, AWSecureStorage, SecureStorage,
-    AWVibration, AWWebView, AWQRReader, AWFileSystem, AWMobileFileSystem, MobileFileSystem
+    AWVibration, AWWebView, AWQRReader, AWPrint, Print, AWFileSystem, AWMobileFileSystem, MobileFileSystem
 } from "../src/appworks";
 
 describe('Appworks namespace', () => {
@@ -114,6 +114,11 @@ describe('Appworks namespace', () => {
     it('should define Page as a global relative to the Appworks namespace', () => {
         expect(AWPage).to.not.equal(undefined);
         expect(Page).to.not.equal(undefined);
+    });
+
+    it('should define AWPrint as a global relative to the Appworks namespace', () => {
+        expect(AWPrint).to.not.equal(undefined);
+        expect(Print).to.not.equal(undefined);
     });
 
     it('should define QRReader as a global relative to the Appworks namespace', () => {

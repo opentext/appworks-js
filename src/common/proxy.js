@@ -41,13 +41,15 @@ var AWProxy = (function () {
         }
     };
     AWProxy.accelerometer = function () {
-        return typeof 'navigator' !== undefined ? navigator.accelerometer : new accelerometer_1.MockAccelerometer();
+        var _accelerometer = typeof 'navigator' !== undefined ? navigator.accelerometer : new accelerometer_1.MockAccelerometer();
+        return _accelerometer;
     };
     AWProxy.camera = function () {
-        return typeof navigator !== 'undefined' ? navigator.camera : new camera_1.MockCamera();
+        var _camera = typeof navigator !== 'undefined' ? navigator.camera : new camera_1.MockCamera();
+        return _camera;
     };
     AWProxy.Camera = function () {
-        return (typeof Camera !== 'undefined') ? Camera : {
+        var _Camera = (typeof Camera !== 'undefined') ? Camera : {
             DestinationType: {
                 DATA_URL: null,
                 FILE_URI: null,
@@ -80,15 +82,18 @@ var AWProxy = (function () {
                 ARROW_ANY: null
             }
         };
+        return _Camera;
     };
     AWProxy.compass = function () {
-        return typeof navigator !== 'undefined' ? navigator.compass : new compass_1.MockCompass();
+        var _Compass = typeof navigator !== 'undefined' ? navigator.compass : new compass_1.MockCompass();
+        return _Compass;
     };
     AWProxy.connection = function () {
-        return typeof navigator !== 'undefined' ? navigator.connection : new connection_1.MockConnection();
+        var _connection = typeof navigator !== 'undefined' ? navigator.connection : new connection_1.MockConnection();
+        return _connection;
     };
     AWProxy.Connection = function () {
-        return (typeof Connection !== 'undefined') ? Connection : {
+        var _Connection = (typeof Connection !== 'undefined') ? Connection : {
             UNKNOWN: null,
             ETHERNET: null,
             WIFI: null,
@@ -98,9 +103,11 @@ var AWProxy = (function () {
             CELL: null,
             NONE: null
         };
+        return _Connection;
     };
     AWProxy.contacts = function () {
-        return typeof navigator !== 'undefined' ? navigator.contacts : new contacts_1.MockContacts();
+        var _contacts = typeof navigator !== 'undefined' ? navigator.contacts : new contacts_1.MockContacts();
+        return _contacts;
     };
     AWProxy.device = function () {
         var _device = (typeof device !== 'undefined') ? device : {
@@ -124,9 +131,10 @@ var AWProxy = (function () {
         return _device;
     };
     AWProxy.document = function () {
-        return (typeof document !== 'undefined') ? document : {
+        var _document = (typeof document !== 'undefined') ? document : {
             addEventListener: util_1.noop
         };
+        return _document;
     };
     AWProxy.file = function () {
         if (typeof cordova !== 'undefined') {
@@ -153,7 +161,8 @@ var AWProxy = (function () {
         return (typeof FileTransfer !== 'undefined') ? new FileTransfer() : new file_transfer_1.MockFileTransfer();
     };
     AWProxy.geolocation = function () {
-        return (typeof navigator !== 'undefined') ? navigator.geolocation : new geolocation_1.MockGeolocation();
+        var _geolocation = (typeof navigator !== 'undefined') ? navigator.geolocation : new geolocation_1.MockGeolocation();
+        return _geolocation;
     };
     AWProxy.localFileSystem = function () {
         return local_file_system_1.LocalFileSystem;
@@ -167,7 +176,8 @@ var AWProxy = (function () {
         }
     };
     AWProxy.notification = function () {
-        return (typeof navigator !== 'undefined') ? navigator.notification : new notifications_1.MockNotification();
+        var _notification = (typeof navigator !== 'undefined') ? navigator.notification : new notifications_1.MockNotification();
+        return _notification;
     };
     AWProxy.requestFileSystem = function (type, size, successCallback, errorCallback) {
         if (window.requestFileSystem) {
@@ -176,7 +186,8 @@ var AWProxy = (function () {
     };
     AWProxy.vibrate = function (time) {
         if (typeof navigator !== 'undefined' && navigator.vibrate) {
-            return navigator.vibrate(time);
+            var _vibrate = navigator.vibrate(time);
+            return _vibrate;
         }
         else {
             return new vibrate_1.MockVibrate().vibrate(time);
@@ -199,29 +210,12 @@ var AWProxy = (function () {
             new desktop_storage_1.DesktopStorage(desktopPlugin) : (AWProxy.isMobileEnv()) ?
             new on_device_storage_1.OnDeviceStorage() : new persistent_storage_1.PersistentStorageMock();
     };
-    /**
-     * Are we executing within the AppWorks Desktop context.
-     *
-     * @returns {boolean} true if this is a desktop environment, false otherwise
-     */
     AWProxy.isDesktopEnv = function () {
         return typeof __aw_plugin_proxy !== 'undefined';
     };
-    /**
-     * Are we executing within the AppWorks mobile context.
-     *
-     * @return {boolean} true if Cordova is available, false otherwise
-     */
     AWProxy.isMobileEnv = function () {
         return typeof cordova !== 'undefined';
     };
-    /**
-     * Ask the AppWorks desktop environment to retrieve an instance of a specific plugin.
-     *
-     * @param pluginName plugin identifier
-     * @returns {any} plugin instance or null if no such plugin exists or the method was
-     *                called outside of the desktop client context
-     */
     AWProxy.getDesktopPlugin = function (pluginName) {
         if (!AWProxy.isDesktopEnv())
             return null;
