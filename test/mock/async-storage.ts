@@ -11,7 +11,7 @@ export class MockAsyncStorage implements AsyncStorage {
     }
 
     key(index: number): Promise<string> {
-        return Promise.resolve();
+        return Promise.resolve('');
     }
 
     removeItem(key: string): Promise<any> {
