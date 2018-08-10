@@ -1,1 +1,1 @@
-export * from './app-manager';
+export * from "./app-manager";

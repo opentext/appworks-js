@@ -9,7 +9,7 @@ var local_storage_1 = require("../../../test/mock/local-storage");
 var AWStorage = (function () {
     function AWStorage() {
         // resolve the local storage or fall back onto a mock impl
-        this.storage = (typeof window !== 'undefined') ?
+        this.storage = (typeof window !== "undefined") ?
             window.localStorage : new local_storage_1.MockLocalStorage();
     }
     Object.defineProperty(AWStorage.prototype, "length", {

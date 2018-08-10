@@ -31,7 +31,7 @@ var SecureStorage = (function (_super) {
             return pe;
         }
         progress = function (result) {
-            if (typeof result.lengthComputable !== 'undefined') {
+            if (typeof result.lengthComputable !== "undefined") {
                 if (progressHandler) {
                     progressHandler(newProgressEvent(result));
                 }
@@ -42,22 +42,22 @@ var SecureStorage = (function (_super) {
                 }
             }
         };
-        proxy_1.AWProxy.exec(progress, (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'store', args);
+        proxy_1.AWProxy.exec(progress, (function () { return _this.errorHandler; })(), "AWSecureStorage", "store", args);
     };
     SecureStorage.prototype.retrieve = function (filename, options) {
         var _this = this;
         var args = [filename, options];
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'retrieve', args);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWSecureStorage", "retrieve", args);
     };
     SecureStorage.prototype.remove = function (target) {
         var _this = this;
         var args = [target];
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'removeFile', args);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWSecureStorage", "removeFile", args);
     };
     SecureStorage.prototype.fileExistsAtPath = function (target) {
         var _this = this;
         var args = [target];
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWSecureStorage', 'fileExistsAtPath', args);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWSecureStorage", "fileExistsAtPath", args);
     };
     return SecureStorage;
 }(plugin_1.AWPlugin));

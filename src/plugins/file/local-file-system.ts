@@ -1,4 +1,4 @@
 export enum LocalFileSystem {
-    PERSISTENT = 0,
-    TEMPORARY = 1
+  PERSISTENT = 0,
+  TEMPORARY = 1
 }

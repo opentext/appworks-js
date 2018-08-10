@@ -1,4 +1,4 @@
-import { Notification, NotificationPromptResult } from '../../src/plugins/dialogs/index';
+import { Notification, NotificationPromptResult } from "../../src/plugins/dialogs/index";
 export declare class MockNotification implements Notification {
     body: any;
     dir: any;

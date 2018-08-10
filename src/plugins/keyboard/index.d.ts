@@ -1,4 +1,4 @@
-export * from './keyboard';
+export * from "./keyboard";
 /**
  * The Keyboard object provides some functions to customize the iOS keyboard.
  *
@@ -24,6 +24,33 @@ export * from './keyboard';
  *
  */
 export interface Keyboard {
+    /**
+     * Determine if the keyboard is visible.
+     *
+     * Read this property to determine if the keyboard is visible.
+     *
+     * Example:
+     * <code>
+     * if (Keyboard.isVisible) {
+       * // do something
+       * }
+     * </code>
+     *
+     */
+    isVisible: boolean;
+    /**
+     * Specifies whenether content of page would be autoamtically scrolled to the top of the page when keyboard is hiding.
+     *
+     * Set this to true if you need that page scroll to beginning when keyboard is hiding.
+     * This is allows to fix issue with elements declared with position: fixed, after keyboard is hiding.
+     *
+     * Example:
+     * <code>
+     *     Keyboard.automaticScrollToTopOnHiding = true;
+     * </code>
+     *
+     */
+    automaticScrollToTopOnHiding: boolean;
     /**
      * Shrink the WebView when the keyboard comes up.
      *
@@ -71,33 +98,6 @@ export interface Keyboard {
      */
     disableScrollingInShrinkView(disable: boolean): void;
     /**
-     * Determine if the keyboard is visible.
-     *
-     * Read this property to determine if the keyboard is visible.
-     *
-     * Example:
-     * <code>
-     * if (Keyboard.isVisible) {
-     * // do something
-     * }
-     * </code>
-     *
-     */
-    isVisible: boolean;
-    /**
-     * Specifies whenether content of page would be autoamtically scrolled to the top of the page when keyboard is hiding.
-     *
-     * Set this to true if you need that page scroll to beginning when keyboard is hiding.
-     * This is allows to fix issue with elements declared with position: fixed, after keyboard is hiding.
-     *
-     * Example:
-     * <code>
-     *     Keyboard.automaticScrollToTopOnHiding = true;
-     * </code>
-     *
-     */
-    automaticScrollToTopOnHiding: boolean;
-    /**
      * If defined, this function is fired when keyboard fully shown.
      *
      * Attach handler to this event to be able to receive notification when keyboard is shown.
@@ -105,8 +105,8 @@ export interface Keyboard {
      * Example:
      * <code>
      * Keyboard.onshow = function () {
-     *     // Describe your logic which will be run each time keyboard is shown.
-     * }
+       *     // Describe your logic which will be run each time keyboard is shown.
+       * }
      * </code>
      *
      */
@@ -119,8 +119,8 @@ export interface Keyboard {
      * Example:
      * <code>
      * Keyboard.onhide = function () {
-     *     // Describe your logic which will be run each time keyboard is closed.
-     * }
+       *     // Describe your logic which will be run each time keyboard is closed.
+       * }
      * </code>
      *
      */
@@ -133,8 +133,8 @@ export interface Keyboard {
      * Example:
      * <code>
      * Keyboard.onshowing = function () {
-     *     // Describe your logic which will be run each time when keyboard is about to be shown.
-     * }
+       *     // Describe your logic which will be run each time when keyboard is about to be shown.
+       * }
      * </code>
      *
      */
@@ -147,8 +147,8 @@ export interface Keyboard {
      * Example:
      * <code>
      * Keyboard.onhiding = function () {
-     *     // Describe your logic which will be run each time when keyboard is about to be closed.
-     * }
+       *     // Describe your logic which will be run each time when keyboard is about to be closed.
+       * }
      * </code>
      *
      */

@@ -20,7 +20,7 @@ var AWFileChooser = (function (_super) {
     AWFileChooser.prototype.selectAndUpload = function (action) {
         var _this = this;
         var args = [action];
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFileChooser', 'open', args);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWFileChooser", "open", args);
     };
     return AWFileChooser;
 }(plugin_1.AWPlugin));

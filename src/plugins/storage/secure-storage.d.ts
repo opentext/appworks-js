@@ -1,4 +1,4 @@
-import { AWPlugin } from '../../common/plugin';
+import { AWPlugin } from "../../common/plugin";
 export declare class SecureStorage extends AWPlugin {
     static idCounter: number;
     seqNo: number;

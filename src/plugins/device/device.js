@@ -15,7 +15,9 @@ var proxy_1 = require("../../common/proxy");
 var AWDevice = (function (_super) {
     __extends(AWDevice, _super);
     function AWDevice() {
-        var _this = _super.call(this, function () { }, function () { }) || this;
+        var _this = _super.call(this, function () {
+        }, function () {
+        }) || this;
         _this.cordova = proxy_1.AWProxy.device().cordova;
         _this.model = proxy_1.AWProxy.device().model;
         _this.platform = proxy_1.AWProxy.device().platform;

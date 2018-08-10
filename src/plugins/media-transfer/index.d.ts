@@ -1,10 +1,16 @@
-import { Device } from '../device/index';
-export * from './media-capture';
+import { Device } from "../device/index";
+export * from "./media-capture";
 export interface Navigator {
     device: Device;
 }
 /** This plugin provides access to the device's audio, image, and video capture capabilities. */
 export interface Capture {
+    /** The audio recording formats supported by the device. */
+    supportedAudioModes: ConfigurationData[];
+    /** The recording image sizes and formats supported by the device. */
+    supportedImageModes: ConfigurationData[];
+    /** The recording video resolutions and formats supported by the device. */
+    supportedVideoModes: ConfigurationData[];
     /**
      * Start the audio recorder application and return information about captured audio clip files.
      * @param onSuccess Executes when the capture operation finishes with an array
@@ -32,12 +38,6 @@ export interface Capture {
      * @param options   Encapsulates audio capture configuration options.
      */
     captureVideo(onSuccess: (mediaFiles: MediaFile[]) => void, onError: (error: CaptureError) => void, options?: VideoOptions): void;
-    /** The audio recording formats supported by the device. */
-    supportedAudioModes: ConfigurationData[];
-    /** The recording image sizes and formats supported by the device. */
-    supportedImageModes: ConfigurationData[];
-    /** The recording video resolutions and formats supported by the device. */
-    supportedVideoModes: ConfigurationData[];
 }
 /** Encapsulates properties of a media capture file. */
 export interface MediaFile {

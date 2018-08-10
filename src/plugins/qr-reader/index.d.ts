@@ -1,1 +1,1 @@
-export * from './qr-reader';
+export * from "./qr-reader";

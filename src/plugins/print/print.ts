@@ -1,36 +1,36 @@
-import {AWPlugin} from '../../common/plugin';
-import {AWProxy} from '../../common/proxy';
+import {AWPlugin} from "../../common/plugin";
+import {AWProxy} from "../../common/proxy";
 
 export class Print extends AWPlugin {
-    print(options?: any) {
-        AWProxy.exec(
-            (() => this.successHandler)(),
-            (() => this.errorHandler)(),
-            'AWPrint',
-            'print',
-            [options]
-        );
-    }
+  print(options?: any) {
+    AWProxy.exec(
+      (() => this.successHandler)(),
+      (() => this.errorHandler)(),
+      "AWPrint",
+      "print",
+      [options]
+    );
+  }
 
-    getPrinters() {
-        AWProxy.exec(
-            (() => this.successHandler)(),
-            (() => this.errorHandler)(),
-            'AWPrint',
-            'getPrinters',
-            []
-        );
-    }
+  getPrinters() {
+    AWProxy.exec(
+      (() => this.successHandler)(),
+      (() => this.errorHandler)(),
+      "AWPrint",
+      "getPrinters",
+      []
+    );
+  }
 
-    printToPDF(options?: any) {
-        AWProxy.exec(
-            (() => this.successHandler)(),
-            (() => this.errorHandler)(),
-            'AWPrint',
-            'printToPDF',
-            [options]
-        );
-    }
+  printToPDF(options?: any) {
+    AWProxy.exec(
+      (() => this.successHandler)(),
+      (() => this.errorHandler)(),
+      "AWPrint",
+      "printToPDF",
+      [options]
+    );
+  }
 }
 
 export class AWPrint extends Print {

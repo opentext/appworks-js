@@ -18,7 +18,7 @@ var Scanner = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Scanner.prototype.scanDocument = function (returnType, successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWScanner', 'scanDocument', [returnType]);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWScanner", "scanDocument", [returnType]);
     };
     return Scanner;
 }(plugin_1.AWPlugin));

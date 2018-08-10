@@ -17,17 +17,17 @@ var Print = (function (_super) {
     function Print() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Print.prototype.print = function () {
+    Print.prototype.print = function (options) {
         var _this = this;
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPrint', 'print', []);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWPrint", "print", [options]);
     };
     Print.prototype.getPrinters = function () {
         var _this = this;
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPrint', 'getPrinters', []);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWPrint", "getPrinters", []);
     };
-    Print.prototype.printToPDF = function () {
+    Print.prototype.printToPDF = function (options) {
         var _this = this;
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWPrint', 'printToPDF', []);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWPrint", "printToPDF", [options]);
     };
     return Print;
 }(plugin_1.AWPlugin));

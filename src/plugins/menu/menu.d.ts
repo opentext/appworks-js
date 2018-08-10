@@ -1,5 +1,5 @@
-import { AWPlugin } from '../../common/plugin';
-import { MenuSection } from './index';
+import { AWPlugin } from "../../common/plugin";
+import { MenuSection } from "./index";
 export declare class AWMenu extends AWPlugin {
     push(items: any): void;
     setMenu(menuSections: MenuSection[]): Promise<{}>;

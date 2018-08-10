@@ -5,204 +5,204 @@ import {DesktopHostFileSystem, FileDetails, FileDialogOptions, SaveDialogOptions
 
 export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
 
-    desktopEnvError: Error = new Error('This method is only available in the AppWorks Desktop environment');
+  desktopEnvError: Error = new Error("This method is only available in the AppWorks Desktop environment");
 
-    constructor() {
-        super(noop, noop);
-    }
+  constructor() {
+    super(noop, noop);
+  }
 
-    getPath(name: string,
-            successCallback: (result: string) => void,
-            errorCallback?: (result: Error) => void): void {
-        this.validateEnv();
-        AWProxy.exec(
-            successCallback,
-            errorCallback,
-            'AWFileSystem',
-            'getPath',
-            [name]
-        );
-    }
-
-    exists(path: string,
-           successCallback: (result: boolean) => void,
-           errorCallback?: (result: Error) => void): void {
-        this.validateEnv();
-        AWProxy.exec(
-            successCallback,
-            errorCallback,
-            'AWFileSystem',
-            'exists',
-            [path]
-        );
-    }
-
-    isDir(path: string,
-          successCallback: (result: boolean) => void,
+  getPath(name: string,
+          successCallback: (result: string) => void,
           errorCallback?: (result: Error) => void): void {
-        this.validateEnv();
-        AWProxy.exec(
-            successCallback,
-            errorCallback,
-            'AWFileSystem',
-            'isDir',
-            [path]
-        );
-    }
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      "AWFileSystem",
+      "getPath",
+      [name]
+    );
+  }
 
-    createFile(path: string,
-               successCallback: (result: boolean) => void,
-               errorCallback?: (result: Error) => void,
-               data?: any,
-               append?: boolean): void {
-        this.validateEnv();
-        AWProxy.exec(
-            successCallback,
-            errorCallback,
-            'AWFileSystem',
-            'createFile',
-            [path, data, append]
-        );
-    }
-
-    readFile(path: string,
-               successCallback: (result: any) => void,
-               errorCallback?: (result: Error) => void): void {
-        this.validateEnv();
-        AWProxy.exec(
-            successCallback,
-            errorCallback,
-            'AWFileSystem',
-            'readFile',
-            [path]
-        );
-    }
-
-    createDirectory(path: string,
-                    successCallback: (result: boolean) => void,
-                    errorCallback?: (result: Error) => void): void {
-        this.validateEnv();
-        AWProxy.exec(
-            successCallback,
-            errorCallback,
-            'AWFileSystem',
-            'createDirectory',
-            [path]
-        );
-    }
-
-    copy(from: string, to: string,
+  exists(path: string,
          successCallback: (result: boolean) => void,
          errorCallback?: (result: Error) => void): void {
-        this.validateEnv();
-        AWProxy.exec(
-            successCallback,
-            errorCallback,
-            'AWFileSystem',
-            'copy',
-            [from, to]
-        );
-    }
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      "AWFileSystem",
+      "exists",
+      [path]
+    );
+  }
 
-    open(path: string,
-         successCallback: (result: boolean) => void,
-         errorCallback?: (result: Error) => void): void {
-        this.validateEnv();
-        AWProxy.exec(
-            successCallback,
-            errorCallback,
-            'AWFileSystem',
-            'open',
-            [path]
-        );
-    }
+  isDir(path: string,
+        successCallback: (result: boolean) => void,
+        errorCallback?: (result: Error) => void): void {
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      "AWFileSystem",
+      "isDir",
+      [path]
+    );
+  }
 
-    reveal(path: string,
-           successCallback: (result: boolean) => void,
+  createFile(path: string,
+             successCallback: (result: boolean) => void,
+             errorCallback?: (result: Error) => void,
+             data?: any,
+             append?: boolean): void {
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      "AWFileSystem",
+      "createFile",
+      [path, data, append]
+    );
+  }
+
+  readFile(path: string,
+           successCallback: (result: any) => void,
            errorCallback?: (result: Error) => void): void {
-        this.validateEnv();
-        AWProxy.exec(
-            successCallback,
-            errorCallback,
-            'AWFileSystem',
-            'reveal',
-            [path]
-        );
-    }
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      "AWFileSystem",
+      "readFile",
+      [path]
+    );
+  }
 
-    getDetails(path: string,
-               successCallback: (result: FileDetails) => void,
-               errorCallback?: (result: Error) => void): void {
-        this.validateEnv();
-        AWProxy.exec(
-            successCallback,
-            errorCallback,
-            'AWFileSystem',
-            'getDetails',
-            [path]
-        );
-    }
+  createDirectory(path: string,
+                  successCallback: (result: boolean) => void,
+                  errorCallback?: (result: Error) => void): void {
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      "AWFileSystem",
+      "createDirectory",
+      [path]
+    );
+  }
 
-    listDirContents(path: string,
-                    successCallback: (result: FileDetails[]) => void,
-                    errorCallback?: (result: Error) => void): void {
-        this.validateEnv();
-        AWProxy.exec(
-            successCallback,
-            errorCallback,
-            'AWFileSystem',
-            'listDirContents',
-            [path]
-        );
-    }
+  copy(from: string, to: string,
+       successCallback: (result: boolean) => void,
+       errorCallback?: (result: Error) => void): void {
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      "AWFileSystem",
+      "copy",
+      [from, to]
+    );
+  }
 
-    showSaveDialog(opts: SaveDialogOptions,
-                   successCallback: (result: string) => void,
+  open(path: string,
+       successCallback: (result: boolean) => void,
+       errorCallback?: (result: Error) => void): void {
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      "AWFileSystem",
+      "open",
+      [path]
+    );
+  }
+
+  reveal(path: string,
+         successCallback: (result: boolean) => void,
+         errorCallback?: (result: Error) => void): void {
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      "AWFileSystem",
+      "reveal",
+      [path]
+    );
+  }
+
+  getDetails(path: string,
+             successCallback: (result: FileDetails) => void,
+             errorCallback?: (result: Error) => void): void {
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      "AWFileSystem",
+      "getDetails",
+      [path]
+    );
+  }
+
+  listDirContents(path: string,
+                  successCallback: (result: FileDetails[]) => void,
+                  errorCallback?: (result: Error) => void): void {
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      "AWFileSystem",
+      "listDirContents",
+      [path]
+    );
+  }
+
+  showSaveDialog(opts: SaveDialogOptions,
+                 successCallback: (result: string) => void,
+                 errorCallback?: (result: Error) => void): void {
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      "AWFileSystem",
+      "showSaveDialog",
+      [opts]
+    );
+  }
+
+  showDirSelector(opts: FileDialogOptions,
+                  successCallback: (result: string[]) => void,
+                  errorCallback?: (result: Error) => void): void {
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      "AWFileSystem",
+      "showDirSelector",
+      [opts]
+    );
+  }
+
+  showFileSelector(opts: FileDialogOptions,
+                   successCallback: (result: string[]) => void,
                    errorCallback?: (result: Error) => void): void {
-        this.validateEnv();
-        AWProxy.exec(
-            successCallback,
-            errorCallback,
-            'AWFileSystem',
-            'showSaveDialog',
-            [opts]
-        );
-    }
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      "AWFileSystem",
+      "showFileSelector",
+      [opts]
+    );
+  }
 
-    showDirSelector(opts: FileDialogOptions,
-                    successCallback: (result: string[]) => void,
-                    errorCallback?: (result: Error) => void): void {
-        this.validateEnv();
-        AWProxy.exec(
-            successCallback,
-            errorCallback,
-            'AWFileSystem',
-            'showDirSelector',
-            [opts]
-        );
+  /**
+   * The methods of this class should only be called from within an AppWorks desktop
+   * environment.
+   */
+  validateEnv(): void {
+    if (!AWProxy.isDesktopEnv()) {
+      throw this.desktopEnvError;
     }
-
-    showFileSelector(opts: FileDialogOptions,
-                     successCallback: (result: string[]) => void,
-                     errorCallback?: (result: Error) => void): void {
-        this.validateEnv();
-        AWProxy.exec(
-            successCallback,
-            errorCallback,
-            'AWFileSystem',
-            'showFileSelector',
-            [opts]
-        );
-    }
-
-    /**
-     * The methods of this class should only be called from within an AppWorks desktop
-     * environment.
-     */
-    validateEnv(): void {
-        if (!AWProxy.isDesktopEnv()) {
-            throw this.desktopEnvError;
-        }
-    }
+  }
 
 }

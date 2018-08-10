@@ -14,9 +14,12 @@ var MockNotification = (function () {
         this.title = null;
         this.tag = null;
         this.close = null;
-        this.addEventListener = function (name) { };
-        this.removeEventListener = function (name) { };
-        this.dispatchEvent = function (name) { };
+        this.addEventListener = function (name) {
+        };
+        this.removeEventListener = function (name) {
+        };
+        this.dispatchEvent = function (name) {
+        };
     }
     MockNotification.prototype.alert = function (message, alertCallback, title, buttonName) {
     };

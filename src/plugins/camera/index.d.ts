@@ -1,4 +1,4 @@
-export * from './camera';
+export * from "./camera";
 export interface Navigator {
     /**
      * This plugin provides an API for taking pictures and for choosing images from the system's image library.

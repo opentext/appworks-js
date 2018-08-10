@@ -1,5 +1,5 @@
-export * from './webview';
-export * from './desktop-webview';
+export * from "./webview";
+export * from "./desktop-webview";
 export interface DesktopWebviewInterface {
     /**
      * Adds a listener for an event from the InAppBrowser.

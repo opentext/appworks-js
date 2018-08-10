@@ -1,4 +1,4 @@
-import { AWPlugin } from '../../common/plugin';
+import { AWPlugin } from "../../common/plugin";
 export declare class AWMobileFileSystem extends AWPlugin {
     list(directory: string, shared: boolean, success: any, error: any): void;
     listImports(success: any, error: any): void;

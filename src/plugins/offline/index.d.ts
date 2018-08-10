@@ -1,1 +1,1 @@
-export * from './offline-manager';
+export * from "./offline-manager";

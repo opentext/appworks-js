@@ -1,4 +1,4 @@
-export * from './menu';
+export * from "./menu";
 export interface MenuSection {
     /**
      * the title of the section

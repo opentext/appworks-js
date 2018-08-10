@@ -1,29 +1,30 @@
-import {AsyncStorage} from '../../src/plugins/storage/index';
+import {AsyncStorage} from "../../src/plugins/storage/index";
+
 export class MockAsyncStorage implements AsyncStorage {
-    length: number;
+  length: number;
 
-    clear(): Promise<any> {
-        return Promise.resolve();
-    }
+  clear(): Promise<any> {
+    return Promise.resolve();
+  }
 
-    getItem(key: string): Promise<any> {
-        return Promise.resolve();
-    }
+  getItem(key: string): Promise<any> {
+    return Promise.resolve();
+  }
 
-    key(index: number): Promise<string> {
-        return Promise.resolve('');
-    }
+  key(index: number): Promise<string> {
+    return Promise.resolve("");
+  }
 
-    removeItem(key: string): Promise<any> {
-        return Promise.resolve();
-    }
+  removeItem(key: string): Promise<any> {
+    return Promise.resolve();
+  }
 
-    setItem(key: string, data: string): Promise<any> {
-        return Promise.resolve();
-    }
+  setItem(key: string, data: string): Promise<any> {
+    return Promise.resolve();
+  }
 
-    getData(): any {
-        return undefined;
-    }
+  getData(): any {
+    return undefined;
+  }
 
 }

@@ -18,16 +18,16 @@ var AWComponent = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     AWComponent.prototype.open = function (successHandler, errorHandler, args) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWComponent', 'open', args || []);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWComponent", "open", args || []);
     };
     AWComponent.prototype.list = function (successHandler, errorHandler, args) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWComponent', 'list', args || []);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWComponent", "list", args || []);
     };
     AWComponent.prototype.check = function (successHandler, errorHandler, args) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWComponent', 'check', args || []);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWComponent", "check", args || []);
     };
     AWComponent.prototype.close = function (successHandler, errorHandler, args) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWComponent', 'close', args || []);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWComponent", "close", args || []);
     };
     return AWComponent;
 }(plugin_1.AWPlugin));

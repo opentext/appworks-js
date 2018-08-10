@@ -1,44 +1,44 @@
-import {AWPlugin} from '../../common/plugin';
-import {AWProxy} from '../../common/proxy';
+import {AWPlugin} from "../../common/plugin";
+import {AWProxy} from "../../common/proxy";
 
 export class AWComponent extends AWPlugin {
-    open(successHandler: any, errorHandler?: any, args?: any[]) {
-        AWProxy.exec(
-            successHandler,
-            errorHandler,
-            'AWComponent',
-            'open',
-            args || []
-        );
-    }
+  open(successHandler: any, errorHandler?: any, args?: any[]) {
+    AWProxy.exec(
+      successHandler,
+      errorHandler,
+      "AWComponent",
+      "open",
+      args || []
+    );
+  }
 
-    list(successHandler: any, errorHandler?: any, args?: any[]) {
-        AWProxy.exec(
-            successHandler,
-            errorHandler,
-            'AWComponent',
-            'list',
-            args || []
-        );
-    }
+  list(successHandler: any, errorHandler?: any, args?: any[]) {
+    AWProxy.exec(
+      successHandler,
+      errorHandler,
+      "AWComponent",
+      "list",
+      args || []
+    );
+  }
 
-    check(successHandler: any, errorHandler?: any, args?: any[]) {
-        AWProxy.exec(
-            successHandler,
-            errorHandler,
-            'AWComponent',
-            'check',
-            args || []
-        );
-    }
+  check(successHandler: any, errorHandler?: any, args?: any[]) {
+    AWProxy.exec(
+      successHandler,
+      errorHandler,
+      "AWComponent",
+      "check",
+      args || []
+    );
+  }
 
-    close(successHandler: any, errorHandler?: any, args?: any[]) {
-        AWProxy.exec(
-            successHandler,
-            errorHandler,
-            'AWComponent',
-            'close',
-            args || []
-        );
-    }
+  close(successHandler: any, errorHandler?: any, args?: any[]) {
+    AWProxy.exec(
+      successHandler,
+      errorHandler,
+      "AWComponent",
+      "close",
+      args || []
+    );
+  }
 }

@@ -1,4 +1,4 @@
-export * from './vibration';
+export * from "./vibration";
 export interface Navigator {
     /**
      * Vibrates the device for the specified amount of time.

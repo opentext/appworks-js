@@ -1,4 +1,4 @@
-export * from './media';
+export * from "./media";
 /**
  * This plugin provides the ability to record and play back audio files on a device.
  * NOTE: The current implementation does not adhere to a W3C specification for media capture,
@@ -6,6 +6,13 @@ export * from './media';
  * W3C specification and may deprecate the current APIs.
  */
 export interface MediaInterface {
+    /**
+     * The position within the audio playback, in seconds.
+     * Not automatically updated during play; call getCurrentPosition to update.
+     */
+    position: number;
+    /** The duration of the media, in seconds. */
+    duration: number;
     /**
      * Returns the current position within an audio file. Also updates the Media object's position parameter.
      * @param mediaSuccess The callback that is passed the current position in seconds.
@@ -43,13 +50,6 @@ export interface MediaInterface {
     stopRecord(): void;
     /** Stops playing an audio file. */
     stop(): void;
-    /**
-     * The position within the audio playback, in seconds.
-     * Not automatically updated during play; call getCurrentPosition to update.
-     */
-    position: number;
-    /** The duration of the media, in seconds. */
-    duration: number;
 }
 /**
  *  iOS optional parameters for media.play

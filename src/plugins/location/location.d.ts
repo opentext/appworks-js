@@ -1,4 +1,4 @@
-import { AWPlugin } from '../../common/plugin';
+import { AWPlugin } from "../../common/plugin";
 export declare class AWLocation extends AWPlugin {
     getCurrentPosition(options?: any): void;
     watchPosition(options?: any): number;

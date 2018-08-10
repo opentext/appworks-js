@@ -20,22 +20,22 @@ var AWFinder = (function (_super) {
     AWFinder.prototype.open = function (path, filename) {
         var _this = this;
         var args = [path, filename];
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'open', args);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWFinder", "open", args);
     };
     AWFinder.prototype.openIn = function (filename) {
         return this.openDirect(filename);
     };
     AWFinder.prototype.list = function (path) {
         var _this = this;
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'list', [path]);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWFinder", "list", [path]);
     };
     AWFinder.prototype.share = function (filename) {
         var _this = this;
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'share', [filename]);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWFinder", "share", [filename]);
     };
     AWFinder.prototype.openDirect = function (filename) {
         var _this = this;
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWFinder', 'openDirect', [filename]);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWFinder", "openDirect", [filename]);
     };
     return AWFinder;
 }(plugin_1.AWPlugin));

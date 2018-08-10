@@ -19,7 +19,7 @@ var AWAppManager = (function (_super) {
     }
     AWAppManager.prototype.closeActiveApp = function () {
         var _this = this;
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'closeActiveApp', []);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWAppManager", "closeActiveApp", []);
     };
     return AWAppManager;
 }(plugin_1.AWPlugin));

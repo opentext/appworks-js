@@ -1,50 +1,50 @@
-import {IosPlayOptions, MediaInterface} from '../../src/plugins/media/index';
+import {IosPlayOptions, MediaInterface} from "../../src/plugins/media/index";
 
 export class MockMedia implements MediaInterface {
-    position: number;
-    duration: number;
+  position: number;
+  duration: number;
 
-    constructor(src, successHandler, errorHandler, statusChangeHandler) {
+  constructor(src, successHandler, errorHandler, statusChangeHandler) {
 
-    }
+  }
 
-    getCurrentPosition(mediaSuccess: (position: number) => void,
-                       mediaError?: (error: MediaError) => void): void {
-    }
+  getCurrentPosition(mediaSuccess: (position: number) => void,
+                     mediaError?: (error: MediaError) => void): void {
+  }
 
-    getDuration(): number {
-        return null;
-    }
+  getDuration(): number {
+    return null;
+  }
 
-    play(iosPlayOptions?: IosPlayOptions): void {
+  play(iosPlayOptions?: IosPlayOptions): void {
 
-    }
+  }
 
-    pause(): void {
+  pause(): void {
 
-    }
+  }
 
-    release(): void {
+  release(): void {
 
-    }
+  }
 
-    seekTo(position: number): void {
+  seekTo(position: number): void {
 
-    }
+  }
 
-    setVolume(volume: number): void {
+  setVolume(volume: number): void {
 
-    }
+  }
 
-    startRecord(): void {
+  startRecord(): void {
 
-    }
+  }
 
-    stopRecord(): void {
+  stopRecord(): void {
 
-    }
+  }
 
-    stop(): void {
+  stop(): void {
 
-    }
+  }
 }

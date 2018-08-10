@@ -1,4 +1,4 @@
-import { Storage } from '../../src/plugins/storage/index';
+import { Storage } from "../../src/plugins/storage/index";
 export declare class MockLocalStorage implements Storage {
     length: number;
     [key: string]: any;

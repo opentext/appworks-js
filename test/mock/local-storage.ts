@@ -1,30 +1,32 @@
-import {Storage} from '../../src/plugins/storage/index';
+import {Storage} from "../../src/plugins/storage/index";
 
 export class MockLocalStorage implements Storage {
-    length: number;
-    [key: string]: any;
-    [index: number]: string;
+  length: number;
 
-    // allow tests to set a value if they need to
-    constructor(len?: number) {
-        this.length = isNaN(len) ? 0 : len;
-    }
+  [key: string]: any;
 
-    getItem(key: string): any {
-        return null;
-    }
+  [index: number]: string;
 
-    setItem(key: string, value: string): void {
-    }
+  // allow tests to set a value if they need to
+  constructor(len?: number) {
+    this.length = isNaN(len) ? 0 : len;
+  }
 
-    removeItem(key: string): void {
-    }
+  getItem(key: string): any {
+    return null;
+  }
 
-    clear(): void {
-    }
+  setItem(key: string, value: string): void {
+  }
 
-    key(index: number): string {
-        return null;
-    }
+  removeItem(key: string): void {
+  }
+
+  clear(): void {
+  }
+
+  key(index: number): string {
+    return null;
+  }
 
 }

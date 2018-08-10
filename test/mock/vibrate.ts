@@ -1,4 +1,4 @@
 export class MockVibrate {
-    vibrate(time: number): void {
-    }
+  vibrate(time: number): void {
+  }
 }

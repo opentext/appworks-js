@@ -1,5 +1,6 @@
 import {MockLocalStorage} from "../../../test/mock/local-storage";
-import {Storage} from './index';
+import {Storage} from "./index";
+
 /**
  * Web local storage wrapper that hooks into the native persistent layer on mobile and desktop
  * The local and persistent storage are kept in, sync with update being flushed, and the local web
@@ -7,42 +8,43 @@ import {Storage} from './index';
  */
 export class AWStorage implements Storage {
 
-    [key: string]: any;
-    [index: number]: string;
+  [key: string]: any;
 
-    /**
-     * Storage implementation.
-     */
-    private storage: Storage;
+  [index: number]: string;
 
-    constructor() {
-        // resolve the local storage or fall back onto a mock impl
-        this.storage = (typeof window !== 'undefined') ?
-            window.localStorage : new MockLocalStorage();
-    }
+  /**
+   * Storage implementation.
+   */
+  private storage: Storage;
 
-    get length(): number {
-        return this.storage ? this.storage.length : -1;
-    }
+  constructor() {
+    // resolve the local storage or fall back onto a mock impl
+    this.storage = (typeof window !== "undefined") ?
+      window.localStorage : new MockLocalStorage();
+  }
 
-    clear(): void {
-        this.storage.clear();
-    }
+  get length(): number {
+    return this.storage ? this.storage.length : -1;
+  }
 
-    getItem(key: string): any {
-        return this.storage.getItem(key);
-    }
+  clear(): void {
+    this.storage.clear();
+  }
 
-    key(index: number): string {
-        return this.storage.key(index);
-    }
+  getItem(key: string): any {
+    return this.storage.getItem(key);
+  }
 
-    removeItem(key: string): void {
-        return this.storage.removeItem(key);
-    }
+  key(index: number): string {
+    return this.storage.key(index);
+  }
 
-    setItem(key: string, data: any): void {
-        return this.storage.setItem(key, data);
-    }
+  removeItem(key: string): void {
+    return this.storage.removeItem(key);
+  }
+
+  setItem(key: string, data: any): void {
+    return this.storage.setItem(key, data);
+  }
 
 }

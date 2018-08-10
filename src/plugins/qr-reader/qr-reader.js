@@ -19,11 +19,15 @@ var QRReader = (function (_super) {
     }
     QRReader.prototype.scan = function () {
         var _this = this;
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'scan', []);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWQRCodeReader", "scan", []);
     };
     QRReader.prototype.rename = function () {
         var _this = this;
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'rename', []);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWQRCodeReader", "rename", []);
+    };
+    QRReader.prototype.barcode = function (multiple) {
+        var _this = this;
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWQRCodeReader", "barcode", [multiple]);
     };
     return QRReader;
 }(plugin_1.AWPlugin));

@@ -1,8 +1,8 @@
-import { AWPlugin } from '../../common/plugin';
-import { AWCalendarInterface, CalendarCreateOptions, CalendarOptions } from './index';
+import { AWPlugin } from "../../common/plugin";
+import { AWCalendarInterface, CalendarCreateOptions, CalendarOptions } from "./index";
 export declare class AWCalendar extends AWPlugin implements AWCalendarInterface {
-    static getCalendarOptions(): CalendarOptions;
     constructor();
+    static getCalendarOptions(): CalendarOptions;
     hasReadPermission(successHandler?: any, errorHandler?: any): Promise<{}>;
     requestReadPermission(successHandler?: any, errorHandler?: any): Promise<{}>;
     hasWritePermission(successHandler?: any, errorHandler?: any): Promise<{}>;

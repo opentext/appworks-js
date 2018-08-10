@@ -20,7 +20,7 @@ var AWAuth = (function (_super) {
     AWAuth.prototype.authenticate = function (force) {
         var _this = this;
         force = !!force;
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authenticate', [force.toString()]);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWAuth", "authenticate", [force.toString()]);
     };
     /**
      *  Marked for depreciation
@@ -28,16 +28,16 @@ var AWAuth = (function (_super) {
      */
     AWAuth.prototype.getAuthResponse = function () {
         var _this = this;
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAuth', 'authobject', []);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWAuth", "authobject", []);
     };
     AWAuth.prototype.gateway = function (successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'gateway', []);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWAuth", "gateway", []);
     };
     AWAuth.prototype.online = function (successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'online', []);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWAuth", "online", []);
     };
     AWAuth.prototype.otdsssoticket = function (successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWAuth', 'otdsssoticket', []);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWAuth", "otdsssoticket", []);
     };
     return AWAuth;
 }(plugin_1.AWPlugin));

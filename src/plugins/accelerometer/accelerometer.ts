@@ -1,25 +1,25 @@
-import {AWPlugin} from '../../common/plugin';
-import {AWProxy} from '../../common/proxy';
+import {AWPlugin} from "../../common/plugin";
+import {AWProxy} from "../../common/proxy";
 
 export class AWAccelerometer extends AWPlugin {
-    getCurrentAcceleration() {
-        return AWProxy.accelerometer().getCurrentAcceleration(
-            (() => this.successHandler)(),
-            (() => this.errorHandler)()
-        );
-    }
+  getCurrentAcceleration() {
+    return AWProxy.accelerometer().getCurrentAcceleration(
+      (() => this.successHandler)(),
+      (() => this.errorHandler)()
+    );
+  }
 
-    watchAcceleration(options?: any): any {
-        return AWProxy.accelerometer().watchAcceleration(
-            (() => this.successHandler)(),
-            (() => this.errorHandler)(),
-            options
-        );
-    }
+  watchAcceleration(options?: any): any {
+    return AWProxy.accelerometer().watchAcceleration(
+      (() => this.successHandler)(),
+      (() => this.errorHandler)(),
+      options
+    );
+  }
 
-    clearWatch(watchId: number) {
-        return AWProxy.accelerometer().clearWatch(watchId);
-    }
+  clearWatch(watchId: number) {
+    return AWProxy.accelerometer().clearWatch(watchId);
+  }
 }
 
 

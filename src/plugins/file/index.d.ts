@@ -1,6 +1,7 @@
-export * from './file-chooser';
-export * from './file-system';
-export * from './local-file-system';
+export * from "./file-chooser";
+export * from "./file-system";
+export * from "./local-file-system";
+import { LocalFileSystem } from "./local-file-system";
 export interface FileDetails {
     /**
      * File name.
@@ -74,6 +75,8 @@ export interface DesktopHostFileSystem {
     showFileSelector(opts: SaveDialogOptions, successCallback: (result: string[]) => void, errorCallback?: (result: Error) => void): void;
 }
 export interface Window {
+    TEMPORARY: number;
+    PERSISTENT: number;
     /**
      * Requests a filesystem in which to store application data.
      * @param type              Whether the filesystem requested should be persistent, as defined above. Use one of TEMPORARY or PERSISTENT.
@@ -96,8 +99,6 @@ export interface Window {
      * @param errorCallback    invoked if error occurs retrieving file system entry
      */
     resolveLocalFileSystemURI(uri: string, successCallback: (entry: Entry) => void, errorCallback?: (error: FileError) => void): void;
-    TEMPORARY: number;
-    PERSISTENT: number;
 }
 /** This interface represents a file system. */
 export interface FileSystem {
@@ -281,8 +282,6 @@ export interface FileEntry extends Entry {
  * to disk using progress events and event handler attributes.
  */
 export interface FileSaver extends EventTarget {
-    /** Terminate file operation */
-    abort(): void;
     /**
      * The FileSaver object can be in one of 3 states. The readyState attribute, on getting,
      * must return the current state, which must be one of the following values:
@@ -305,6 +304,8 @@ export interface FileSaver extends EventTarget {
     onwriteend: (event: ProgressEvent) => void;
     /** The last error that occurred on the FileSaver. */
     error: Error;
+    /** Terminate file operation */
+    abort(): void;
 }
 /**
  * This interface expands on the FileSaver interface to allow for multiple write
@@ -378,8 +379,4 @@ export interface Cordova {
         documentsDirectory: string;
         sharedDirectory: string;
     };
-}
-export declare enum LocalFileSystem {
-    PERSISTENT = 0,
-    TEMPORARY = 1,
 }

@@ -1,1 +1,1 @@
-export * from './accelerometer';
+export * from "./accelerometer";

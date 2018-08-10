@@ -1,8 +1,8 @@
-export * from './calendar';
+export * from "./calendar";
 export interface CalendarOptions {
     firstReminderMinutes: number;
     secondReminderMinutes: number;
-    recurrence: 'daily' | 'weekly' | 'monthly' | 'yearly';
+    recurrence: "daily" | "weekly" | "monthly" | "yearly";
     recurrenceInterval: number;
     recurrenceWeekstart: string;
     recurrenceByDay: string;

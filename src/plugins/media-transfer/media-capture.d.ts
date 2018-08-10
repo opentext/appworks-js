@@ -1,5 +1,5 @@
-import { AWPlugin } from '../../common/plugin';
-import { Capture } from './index';
+import { AWPlugin } from "../../common/plugin";
+import { Capture } from "./index";
 export declare class AWMediaCapture extends AWPlugin implements Capture {
     supportedAudioModes: any;
     supportedImageModes: any;

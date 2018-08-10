@@ -1,5 +1,5 @@
 import { AWPlugin } from "../../common/plugin";
-import { FileTransferInterface } from './index';
+import { FileTransferInterface } from "./index";
 export declare class AWFileTransfer extends AWPlugin {
     onprogress: any;
     private fileTransfer;

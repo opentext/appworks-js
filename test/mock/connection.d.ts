@@ -1,4 +1,4 @@
-import { ConnectionInterface } from '../../src/plugins/network-information/index';
+import { ConnectionInterface } from "../../src/plugins/network-information/index";
 export declare class MockConnection implements ConnectionInterface {
     type: string;
     addEventListener(type: string, listener: EventListenerOrEventListenerObject, useCapture?: boolean): void;
