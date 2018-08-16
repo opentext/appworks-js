@@ -6,6 +6,7 @@ export declare class AWFileSystem extends AWPlugin implements DesktopHostFileSys
     getPath(name: string, successCallback: (result: string) => void, errorCallback?: (result: Error) => void): void;
     exists(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     isDir(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
+    isOpen(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     setReadOnly(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     createFile(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void, data?: any, append?: boolean): void;
     readFile(path: string, successCallback: (result: any) => void, errorCallback?: (result: Error) => void): void;

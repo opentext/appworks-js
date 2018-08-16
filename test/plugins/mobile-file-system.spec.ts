@@ -19,6 +19,10 @@ describe('MobileFileSystem', () => {
         let o = new AWMobileFileSystem(noop, noop);
         expect(o.exists).to.not.equal(undefined);
     });
+    it('should define an isOpen function', () => {
+        let o = new AWMobileFileSystem(noop, noop);
+        expect(o.isOpen).to.not.equal(undefined);
+    });
     it('should define an rename function', () => {
         let o = new AWMobileFileSystem(noop, noop);
         expect(o.rename).to.not.equal(undefined);

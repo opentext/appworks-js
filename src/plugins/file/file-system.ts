@@ -50,6 +50,19 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
         );
     }
 
+    isOpen(path: string,
+          successCallback: (result: boolean) => void,
+          errorCallback?: (result: Error) => void): void {
+        this.validateEnv();
+        AWProxy.exec(
+            successCallback,
+            errorCallback,
+            'AWFileSystem',
+            'isOpen',
+            [path]
+        );
+    }
+
     setReadOnly(path: string,
            successCallback: (result: boolean) => void,
            errorCallback?: (result: Error) => void): void {

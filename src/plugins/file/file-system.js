@@ -32,6 +32,10 @@ var AWFileSystem = (function (_super) {
         this.validateEnv();
         proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isDir', [path]);
     };
+    AWFileSystem.prototype.isOpen = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isOpen', [path]);
+    };
     AWFileSystem.prototype.setReadOnly = function (path, successCallback, errorCallback) {
         this.validateEnv();
         proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'setReadOnly', [path]);

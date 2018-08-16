@@ -4,6 +4,7 @@ export declare class AWMobileFileSystem extends AWPlugin {
     listImports(success: any, error: any): void;
     moveImport(source: string, destination: string, desintationShared: boolean, success: any, error: any): void;
     exists(source: string, shared: boolean, success: any, error: any): void;
+    isOpen(source: string, shared: boolean, success: any, error: any): void;
     rename(source: string, destination: string, shared: boolean, success: any, error: any): void;
     copy(source: string, sourceShared: boolean, destination: string, destinationShared: boolean, success: any, error: any): void;
     move(source: string, sourceShared: boolean, destination: string, destinationShared: boolean, success: any, error: any): void;

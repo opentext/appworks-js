@@ -2607,6 +2607,10 @@ var AWMobileFileSystem$1 = (function (_super) {
         var args = [source, shared];
         AWProxy.exec(success, error, 'AWMobileFileSystem', 'exists', args);
     };
+    AWMobileFileSystem.prototype.isOpen = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'isOpen', args);
+    };
     AWMobileFileSystem.prototype.rename = function (source, destination, shared, success, error) {
         var args = [source, destination, shared];
         AWProxy.exec(success, error, 'AWMobileFileSystem', 'rename', args);
@@ -2957,6 +2961,10 @@ var AWFileSystem$1 = (function (_super) {
     AWFileSystem.prototype.isDir = function (path, successCallback, errorCallback) {
         this.validateEnv();
         AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isDir', [path]);
+    };
+    AWFileSystem.prototype.isOpen = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isOpen', [path]);
     };
     AWFileSystem.prototype.setReadOnly = function (path, successCallback, errorCallback) {
         this.validateEnv();
