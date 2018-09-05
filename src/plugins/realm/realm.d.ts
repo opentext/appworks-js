@@ -1,4 +1,4 @@
-import { AWPlugin } from '../../common/plugin';
+import { AWPlugin } from "../../common/plugin";
 export declare class Realm extends AWPlugin {
     FIELD_OBJECT_NAME: string;
     FIELD_OBJECT_TYPE: string;
@@ -46,20 +46,6 @@ export declare class Realm extends AWPlugin {
     QUERY_TYPE_LESS_THAN_OR_EQUAL_TO: string;
     QUERY_TYPE_LIKE: string;
     QUERY_TYPE_IN: string;
-    startRealm(successHandler: any, errorHandler: any): void;
-    getAllObjectNames(successHandler: any, errorHandler: any): void;
-    objectExists(objectName: string, successHandler: any, errorHandler: any): void;
-    createObject(objectName: string, successHandler: any, errorHandler: any): void;
-    addField(objectName: string, field: object, successHandler: any, errorHandler: any): void;
-    addFields(objectName: string, field: Array<object>, successHandler: any, errorHandler: any): void;
-    describeObject(objectName: string, successHandler: any, errorHandler: any): void;
-    objectHasField(objectName: string, fieldName: string, successHandler: any, errorHandler: any): void;
-    getFieldType(objectName: string, fieldName: string, successHandler: any, errorHandler: any): void;
-    insert(objectName: string, dataObject: object, successHandler: any, errorHandler: any): void;
-    update(objectName: string, dataObject: object, queryArray: Array<object>, successHandler: any, errorHandler: any): void;
-    select(objectName: string, queryArray: Array<object>, sort: object, successHandler: any, errorHandler: any): void;
-    remove(objectName: string, queryArray: Array<object>, successHandler: any, errorHandler: any): void;
-    removeAll(objectName: string, successHandler: any, errorHandler: any): void;
     queryBuilder: {
         arr: any[];
         subArray: any[];
@@ -83,6 +69,20 @@ export declare class Realm extends AWPlugin {
         done: () => any;
         clear: () => void;
     };
+    startRealm(successHandler: any, errorHandler: any): void;
+    getAllObjectNames(successHandler: any, errorHandler: any): void;
+    objectExists(objectName: string, successHandler: any, errorHandler: any): void;
+    createObject(objectName: string, successHandler: any, errorHandler: any): void;
+    addField(objectName: string, field: object, successHandler: any, errorHandler: any): void;
+    addFields(objectName: string, field: Array<object>, successHandler: any, errorHandler: any): void;
+    describeObject(objectName: string, successHandler: any, errorHandler: any): void;
+    objectHasField(objectName: string, fieldName: string, successHandler: any, errorHandler: any): void;
+    getFieldType(objectName: string, fieldName: string, successHandler: any, errorHandler: any): void;
+    insert(objectName: string, dataObject: object, successHandler: any, errorHandler: any): void;
+    update(objectName: string, dataObject: object, queryArray: Array<object>, successHandler: any, errorHandler: any): void;
+    select(objectName: string, queryArray: Array<object>, sort: object, successHandler: any, errorHandler: any): void;
+    remove(objectName: string, queryArray: Array<object>, successHandler: any, errorHandler: any): void;
+    removeAll(objectName: string, successHandler: any, errorHandler: any): void;
 }
 export declare class AWRealm extends Realm {
 }

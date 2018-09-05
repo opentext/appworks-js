@@ -18,10 +18,10 @@ var AWAnonymous = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     AWAnonymous.prototype.isAnonymousMode = function (successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWAnonymous', 'isAnonymousMode', []);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWAnonymous", "isAnonymousMode", []);
     };
     AWAnonymous.prototype.getAnonymousUrl = function (successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWAnonymous', 'getAnonymousUrl', []);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWAnonymous", "getAnonymousUrl", []);
     };
     return AWAnonymous;
 }(plugin_1.AWPlugin));

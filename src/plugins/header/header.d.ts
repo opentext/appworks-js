@@ -1,4 +1,4 @@
-import { AWPlugin } from '../../common/plugin';
+import { AWPlugin } from "../../common/plugin";
 export declare class AWHeaderBar extends AWPlugin {
     static readonly ButtonName: {
         LeftOne: number;

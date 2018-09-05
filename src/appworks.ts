@@ -1,6 +1,6 @@
 import {AWAccelerometer as _AWAccelerometer} from "./plugins/accelerometer/accelerometer";
-import {AWAppManager as _AWAppManager} from "./plugins/app-manager/app-manager";
 import {AWAnonymous as _AWAnonymous} from "./plugins/anonymous/anonymous";
+import {AWAppManager as _AWAppManager} from "./plugins/app-manager/app-manager";
 import {AWAuth as _AWAuth} from "./plugins/auth/auth";
 import {AWCalendar as _AWCalendar} from "./plugins/calendar/calendar";
 import {AWCamera as _AWCamera} from "./plugins/camera/camera";

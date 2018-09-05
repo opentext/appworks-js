@@ -76,6 +76,14 @@ export interface DesktopHostFileSystem {
         successCallback: (result: boolean) => void,
         errorCallback?: (result: Error) => void): void;
 
+  setReadOnly(path: string,
+              successCallback: (result: boolean) => void,
+              errorCallback?: (result: Error) => void): void;
+
+  isOpen(path: string,
+         successCallback: (result: boolean) => void,
+         errorCallback?: (result: Error) => void): void;
+
   createFile(path: string,
              successCallback: (result: boolean) => void,
              errorCallback?: (result: Error) => void,
@@ -123,6 +131,10 @@ export interface DesktopHostFileSystem {
   showFileSelector(opts: SaveDialogOptions,
                    successCallback: (result: string[]) => void,
                    errorCallback?: (result: Error) => void): void;
+
+  onFileOpen(openFileCallback: (filePath: string) => void,
+             successCallback: (result: string[]) => void,
+             errorCallback?: (result: Error) => void): void;
 }
 
 export interface Window {

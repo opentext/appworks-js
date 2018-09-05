@@ -1861,6 +1861,20 @@ var AWAccelerometer$1 = (function (_super) {
     return AWAccelerometer;
 }(AWPlugin));
 
+var AWAnonymous$1 = (function (_super) {
+    __extends(AWAnonymous, _super);
+    function AWAnonymous() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    AWAnonymous.prototype.isAnonymousMode = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, "AWAnonymous", "isAnonymousMode", []);
+    };
+    AWAnonymous.prototype.getAnonymousUrl = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, "AWAnonymous", "getAnonymousUrl", []);
+    };
+    return AWAnonymous;
+}(AWPlugin));
+
 var AWAppManager$1 = (function (_super) {
     __extends(AWAppManager, _super);
     function AWAppManager() {
@@ -1871,20 +1885,6 @@ var AWAppManager$1 = (function (_super) {
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWAppManager", "closeActiveApp", []);
     };
     return AWAppManager;
-}(AWPlugin));
-
-var AWAnonymous$1 = (function (_super) {
-    __extends(AWAnonymous, _super);
-    function AWAnonymous() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    AWAnonymous.prototype.isAnonymousMode = function (successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWAnonymous', 'isAnonymousMode', []);
-    };
-    AWAnonymous.prototype.getAnonymousUrl = function (successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWAnonymous', 'getAnonymousUrl', []);
-    };
-    return AWAnonymous;
 }(AWPlugin));
 
 var AWAuth$1 = (function (_super) {
@@ -2303,76 +2303,76 @@ var AWFileSystem$1 = (function (_super) {
     __extends(AWFileSystem, _super);
     function AWFileSystem() {
         var _this = _super.call(this, noop, noop) || this;
-        _this.desktopEnvError = new Error('This method is only available in the AppWorks Desktop environment');
+        _this.desktopEnvError = new Error("This method is only available in the AppWorks Desktop environment");
         return _this;
     }
     AWFileSystem.prototype.getPath = function (name, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'getPath', [name]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "getPath", [name]);
     };
     AWFileSystem.prototype.exists = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'exists', [path]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "exists", [path]);
     };
     AWFileSystem.prototype.isDir = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isDir', [path]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "isDir", [path]);
     };
     AWFileSystem.prototype.isOpen = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isOpen', [path]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "isOpen", [path]);
     };
     AWFileSystem.prototype.setReadOnly = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'setReadOnly', [path]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "setReadOnly", [path]);
     };
     AWFileSystem.prototype.createFile = function (path, successCallback, errorCallback, data, append) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createFile', [path, data, append]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "createFile", [path, data, append]);
     };
     AWFileSystem.prototype.readFile = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'readFile', [path]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "readFile", [path]);
     };
     AWFileSystem.prototype.createDirectory = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createDirectory', [path]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "createDirectory", [path]);
     };
     AWFileSystem.prototype.copy = function (from, to, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'copy', [from, to]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "copy", [from, to]);
     };
     AWFileSystem.prototype.open = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'open', [path]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "open", [path]);
     };
     AWFileSystem.prototype.reveal = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'reveal', [path]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "reveal", [path]);
     };
     AWFileSystem.prototype.getDetails = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'getDetails', [path]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "getDetails", [path]);
     };
     AWFileSystem.prototype.listDirContents = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'listDirContents', [path]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "listDirContents", [path]);
     };
     AWFileSystem.prototype.showSaveDialog = function (opts, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showSaveDialog', [opts]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "showSaveDialog", [opts]);
     };
     AWFileSystem.prototype.showDirSelector = function (opts, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showDirSelector', [opts]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "showDirSelector", [opts]);
     };
     AWFileSystem.prototype.showFileSelector = function (opts, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showFileSelector', [opts]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "showFileSelector", [opts]);
     };
     AWFileSystem.prototype.onFileOpen = function (openFileCallback, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'onFileOpen', [openFileCallback]);
+        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "onFileOpen", [openFileCallback]);
     };
     /**
      * The methods of this class should only be called from within an AppWorks desktop
@@ -2438,7 +2438,19 @@ var AWHeaderBar$1 = (function (_super) {
          * @deprecated
          * @type {{Hamburger: number; Back: number; Settings: number; Appmenu: number; None: number; Dots: number; Search: number, AppmenuHighlight: number, Close: number, DismissAll: number, Edit: number}}
          */
-        _this.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7, AppmenuHighlight: 8, Close: 9, DismissAll: 10, Edit: 11 };
+        _this.ButtonImage = {
+            Hamburger: 0,
+            Back: 1,
+            Settings: 2,
+            Appmenu: 3,
+            None: 5,
+            Dots: 6,
+            Search: 7,
+            AppmenuHighlight: 8,
+            Close: 9,
+            DismissAll: 10,
+            Edit: 11
+        };
         return _this;
     }
     AWHeaderBar.prototype.setHeader = function (config) {
@@ -2450,24 +2462,36 @@ var AWHeaderBar$1 = (function (_super) {
         else {
             this.callback = null;
         }
-        AWProxy.exec((function () { return _this.callback; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeader', [config]);
+        AWProxy.exec((function () { return _this.callback; })(), (function () { return _this.errorHandler; })(), "AWHeaderBar", "setHeader", [config]);
     };
     AWHeaderBar.prototype.getHeader = function () {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'getHeader', []);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWHeaderBar", "getHeader", []);
     };
     AWHeaderBar.prototype.setHeaderButtons = function (callback, config) {
         var _this = this;
-        AWProxy.exec(callback, (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeaderButtons', [config]);
+        AWProxy.exec(callback, (function () { return _this.errorHandler; })(), "AWHeaderBar", "setHeaderButtons", [config]);
     };
     AWHeaderBar.prototype.maskHeader = function (shouldMaskHeader) {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'maskHeader', [shouldMaskHeader]);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWHeaderBar", "maskHeader", [shouldMaskHeader]);
     };
     return AWHeaderBar;
 }(AWPlugin));
 AWHeaderBar$1.ButtonName = { LeftOne: 0, LeftTwo: 1, RightOne: 2, RightTwo: 3 };
-AWHeaderBar$1.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7, AppmenuHighlight: 8, Close: 9, DismissAll: 10, Edit: 11 };
+AWHeaderBar$1.ButtonImage = {
+    Hamburger: 0,
+    Back: 1,
+    Settings: 2,
+    Appmenu: 3,
+    None: 5,
+    Dots: 6,
+    Search: 7,
+    AppmenuHighlight: 8,
+    Close: 9,
+    DismissAll: 10,
+    Edit: 11
+};
 // alias
 var AWHeader$1 = (function (_super) {
     __extends(AWHeader, _super);
@@ -2508,18 +2532,18 @@ var AWLauncher$1 = (function (_super) {
         return _super.call(this, successHandler || noop, errorHandler || noop) || this;
     }
     AWLauncher.prototype.getLaunchData = function (successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWLauncher', 'getLaunchData', []);
+        AWProxy.exec(successHandler, errorHandler, "AWLauncher", "getLaunchData", []);
     };
     AWLauncher.prototype.getLaunchURL = function (successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWLauncher', 'getLaunchURL', []);
+        AWProxy.exec(successHandler, errorHandler, "AWLauncher", "getLaunchURL", []);
     };
     AWLauncher.prototype.clearLaunchData = function () {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWLauncher', 'clearLaunchData', []);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWLauncher", "clearLaunchData", []);
     };
     AWLauncher.prototype.clearLaunchURL = function () {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWLauncher', 'clearLaunchURL', []);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWLauncher", "clearLaunchURL", []);
     };
     return AWLauncher;
 }(AWPlugin));
@@ -2667,6 +2691,10 @@ var AWMobileFileSystem$1 = (function (_super) {
         var args = [source, shared];
         AWProxy.exec(success, error, "AWMobileFileSystem", "exists", args);
     };
+    AWMobileFileSystem.prototype.isOpen = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, "AWMobileFileSystem", "isOpen", args);
+    };
     AWMobileFileSystem.prototype.rename = function (source, destination, shared, success, error) {
         var args = [source, destination, shared];
         AWProxy.exec(success, error, "AWMobileFileSystem", "rename", args);
@@ -2682,6 +2710,10 @@ var AWMobileFileSystem$1 = (function (_super) {
     AWMobileFileSystem.prototype.remove = function (source, shared, success, error) {
         var args = [source, shared];
         AWProxy.exec(success, error, "AWMobileFileSystem", "remove", args);
+    };
+    AWMobileFileSystem.prototype.read = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, "AWMobileFileSystem", "read", args);
     };
     // File sharing
     AWMobileFileSystem.prototype.open = function (source, shared, success, error) {
@@ -3175,46 +3207,46 @@ var Realm$1 = (function (_super) {
         return _this;
     }
     Realm.prototype.startRealm = function (successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'start_realm', []);
+        AWProxy.exec(successHandler, errorHandler, "AWRealm", "start_realm", []);
     };
     Realm.prototype.getAllObjectNames = function (successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'get_all_object_names', []);
+        AWProxy.exec(successHandler, errorHandler, "AWRealm", "get_all_object_names", []);
     };
     Realm.prototype.objectExists = function (objectName, successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'object_exists', [objectName]);
+        AWProxy.exec(successHandler, errorHandler, "AWRealm", "object_exists", [objectName]);
     };
     Realm.prototype.createObject = function (objectName, successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'create_object', [objectName]);
+        AWProxy.exec(successHandler, errorHandler, "AWRealm", "create_object", [objectName]);
     };
     Realm.prototype.addField = function (objectName, field, successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'add_field', [objectName, field]);
+        AWProxy.exec(successHandler, errorHandler, "AWRealm", "add_field", [objectName, field]);
     };
     Realm.prototype.addFields = function (objectName, field, successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'add_fields', [objectName, field]);
+        AWProxy.exec(successHandler, errorHandler, "AWRealm", "add_fields", [objectName, field]);
     };
     Realm.prototype.describeObject = function (objectName, successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'describe_object', [objectName]);
+        AWProxy.exec(successHandler, errorHandler, "AWRealm", "describe_object", [objectName]);
     };
     Realm.prototype.objectHasField = function (objectName, fieldName, successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'object_has_field', [objectName, fieldName]);
+        AWProxy.exec(successHandler, errorHandler, "AWRealm", "object_has_field", [objectName, fieldName]);
     };
     Realm.prototype.getFieldType = function (objectName, fieldName, successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'get_field_type', [objectName, fieldName]);
+        AWProxy.exec(successHandler, errorHandler, "AWRealm", "get_field_type", [objectName, fieldName]);
     };
     Realm.prototype.insert = function (objectName, dataObject, successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'insert', [objectName, dataObject]);
+        AWProxy.exec(successHandler, errorHandler, "AWRealm", "insert", [objectName, dataObject]);
     };
     Realm.prototype.update = function (objectName, dataObject, queryArray, successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'update', [objectName, dataObject, queryArray]);
+        AWProxy.exec(successHandler, errorHandler, "AWRealm", "update", [objectName, dataObject, queryArray]);
     };
     Realm.prototype.select = function (objectName, queryArray, sort, successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'select', [objectName, queryArray, sort]);
+        AWProxy.exec(successHandler, errorHandler, "AWRealm", "select", [objectName, queryArray, sort]);
     };
     Realm.prototype.remove = function (objectName, queryArray, successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'remove', [objectName, queryArray]);
+        AWProxy.exec(successHandler, errorHandler, "AWRealm", "remove", [objectName, queryArray]);
     };
     Realm.prototype.removeAll = function (objectName, successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'remove_all', [objectName]);
+        AWProxy.exec(successHandler, errorHandler, "AWRealm", "remove_all", [objectName]);
     };
     return Realm;
 }(AWPlugin));

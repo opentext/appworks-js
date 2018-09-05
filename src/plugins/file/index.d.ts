@@ -62,6 +62,8 @@ export interface DesktopHostFileSystem {
     getPath(name: string, successCallback: (result: string) => void, errorCallback?: (result: Error) => void): void;
     exists(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     isDir(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
+    setReadOnly(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
+    isOpen(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     createFile(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void, data?: any, append?: boolean): void;
     readFile(path: string, successCallback: (result: any) => void, errorCallback?: (result: Error) => void, data?: any): void;
     createDirectory(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
@@ -73,6 +75,7 @@ export interface DesktopHostFileSystem {
     showSaveDialog(opts: FileDialogOptions, successCallback: (result: string) => void, errorCallback?: (result: Error) => void): void;
     showDirSelector(opts: FileDialogOptions, successCallback: (result: string[]) => void, errorCallback?: (result: Error) => void): void;
     showFileSelector(opts: SaveDialogOptions, successCallback: (result: string[]) => void, errorCallback?: (result: Error) => void): void;
+    onFileOpen(openFileCallback: (filePath: string) => void, successCallback: (result: string[]) => void, errorCallback?: (result: Error) => void): void;
 }
 export interface Window {
     TEMPORARY: number;

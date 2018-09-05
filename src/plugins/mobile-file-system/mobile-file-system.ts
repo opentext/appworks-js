@@ -49,6 +49,17 @@ export class AWMobileFileSystem extends AWPlugin {
     );
   }
 
+  isOpen(source: string, shared: boolean, success: any, error: any) {
+    let args = [source, shared];
+    AWProxy.exec(
+      success,
+      error,
+      "AWMobileFileSystem",
+      "isOpen",
+      args
+    );
+  }
+
   rename(source: string, destination: string, shared: boolean, success: any, error: any) {
     let args = [source, destination, shared];
     AWProxy.exec(
@@ -89,6 +100,17 @@ export class AWMobileFileSystem extends AWPlugin {
       error,
       "AWMobileFileSystem",
       "remove",
+      args
+    );
+  }
+
+  read(source: string, shared: boolean, success: any, error: any) {
+    let args = [source, shared];
+    AWProxy.exec(
+      success,
+      error,
+      "AWMobileFileSystem",
+      "read",
       args
     );
   }

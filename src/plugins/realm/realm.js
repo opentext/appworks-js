@@ -212,46 +212,46 @@ var Realm = (function (_super) {
         return _this;
     }
     Realm.prototype.startRealm = function (successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'start_realm', []);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWRealm", "start_realm", []);
     };
     Realm.prototype.getAllObjectNames = function (successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'get_all_object_names', []);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWRealm", "get_all_object_names", []);
     };
     Realm.prototype.objectExists = function (objectName, successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'object_exists', [objectName]);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWRealm", "object_exists", [objectName]);
     };
     Realm.prototype.createObject = function (objectName, successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'create_object', [objectName]);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWRealm", "create_object", [objectName]);
     };
     Realm.prototype.addField = function (objectName, field, successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'add_field', [objectName, field]);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWRealm", "add_field", [objectName, field]);
     };
     Realm.prototype.addFields = function (objectName, field, successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'add_fields', [objectName, field]);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWRealm", "add_fields", [objectName, field]);
     };
     Realm.prototype.describeObject = function (objectName, successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'describe_object', [objectName]);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWRealm", "describe_object", [objectName]);
     };
     Realm.prototype.objectHasField = function (objectName, fieldName, successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'object_has_field', [objectName, fieldName]);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWRealm", "object_has_field", [objectName, fieldName]);
     };
     Realm.prototype.getFieldType = function (objectName, fieldName, successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'get_field_type', [objectName, fieldName]);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWRealm", "get_field_type", [objectName, fieldName]);
     };
     Realm.prototype.insert = function (objectName, dataObject, successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'insert', [objectName, dataObject]);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWRealm", "insert", [objectName, dataObject]);
     };
     Realm.prototype.update = function (objectName, dataObject, queryArray, successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'update', [objectName, dataObject, queryArray]);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWRealm", "update", [objectName, dataObject, queryArray]);
     };
     Realm.prototype.select = function (objectName, queryArray, sort, successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'select', [objectName, queryArray, sort]);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWRealm", "select", [objectName, queryArray, sort]);
     };
     Realm.prototype.remove = function (objectName, queryArray, successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'remove', [objectName, queryArray]);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWRealm", "remove", [objectName, queryArray]);
     };
     Realm.prototype.removeAll = function (objectName, successHandler, errorHandler) {
-        proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'remove_all', [objectName]);
+        proxy_1.AWProxy.exec(successHandler, errorHandler, "AWRealm", "remove_all", [objectName]);
     };
     return Realm;
 }(plugin_1.AWPlugin));
