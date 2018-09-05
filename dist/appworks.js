@@ -1861,6 +1861,20 @@ var AWAccelerometer$1 = (function (_super) {
     return AWAccelerometer;
 }(AWPlugin));
 
+var AWAnonymous$1 = (function (_super) {
+    __extends(AWAnonymous, _super);
+    function AWAnonymous() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    AWAnonymous.prototype.isAnonymousMode = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWAnonymous', 'isAnonymousMode', []);
+    };
+    AWAnonymous.prototype.getAnonymousUrl = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWAnonymous', 'getAnonymousUrl', []);
+    };
+    return AWAnonymous;
+}(AWPlugin));
+
 var AWAppManager$1 = (function (_super) {
     __extends(AWAppManager, _super);
     function AWAppManager() {
@@ -3035,6 +3049,9 @@ var AWWebView$1 = (function (_super) {
 // Accelerometer plugin and alias -- [mobile]
 var Accelerometer = AWAccelerometer$1;
 var AWAccelerometer$$1 = AWAccelerometer$1;
+// Anonymous plugin and alias -- [mobile]
+var Anonymous = AWAnonymous$1;
+var AWAnonymous$$1 = AWAnonymous$1;
 // AppManager plugin and alias -- [mobile]
 var AppManager = AWAppManager$1;
 var AWAppManager$$1 = AWAppManager$1;
@@ -3134,6 +3151,8 @@ var AWFileSystem$$1 = AWFileSystem$1;
 
 exports.Accelerometer = Accelerometer;
 exports.AWAccelerometer = AWAccelerometer$$1;
+exports.Anonymous = Anonymous;
+exports.AWAnonymous = AWAnonymous$$1;
 exports.AppManager = AppManager;
 exports.AWAppManager = AWAppManager$$1;
 exports.Auth = Auth;
