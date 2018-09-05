@@ -17,20 +17,20 @@ var AWFileSystem = (function (_super) {
     __extends(AWFileSystem, _super);
     function AWFileSystem() {
         var _this = _super.call(this, util_1.noop, util_1.noop) || this;
-        _this.desktopEnvError = new Error("This method is only available in the AppWorks Desktop environment");
+        _this.desktopEnvError = new Error('This method is only available in the AppWorks Desktop environment');
         return _this;
     }
     AWFileSystem.prototype.getPath = function (name, successCallback, errorCallback) {
         this.validateEnv();
-        proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "getPath", [name]);
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'getPath', [name]);
     };
     AWFileSystem.prototype.exists = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "exists", [path]);
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'exists', [path]);
     };
     AWFileSystem.prototype.isDir = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "isDir", [path]);
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isDir', [path]);
     };
     AWFileSystem.prototype.isOpen = function (path, successCallback, errorCallback) {
         this.validateEnv();
@@ -42,47 +42,47 @@ var AWFileSystem = (function (_super) {
     };
     AWFileSystem.prototype.createFile = function (path, successCallback, errorCallback, data, append) {
         this.validateEnv();
-        proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "createFile", [path, data, append]);
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createFile', [path, data, append]);
     };
     AWFileSystem.prototype.readFile = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "readFile", [path]);
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'readFile', [path]);
     };
     AWFileSystem.prototype.createDirectory = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "createDirectory", [path]);
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createDirectory', [path]);
     };
     AWFileSystem.prototype.copy = function (from, to, successCallback, errorCallback) {
         this.validateEnv();
-        proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "copy", [from, to]);
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'copy', [from, to]);
     };
     AWFileSystem.prototype.open = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "open", [path]);
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'open', [path]);
     };
     AWFileSystem.prototype.reveal = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "reveal", [path]);
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'reveal', [path]);
     };
     AWFileSystem.prototype.getDetails = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "getDetails", [path]);
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'getDetails', [path]);
     };
     AWFileSystem.prototype.listDirContents = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "listDirContents", [path]);
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'listDirContents', [path]);
     };
     AWFileSystem.prototype.showSaveDialog = function (opts, successCallback, errorCallback) {
         this.validateEnv();
-        proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "showSaveDialog", [opts]);
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showSaveDialog', [opts]);
     };
     AWFileSystem.prototype.showDirSelector = function (opts, successCallback, errorCallback) {
         this.validateEnv();
-        proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "showDirSelector", [opts]);
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showDirSelector', [opts]);
     };
     AWFileSystem.prototype.showFileSelector = function (opts, successCallback, errorCallback) {
         this.validateEnv();
-        proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "showFileSelector", [opts]);
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showFileSelector', [opts]);
     };
     AWFileSystem.prototype.onFileOpen = function (openFileCallback, successCallback, errorCallback) {
         this.validateEnv();

@@ -1861,6 +1861,18 @@ var AWAccelerometer$1 = (function (_super) {
     return AWAccelerometer;
 }(AWPlugin));
 
+var AWAppManager$1 = (function (_super) {
+    __extends(AWAppManager, _super);
+    function AWAppManager() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    AWAppManager.prototype.closeActiveApp = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWAppManager", "closeActiveApp", []);
+    };
+    return AWAppManager;
+}(AWPlugin));
+
 var AWAnonymous$1 = (function (_super) {
     __extends(AWAnonymous, _super);
     function AWAnonymous() {
@@ -1873,18 +1885,6 @@ var AWAnonymous$1 = (function (_super) {
         AWProxy.exec(successHandler, errorHandler, 'AWAnonymous', 'getAnonymousUrl', []);
     };
     return AWAnonymous;
-}(AWPlugin));
-
-var AWAppManager$1 = (function (_super) {
-    __extends(AWAppManager, _super);
-    function AWAppManager() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    AWAppManager.prototype.closeActiveApp = function () {
-        var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWAppManager", "closeActiveApp", []);
-    };
-    return AWAppManager;
 }(AWPlugin));
 
 var AWAuth$1 = (function (_super) {
@@ -2303,64 +2303,76 @@ var AWFileSystem$1 = (function (_super) {
     __extends(AWFileSystem, _super);
     function AWFileSystem() {
         var _this = _super.call(this, noop, noop) || this;
-        _this.desktopEnvError = new Error("This method is only available in the AppWorks Desktop environment");
+        _this.desktopEnvError = new Error('This method is only available in the AppWorks Desktop environment');
         return _this;
     }
     AWFileSystem.prototype.getPath = function (name, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "getPath", [name]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'getPath', [name]);
     };
     AWFileSystem.prototype.exists = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "exists", [path]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'exists', [path]);
     };
     AWFileSystem.prototype.isDir = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "isDir", [path]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isDir', [path]);
+    };
+    AWFileSystem.prototype.isOpen = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isOpen', [path]);
+    };
+    AWFileSystem.prototype.setReadOnly = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'setReadOnly', [path]);
     };
     AWFileSystem.prototype.createFile = function (path, successCallback, errorCallback, data, append) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "createFile", [path, data, append]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createFile', [path, data, append]);
     };
     AWFileSystem.prototype.readFile = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "readFile", [path]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'readFile', [path]);
     };
     AWFileSystem.prototype.createDirectory = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "createDirectory", [path]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'createDirectory', [path]);
     };
     AWFileSystem.prototype.copy = function (from, to, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "copy", [from, to]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'copy', [from, to]);
     };
     AWFileSystem.prototype.open = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "open", [path]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'open', [path]);
     };
     AWFileSystem.prototype.reveal = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "reveal", [path]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'reveal', [path]);
     };
     AWFileSystem.prototype.getDetails = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "getDetails", [path]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'getDetails', [path]);
     };
     AWFileSystem.prototype.listDirContents = function (path, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "listDirContents", [path]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'listDirContents', [path]);
     };
     AWFileSystem.prototype.showSaveDialog = function (opts, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "showSaveDialog", [opts]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showSaveDialog', [opts]);
     };
     AWFileSystem.prototype.showDirSelector = function (opts, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "showDirSelector", [opts]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showDirSelector', [opts]);
     };
     AWFileSystem.prototype.showFileSelector = function (opts, successCallback, errorCallback) {
         this.validateEnv();
-        AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "showFileSelector", [opts]);
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'showFileSelector', [opts]);
+    };
+    AWFileSystem.prototype.onFileOpen = function (openFileCallback, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'onFileOpen', [openFileCallback]);
     };
     /**
      * The methods of this class should only be called from within an AppWorks desktop
@@ -2417,8 +2429,16 @@ var AWHeaderBar$1 = (function (_super) {
     __extends(AWHeaderBar, _super);
     function AWHeaderBar() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
+        /**
+         * @deprecated
+         * @type {{LeftOne: number; LeftTwo: number; RightOne: number; RightTwo: number}}
+         */
         _this.ButtonName = { LeftOne: 0, LeftTwo: 1, RightOne: 2, RightTwo: 3 };
-        _this.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7 };
+        /**
+         * @deprecated
+         * @type {{Hamburger: number; Back: number; Settings: number; Appmenu: number; None: number; Dots: number; Search: number, AppmenuHighlight: number, Close: number, DismissAll: number, Edit: number}}
+         */
+        _this.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7, AppmenuHighlight: 8, Close: 9, DismissAll: 10, Edit: 11 };
         return _this;
     }
     AWHeaderBar.prototype.setHeader = function (config) {
@@ -2430,24 +2450,24 @@ var AWHeaderBar$1 = (function (_super) {
         else {
             this.callback = null;
         }
-        AWProxy.exec((function () { return _this.callback; })(), (function () { return _this.errorHandler; })(), "AWHeaderBar", "setHeader", [config]);
+        AWProxy.exec((function () { return _this.callback; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeader', [config]);
     };
     AWHeaderBar.prototype.getHeader = function () {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWHeaderBar", "getHeader", []);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'getHeader', []);
     };
     AWHeaderBar.prototype.setHeaderButtons = function (callback, config) {
         var _this = this;
-        AWProxy.exec(callback, (function () { return _this.errorHandler; })(), "AWHeaderBar", "setHeaderButtons", [config]);
+        AWProxy.exec(callback, (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeaderButtons', [config]);
     };
     AWHeaderBar.prototype.maskHeader = function (shouldMaskHeader) {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWHeaderBar", "maskHeader", [shouldMaskHeader]);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'maskHeader', [shouldMaskHeader]);
     };
     return AWHeaderBar;
 }(AWPlugin));
 AWHeaderBar$1.ButtonName = { LeftOne: 0, LeftTwo: 1, RightOne: 2, RightTwo: 3 };
-AWHeaderBar$1.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7 };
+AWHeaderBar$1.ButtonImage = { Hamburger: 0, Back: 1, Settings: 2, Appmenu: 3, None: 5, Dots: 6, Search: 7, AppmenuHighlight: 8, Close: 9, DismissAll: 10, Edit: 11 };
 // alias
 var AWHeader$1 = (function (_super) {
     __extends(AWHeader, _super);
@@ -2491,7 +2511,7 @@ var AWLauncher$1 = (function (_super) {
         AWProxy.exec(successHandler, errorHandler, 'AWLauncher', 'getLaunchData', []);
     };
     AWLauncher.prototype.getLaunchURL = function (successHandler, errorHandler) {
-        AWProxy.exec(successHandler, errorHandler, "AWLauncher", "getLaunchURL", []);
+        AWProxy.exec(successHandler, errorHandler, 'AWLauncher', 'getLaunchURL', []);
     };
     AWLauncher.prototype.clearLaunchData = function () {
         var _this = this;
@@ -2499,7 +2519,7 @@ var AWLauncher$1 = (function (_super) {
     };
     AWLauncher.prototype.clearLaunchURL = function () {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWLauncher", "clearLaunchURL", []);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWLauncher', 'clearLaunchURL', []);
     };
     return AWLauncher;
 }(AWPlugin));
@@ -2955,6 +2975,257 @@ var AWQRReader$1 = (function (_super) {
     return AWQRReader;
 }(QRReader$1));
 
+var Realm$1 = (function (_super) {
+    __extends(Realm, _super);
+    function Realm() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.FIELD_OBJECT_NAME = "name";
+        _this.FIELD_OBJECT_TYPE = "type";
+        _this.FIELD_OBJECT_PRIMARYKEY = "key";
+        _this.FIELD_OBJECT_INDEX = "index";
+        _this.FIELD_OBJECT_RELATIONSHIP = "relationship";
+        _this.OBJECT_DESCRIPTION_NAME = "name";
+        _this.OBJECT_DESCRIPTION_TYPE = "type";
+        _this.OBJECT_DESCRIPTION_FIELDS = "fields";
+        _this.OBJECT_DESCRIPTION_KEY = "key";
+        _this.OBJECT_DESCRIPTION_INDEX = "index";
+        _this.FIELD_TYPE_STRING = "STRING";
+        _this.FIELD_TYPE_INTEGER = "INTEGER";
+        _this.FIELD_TYPE_BOOLEAN = "BOOLEAN";
+        _this.FIELD_TYPE_LONG = "LONG";
+        _this.FIELD_TYPE_SHORT = "SHORT";
+        _this.FIELD_TYPE_DOUBLE = "DOUBLE";
+        _this.FIELD_TYPE_FLOAT = "FLOAT";
+        _this.FIELD_TYPE_BINARY = "BINARY";
+        _this.FIELD_TYPE_BYTE = "BYTE";
+        _this.FIELD_TYPE_OBJECT = "OBJECT";
+        _this.FIELD_TYPE_LIST = "LIST";
+        _this.FIELD_TYPE_DATE = "DATE";
+        _this.QUERY_OBJECT_NAME = "object";
+        _this.QUERY_TYPE = "type";
+        _this.QUERY_FIELD = "field";
+        _this.QUERY_SORT = "sort";
+        _this.QUERY_SORT_ASC = "asc";
+        _this.QUERY_SORT_DESC = "desc";
+        _this.QUERY_VALUE = "value";
+        _this.QUERY_VALUE_2 = "value2";
+        _this.QUERY_TYPE_BEGIN_GROUP = "beginGroup";
+        _this.QUERY_TYPE_END_GROUP = "endGroup";
+        _this.QUERY_TYPE_AND = "and";
+        _this.QUERY_TYPE_OR = "or";
+        _this.QUERY_TYPE_EQUAL_TO = "equalTo";
+        _this.QUERY_TYPE_NOT_EQUAL_TO = "notEqualTo";
+        _this.QUERY_TYPE_BEGINS_WITH = "beginsWith";
+        _this.QUERY_TYPE_ENDS_WITH = "endsWith";
+        _this.QUERY_TYPE_CONTAINS = "contains";
+        _this.QUERY_TYPE_BETWEEN = "between";
+        _this.QUERY_TYPE_GREATER_THAN = "greaterThan";
+        _this.QUERY_TYPE_GREATER_THAN_OR_EQUAL_TO = "greaterThanOrEqualTo";
+        _this.QUERY_TYPE_LESS_THAN = "lessThan";
+        _this.QUERY_TYPE_LESS_THAN_OR_EQUAL_TO = "lessThanOrEqualTo";
+        _this.QUERY_TYPE_LIKE = "like";
+        _this.QUERY_TYPE_IN = "in";
+        _this.queryBuilder = {
+            arr: [],
+            subArray: [],
+            inSubArray: false,
+            addToArray: function (obj, isSubArray) {
+                if (isSubArray) {
+                    this.subArray.push(obj);
+                }
+                else {
+                    this.arr.push(obj);
+                }
+            },
+            equalTo: function (field, value) {
+                var obj = {
+                    "type": "equalTo",
+                    "field": field,
+                    "value": value
+                };
+                this.addToArray(obj, this.inSubArray);
+                return this;
+            },
+            notEqualTo: function (field, value) {
+                var obj = {
+                    "type": "notEqualTo",
+                    "field": field,
+                    "value": value
+                };
+                this.addToArray(obj, this.inSubArray);
+                return this;
+            },
+            beginsWith: function (field, value) {
+                var obj = {
+                    "type": "beginsWith",
+                    "field": field,
+                    "value": value
+                };
+                this.addToArray(obj, this.inSubArray);
+                return this;
+            },
+            endsWith: function (field, value) {
+                var obj = {
+                    "type": "endsWith",
+                    "field": field,
+                    "value": value
+                };
+                this.addToArray(obj, this.inSubArray);
+                return this;
+            },
+            contains: function (field, value) {
+                var obj = {
+                    "type": "contains",
+                    "field": field,
+                    "value": value
+                };
+                this.addToArray(obj, this.inSubArray);
+                return this;
+            },
+            between: function (field, value, value2) {
+                var obj = {
+                    "type": "between",
+                    "field": field,
+                    "value": value,
+                    "value2": value2
+                };
+                this.addToArray(obj, this.inSubArray);
+                return this;
+            },
+            greaterThan: function (field, value) {
+                var obj = {
+                    "type": "greaterThan",
+                    "field": field,
+                    "value": value
+                };
+                this.addToArray(obj, this.inSubArray);
+                return this;
+            },
+            greaterThanOrEqualTo: function (field, value) {
+                var obj = {
+                    "type": "greaterThanOrEqualTo",
+                    "field": field,
+                    "value": value
+                };
+                this.addToArray(obj, this.inSubArray);
+                return this;
+            },
+            lessThan: function (field, value) {
+                var obj = {
+                    "type": "lessThan",
+                    "field": field,
+                    "value": value
+                };
+                this.addToArray(obj, this.inSubArray);
+                return this;
+            },
+            lessThanOrEqualTo: function (field, value) {
+                var obj = {
+                    "type": "lessThanOrEqualTo",
+                    "field": field,
+                    "value": value
+                };
+                this.addToArray(obj, this.inSubArray);
+                return this;
+            },
+            like: function (field, value) {
+                var obj = {
+                    "type": "like",
+                    "field": field,
+                    "value": value
+                };
+                this.addToArray(obj, this.inSubArray);
+                return this;
+            },
+            and: function () {
+                var obj = {
+                    "type": "and"
+                };
+                this.addToArray(obj, this.inSubArray);
+                return this;
+            },
+            or: function () {
+                var obj = {
+                    "type": "or"
+                };
+                this.addToArray(obj, this.inSubArray);
+                return this;
+            },
+            beginGroup: function () {
+                this.subArray = [];
+                this.inSubArray = true;
+                return this;
+            },
+            endGroup: function () {
+                this.arr.push(this.subArray);
+                this.inSubArray = false;
+                return this;
+            },
+            done: function () {
+                var tempArray = this.arr;
+                this.clear();
+                return tempArray;
+            },
+            clear: function () {
+                this.inSubArray = false;
+                this.subArray = [];
+                this.arr = [];
+            }
+        };
+        return _this;
+    }
+    Realm.prototype.startRealm = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'start_realm', []);
+    };
+    Realm.prototype.getAllObjectNames = function (successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'get_all_object_names', []);
+    };
+    Realm.prototype.objectExists = function (objectName, successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'object_exists', [objectName]);
+    };
+    Realm.prototype.createObject = function (objectName, successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'create_object', [objectName]);
+    };
+    Realm.prototype.addField = function (objectName, field, successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'add_field', [objectName, field]);
+    };
+    Realm.prototype.addFields = function (objectName, field, successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'add_fields', [objectName, field]);
+    };
+    Realm.prototype.describeObject = function (objectName, successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'describe_object', [objectName]);
+    };
+    Realm.prototype.objectHasField = function (objectName, fieldName, successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'object_has_field', [objectName, fieldName]);
+    };
+    Realm.prototype.getFieldType = function (objectName, fieldName, successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'get_field_type', [objectName, fieldName]);
+    };
+    Realm.prototype.insert = function (objectName, dataObject, successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'insert', [objectName, dataObject]);
+    };
+    Realm.prototype.update = function (objectName, dataObject, queryArray, successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'update', [objectName, dataObject, queryArray]);
+    };
+    Realm.prototype.select = function (objectName, queryArray, sort, successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'select', [objectName, queryArray, sort]);
+    };
+    Realm.prototype.remove = function (objectName, queryArray, successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'remove', [objectName, queryArray]);
+    };
+    Realm.prototype.removeAll = function (objectName, successHandler, errorHandler) {
+        AWProxy.exec(successHandler, errorHandler, 'AWRealm', 'remove_all', [objectName]);
+    };
+    return Realm;
+}(AWPlugin));
+var AWRealm$1 = (function (_super) {
+    __extends(AWRealm, _super);
+    function AWRealm() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return AWRealm;
+}(Realm$1));
+
 var SecureStorage$1 = (function (_super) {
     __extends(SecureStorage, _super);
     function SecureStorage(successHandler, errorHandler) {
@@ -3135,12 +3406,15 @@ var AWOfflineManager$$1 = AWOfflineManager$1;
 // Page plugin and alias -- [mobile]
 var Page = AWPage$1;
 var AWPage$$1 = AWPage$1;
-//Print plugin and alias --[desktop]
+// Print plugin and alias --[desktop]
 var Print$$1 = AWPrint$1;
 var AWPrint$$1 = AWPrint$1;
 // QRReader plugin and alias -- [mobile]
 var QRReader$$1 = AWQRReader$1;
 var AWQRReader$$1 = AWQRReader$1;
+// Realm plugin and alias -- [mobile]
+var Realm$$1 = AWRealm$1;
+var AWRealm$$1 = AWRealm$1;
 // Scanner plugin and alias -- [mobile]
 var Scanner$$1 = AWScanner$1;
 var AWScanner$$1 = AWScanner$1;
@@ -3216,6 +3490,8 @@ exports.Print = Print$$1;
 exports.AWPrint = AWPrint$$1;
 exports.QRReader = QRReader$$1;
 exports.AWQRReader = AWQRReader$$1;
+exports.Realm = Realm$$1;
+exports.AWRealm = AWRealm$$1;
 exports.Scanner = Scanner$$1;
 exports.AWScanner = AWScanner$$1;
 exports.SecureStorage = SecureStorage$$1;

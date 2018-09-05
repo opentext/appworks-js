@@ -1,5 +1,6 @@
 import {AWAccelerometer as _AWAccelerometer} from "./plugins/accelerometer/accelerometer";
 import {AWAppManager as _AWAppManager} from "./plugins/app-manager/app-manager";
+import {AWAnonymous as _AWAnonymous} from "./plugins/anonymous/anonymous";
 import {AWAuth as _AWAuth} from "./plugins/auth/auth";
 import {AWCalendar as _AWCalendar} from "./plugins/calendar/calendar";
 import {AWCamera as _AWCamera} from "./plugins/camera/camera";
@@ -26,6 +27,7 @@ import {AWOfflineManager as _AWOfflineManager} from "./plugins/offline/offline-m
 import {AWPage as _AWPage} from "./plugins/page/page";
 import {AWPrint as _AWPrint} from "./plugins/print/print";
 import {AWQRReader as _AWQRReader} from "./plugins/qr-reader/qr-reader";
+import {AWRealm as _AWRealm} from "./plugins/realm/realm";
 import {AWCache as _AWCache} from "./plugins/storage/cache";
 import {AWSecureStorage as _AWSecureStorage} from "./plugins/storage/secure-storage";
 import {AWVibration as _AWVibration} from "./plugins/vibration/vibration";
@@ -34,6 +36,9 @@ import {AWWebView as _AWWebView} from "./plugins/webview/webview";
 // Accelerometer plugin and alias -- [mobile]
 export const Accelerometer = _AWAccelerometer;
 export const AWAccelerometer = _AWAccelerometer;
+// Anonymous plugin and alias -- [mobile]
+export const Anonymous = _AWAnonymous;
+export const AWAnonymous = _AWAnonymous;
 // AppManager plugin and alias -- [mobile]
 export const AppManager = _AWAppManager;
 export const AWAppManager = _AWAppManager;
@@ -110,12 +115,15 @@ export const AWOfflineManager = _AWOfflineManager;
 // Page plugin and alias -- [mobile]
 export const Page = _AWPage;
 export const AWPage = _AWPage;
-//Print plugin and alias --[desktop]
+// Print plugin and alias --[desktop]
 export const Print = _AWPrint;
 export const AWPrint = _AWPrint;
 // QRReader plugin and alias -- [mobile]
 export const QRReader = _AWQRReader;
 export const AWQRReader = _AWQRReader;
+// Realm plugin and alias -- [mobile]
+export const Realm = _AWRealm;
+export const AWRealm = _AWRealm;
 // Scanner plugin and alias -- [mobile]
 export const Scanner = _AWScanner;
 export const AWScanner = _AWScanner;

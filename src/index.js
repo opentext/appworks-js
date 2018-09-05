@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = require("./plugins/accelerometer/index");
 exports.AWAccelerometer = index_1.AWAccelerometer;
+var anonymous_1 = require("./plugins/anonymous");
+exports.AWAnonymous = anonymous_1.AWAnonymous;
 var index_2 = require("./plugins/app-manager/index");
 exports.AWAppManager = index_2.AWAppManager;
 var index_3 = require("./plugins/auth/index");
@@ -59,6 +61,8 @@ var proxy_1 = require("./common/proxy");
 exports.AWProxy = proxy_1.AWProxy;
 var index_27 = require("./plugins/qr-reader/index");
 exports.AWQRReader = index_27.AWQRReader;
+var realm_1 = require("./plugins/realm");
+exports.AWRealm = realm_1.AWRealm;
 var index_28 = require("./plugins/print/index");
 exports.AWPrint = index_28.AWPrint;
 var index_29 = require("./plugins/document-scanner/index");

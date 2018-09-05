@@ -1,4 +1,5 @@
 export { AWAccelerometer } from "./plugins/accelerometer/index";
+export { AWAnonymous } from "./plugins/anonymous";
 export { AWAppManager } from "./plugins/app-manager/index";
 export { AWAuth } from "./plugins/auth/index";
 export { AWCache } from "./plugins/storage/index";
@@ -27,6 +28,7 @@ export { AWPage } from "./plugins/page/index";
 export { AWPlugin } from "./common/plugin";
 export { AWProxy } from "./common/proxy";
 export { AWQRReader } from "./plugins/qr-reader/index";
+export { AWRealm } from "./plugins/realm";
 export { AWPrint } from "./plugins/print/index";
 export { AWScanner } from "./plugins/document-scanner/index";
 export { AWStorage } from "./plugins/storage/index";
