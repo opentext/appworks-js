@@ -32,6 +32,14 @@ var AWFileSystem = (function (_super) {
         this.validateEnv();
         proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "isDir", [path]);
     };
+    AWFileSystem.prototype.isOpen = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'isOpen', [path]);
+    };
+    AWFileSystem.prototype.setReadOnly = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'setReadOnly', [path]);
+    };
     AWFileSystem.prototype.createFile = function (path, successCallback, errorCallback, data, append) {
         this.validateEnv();
         proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "createFile", [path, data, append]);
@@ -75,6 +83,10 @@ var AWFileSystem = (function (_super) {
     AWFileSystem.prototype.showFileSelector = function (opts, successCallback, errorCallback) {
         this.validateEnv();
         proxy_1.AWProxy.exec(successCallback, errorCallback, "AWFileSystem", "showFileSelector", [opts]);
+    };
+    AWFileSystem.prototype.onFileOpen = function (openFileCallback, successCallback, errorCallback) {
+        this.validateEnv();
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'onFileOpen', [openFileCallback]);
     };
     /**
      * The methods of this class should only be called from within an AppWorks desktop
