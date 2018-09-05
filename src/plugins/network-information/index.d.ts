@@ -13,8 +13,8 @@ export interface Navigator {
     };
 }
 export interface Document {
-    addEventListener(type: "online", connectionStateCallback: () => any, useCapture?: boolean): void;
-    addEventListener(type: "offline", connectionStateCallback: () => any, useCapture?: boolean): void;
+    addEventListener(type: 'online', connectionStateCallback: () => any, useCapture?: boolean): void;
+    addEventListener(type: 'offline', connectionStateCallback: () => any, useCapture?: boolean): void;
 }
 /**
  * The connection object, exposed via navigator.connection, provides information

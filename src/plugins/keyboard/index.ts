@@ -1,4 +1,4 @@
-export * from "./keyboard";
+export * from './keyboard';
 
 /**
  * The Keyboard object provides some functions to customize the iOS keyboard.

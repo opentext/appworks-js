@@ -1,1 +1,1 @@
-export * from "./anonymous";
+export * from './anonymous';

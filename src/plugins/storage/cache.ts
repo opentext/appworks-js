@@ -1,6 +1,6 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
-import {noop} from "../../common/util";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
+import {noop} from '../../common/util';
 
 export class AWCache extends AWPlugin {
 
@@ -57,7 +57,7 @@ export class AWCache extends AWPlugin {
       AWProxy.persistentStorage().loadPersistentData()
         .then(
           () =>
-            console.log("AWCache: Successfully loaded persistent data into local storage"),
+            console.log('AWCache: Successfully loaded persistent data into local storage'),
           err =>
             console.error(`AWCache: Failed to load persistent data into local storage - ${err.toString()}`)
         );

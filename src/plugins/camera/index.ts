@@ -1,4 +1,4 @@
-export * from "./camera";
+export * from './camera';
 
 export interface Navigator {
   /**

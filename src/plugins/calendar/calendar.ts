@@ -1,7 +1,7 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
-import {noop} from "../../common/util";
-import {AWCalendarInterface, CalendarArgs, CalendarCreateOptions, CalendarOptions} from "./index";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
+import {noop} from '../../common/util';
+import {AWCalendarInterface, CalendarArgs, CalendarCreateOptions, CalendarOptions} from './index';
 
 export class AWCalendar extends AWPlugin implements AWCalendarInterface {
 
@@ -15,7 +15,7 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       secondReminderMinutes: null,
       recurrence: null, // options are: 'daily', 'weekly', 'monthly', 'yearly'
       recurrenceInterval: 1, // only used when recurrence is set
-      recurrenceWeekstart: "MO",
+      recurrenceWeekstart: 'MO',
       recurrenceByDay: null,
       recurrenceByMonthDay: null,
       recurrenceEndDate: null,
@@ -31,8 +31,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "hasReadPermission",
+        'AWCalendar',
+        'hasReadPermission',
         []
       );
     });
@@ -43,8 +43,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "requestReadPermission",
+        'AWCalendar',
+        'requestReadPermission',
         []
       );
     });
@@ -55,8 +55,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "hasWritePermission",
+        'AWCalendar',
+        'hasWritePermission',
         []
       );
     });
@@ -67,8 +67,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "requestWritePermission",
+        'AWCalendar',
+        'requestWritePermission',
         []
       );
     });
@@ -79,8 +79,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "hasReadWritePermission",
+        'AWCalendar',
+        'hasReadWritePermission',
         []
       );
     });
@@ -91,8 +91,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "requestReadWritePermission",
+        'AWCalendar',
+        'requestReadWritePermission',
         []
       );
     });
@@ -106,8 +106,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "createCalendar",
+        'AWCalendar',
+        'createCalendar',
         [options]
       );
     });
@@ -118,8 +118,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "deleteCalendar",
+        'AWCalendar',
+        'deleteCalendar',
         [{calendarName: calendarName} as CalendarArgs]
       );
     });
@@ -130,8 +130,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "openCalendar",
+        'AWCalendar',
+        'openCalendar',
         [{date: date.getTime()} as CalendarArgs]
       );
     });
@@ -149,8 +149,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "createEventWithOptions",
+        'AWCalendar',
+        'createEventWithOptions',
         [{
           title: title,
           location: location,
@@ -194,8 +194,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "createEventInteractively",
+        'AWCalendar',
+        'createEventInteractively',
         [{
           title: title,
           location: location,
@@ -239,8 +239,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "findEventWithOptions",
+        'AWCalendar',
+        'findEventWithOptions',
         [{
           title: title,
           location: location,
@@ -277,8 +277,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "findAllEventsInNamedCalendar",
+        'AWCalendar',
+        'findAllEventsInNamedCalendar',
         [{calendarName: calendarName} as CalendarArgs]
       );
     });
@@ -294,8 +294,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "deleteEvent",
+        'AWCalendar',
+        'deleteEvent',
         [{
           title: title,
           location: location,
@@ -318,8 +318,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "deleteEventFromNamedCalendar",
+        'AWCalendar',
+        'deleteEventFromNamedCalendar',
         [{
           title: title,
           location: location,
@@ -349,8 +349,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "modifyEventWithOptions",
+        'AWCalendar',
+        'modifyEventWithOptions',
         [{
           title: title,
           location: location,
@@ -438,8 +438,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "listCalendars",
+        'AWCalendar',
+        'listCalendars',
         []
       );
     });
@@ -450,8 +450,8 @@ export class AWCalendar extends AWPlugin implements AWCalendarInterface {
       AWProxy.exec(
         successHandler || resolve,
         errorHandler || reject,
-        "AWCalendar",
-        "listEventsInRange",
+        'AWCalendar',
+        'listEventsInRange',
         [{
           startTime: startDate.getTime(),
           endTime: endDate.getTime()

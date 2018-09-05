@@ -1,13 +1,13 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
 
 export class AWAppManager extends AWPlugin {
   closeActiveApp() {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWAppManager",
-      "closeActiveApp",
+      'AWAppManager',
+      'closeActiveApp',
       []
     );
   }

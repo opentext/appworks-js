@@ -1,6 +1,6 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
-import {Capture} from "../media-transfer/index";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
+import {Capture} from '../media-transfer/index';
 
 export class AWDevice extends AWPlugin {
 

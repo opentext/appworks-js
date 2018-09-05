@@ -1,7 +1,7 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
-import {noop} from "../../common/util";
-import {InAppBrowser, InAppBrowserEvent} from "./index";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
+import {noop} from '../../common/util';
+import {InAppBrowser, InAppBrowserEvent} from './index';
 
 export class AWWebView extends AWPlugin {
 

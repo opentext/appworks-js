@@ -1,59 +1,59 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
 
 export class Realm extends AWPlugin {
-  FIELD_OBJECT_NAME = "name";
-  FIELD_OBJECT_TYPE = "type";
-  FIELD_OBJECT_PRIMARYKEY = "key";
-  FIELD_OBJECT_INDEX = "index";
-  FIELD_OBJECT_RELATIONSHIP = "relationship";
+  FIELD_OBJECT_NAME = 'name';
+  FIELD_OBJECT_TYPE = 'type';
+  FIELD_OBJECT_PRIMARYKEY = 'key';
+  FIELD_OBJECT_INDEX = 'index';
+  FIELD_OBJECT_RELATIONSHIP = 'relationship';
 
-  OBJECT_DESCRIPTION_NAME = "name";
-  OBJECT_DESCRIPTION_TYPE = "type";
-  OBJECT_DESCRIPTION_FIELDS = "fields";
-  OBJECT_DESCRIPTION_KEY = "key";
-  OBJECT_DESCRIPTION_INDEX = "index";
+  OBJECT_DESCRIPTION_NAME = 'name';
+  OBJECT_DESCRIPTION_TYPE = 'type';
+  OBJECT_DESCRIPTION_FIELDS = 'fields';
+  OBJECT_DESCRIPTION_KEY = 'key';
+  OBJECT_DESCRIPTION_INDEX = 'index';
 
-  FIELD_TYPE_STRING = "STRING";
-  FIELD_TYPE_INTEGER = "INTEGER";
-  FIELD_TYPE_BOOLEAN = "BOOLEAN";
-  FIELD_TYPE_LONG = "LONG";
-  FIELD_TYPE_SHORT = "SHORT";
-  FIELD_TYPE_DOUBLE = "DOUBLE";
-  FIELD_TYPE_FLOAT = "FLOAT";
-  FIELD_TYPE_BINARY = "BINARY";
-  FIELD_TYPE_BYTE = "BYTE";
-  FIELD_TYPE_OBJECT = "OBJECT";
-  FIELD_TYPE_LIST = "LIST";
-  FIELD_TYPE_DATE = "DATE";
+  FIELD_TYPE_STRING = 'STRING';
+  FIELD_TYPE_INTEGER = 'INTEGER';
+  FIELD_TYPE_BOOLEAN = 'BOOLEAN';
+  FIELD_TYPE_LONG = 'LONG';
+  FIELD_TYPE_SHORT = 'SHORT';
+  FIELD_TYPE_DOUBLE = 'DOUBLE';
+  FIELD_TYPE_FLOAT = 'FLOAT';
+  FIELD_TYPE_BINARY = 'BINARY';
+  FIELD_TYPE_BYTE = 'BYTE';
+  FIELD_TYPE_OBJECT = 'OBJECT';
+  FIELD_TYPE_LIST = 'LIST';
+  FIELD_TYPE_DATE = 'DATE';
 
-  QUERY_OBJECT_NAME = "object";
-  QUERY_TYPE = "type";
-  QUERY_FIELD = "field";
-  QUERY_SORT = "sort";
-  QUERY_SORT_ASC = "asc";
-  QUERY_SORT_DESC = "desc";
+  QUERY_OBJECT_NAME = 'object';
+  QUERY_TYPE = 'type';
+  QUERY_FIELD = 'field';
+  QUERY_SORT = 'sort';
+  QUERY_SORT_ASC = 'asc';
+  QUERY_SORT_DESC = 'desc';
 
-  QUERY_VALUE = "value";
-  QUERY_VALUE_2 = "value2";
+  QUERY_VALUE = 'value';
+  QUERY_VALUE_2 = 'value2';
 
-  QUERY_TYPE_BEGIN_GROUP = "beginGroup";
-  QUERY_TYPE_END_GROUP = "endGroup";
-  QUERY_TYPE_AND = "and";
-  QUERY_TYPE_OR = "or";
+  QUERY_TYPE_BEGIN_GROUP = 'beginGroup';
+  QUERY_TYPE_END_GROUP = 'endGroup';
+  QUERY_TYPE_AND = 'and';
+  QUERY_TYPE_OR = 'or';
 
-  QUERY_TYPE_EQUAL_TO = "equalTo";
-  QUERY_TYPE_NOT_EQUAL_TO = "notEqualTo";
-  QUERY_TYPE_BEGINS_WITH = "beginsWith";
-  QUERY_TYPE_ENDS_WITH = "endsWith";
-  QUERY_TYPE_CONTAINS = "contains";
-  QUERY_TYPE_BETWEEN = "between";
-  QUERY_TYPE_GREATER_THAN = "greaterThan";
-  QUERY_TYPE_GREATER_THAN_OR_EQUAL_TO = "greaterThanOrEqualTo";
-  QUERY_TYPE_LESS_THAN = "lessThan";
-  QUERY_TYPE_LESS_THAN_OR_EQUAL_TO = "lessThanOrEqualTo";
-  QUERY_TYPE_LIKE = "like";
-  QUERY_TYPE_IN = "in";
+  QUERY_TYPE_EQUAL_TO = 'equalTo';
+  QUERY_TYPE_NOT_EQUAL_TO = 'notEqualTo';
+  QUERY_TYPE_BEGINS_WITH = 'beginsWith';
+  QUERY_TYPE_ENDS_WITH = 'endsWith';
+  QUERY_TYPE_CONTAINS = 'contains';
+  QUERY_TYPE_BETWEEN = 'between';
+  QUERY_TYPE_GREATER_THAN = 'greaterThan';
+  QUERY_TYPE_GREATER_THAN_OR_EQUAL_TO = 'greaterThanOrEqualTo';
+  QUERY_TYPE_LESS_THAN = 'lessThan';
+  QUERY_TYPE_LESS_THAN_OR_EQUAL_TO = 'lessThanOrEqualTo';
+  QUERY_TYPE_LIKE = 'like';
+  QUERY_TYPE_IN = 'in';
   queryBuilder = {
     arr: [],
     subArray: [],
@@ -67,114 +67,114 @@ export class Realm extends AWPlugin {
     },
     equalTo: function (field: string, value: any) {
       let obj = {
-        "type": "equalTo",
-        "field": field,
-        "value": value
+        'type': 'equalTo',
+        'field': field,
+        'value': value
       };
       this.addToArray(obj, this.inSubArray);
       return this;
     },
     notEqualTo: function (field: string, value: any) {
       let obj = {
-        "type": "notEqualTo",
-        "field": field,
-        "value": value
+        'type': 'notEqualTo',
+        'field': field,
+        'value': value
       };
       this.addToArray(obj, this.inSubArray);
       return this;
     },
     beginsWith: function (field: string, value: any) {
       let obj = {
-        "type": "beginsWith",
-        "field": field,
-        "value": value
+        'type': 'beginsWith',
+        'field': field,
+        'value': value
       };
       this.addToArray(obj, this.inSubArray);
       return this;
     },
     endsWith: function (field: string, value: any) {
       let obj = {
-        "type": "endsWith",
-        "field": field,
-        "value": value
+        'type': 'endsWith',
+        'field': field,
+        'value': value
       };
       this.addToArray(obj, this.inSubArray);
       return this;
     },
     contains: function (field: string, value: any) {
       let obj = {
-        "type": "contains",
-        "field": field,
-        "value": value
+        'type': 'contains',
+        'field': field,
+        'value': value
       };
       this.addToArray(obj, this.inSubArray);
       return this;
     },
     between: function (field: string, value: any, value2: any) {
       let obj = {
-        "type": "between",
-        "field": field,
-        "value": value,
-        "value2": value2
+        'type': 'between',
+        'field': field,
+        'value': value,
+        'value2': value2
       };
       this.addToArray(obj, this.inSubArray);
       return this;
     },
     greaterThan: function (field: string, value: any) {
       let obj = {
-        "type": "greaterThan",
-        "field": field,
-        "value": value
+        'type': 'greaterThan',
+        'field': field,
+        'value': value
       };
       this.addToArray(obj, this.inSubArray);
       return this;
     },
     greaterThanOrEqualTo: function (field: string, value: any) {
       let obj = {
-        "type": "greaterThanOrEqualTo",
-        "field": field,
-        "value": value
+        'type': 'greaterThanOrEqualTo',
+        'field': field,
+        'value': value
       };
       this.addToArray(obj, this.inSubArray);
       return this;
     },
     lessThan: function (field: string, value: any) {
       let obj = {
-        "type": "lessThan",
-        "field": field,
-        "value": value
+        'type': 'lessThan',
+        'field': field,
+        'value': value
       };
       this.addToArray(obj, this.inSubArray);
       return this;
     },
     lessThanOrEqualTo: function (field: string, value: any) {
       let obj = {
-        "type": "lessThanOrEqualTo",
-        "field": field,
-        "value": value
+        'type': 'lessThanOrEqualTo',
+        'field': field,
+        'value': value
       };
       this.addToArray(obj, this.inSubArray);
       return this;
     },
     like: function (field: string, value: any) {
       let obj = {
-        "type": "like",
-        "field": field,
-        "value": value
+        'type': 'like',
+        'field': field,
+        'value': value
       };
       this.addToArray(obj, this.inSubArray);
       return this;
     },
     and: function () {
       let obj = {
-        "type": "and"
+        'type': 'and'
       };
       this.addToArray(obj, this.inSubArray);
       return this;
     },
     or: function () {
       let obj = {
-        "type": "or"
+        'type': 'or'
       };
       this.addToArray(obj, this.inSubArray);
       return this;
@@ -205,8 +205,8 @@ export class Realm extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWRealm",
-      "start_realm",
+      'AWRealm',
+      'start_realm',
       []
     );
   }
@@ -215,8 +215,8 @@ export class Realm extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWRealm",
-      "get_all_object_names",
+      'AWRealm',
+      'get_all_object_names',
       []
     );
   }
@@ -225,8 +225,8 @@ export class Realm extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWRealm",
-      "object_exists",
+      'AWRealm',
+      'object_exists',
       [objectName]
     );
   }
@@ -235,8 +235,8 @@ export class Realm extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWRealm",
-      "create_object",
+      'AWRealm',
+      'create_object',
       [objectName]
     );
   }
@@ -245,8 +245,8 @@ export class Realm extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWRealm",
-      "add_field",
+      'AWRealm',
+      'add_field',
       [objectName, field]
     );
   }
@@ -255,8 +255,8 @@ export class Realm extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWRealm",
-      "add_fields",
+      'AWRealm',
+      'add_fields',
       [objectName, field]
     );
   }
@@ -265,8 +265,8 @@ export class Realm extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWRealm",
-      "describe_object",
+      'AWRealm',
+      'describe_object',
       [objectName]
     );
   }
@@ -275,8 +275,8 @@ export class Realm extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWRealm",
-      "object_has_field",
+      'AWRealm',
+      'object_has_field',
       [objectName, fieldName]
     );
   }
@@ -285,8 +285,8 @@ export class Realm extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWRealm",
-      "get_field_type",
+      'AWRealm',
+      'get_field_type',
       [objectName, fieldName]
     );
   }
@@ -295,8 +295,8 @@ export class Realm extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWRealm",
-      "insert",
+      'AWRealm',
+      'insert',
       [objectName, dataObject]
     );
   }
@@ -305,8 +305,8 @@ export class Realm extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWRealm",
-      "update",
+      'AWRealm',
+      'update',
       [objectName, dataObject, queryArray]
     );
   }
@@ -315,8 +315,8 @@ export class Realm extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWRealm",
-      "select",
+      'AWRealm',
+      'select',
       [objectName, queryArray, sort]
     );
   }
@@ -325,8 +325,8 @@ export class Realm extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWRealm",
-      "remove",
+      'AWRealm',
+      'remove',
       [objectName, queryArray]
     );
   }
@@ -335,8 +335,8 @@ export class Realm extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWRealm",
-      "remove_all",
+      'AWRealm',
+      'remove_all',
       [objectName]
     );
   }

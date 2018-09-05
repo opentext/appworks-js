@@ -49,19 +49,19 @@ var AWHeaderBar = (function (_super) {
         else {
             this.callback = null;
         }
-        proxy_1.AWProxy.exec((function () { return _this.callback; })(), (function () { return _this.errorHandler; })(), "AWHeaderBar", "setHeader", [config]);
+        proxy_1.AWProxy.exec((function () { return _this.callback; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeader', [config]);
     };
     AWHeaderBar.prototype.getHeader = function () {
         var _this = this;
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWHeaderBar", "getHeader", []);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'getHeader', []);
     };
     AWHeaderBar.prototype.setHeaderButtons = function (callback, config) {
         var _this = this;
-        proxy_1.AWProxy.exec(callback, (function () { return _this.errorHandler; })(), "AWHeaderBar", "setHeaderButtons", [config]);
+        proxy_1.AWProxy.exec(callback, (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'setHeaderButtons', [config]);
     };
     AWHeaderBar.prototype.maskHeader = function (shouldMaskHeader) {
         var _this = this;
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWHeaderBar", "maskHeader", [shouldMaskHeader]);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWHeaderBar', 'maskHeader', [shouldMaskHeader]);
     };
     return AWHeaderBar;
 }(plugin_1.AWPlugin));

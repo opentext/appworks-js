@@ -1,1 +1,1 @@
-export * from "./mobile-file-system";
+export * from './mobile-file-system';

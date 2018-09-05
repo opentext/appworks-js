@@ -1,13 +1,13 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
 
 export class AWAnonymous extends AWPlugin {
   isAnonymousMode(successHandler: any, errorHandler: any) {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWAnonymous",
-      "isAnonymousMode",
+      'AWAnonymous',
+      'isAnonymousMode',
       []
     );
   }
@@ -16,8 +16,8 @@ export class AWAnonymous extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWAnonymous",
-      "getAnonymousUrl",
+      'AWAnonymous',
+      'getAnonymousUrl',
       []
     );
   }

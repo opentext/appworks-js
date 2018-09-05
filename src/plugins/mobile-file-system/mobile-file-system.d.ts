@@ -1,4 +1,4 @@
-import { AWPlugin } from "../../common/plugin";
+import { AWPlugin } from '../../common/plugin';
 export declare class AWMobileFileSystem extends AWPlugin {
     list(directory: string, shared: boolean, success: any, error: any): void;
     listImports(success: any, error: any): void;
@@ -9,7 +9,7 @@ export declare class AWMobileFileSystem extends AWPlugin {
     copy(source: string, sourceShared: boolean, destination: string, destinationShared: boolean, success: any, error: any): void;
     move(source: string, sourceShared: boolean, destination: string, destinationShared: boolean, success: any, error: any): void;
     remove(source: string, shared: boolean, success: any, error: any): void;
-    read(source: string, shared: boolean, success: any, error: any): void;
+    readFile(source: string, shared: boolean, success: any, error: any): void;
     open(source: string, shared: boolean, success: any, error: any): void;
     share(source: string, shared: boolean, success: any, error: any): void;
     quicklook(source: string, shared: boolean, success: any, error: any): void;

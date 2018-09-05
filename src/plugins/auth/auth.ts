@@ -1,5 +1,5 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
 
 export class AWAuth extends AWPlugin {
   authenticate(force?: boolean) {
@@ -7,8 +7,8 @@ export class AWAuth extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWAuth",
-      "authenticate",
+      'AWAuth',
+      'authenticate',
       [force.toString()]
     );
   }
@@ -21,8 +21,8 @@ export class AWAuth extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWAuth",
-      "authobject",
+      'AWAuth',
+      'authobject',
       []
     );
   }
@@ -31,8 +31,8 @@ export class AWAuth extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWAuth",
-      "gateway",
+      'AWAuth',
+      'gateway',
       []
     );
   }
@@ -41,8 +41,8 @@ export class AWAuth extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWAuth",
-      "online",
+      'AWAuth',
+      'online',
       []
     );
   }
@@ -51,8 +51,8 @@ export class AWAuth extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWAuth",
-      "otdsssoticket",
+      'AWAuth',
+      'otdsssoticket',
       []
     );
   }

@@ -1,4 +1,4 @@
-import { AsyncStorage, PersistentStorage } from "./index";
+import { AsyncStorage, PersistentStorage } from './index';
 export declare class DesktopStorage implements PersistentStorage {
     private static readonly PLUGIN_NOT_FOUND;
     private desktopStorage;

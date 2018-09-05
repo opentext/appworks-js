@@ -1,15 +1,15 @@
-import { CameraInterface } from "../plugins/camera/index";
-import { Contacts } from "../plugins/contacts/index";
-import { Accelerometer } from "../plugins/device-motion/index";
-import { Compass } from "../plugins/device-orientation/index";
-import { Device } from "../plugins/device/index";
-import { Notification } from "../plugins/dialogs/index";
-import { FileTransferInterface } from "../plugins/file-transfer/index";
-import { FileError, FileSystem } from "../plugins/file/index";
-import { LocalFileSystem } from "../plugins/file/local-file-system";
-import { MediaInterface } from "../plugins/media/index";
-import { ConnectionInterface } from "../plugins/network-information/index";
-import { PersistentStorage } from "../plugins/storage/index";
+import { CameraInterface } from '../plugins/camera/index';
+import { Contacts } from '../plugins/contacts/index';
+import { Accelerometer } from '../plugins/device-motion/index';
+import { Compass } from '../plugins/device-orientation/index';
+import { Device } from '../plugins/device/index';
+import { Notification } from '../plugins/dialogs/index';
+import { FileTransferInterface } from '../plugins/file-transfer/index';
+import { FileError, FileSystem } from '../plugins/file/index';
+import { LocalFileSystem } from '../plugins/file/local-file-system';
+import { MediaInterface } from '../plugins/media/index';
+import { ConnectionInterface } from '../plugins/network-information/index';
+import { PersistentStorage } from '../plugins/storage/index';
 export declare class AWProxy {
     static exec(successHandler: any, errorHandler: any, name: string, method: string, args: any[]): void;
     static accelerometer(): Accelerometer;

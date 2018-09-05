@@ -1,5 +1,5 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
 
 export class AWHeaderBar extends AWPlugin {
 
@@ -53,8 +53,8 @@ export class AWHeaderBar extends AWPlugin {
     AWProxy.exec(
       (() => this.callback)(),
       (() => this.errorHandler)(),
-      "AWHeaderBar",
-      "setHeader",
+      'AWHeaderBar',
+      'setHeader',
       [config]
     );
   }
@@ -63,8 +63,8 @@ export class AWHeaderBar extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWHeaderBar",
-      "getHeader",
+      'AWHeaderBar',
+      'getHeader',
       []
     );
   }
@@ -73,8 +73,8 @@ export class AWHeaderBar extends AWPlugin {
     AWProxy.exec(
       callback,
       (() => this.errorHandler)(),
-      "AWHeaderBar",
-      "setHeaderButtons",
+      'AWHeaderBar',
+      'setHeaderButtons',
       [config]
     );
   }
@@ -83,8 +83,8 @@ export class AWHeaderBar extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWHeaderBar",
-      "maskHeader",
+      'AWHeaderBar',
+      'maskHeader',
       [shouldMaskHeader]
     );
   }

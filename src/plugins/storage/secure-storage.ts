@@ -1,5 +1,5 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
 
 export class SecureStorage extends AWPlugin {
 
@@ -28,7 +28,7 @@ export class SecureStorage extends AWPlugin {
     }
 
     progress = function (result) {
-      if (typeof result.lengthComputable !== "undefined") {
+      if (typeof result.lengthComputable !== 'undefined') {
         if (progressHandler) {
           progressHandler(newProgressEvent(result));
         }
@@ -41,8 +41,8 @@ export class SecureStorage extends AWPlugin {
     AWProxy.exec(
       progress,
       (() => this.errorHandler)(),
-      "AWSecureStorage",
-      "store",
+      'AWSecureStorage',
+      'store',
       args
     );
   }
@@ -52,8 +52,8 @@ export class SecureStorage extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWSecureStorage",
-      "retrieve",
+      'AWSecureStorage',
+      'retrieve',
       args
     );
   }
@@ -63,8 +63,8 @@ export class SecureStorage extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWSecureStorage",
-      "removeFile",
+      'AWSecureStorage',
+      'removeFile',
       args
     );
   }
@@ -74,8 +74,8 @@ export class SecureStorage extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWSecureStorage",
-      "fileExistsAtPath",
+      'AWSecureStorage',
+      'fileExistsAtPath',
       args
     );
   }

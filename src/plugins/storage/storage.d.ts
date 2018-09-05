@@ -1,4 +1,4 @@
-import { Storage } from "./index";
+import { Storage } from './index';
 /**
  * Web local storage wrapper that hooks into the native persistent layer on mobile and desktop
  * The local and persistent storage are kept in, sync with update being flushed, and the local web

@@ -1,5 +1,5 @@
-export * from "./webview";
-export * from "./desktop-webview";
+export * from './webview';
+export * from './desktop-webview';
 
 export interface DesktopWebviewInterface {
   // addEventListener overloads
@@ -32,7 +32,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "page-title-updated", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'page-title-updated', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -63,7 +63,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "close", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'close', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -94,7 +94,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "closed", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'closed', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -125,7 +125,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "unresponsive", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'unresponsive', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -156,7 +156,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "responsive", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'responsive', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -187,7 +187,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "blur", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'blur', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -218,7 +218,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "focus", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'focus', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -249,7 +249,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "show", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'show', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -280,7 +280,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "hide", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'hide', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -311,7 +311,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "ready-to-show", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'ready-to-show', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -342,7 +342,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "maximize", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'maximize', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -373,7 +373,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "unmaximize", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'unmaximize', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -404,7 +404,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "minimize", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'minimize', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -435,7 +435,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "restore", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'restore', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -466,7 +466,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "resize", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'resize', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -497,7 +497,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "move", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'move', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -528,7 +528,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "enter-full-screen", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'enter-full-screen', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -559,7 +559,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "leave-full-screen", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'leave-full-screen', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -590,7 +590,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "enter-html-full-screen", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'enter-html-full-screen', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -621,7 +621,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "leave-html-full-screen", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'leave-html-full-screen', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -652,7 +652,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "page-title-updated", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'page-title-updated', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -683,7 +683,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "close", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'close', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -714,7 +714,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "closed", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'closed', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -745,7 +745,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "unresponsive", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'unresponsive', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -776,7 +776,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "responsive", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'responsive', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -807,7 +807,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "blur", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'blur', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -838,7 +838,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "focus", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'focus', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -869,7 +869,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "show", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'show', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -900,7 +900,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "hide", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'hide', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -931,7 +931,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "ready-to-show", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'ready-to-show', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -962,7 +962,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "maximize", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'maximize', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -993,7 +993,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "unmaximize", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'unmaximize', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -1024,7 +1024,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "minimize", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'minimize', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -1055,7 +1055,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "restore", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'restore', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -1086,7 +1086,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "resize", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'resize', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -1117,7 +1117,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "move", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'move', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -1148,7 +1148,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "enter-full-screen", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'enter-full-screen', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -1179,7 +1179,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "leave-full-screen", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'leave-full-screen', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -1210,7 +1210,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "enter-html-full-screen", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'enter-html-full-screen', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -1241,7 +1241,7 @@ export interface DesktopWebviewInterface {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "leave-html-full-screen", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'leave-html-full-screen', callback: (event: InAppBrowserEvent) => void): void;
 
   /** Closes the InAppBrowser window. */
   close(): void;
@@ -1280,7 +1280,7 @@ export interface Window {
    *                 The options string must not contain any blank space, and each feature's
    *                 name/value pairs must be separated by a comma. Feature names are case insensitive.
    */
-  open(url: string, target?: "_self", options?: string): InAppBrowser;
+  open(url: string, target?: '_self', options?: string): InAppBrowser;
 
   /**
    * Opens a URL in a new InAppBrowser instance, the current browser instance, or the system browser.
@@ -1290,7 +1290,7 @@ export interface Window {
    *                 The options string must not contain any blank space, and each feature's
    *                 name/value pairs must be separated by a comma. Feature names are case insensitive.
    */
-  open(url: string, target?: "_blank", options?: string): InAppBrowser;
+  open(url: string, target?: '_blank', options?: string): InAppBrowser;
 
   /**
    * Opens a URL in a new InAppBrowser instance, the current browser instance, or the system browser.
@@ -1300,7 +1300,7 @@ export interface Window {
    *                 The options string must not contain any blank space, and each feature's
    *                 name/value pairs must be separated by a comma. Feature names are case insensitive.
    */
-  open(url: string, target?: "_system", options?: string): InAppBrowser;
+  open(url: string, target?: '_system', options?: string): InAppBrowser;
 
   /**
    * Opens a URL in a new InAppBrowser instance, the current browser instance, or the system browser.
@@ -1334,7 +1334,7 @@ export interface InAppBrowser extends Window {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "loadstart", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'loadstart', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -1346,7 +1346,7 @@ export interface InAppBrowser extends Window {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "loadstop", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'loadstop', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -1358,7 +1358,7 @@ export interface InAppBrowser extends Window {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "loaderror", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'loaderror', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -1370,7 +1370,7 @@ export interface InAppBrowser extends Window {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  addEventListener(type: "exit", callback: (event: InAppBrowserEvent) => void): void;
+  addEventListener(type: 'exit', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Adds a listener for an event from the InAppBrowser.
@@ -1395,7 +1395,7 @@ export interface InAppBrowser extends Window {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "loadstart", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'loadstart', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -1407,7 +1407,7 @@ export interface InAppBrowser extends Window {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "loadstop", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'loadstop', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -1419,7 +1419,7 @@ export interface InAppBrowser extends Window {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "loaderror", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'loaderror', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.
@@ -1431,7 +1431,7 @@ export interface InAppBrowser extends Window {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an InAppBrowserEvent object as a parameter.
    */
-  removeEventListener(type: "exit", callback: (event: InAppBrowserEvent) => void): void;
+  removeEventListener(type: 'exit', callback: (event: InAppBrowserEvent) => void): void;
 
   /**
    * Removes a listener for an event from the InAppBrowser.

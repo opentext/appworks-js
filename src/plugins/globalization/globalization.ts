@@ -1,6 +1,6 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
-import {noop} from "../../common/util";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
+import {noop} from '../../common/util';
 
 export class AWGlobalization extends AWPlugin {
   constructor() {
@@ -11,8 +11,8 @@ export class AWGlobalization extends AWPlugin {
     AWProxy.exec(
       successFn,
       errorFn,
-      "AWGlobalization",
-      "getPreferredLanguage",
+      'AWGlobalization',
+      'getPreferredLanguage',
       []
     );
   }

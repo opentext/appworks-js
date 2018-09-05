@@ -1,5 +1,5 @@
-import {MockLocalStorage} from "../../../test/mock/local-storage";
-import {Storage} from "./index";
+import {MockLocalStorage} from '../../../test/mock/local-storage';
+import {Storage} from './index';
 
 /**
  * Web local storage wrapper that hooks into the native persistent layer on mobile and desktop
@@ -19,7 +19,7 @@ export class AWStorage implements Storage {
 
   constructor() {
     // resolve the local storage or fall back onto a mock impl
-    this.storage = (typeof window !== "undefined") ?
+    this.storage = (typeof window !== 'undefined') ?
       window.localStorage : new MockLocalStorage();
   }
 

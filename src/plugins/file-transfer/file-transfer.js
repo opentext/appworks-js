@@ -28,14 +28,14 @@ var AWFileTransfer = (function (_super) {
         var successHandler = this.successHandler, errorHandler = this.errorHandler;
         options = options || {};
         if (shared && !proxy_1.AWProxy.isDesktopEnv()) {
-            proxy_1.AWProxy.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), "AWSharedDocumentProvider", "containerForCurrentApp", []);
+            proxy_1.AWProxy.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), 'AWSharedDocumentProvider', 'containerForCurrentApp', []);
         }
         else {
             this.fileTransfer.download(encodeURI(url), this.toEnvFilePath(target), successHandler, errorHandler, false, options);
         }
         return this.fileTransfer;
         function gotSharedContainerUrl(containerUrl) {
-            proxy_1.AWProxy.filetransfer().download(encodeURI(url), containerUrl + "/" + target, successHandler, errorHandler, false, options);
+            proxy_1.AWProxy.filetransfer().download(encodeURI(url), containerUrl + '/' + target, successHandler, errorHandler, false, options);
         }
     };
     AWFileTransfer.prototype.progressHandler = function (handler) {
@@ -46,7 +46,7 @@ var AWFileTransfer = (function (_super) {
         var successHandler = this.successHandler, errorHandler = this.errorHandler;
         options = options || {};
         if (shared && !proxy_1.AWProxy.isDesktopEnv()) {
-            proxy_1.AWProxy.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), "AWSharedDocumentProvider", "containerForCurrentApp", []);
+            proxy_1.AWProxy.exec(gotSharedContainerUrl, (function () { return _this.errorHandler; })(), 'AWSharedDocumentProvider', 'containerForCurrentApp', []);
         }
         else {
             this.fileTransfer.upload(this.toEnvFilePath(source), encodeURI(url), successHandler, errorHandler, options, false);
@@ -55,12 +55,12 @@ var AWFileTransfer = (function (_super) {
         function gotSharedContainerUrl(containerUrl) {
             proxy_1.AWProxy.filetransfer().upload(
             // valid use of slash here as shared container is a mobile only concept
-            containerUrl + "/" + source, encodeURI(url), successHandler, errorHandler, options, false);
+            containerUrl + '/' + source, encodeURI(url), successHandler, errorHandler, options, false);
         }
     };
     AWFileTransfer.prototype.toEnvFilePath = function (fileUrl) {
         // use a path relative to the Cordova defined sandbox in a mobile environment
-        return proxy_1.AWProxy.isDesktopEnv() ? fileUrl : proxy_1.AWProxy.file().documentsDirectory + "/" + fileUrl;
+        return proxy_1.AWProxy.isDesktopEnv() ? fileUrl : proxy_1.AWProxy.file().documentsDirectory + '/' + fileUrl;
     };
     return AWFileTransfer;
 }(plugin_1.AWPlugin));

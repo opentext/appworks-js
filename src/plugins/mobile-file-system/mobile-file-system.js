@@ -20,67 +20,67 @@ var AWMobileFileSystem = (function (_super) {
     // File listing
     AWMobileFileSystem.prototype.list = function (directory, shared, success, error) {
         var args = [directory, shared];
-        proxy_1.AWProxy.exec(success, error, "AWMobileFileSystem", "list", args);
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'list', args);
     };
     // Imports
     AWMobileFileSystem.prototype.listImports = function (success, error) {
         var args = [];
-        proxy_1.AWProxy.exec(success, error, "AWMobileFileSystem", "listImports", args);
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'listImports', args);
     };
     AWMobileFileSystem.prototype.moveImport = function (source, destination, desintationShared, success, error) {
         var args = [source, destination, desintationShared];
-        proxy_1.AWProxy.exec(success, error, "AWMobileFileSystem", "moveImport", args);
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'moveImport', args);
     };
     // File IO
     AWMobileFileSystem.prototype.exists = function (source, shared, success, error) {
         var args = [source, shared];
-        proxy_1.AWProxy.exec(success, error, "AWMobileFileSystem", "exists", args);
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'exists', args);
     };
     AWMobileFileSystem.prototype.isOpen = function (source, shared, success, error) {
         var args = [source, shared];
-        proxy_1.AWProxy.exec(success, error, "AWMobileFileSystem", "isOpen", args);
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'isOpen', args);
     };
     AWMobileFileSystem.prototype.rename = function (source, destination, shared, success, error) {
         var args = [source, destination, shared];
-        proxy_1.AWProxy.exec(success, error, "AWMobileFileSystem", "rename", args);
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'rename', args);
     };
     AWMobileFileSystem.prototype.copy = function (source, sourceShared, destination, destinationShared, success, error) {
         var args = [source, sourceShared, destination, destinationShared];
-        proxy_1.AWProxy.exec(success, error, "AWMobileFileSystem", "copy", args);
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'copy', args);
     };
     AWMobileFileSystem.prototype.move = function (source, sourceShared, destination, destinationShared, success, error) {
         var args = [source, sourceShared, destination, destinationShared];
-        proxy_1.AWProxy.exec(success, error, "AWMobileFileSystem", "move", args);
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'move', args);
     };
     AWMobileFileSystem.prototype.remove = function (source, shared, success, error) {
         var args = [source, shared];
-        proxy_1.AWProxy.exec(success, error, "AWMobileFileSystem", "remove", args);
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'remove', args);
     };
-    AWMobileFileSystem.prototype.read = function (source, shared, success, error) {
+    AWMobileFileSystem.prototype.readFile = function (source, shared, success, error) {
         var args = [source, shared];
-        proxy_1.AWProxy.exec(success, error, "AWMobileFileSystem", "read", args);
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'read', args);
     };
     // File sharing
     AWMobileFileSystem.prototype.open = function (source, shared, success, error) {
         var args = [source, shared];
-        proxy_1.AWProxy.exec(success, error, "AWMobileFileSystem", "open", args);
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'open', args);
     };
     AWMobileFileSystem.prototype.share = function (source, shared, success, error) {
         var args = [source, shared];
-        proxy_1.AWProxy.exec(success, error, "AWMobileFileSystem", "share", args);
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'share', args);
     };
     AWMobileFileSystem.prototype.quicklook = function (source, shared, success, error) {
         var args = [source, shared];
-        proxy_1.AWProxy.exec(success, error, "AWMobileFileSystem", "quicklook", args);
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'quicklook', args);
     };
     // File transfer
     AWMobileFileSystem.prototype.download = function (source, destination, headers, shared, success, error) {
         var args = [source, destination, headers, shared];
-        proxy_1.AWProxy.exec(success, error, "AWMobileFileSystem", "download", args);
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'download', args);
     };
     AWMobileFileSystem.prototype.upload = function (source, destination, fileParameterName, formData, headers, shared, success, error) {
         var args = [source, destination, fileParameterName, formData, headers, shared];
-        proxy_1.AWProxy.exec(success, error, "AWMobileFileSystem", "upload", args);
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'upload', args);
     };
     return AWMobileFileSystem;
 }(plugin_1.AWPlugin));

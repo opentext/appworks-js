@@ -1,6 +1,6 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
-import {CameraOptions} from "./index";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
+import {CameraOptions} from './index';
 
 export class AWCamera extends AWPlugin {
   cleanup(onSuccess: () => void,

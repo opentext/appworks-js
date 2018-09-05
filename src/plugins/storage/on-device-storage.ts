@@ -1,5 +1,5 @@
-import {AWProxy} from "../../common/proxy";
-import {PersistentStorage} from "./index";
+import {AWProxy} from '../../common/proxy';
+import {PersistentStorage} from './index';
 
 /**
  * The mobile environment implementation of persistent storage.
@@ -46,7 +46,7 @@ export class OnDeviceStorage implements PersistentStorage {
       AWProxy.requestFileSystem(AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
 
       function gotFS(fileSystem: any) {
-        fileSystem.root.getFile("appworksjs.cache.json", {
+        fileSystem.root.getFile('appworksjs.cache.json', {
           create: true,
           exclusive: false
         }, gotFileEntry, reject);
@@ -77,7 +77,7 @@ export class OnDeviceStorage implements PersistentStorage {
 
       function gotFS(fileSystem) {
         fileSystem.root.getFile(
-          "appworksjs.cache.json",
+          'appworksjs.cache.json',
           {create: true, exclusive: false},
           gotFileEntry,
           reject);
@@ -89,7 +89,7 @@ export class OnDeviceStorage implements PersistentStorage {
 
       function gotFileWriter(writer) {
         writer.onwriteend = function () {
-          console.info("cache data backed up successfully");
+          console.info('cache data backed up successfully');
         };
         writer.write(data);
         resolve();

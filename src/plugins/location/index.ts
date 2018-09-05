@@ -1,4 +1,4 @@
-export * from "./location";
+export * from './location';
 
 export interface Geolocation {
   clearWatch(watchId: number): void;

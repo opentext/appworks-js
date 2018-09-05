@@ -1,6 +1,6 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
-import {noop} from "../../common/util";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
+import {noop} from '../../common/util';
 
 export class AWKeyboard extends AWPlugin {
   constructor() {
@@ -11,8 +11,8 @@ export class AWKeyboard extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWKeyboard",
-      "hideKeyboardAccessoryBar",
+      'AWKeyboard',
+      'hideKeyboardAccessoryBar',
       [hide.toString()]
     );
   }
@@ -21,8 +21,8 @@ export class AWKeyboard extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWKeyboard",
-      "close",
+      'AWKeyboard',
+      'close',
       []
     );
   }
@@ -31,8 +31,8 @@ export class AWKeyboard extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWKeyboard",
-      "show",
+      'AWKeyboard',
+      'show',
       []
     );
   }
@@ -42,8 +42,8 @@ export class AWKeyboard extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWKeyboard",
-      "disableScroll",
+      'AWKeyboard',
+      'disableScroll',
       [disable.toString()]
     );
   }

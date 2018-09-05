@@ -1,5 +1,5 @@
-import { AWPlugin } from "../../common/plugin";
-import { DesktopHostFileSystem, FileDetails, FileDialogOptions, SaveDialogOptions } from "./index";
+import { AWPlugin } from '../../common/plugin';
+import { DesktopHostFileSystem, FileDetails, FileDialogOptions, SaveDialogOptions } from './index';
 export declare class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     desktopEnvError: Error;
     constructor();

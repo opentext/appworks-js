@@ -1,6 +1,6 @@
-import {AWProxy} from "../../common/proxy";
-import {noop} from "../../common/util";
-import {DesktopWebviewInterface, InAppBrowserEvent} from "./index";
+import {AWProxy} from '../../common/proxy';
+import {noop} from '../../common/util';
+import {DesktopWebviewInterface, InAppBrowserEvent} from './index';
 
 const DesktopWebviewSequenceStore = {
   seqNo: 0
@@ -18,8 +18,8 @@ export class DesktopWebview implements DesktopWebviewInterface {
     AWProxy.exec(
       noop,
       noop,
-      "AWWebView",
-      "addEventListener",
+      'AWWebView',
+      'addEventListener',
       [this.id, type, callback]
     );
   }
@@ -28,8 +28,8 @@ export class DesktopWebview implements DesktopWebviewInterface {
     AWProxy.exec(
       noop,
       noop,
-      "AWWebView",
-      "removeEventListener",
+      'AWWebView',
+      'removeEventListener',
       [this.id, type, callback]
     );
   }
@@ -38,8 +38,8 @@ export class DesktopWebview implements DesktopWebviewInterface {
     AWProxy.exec(
       noop,
       noop,
-      "AWWebView",
-      "close",
+      'AWWebView',
+      'close',
       [this.id]
     );
   }
@@ -48,8 +48,8 @@ export class DesktopWebview implements DesktopWebviewInterface {
     AWProxy.exec(
       noop,
       noop,
-      "AWWebView",
-      "show",
+      'AWWebView',
+      'show',
       [this.id]
     );
   }
@@ -58,8 +58,8 @@ export class DesktopWebview implements DesktopWebviewInterface {
     AWProxy.exec(
       noop,
       noop,
-      "AWWebView",
-      "open",
+      'AWWebView',
+      'open',
       [this.id, url, target, options]
     );
     return this;
@@ -69,8 +69,8 @@ export class DesktopWebview implements DesktopWebviewInterface {
     AWProxy.exec(
       callback,
       noop,
-      "AWWebView",
-      "executeScript",
+      'AWWebView',
+      'executeScript',
       [this.id, script]
     );
   }
@@ -79,8 +79,8 @@ export class DesktopWebview implements DesktopWebviewInterface {
     AWProxy.exec(
       callback,
       noop,
-      "AWWebView",
-      "insertCSS",
+      'AWWebView',
+      'insertCSS',
       [this.id, css]
     );
   }

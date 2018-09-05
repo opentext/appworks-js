@@ -19,12 +19,12 @@ var AWOfflineManager = (function (_super) {
     function AWOfflineManager(options) {
         var _this = _super.call(this, util_1.noop, util_1.noop) || this;
         var document;
-        _this.cacheKey = "__appworksjs.deferredQueue";
+        _this.cacheKey = '__appworksjs.deferredQueue';
         _this.cache = new cache_1.AWCache();
         _this.options = options || { preserveEvents: false };
         document = proxy_1.AWProxy.document();
         // process deferred queue when network status changes
-        document.addEventListener("online", function () {
+        document.addEventListener('online', function () {
             _this.processDeferredQueue();
         });
         var queue = _this.cache.getItem(_this.cacheKey);

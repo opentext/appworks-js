@@ -1,6 +1,6 @@
-import {Device} from "../device/index";
+import {Device} from '../device/index';
 
-export * from "./media-capture";
+export * from './media-capture';
 
 export interface Navigator {
   device: Device;

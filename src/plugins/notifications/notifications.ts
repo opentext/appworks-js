@@ -1,6 +1,6 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
-import {noop} from "../../common/util";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
+import {noop} from '../../common/util';
 
 export class AWNotificationManager extends AWPlugin {
 
@@ -12,8 +12,8 @@ export class AWNotificationManager extends AWPlugin {
     AWProxy.exec(
       handler,
       errorHandler,
-      "AWNotificationManager",
-      "enablePushNotifications",
+      'AWNotificationManager',
+      'enablePushNotifications',
       AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]
     );
   }
@@ -22,8 +22,8 @@ export class AWNotificationManager extends AWPlugin {
     AWProxy.exec(
       null,
       null,
-      "AWNotificationManager",
-      "disablePushNotifications",
+      'AWNotificationManager',
+      'disablePushNotifications',
       []
     );
   }
@@ -32,8 +32,8 @@ export class AWNotificationManager extends AWPlugin {
     AWProxy.exec(
       handler,
       errorHandler,
-      "AWNotificationManager",
-      "getPushNotifications",
+      'AWNotificationManager',
+      'getPushNotifications',
       [includeSeqNo]
     );
   }
@@ -42,8 +42,8 @@ export class AWNotificationManager extends AWPlugin {
     AWProxy.exec(
       handler,
       errorHandler,
-      "AWNotificationManager",
-      "getOpeningNotification",
+      'AWNotificationManager',
+      'getOpeningNotification',
       [includeSeqNo]
     );
   }
@@ -56,8 +56,8 @@ export class AWNotificationManager extends AWPlugin {
     AWProxy.exec(
       handler,
       errorHandler,
-      "AWNotificationManager",
-      "openListener",
+      'AWNotificationManager',
+      'openListener',
       AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]
     );
   }
@@ -70,8 +70,8 @@ export class AWNotificationManager extends AWPlugin {
     AWProxy.exec(
       handler,
       errorHandler,
-      "AWNotificationManager",
-      "removeNotification",
+      'AWNotificationManager',
+      'removeNotification',
       [seqNo]
     );
   }

@@ -1,5 +1,5 @@
-import { AWPlugin } from "../../common/plugin";
-import { InAppBrowser, InAppBrowserEvent } from "./index";
+import { AWPlugin } from '../../common/plugin';
+import { InAppBrowser, InAppBrowserEvent } from './index';
 export declare class AWWebView extends AWPlugin {
     constructor();
     open(url: string, target?: string, options?: any): InAppBrowser;

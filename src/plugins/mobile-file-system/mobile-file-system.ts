@@ -1,5 +1,5 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
 
 export class AWMobileFileSystem extends AWPlugin {
   // File listing
@@ -8,8 +8,8 @@ export class AWMobileFileSystem extends AWPlugin {
     AWProxy.exec(
       success,
       error,
-      "AWMobileFileSystem",
-      "list",
+      'AWMobileFileSystem',
+      'list',
       args
     );
   }
@@ -20,8 +20,8 @@ export class AWMobileFileSystem extends AWPlugin {
     AWProxy.exec(
       success,
       error,
-      "AWMobileFileSystem",
-      "listImports",
+      'AWMobileFileSystem',
+      'listImports',
       args
     );
   }
@@ -31,8 +31,8 @@ export class AWMobileFileSystem extends AWPlugin {
     AWProxy.exec(
       success,
       error,
-      "AWMobileFileSystem",
-      "moveImport",
+      'AWMobileFileSystem',
+      'moveImport',
       args
     );
   }
@@ -43,8 +43,8 @@ export class AWMobileFileSystem extends AWPlugin {
     AWProxy.exec(
       success,
       error,
-      "AWMobileFileSystem",
-      "exists",
+      'AWMobileFileSystem',
+      'exists',
       args
     );
   }
@@ -54,8 +54,8 @@ export class AWMobileFileSystem extends AWPlugin {
     AWProxy.exec(
       success,
       error,
-      "AWMobileFileSystem",
-      "isOpen",
+      'AWMobileFileSystem',
+      'isOpen',
       args
     );
   }
@@ -65,8 +65,8 @@ export class AWMobileFileSystem extends AWPlugin {
     AWProxy.exec(
       success,
       error,
-      "AWMobileFileSystem",
-      "rename",
+      'AWMobileFileSystem',
+      'rename',
       args
     );
   }
@@ -76,8 +76,8 @@ export class AWMobileFileSystem extends AWPlugin {
     AWProxy.exec(
       success,
       error,
-      "AWMobileFileSystem",
-      "copy",
+      'AWMobileFileSystem',
+      'copy',
       args
     );
   }
@@ -87,8 +87,8 @@ export class AWMobileFileSystem extends AWPlugin {
     AWProxy.exec(
       success,
       error,
-      "AWMobileFileSystem",
-      "move",
+      'AWMobileFileSystem',
+      'move',
       args
     );
   }
@@ -98,19 +98,19 @@ export class AWMobileFileSystem extends AWPlugin {
     AWProxy.exec(
       success,
       error,
-      "AWMobileFileSystem",
-      "remove",
+      'AWMobileFileSystem',
+      'remove',
       args
     );
   }
 
-  read(source: string, shared: boolean, success: any, error: any) {
+  readFile(source: string, shared: boolean, success: any, error: any) {
     let args = [source, shared];
     AWProxy.exec(
       success,
       error,
-      "AWMobileFileSystem",
-      "read",
+      'AWMobileFileSystem',
+      'read',
       args
     );
   }
@@ -121,8 +121,8 @@ export class AWMobileFileSystem extends AWPlugin {
     AWProxy.exec(
       success,
       error,
-      "AWMobileFileSystem",
-      "open",
+      'AWMobileFileSystem',
+      'open',
       args
     );
   }
@@ -132,8 +132,8 @@ export class AWMobileFileSystem extends AWPlugin {
     AWProxy.exec(
       success,
       error,
-      "AWMobileFileSystem",
-      "share",
+      'AWMobileFileSystem',
+      'share',
       args
     );
   }
@@ -143,8 +143,8 @@ export class AWMobileFileSystem extends AWPlugin {
     AWProxy.exec(
       success,
       error,
-      "AWMobileFileSystem",
-      "quicklook",
+      'AWMobileFileSystem',
+      'quicklook',
       args
     );
   }
@@ -155,8 +155,8 @@ export class AWMobileFileSystem extends AWPlugin {
     AWProxy.exec(
       success,
       error,
-      "AWMobileFileSystem",
-      "download",
+      'AWMobileFileSystem',
+      'download',
       args
     );
   }
@@ -166,8 +166,8 @@ export class AWMobileFileSystem extends AWPlugin {
     AWProxy.exec(
       success,
       error,
-      "AWMobileFileSystem",
-      "upload",
+      'AWMobileFileSystem',
+      'upload',
       args
     );
   }

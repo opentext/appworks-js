@@ -24,7 +24,7 @@ var AWCalendar = (function (_super) {
             secondReminderMinutes: null,
             recurrence: null,
             recurrenceInterval: 1,
-            recurrenceWeekstart: "MO",
+            recurrenceWeekstart: 'MO',
             recurrenceByDay: null,
             recurrenceByMonthDay: null,
             recurrenceEndDate: null,
@@ -36,32 +36,32 @@ var AWCalendar = (function (_super) {
     };
     AWCalendar.prototype.hasReadPermission = function (successHandler, errorHandler) {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "hasReadPermission", []);
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'hasReadPermission', []);
         });
     };
     AWCalendar.prototype.requestReadPermission = function (successHandler, errorHandler) {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "requestReadPermission", []);
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'requestReadPermission', []);
         });
     };
     AWCalendar.prototype.hasWritePermission = function (successHandler, errorHandler) {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "hasWritePermission", []);
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'hasWritePermission', []);
         });
     };
     AWCalendar.prototype.requestWritePermission = function (successHandler, errorHandler) {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "requestWritePermission", []);
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'requestWritePermission', []);
         });
     };
     AWCalendar.prototype.hasReadWritePermission = function (successHandler, errorHandler) {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "hasReadWritePermission", []);
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'hasReadWritePermission', []);
         });
     };
     AWCalendar.prototype.requestReadWritePermission = function (successHandler, errorHandler) {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "requestReadWritePermission", []);
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'requestReadWritePermission', []);
         });
     };
     AWCalendar.prototype.createCalendar = function (options, successHandler, errorHandler) {
@@ -70,23 +70,23 @@ var AWCalendar = (function (_super) {
             calendarColor: null
         }; }
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "createCalendar", [options]);
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'createCalendar', [options]);
         });
     };
     AWCalendar.prototype.deleteCalendar = function (calendarName, successHandler, errorHandler) {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "deleteCalendar", [{ calendarName: calendarName }]);
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'deleteCalendar', [{ calendarName: calendarName }]);
         });
     };
     AWCalendar.prototype.openCalendar = function (date, successHandler, errorHandler) {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "openCalendar", [{ date: date.getTime() }]);
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'openCalendar', [{ date: date.getTime() }]);
         });
     };
     AWCalendar.prototype.createEventWithOptions = function (title, location, notes, startDate, endDate, options, successHandler, errorHandler) {
         if (options === void 0) { options = AWCalendar.getCalendarOptions(); }
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "createEventWithOptions", [{
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'createEventWithOptions', [{
                     title: title,
                     location: location,
                     notes: notes,
@@ -102,7 +102,7 @@ var AWCalendar = (function (_super) {
     AWCalendar.prototype.createEventInteractivelyWithOptions = function (title, location, notes, startDate, endDate, options, successHandler, errorHandler) {
         if (options === void 0) { options = AWCalendar.getCalendarOptions(); }
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "createEventInteractively", [{
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'createEventInteractively', [{
                     title: title,
                     location: location,
                     notes: notes,
@@ -118,7 +118,7 @@ var AWCalendar = (function (_super) {
     AWCalendar.prototype.findEventWithOptions = function (title, location, notes, startDate, endDate, options, successHandler, errorHandler) {
         if (options === void 0) { options = AWCalendar.getCalendarOptions(); }
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "findEventWithOptions", [{
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'findEventWithOptions', [{
                     title: title,
                     location: location,
                     notes: notes,
@@ -133,12 +133,12 @@ var AWCalendar = (function (_super) {
     };
     AWCalendar.prototype.findAllEventsInNamedCalendar = function (calendarName, successHandler, errorHandler) {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "findAllEventsInNamedCalendar", [{ calendarName: calendarName }]);
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'findAllEventsInNamedCalendar', [{ calendarName: calendarName }]);
         });
     };
     AWCalendar.prototype.deleteEvent = function (title, location, notes, startDate, endDate, successHandler, errorHandler) {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "deleteEvent", [{
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'deleteEvent', [{
                     title: title,
                     location: location,
                     startTime: startDate.getTime(),
@@ -148,7 +148,7 @@ var AWCalendar = (function (_super) {
     };
     AWCalendar.prototype.deleteEventFromNamedCalendar = function (title, location, notes, startDate, endDate, calendarName, successHandler, errorHandler) {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "deleteEventFromNamedCalendar", [{
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'deleteEventFromNamedCalendar', [{
                     title: title,
                     location: location,
                     startTime: startDate.getTime(),
@@ -161,7 +161,7 @@ var AWCalendar = (function (_super) {
         if (options === void 0) { options = AWCalendar.getCalendarOptions(); }
         if (newOptions === void 0) { newOptions = AWCalendar.getCalendarOptions(); }
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "modifyEventWithOptions", [{
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'modifyEventWithOptions', [{
                     title: title,
                     location: location,
                     notes: notes,
@@ -187,12 +187,12 @@ var AWCalendar = (function (_super) {
     };
     AWCalendar.prototype.listCalendars = function (successHandler, errorHandler) {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "listCalendars", []);
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'listCalendars', []);
         });
     };
     AWCalendar.prototype.listEventsInRange = function (startDate, endDate, successHandler, errorHandler) {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, "AWCalendar", "listEventsInRange", [{
+            proxy_1.AWProxy.exec(successHandler || resolve, errorHandler || reject, 'AWCalendar', 'listEventsInRange', [{
                     startTime: startDate.getTime(),
                     endTime: endDate.getTime()
                 }]);

@@ -20,24 +20,24 @@ var AWMenu = (function (_super) {
     AWMenu.prototype.push = function (items) {
         var _this = this;
         var args = [items];
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWMenu", "push", args);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWMenu', 'push', args);
     };
     AWMenu.prototype.setMenu = function (menuSections) {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.exec(resolve, reject, "AWMenu", "setMenu", [menuSections]);
+            proxy_1.AWProxy.exec(resolve, reject, 'AWMenu', 'setMenu', [menuSections]);
         });
     };
     AWMenu.prototype.didOpenMenuItem = function (callback) {
         var _this = this;
-        proxy_1.AWProxy.exec(callback, (function () { return _this.errorHandler; })(), "AWMenu", "receive", []);
+        proxy_1.AWProxy.exec(callback, (function () { return _this.errorHandler; })(), 'AWMenu', 'receive', []);
     };
     AWMenu.prototype.openListener = function (listener) {
         var _this = this;
-        proxy_1.AWProxy.exec(listener, (function () { return _this.errorHandler; })(), "AWMenu", "receive", []);
+        proxy_1.AWProxy.exec(listener, (function () { return _this.errorHandler; })(), 'AWMenu', 'receive', []);
     };
     AWMenu.prototype.showMenu = function (shouldShowMenu) {
         var _this = this;
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), "AWMenu", "showMenu", [shouldShowMenu]);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWMenu', 'showMenu', [shouldShowMenu]);
     };
     AWMenu.prototype.didTapMenuItem = function (listener) {
         return this.openListener(listener);

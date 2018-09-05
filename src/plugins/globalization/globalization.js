@@ -19,7 +19,7 @@ var AWGlobalization = (function (_super) {
         return _super.call(this, util_1.noop, util_1.noop) || this;
     }
     AWGlobalization.prototype.getPreferredLanguage = function (successFn, errorFn) {
-        proxy_1.AWProxy.exec(successFn, errorFn, "AWGlobalization", "getPreferredLanguage", []);
+        proxy_1.AWProxy.exec(successFn, errorFn, 'AWGlobalization', 'getPreferredLanguage', []);
     };
     return AWGlobalization;
 }(plugin_1.AWPlugin));

@@ -1,6 +1,6 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
-import {MenuSection} from "./index";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
+import {MenuSection} from './index';
 
 export class AWMenu extends AWPlugin {
   push(items: any) {
@@ -8,8 +8,8 @@ export class AWMenu extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWMenu",
-      "push",
+      'AWMenu',
+      'push',
       args
     );
   }
@@ -19,8 +19,8 @@ export class AWMenu extends AWPlugin {
       AWProxy.exec(
         resolve,
         reject,
-        "AWMenu",
-        "setMenu",
+        'AWMenu',
+        'setMenu',
         [menuSections]
       );
     });
@@ -30,8 +30,8 @@ export class AWMenu extends AWPlugin {
     AWProxy.exec(
       callback,
       (() => this.errorHandler)(),
-      "AWMenu",
-      "receive",
+      'AWMenu',
+      'receive',
       []
     );
   }
@@ -40,8 +40,8 @@ export class AWMenu extends AWPlugin {
     AWProxy.exec(
       listener,
       (() => this.errorHandler)(),
-      "AWMenu",
-      "receive",
+      'AWMenu',
+      'receive',
       []
     );
   }
@@ -50,8 +50,8 @@ export class AWMenu extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWMenu",
-      "showMenu",
+      'AWMenu',
+      'showMenu',
       [shouldShowMenu]
     );
   }

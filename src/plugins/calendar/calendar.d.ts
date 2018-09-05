@@ -1,5 +1,5 @@
-import { AWPlugin } from "../../common/plugin";
-import { AWCalendarInterface, CalendarCreateOptions, CalendarOptions } from "./index";
+import { AWPlugin } from '../../common/plugin';
+import { AWCalendarInterface, CalendarCreateOptions, CalendarOptions } from './index';
 export declare class AWCalendar extends AWPlugin implements AWCalendarInterface {
     constructor();
     static getCalendarOptions(): CalendarOptions;

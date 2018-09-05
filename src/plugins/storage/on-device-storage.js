@@ -41,7 +41,7 @@ var OnDeviceStorage = (function () {
         return new Promise(function (resolve, reject) {
             proxy_1.AWProxy.requestFileSystem(proxy_1.AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
             function gotFS(fileSystem) {
-                fileSystem.root.getFile("appworksjs.cache.json", {
+                fileSystem.root.getFile('appworksjs.cache.json', {
                     create: true,
                     exclusive: false
                 }, gotFileEntry, reject);
@@ -66,14 +66,14 @@ var OnDeviceStorage = (function () {
         return new Promise(function (resolve, reject) {
             proxy_1.AWProxy.requestFileSystem(proxy_1.AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
             function gotFS(fileSystem) {
-                fileSystem.root.getFile("appworksjs.cache.json", { create: true, exclusive: false }, gotFileEntry, reject);
+                fileSystem.root.getFile('appworksjs.cache.json', { create: true, exclusive: false }, gotFileEntry, reject);
             }
             function gotFileEntry(fileEntry) {
                 fileEntry.createWriter(gotFileWriter, reject);
             }
             function gotFileWriter(writer) {
                 writer.onwriteend = function () {
-                    console.info("cache data backed up successfully");
+                    console.info('cache data backed up successfully');
                 };
                 writer.write(data);
                 resolve();

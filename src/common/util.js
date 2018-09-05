@@ -9,7 +9,7 @@ function noop() {
 exports.noop = noop;
 function isFunction(functionToCheck) {
     var getType = {};
-    return functionToCheck && getType.toString.call(functionToCheck) === "[object Function]";
+    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
 }
 exports.isFunction = isFunction;
 function isDesktopEnv() {

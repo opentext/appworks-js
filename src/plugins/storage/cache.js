@@ -67,7 +67,7 @@ var AWCache = (function (_super) {
         if (this.usePersistentStorage())
             proxy_1.AWProxy.persistentStorage().loadPersistentData()
                 .then(function () {
-                return console.log("AWCache: Successfully loaded persistent data into local storage");
+                return console.log('AWCache: Successfully loaded persistent data into local storage');
             }, function (err) {
                 return console.error("AWCache: Failed to load persistent data into local storage - " + err.toString());
             });

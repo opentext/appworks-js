@@ -1,5 +1,5 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
 
 export class AWFileChooser extends AWPlugin {
   selectAndUpload(action: string) {
@@ -7,8 +7,8 @@ export class AWFileChooser extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWFileChooser",
-      "open",
+      'AWFileChooser',
+      'open',
       args
     );
   }

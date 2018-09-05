@@ -1,6 +1,6 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
-import {noop} from "../../common/util";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
+import {noop} from '../../common/util';
 
 export class AWLauncher extends AWPlugin {
 
@@ -12,8 +12,8 @@ export class AWLauncher extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWLauncher",
-      "getLaunchData",
+      'AWLauncher',
+      'getLaunchData',
       []
     );
   }
@@ -22,8 +22,8 @@ export class AWLauncher extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWLauncher",
-      "getLaunchURL",
+      'AWLauncher',
+      'getLaunchURL',
       []
     );
   }
@@ -32,8 +32,8 @@ export class AWLauncher extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWLauncher",
-      "clearLaunchData",
+      'AWLauncher',
+      'clearLaunchData',
       []
     );
   }
@@ -42,8 +42,8 @@ export class AWLauncher extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWLauncher",
-      "clearLaunchURL",
+      'AWLauncher',
+      'clearLaunchURL',
       []
     );
   }
