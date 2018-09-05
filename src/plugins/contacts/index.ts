@@ -1,4 +1,4 @@
-export * from "./contacts";
+export * from './contacts';
 
 export interface Navigator {
   /** Provides access to the device contacts database. */
@@ -11,33 +11,33 @@ export interface Contacts {
    * The values will correspond to the type of string literals in ContactFieldType.
    */
   fieldType: {
-    addresses: "addresses",
-    birthday: "birthday",
-    categories: "categories",
-    country: "country",
-    department: "department",
-    displayName: "displayName",
-    emails: "emails",
-    familyName: "familyName",
-    formatted: "formatted",
-    givenName: "givenName",
-    honorificPrefix: "honorificPrefix",
-    honorificSuffix: "honorificSuffix",
-    id: "id",
-    ims: "ims",
-    locality: "locality",
-    middleName: "middleName",
-    name: "name",
-    nickname: "nickname",
-    note: "note",
-    organizations: "organizations",
-    phoneNumbers: "phoneNumbers",
-    photos: "photos",
-    postalCode: "postalCode",
-    region: "region",
-    streetAddress: "streetAddress",
-    title: "title",
-    urls: "urls"
+    addresses: 'addresses',
+    birthday: 'birthday',
+    categories: 'categories',
+    country: 'country',
+    department: 'department',
+    displayName: 'displayName',
+    emails: 'emails',
+    familyName: 'familyName',
+    formatted: 'formatted',
+    givenName: 'givenName',
+    honorificPrefix: 'honorificPrefix',
+    honorificSuffix: 'honorificSuffix',
+    id: 'id',
+    ims: 'ims',
+    locality: 'locality',
+    middleName: 'middleName',
+    name: 'name',
+    nickname: 'nickname',
+    note: 'note',
+    organizations: 'organizations',
+    phoneNumbers: 'phoneNumbers',
+    photos: 'photos',
+    postalCode: 'postalCode',
+    region: 'region',
+    streetAddress: 'streetAddress',
+    title: 'title',
+    urls: 'urls'
   };
 
   /**
@@ -299,33 +299,33 @@ export interface ContactFindOptions {
 
 /** these are the string values that are valid for the desired fields in ContactFindOptions */
 export declare type ContactFieldType =
-  "addresses"
-  | "birthday"
-  | "categories"
-  | "country"
-  | "department"
-  | "displayName"
-  | "emails"
-  | "familyName"
-  | "formatted"
-  | "givenName"
-  | "honorificPrefix"
-  | "honorificSuffix"
-  | "id"
-  | "ims"
-  | "locality"
-  | "middleName"
-  | "name"
-  | "nickname"
-  | "note"
-  | "organizations"
-  | "phoneNumbers"
-  | "photos"
-  | "postalCode"
-  | "region"
-  | "streetAddress"
-  | "title"
-  | "urls";
+  'addresses'
+  | 'birthday'
+  | 'categories'
+  | 'country'
+  | 'department'
+  | 'displayName'
+  | 'emails'
+  | 'familyName'
+  | 'formatted'
+  | 'givenName'
+  | 'honorificPrefix'
+  | 'honorificSuffix'
+  | 'id'
+  | 'ims'
+  | 'locality'
+  | 'middleName'
+  | 'name'
+  | 'nickname'
+  | 'note'
+  | 'organizations'
+  | 'phoneNumbers'
+  | 'photos'
+  | 'postalCode'
+  | 'region'
+  | 'streetAddress'
+  | 'title'
+  | 'urls';
 
 export declare var ContactFindOptions: {
   /** Constructor for ContactFindOptions object */

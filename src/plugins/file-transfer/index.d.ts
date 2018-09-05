@@ -1,5 +1,5 @@
-import { FileEntry } from "../file/index";
-export * from "./file-transfer";
+import { FileEntry } from '../file/index';
+export * from './file-transfer';
 /**
  * The FileTransfer object provides a way to upload files using an HTTP multi-part POST request,
  * and to download files as well.

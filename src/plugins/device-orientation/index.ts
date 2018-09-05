@@ -1,4 +1,4 @@
-export * from "./compass";
+export * from './compass';
 
 export interface Navigator {
   /**

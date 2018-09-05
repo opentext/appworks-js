@@ -1,4 +1,4 @@
-import { AWPlugin } from "../../common/plugin";
+import { AWPlugin } from '../../common/plugin';
 export declare class AWPage extends AWPlugin {
     setPageUrl(url: string): void;
     openModalAppWebView(url: string, title: string, closeTitle: string): void;

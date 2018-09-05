@@ -1,7 +1,7 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
-import {noop} from "../../common/util";
-import {AWCache} from "../storage/cache";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
+import {noop} from '../../common/util';
+import {AWCache} from '../storage/cache';
 
 export class AWOfflineManager extends AWPlugin {
 
@@ -17,13 +17,13 @@ export class AWOfflineManager extends AWPlugin {
     super(noop, noop);
 
     let document;
-    this.cacheKey = "__appworksjs.deferredQueue";
+    this.cacheKey = '__appworksjs.deferredQueue';
     this.cache = new AWCache();
     this.options = options || {preserveEvents: false};
 
     document = AWProxy.document();
     // process deferred queue when network status changes
-    document.addEventListener("online", () => {
+    document.addEventListener('online', () => {
       this.processDeferredQueue();
     });
 

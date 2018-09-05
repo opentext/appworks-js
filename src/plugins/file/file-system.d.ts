@@ -1,11 +1,13 @@
-import { AWPlugin } from "../../common/plugin";
-import { DesktopHostFileSystem, FileDetails, FileDialogOptions, SaveDialogOptions } from "./index";
+import { AWPlugin } from '../../common/plugin';
+import { DesktopHostFileSystem, FileDetails, FileDialogOptions, SaveDialogOptions } from './index';
 export declare class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     desktopEnvError: Error;
     constructor();
     getPath(name: string, successCallback: (result: string) => void, errorCallback?: (result: Error) => void): void;
     exists(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     isDir(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
+    isOpen(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
+    setReadOnly(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     createFile(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void, data?: any, append?: boolean): void;
     readFile(path: string, successCallback: (result: any) => void, errorCallback?: (result: Error) => void): void;
     createDirectory(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
@@ -17,6 +19,7 @@ export declare class AWFileSystem extends AWPlugin implements DesktopHostFileSys
     showSaveDialog(opts: SaveDialogOptions, successCallback: (result: string) => void, errorCallback?: (result: Error) => void): void;
     showDirSelector(opts: FileDialogOptions, successCallback: (result: string[]) => void, errorCallback?: (result: Error) => void): void;
     showFileSelector(opts: FileDialogOptions, successCallback: (result: string[]) => void, errorCallback?: (result: Error) => void): void;
+    onFileOpen(openFileCallback: (filePath: string) => void, successCallback: (result: string[]) => void, errorCallback?: (result: Error) => void): void;
     /**
      * The methods of this class should only be called from within an AppWorks desktop
      * environment.

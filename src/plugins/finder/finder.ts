@@ -1,5 +1,5 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
 
 export class AWFinder extends AWPlugin {
   open(path: string, filename: string) {
@@ -7,8 +7,8 @@ export class AWFinder extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWFinder",
-      "open",
+      'AWFinder',
+      'open',
       args
     );
   }
@@ -21,8 +21,8 @@ export class AWFinder extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWFinder",
-      "list",
+      'AWFinder',
+      'list',
       [path]
     );
   }
@@ -31,8 +31,8 @@ export class AWFinder extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWFinder",
-      "share",
+      'AWFinder',
+      'share',
       [filename]
     );
   }
@@ -41,8 +41,8 @@ export class AWFinder extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWFinder",
-      "openDirect",
+      'AWFinder',
+      'openDirect',
       [filename]
     );
   }

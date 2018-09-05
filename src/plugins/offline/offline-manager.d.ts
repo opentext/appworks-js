@@ -1,4 +1,4 @@
-import { AWPlugin } from "../../common/plugin";
+import { AWPlugin } from '../../common/plugin';
 export declare class AWOfflineManager extends AWPlugin {
     status: string;
     online: boolean;

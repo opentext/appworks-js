@@ -1,4 +1,4 @@
-export * from "./media";
+export * from './media';
 /**
  * This plugin provides the ability to record and play back audio files on a device.
  * NOTE: The current implementation does not adhere to a W3C specification for media capture,

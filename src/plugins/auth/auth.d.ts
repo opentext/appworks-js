@@ -1,4 +1,4 @@
-import { AWPlugin } from "../../common/plugin";
+import { AWPlugin } from '../../common/plugin';
 export declare class AWAuth extends AWPlugin {
     authenticate(force?: boolean): void;
     /**

@@ -1,9 +1,9 @@
-import {AWProxy} from "../../common/proxy";
-import {AsyncStorage, PersistentStorage} from "./index";
+import {AWProxy} from '../../common/proxy';
+import {AsyncStorage, PersistentStorage} from './index';
 
 export class DesktopStorage implements PersistentStorage {
 
-  private static readonly PLUGIN_NOT_FOUND: Error = new Error("Unable to resolve AWStorage desktop plugin");
+  private static readonly PLUGIN_NOT_FOUND: Error = new Error('Unable to resolve AWStorage desktop plugin');
   private desktopStorage: AsyncStorage;
 
   constructor(desktopPlugin: AsyncStorage) {

@@ -1,4 +1,4 @@
-import { DesktopWebviewInterface, InAppBrowserEvent } from "./index";
+import { DesktopWebviewInterface, InAppBrowserEvent } from './index';
 export declare class DesktopWebview implements DesktopWebviewInterface {
     private id;
     constructor();

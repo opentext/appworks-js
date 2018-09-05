@@ -1,11 +1,11 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
-import {noop} from "../../common/util";
-import {DesktopHostFileSystem, FileDetails, FileDialogOptions, SaveDialogOptions} from "./index";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
+import {noop} from '../../common/util';
+import {DesktopHostFileSystem, FileDetails, FileDialogOptions, SaveDialogOptions} from './index';
 
 export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
 
-  desktopEnvError: Error = new Error("This method is only available in the AppWorks Desktop environment");
+  desktopEnvError: Error = new Error('This method is only available in the AppWorks Desktop environment');
 
   constructor() {
     super(noop, noop);
@@ -18,8 +18,8 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     AWProxy.exec(
       successCallback,
       errorCallback,
-      "AWFileSystem",
-      "getPath",
+      'AWFileSystem',
+      'getPath',
       [name]
     );
   }
@@ -31,8 +31,8 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     AWProxy.exec(
       successCallback,
       errorCallback,
-      "AWFileSystem",
-      "exists",
+      'AWFileSystem',
+      'exists',
       [path]
     );
   }
@@ -44,8 +44,34 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     AWProxy.exec(
       successCallback,
       errorCallback,
-      "AWFileSystem",
-      "isDir",
+      'AWFileSystem',
+      'isDir',
+      [path]
+    );
+  }
+
+  isOpen(path: string,
+         successCallback: (result: boolean) => void,
+         errorCallback?: (result: Error) => void): void {
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      'AWFileSystem',
+      'isOpen',
+      [path]
+    );
+  }
+
+  setReadOnly(path: string,
+              successCallback: (result: boolean) => void,
+              errorCallback?: (result: Error) => void): void {
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      'AWFileSystem',
+      'setReadOnly',
       [path]
     );
   }
@@ -59,8 +85,8 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     AWProxy.exec(
       successCallback,
       errorCallback,
-      "AWFileSystem",
-      "createFile",
+      'AWFileSystem',
+      'createFile',
       [path, data, append]
     );
   }
@@ -72,8 +98,8 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     AWProxy.exec(
       successCallback,
       errorCallback,
-      "AWFileSystem",
-      "readFile",
+      'AWFileSystem',
+      'readFile',
       [path]
     );
   }
@@ -85,8 +111,8 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     AWProxy.exec(
       successCallback,
       errorCallback,
-      "AWFileSystem",
-      "createDirectory",
+      'AWFileSystem',
+      'createDirectory',
       [path]
     );
   }
@@ -98,8 +124,8 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     AWProxy.exec(
       successCallback,
       errorCallback,
-      "AWFileSystem",
-      "copy",
+      'AWFileSystem',
+      'copy',
       [from, to]
     );
   }
@@ -111,8 +137,8 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     AWProxy.exec(
       successCallback,
       errorCallback,
-      "AWFileSystem",
-      "open",
+      'AWFileSystem',
+      'open',
       [path]
     );
   }
@@ -124,8 +150,8 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     AWProxy.exec(
       successCallback,
       errorCallback,
-      "AWFileSystem",
-      "reveal",
+      'AWFileSystem',
+      'reveal',
       [path]
     );
   }
@@ -137,8 +163,8 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     AWProxy.exec(
       successCallback,
       errorCallback,
-      "AWFileSystem",
-      "getDetails",
+      'AWFileSystem',
+      'getDetails',
       [path]
     );
   }
@@ -150,8 +176,8 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     AWProxy.exec(
       successCallback,
       errorCallback,
-      "AWFileSystem",
-      "listDirContents",
+      'AWFileSystem',
+      'listDirContents',
       [path]
     );
   }
@@ -163,8 +189,8 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     AWProxy.exec(
       successCallback,
       errorCallback,
-      "AWFileSystem",
-      "showSaveDialog",
+      'AWFileSystem',
+      'showSaveDialog',
       [opts]
     );
   }
@@ -176,8 +202,8 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     AWProxy.exec(
       successCallback,
       errorCallback,
-      "AWFileSystem",
-      "showDirSelector",
+      'AWFileSystem',
+      'showDirSelector',
       [opts]
     );
   }
@@ -189,9 +215,22 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     AWProxy.exec(
       successCallback,
       errorCallback,
-      "AWFileSystem",
-      "showFileSelector",
+      'AWFileSystem',
+      'showFileSelector',
       [opts]
+    );
+  }
+
+  onFileOpen(openFileCallback: (filePath: string) => void,
+             successCallback: (result: string[]) => void,
+             errorCallback?: (result: Error) => void): void {
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      'AWFileSystem',
+      'onFileOpen',
+      [openFileCallback]
     );
   }
 

@@ -1,4 +1,4 @@
-import { AWPlugin } from "../../common/plugin";
+import { AWPlugin } from '../../common/plugin';
 export declare class AWKeyboard extends AWPlugin {
     constructor();
     hideKeyboardAccessoryBar(hide: boolean): void;

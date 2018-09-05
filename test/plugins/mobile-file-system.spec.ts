@@ -19,6 +19,10 @@ describe("MobileFileSystem", () => {
     let o = new AWMobileFileSystem(noop, noop);
     expect(o.exists).to.not.equal(undefined);
   });
+  it("should define an isOpen function", () => {
+    let o = new AWMobileFileSystem(noop, noop);
+    expect(o.isOpen).to.not.equal(undefined);
+  });
   it("should define an rename function", () => {
     let o = new AWMobileFileSystem(noop, noop);
     expect(o.rename).to.not.equal(undefined);
@@ -34,6 +38,10 @@ describe("MobileFileSystem", () => {
   it("should define an remove function", () => {
     let o = new AWMobileFileSystem(noop, noop);
     expect(o.remove).to.not.equal(undefined);
+  });
+  it("should define an read function", () => {
+    let o = new AWMobileFileSystem(noop, noop);
+    expect(o.readFile).to.not.equal(undefined);
   });
   it("should define an open function", () => {
     let o = new AWMobileFileSystem(noop, noop);

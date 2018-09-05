@@ -1,13 +1,13 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
 
 export class AWComponent extends AWPlugin {
   open(successHandler: any, errorHandler?: any, args?: any[]) {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWComponent",
-      "open",
+      'AWComponent',
+      'open',
       args || []
     );
   }
@@ -16,8 +16,8 @@ export class AWComponent extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWComponent",
-      "list",
+      'AWComponent',
+      'list',
       args || []
     );
   }
@@ -26,8 +26,8 @@ export class AWComponent extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWComponent",
-      "check",
+      'AWComponent',
+      'check',
       args || []
     );
   }
@@ -36,8 +36,8 @@ export class AWComponent extends AWPlugin {
     AWProxy.exec(
       successHandler,
       errorHandler,
-      "AWComponent",
-      "close",
+      'AWComponent',
+      'close',
       args || []
     );
   }

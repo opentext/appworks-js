@@ -23,6 +23,10 @@ describe("FileSystem", () => {
     expect(underTest.isDir).to.not.equal(undefined);
   });
 
+  it("should define an isOpen method", () => {
+    expect(underTest.isOpen).to.not.equal(undefined);
+  });
+
   it("should define a createFile method", () => {
     expect(underTest.createFile).to.not.equal(undefined);
   });
@@ -65,6 +69,10 @@ describe("FileSystem", () => {
 
   it("should define an showFileSelector method", () => {
     expect(underTest.showFileSelector).to.not.equal(undefined);
+  });
+
+  it("should define an onFileOpen method", () => {
+    expect(underTest.onFileOpen).to.not.equal(undefined);
   });
 
   it("should throw an exception when a validateEnv is called outside of the Desktop environment", (done) => {

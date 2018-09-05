@@ -1,13 +1,13 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
 
 export class QRReader extends AWPlugin {
   scan() {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWQRCodeReader",
-      "scan",
+      'AWQRCodeReader',
+      'scan',
       []
     );
   }
@@ -16,8 +16,8 @@ export class QRReader extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWQRCodeReader",
-      "rename",
+      'AWQRCodeReader',
+      'rename',
       []
     );
   }
@@ -26,8 +26,8 @@ export class QRReader extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWQRCodeReader",
-      "barcode",
+      'AWQRCodeReader',
+      'barcode',
       [multiple]
     );
   }

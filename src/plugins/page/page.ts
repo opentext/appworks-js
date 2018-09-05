@@ -1,13 +1,13 @@
-import {AWPlugin} from "../../common/plugin";
-import {AWProxy} from "../../common/proxy";
+import {AWPlugin} from '../../common/plugin';
+import {AWProxy} from '../../common/proxy';
 
 export class AWPage extends AWPlugin {
   setPageUrl(url: string) {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWPage",
-      "setPageUrl",
+      'AWPage',
+      'setPageUrl',
       [url]
     );
   }
@@ -16,21 +16,21 @@ export class AWPage extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWPage",
-      "showModalAppWebView",
+      'AWPage',
+      'showModalAppWebView',
       [url, title, closeTitle]
     );
   }
 
   openModalExternalWebView(url: string, title: string, closeTitle: string, options?: object) {
-    if (typeof options === "undefined" || !options) {
+    if (typeof options === 'undefined' || !options) {
       options = {};
     }
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWPage",
-      "showModalExternalWebView",
+      'AWPage',
+      'showModalExternalWebView',
       [url, title, closeTitle, options]
     );
   }
@@ -39,8 +39,8 @@ export class AWPage extends AWPlugin {
     AWProxy.exec(
       callback,
       (() => this.errorHandler)(),
-      "AWPage",
-      "setModalAppWebViewActionCallback",
+      'AWPage',
+      'setModalAppWebViewActionCallback',
       [actionTitle]
     );
   }
@@ -49,8 +49,8 @@ export class AWPage extends AWPlugin {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
-      "AWPage",
-      "closeModalAppWebView",
+      'AWPage',
+      'closeModalAppWebView',
       []
     );
   }
@@ -59,8 +59,8 @@ export class AWPage extends AWPlugin {
     AWProxy.exec(
       success,
       error,
-      "AWPage",
-      "video",
+      'AWPage',
+      'video',
       [url]
     );
   }

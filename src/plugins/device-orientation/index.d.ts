@@ -1,4 +1,4 @@
-export * from "./compass";
+export * from './compass';
 export interface Navigator {
     /**
      * This plugin provides access to the device's compass. The compass is a sensor that detects

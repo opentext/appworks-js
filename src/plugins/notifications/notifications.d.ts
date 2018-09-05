@@ -1,4 +1,4 @@
-import { AWPlugin } from "../../common/plugin";
+import { AWPlugin } from '../../common/plugin';
 export declare class AWNotificationManager extends AWPlugin {
     constructor();
     enablePushNotifications(handler: any, errorHandler: any, includeSeqNo: boolean): void;

@@ -1,4 +1,4 @@
-import { AWPlugin } from "../../common/plugin";
+import { AWPlugin } from '../../common/plugin';
 export declare class Print extends AWPlugin {
     print(options?: any): void;
     getPrinters(): void;

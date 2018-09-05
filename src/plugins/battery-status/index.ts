@@ -15,7 +15,7 @@ export interface Window {
    * @param listener  the function that executes when the event fires. The function is
    *                  passed an BatteryStatusEvent object as a parameter.
    */
-  addEventListener(type: "batterystatus", listener: (ev: BatteryStatusEvent) => any, useCapture?: boolean): void;
+  addEventListener(type: 'batterystatus', listener: (ev: BatteryStatusEvent) => any, useCapture?: boolean): void;
 
   /**
    * Adds a listener for an event from the BatteryStatus plugin.
@@ -29,7 +29,7 @@ export interface Window {
    * @param listener  the function that executes when the event fires. The function is
    *                  passed an BatteryStatusEvent object as a parameter.
    */
-  addEventListener(type: "batterycritical", listener: (ev: BatteryStatusEvent) => any, useCapture?: boolean): void;
+  addEventListener(type: 'batterycritical', listener: (ev: BatteryStatusEvent) => any, useCapture?: boolean): void;
 
   /**
    * Adds a listener for an event from the BatteryStatus plugin.
@@ -43,7 +43,7 @@ export interface Window {
    * @param listener  the function that executes when the event fires. The function is
    *                  passed an BatteryStatusEvent object as a parameter.
    */
-  addEventListener(type: "batterylow", listener: (ev: BatteryStatusEvent) => any, useCapture?: boolean): void;
+  addEventListener(type: 'batterylow', listener: (ev: BatteryStatusEvent) => any, useCapture?: boolean): void;
 
   /**
    * Adds a listener for an event from the BatteryStatus plugin.
@@ -71,7 +71,7 @@ export interface Window {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an BatteryStatusEvent object as a parameter.
    */
-  removeEventListener(type: "batterystatus", listener: (ev: BatteryStatusEvent) => any, useCapture?: boolean): void;
+  removeEventListener(type: 'batterystatus', listener: (ev: BatteryStatusEvent) => any, useCapture?: boolean): void;
 
   /**
    * Removes a listener for an event from the BatteryStatus plugin.
@@ -85,7 +85,7 @@ export interface Window {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an BatteryStatusEvent object as a parameter.
    */
-  removeEventListener(type: "batterycritical", listener: (ev: BatteryStatusEvent) => any, useCapture?: boolean): void;
+  removeEventListener(type: 'batterycritical', listener: (ev: BatteryStatusEvent) => any, useCapture?: boolean): void;
 
   /**
    * Removes a listener for an event from the BatteryStatus plugin.
@@ -99,7 +99,7 @@ export interface Window {
    * @param callback  the function that executes when the event fires. The function is
    *                  passed an BatteryStatusEvent object as a parameter.
    */
-  removeEventListener(type: "batterylow", listener: (ev: BatteryStatusEvent) => any, useCapture?: boolean): void;
+  removeEventListener(type: 'batterylow', listener: (ev: BatteryStatusEvent) => any, useCapture?: boolean): void;
 
   /**
    * Removes a listener for an event from the BatteryStatus plugin.

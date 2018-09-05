@@ -1,32 +1,32 @@
-import {MockAccelerometer} from "../../test/mock/accelerometer";
-import {MockCamera} from "../../test/mock/camera";
-import {MockCapture} from "../../test/mock/capture";
-import {MockCompass} from "../../test/mock/compass";
-import {MockConnection} from "../../test/mock/connection";
-import {MockContacts} from "../../test/mock/contacts";
-import {MockFileTransfer} from "../../test/mock/file-transfer";
-import {MockGeolocation} from "../../test/mock/geolocation";
-import {MockMedia} from "../../test/mock/media";
-import {MockNotification} from "../../test/mock/notifications";
-import {PersistentStorageMock} from "../../test/mock/persistent-storage";
-import {MockVibrate} from "../../test/mock/vibrate";
-import {CameraInterface} from "../plugins/camera/index";
-import {Contacts} from "../plugins/contacts/index";
-import {Accelerometer} from "../plugins/device-motion/index";
-import {Compass} from "../plugins/device-orientation/index";
-import {Device} from "../plugins/device/index";
-import {Notification} from "../plugins/dialogs/index";
-import {FileTransferInterface} from "../plugins/file-transfer/index";
-import {FileError, FileSystem} from "../plugins/file/index";
-import {LocalFileSystem} from "../plugins/file/local-file-system";
-import {MediaInterface} from "../plugins/media/index";
-import {ConnectionInterface} from "../plugins/network-information/index";
-import {DesktopStorage} from "../plugins/storage/desktop-storage";
-import {PersistentStorage} from "../plugins/storage/index";
-import {OnDeviceStorage} from "../plugins/storage/on-device-storage";
-import {AWStorage} from "../plugins/storage/storage";
-import {DesktopWebview} from "../plugins/webview/desktop-webview";
-import {isFunction, noop} from "./util";
+import {MockAccelerometer} from '../../test/mock/accelerometer';
+import {MockCamera} from '../../test/mock/camera';
+import {MockCapture} from '../../test/mock/capture';
+import {MockCompass} from '../../test/mock/compass';
+import {MockConnection} from '../../test/mock/connection';
+import {MockContacts} from '../../test/mock/contacts';
+import {MockFileTransfer} from '../../test/mock/file-transfer';
+import {MockGeolocation} from '../../test/mock/geolocation';
+import {MockMedia} from '../../test/mock/media';
+import {MockNotification} from '../../test/mock/notifications';
+import {PersistentStorageMock} from '../../test/mock/persistent-storage';
+import {MockVibrate} from '../../test/mock/vibrate';
+import {CameraInterface} from '../plugins/camera/index';
+import {Contacts} from '../plugins/contacts/index';
+import {Accelerometer} from '../plugins/device-motion/index';
+import {Compass} from '../plugins/device-orientation/index';
+import {Device} from '../plugins/device/index';
+import {Notification} from '../plugins/dialogs/index';
+import {FileTransferInterface} from '../plugins/file-transfer/index';
+import {FileError, FileSystem} from '../plugins/file/index';
+import {LocalFileSystem} from '../plugins/file/local-file-system';
+import {MediaInterface} from '../plugins/media/index';
+import {ConnectionInterface} from '../plugins/network-information/index';
+import {DesktopStorage} from '../plugins/storage/desktop-storage';
+import {PersistentStorage} from '../plugins/storage/index';
+import {OnDeviceStorage} from '../plugins/storage/on-device-storage';
+import {AWStorage} from '../plugins/storage/storage';
+import {DesktopWebview} from '../plugins/webview/desktop-webview';
+import {isFunction, noop} from './util';
 
 declare const Media: {
   new(src: string,
@@ -98,7 +98,7 @@ export class AWProxy {
         AWProxy.execMobile(successHandler, errorHandler, name, method, args);
       }
     } catch (err) {
-      console.error("No proxy objects defined - tried [cordova, __aw_plugin_proxy]", err);
+      console.error('No proxy objects defined - tried [cordova, __aw_plugin_proxy]', err);
       if (isFunction(errorHandler)) {
         errorHandler(err);
       }
@@ -106,17 +106,17 @@ export class AWProxy {
   }
 
   static accelerometer(): Accelerometer {
-    const _accelerometer = typeof "navigator" !== undefined ? navigator.accelerometer : new MockAccelerometer();
+    const _accelerometer = typeof 'navigator' !== undefined ? navigator.accelerometer : new MockAccelerometer();
     return _accelerometer;
   }
 
   static camera(): CameraInterface {
-    const _camera = typeof navigator !== "undefined" ? navigator.camera : new MockCamera();
+    const _camera = typeof navigator !== 'undefined' ? navigator.camera : new MockCamera();
     return _camera;
   }
 
   static Camera(): any {
-    const _Camera = (typeof Camera !== "undefined") ? Camera : {
+    const _Camera = (typeof Camera !== 'undefined') ? Camera : {
       DestinationType: {
         DATA_URL: null,
         FILE_URI: null,
@@ -153,17 +153,17 @@ export class AWProxy {
   }
 
   static compass(): Compass {
-    const _Compass = typeof navigator !== "undefined" ? navigator.compass : new MockCompass();
+    const _Compass = typeof navigator !== 'undefined' ? navigator.compass : new MockCompass();
     return _Compass;
   }
 
   static connection(): ConnectionInterface {
-    const _connection = typeof navigator !== "undefined" ? navigator.connection : new MockConnection();
+    const _connection = typeof navigator !== 'undefined' ? navigator.connection : new MockConnection();
     return _connection;
   }
 
   static Connection(): any {
-    const _Connection = (typeof Connection !== "undefined") ? Connection : {
+    const _Connection = (typeof Connection !== 'undefined') ? Connection : {
       UNKNOWN: null,
       ETHERNET: null,
       WIFI: null,
@@ -177,12 +177,12 @@ export class AWProxy {
   }
 
   static contacts(): Contacts {
-    const _contacts = typeof navigator !== "undefined" ? navigator.contacts : new MockContacts();
+    const _contacts = typeof navigator !== 'undefined' ? navigator.contacts : new MockContacts();
     return _contacts;
   }
 
   static device(): Device {
-    const _device: Device = (typeof device !== "undefined") ? device : {
+    const _device: Device = (typeof device !== 'undefined') ? device : {
       cordova: null,
       available: true,
       model: null,
@@ -195,7 +195,7 @@ export class AWProxy {
       capture: null
     };
 
-    if (typeof navigator !== "undefined" && navigator.device && navigator.device.capture) {
+    if (typeof navigator !== 'undefined' && navigator.device && navigator.device.capture) {
       _device.capture = navigator.device.capture;
     } else {
       _device.capture = new MockCapture();
@@ -204,18 +204,18 @@ export class AWProxy {
   }
 
   static document(): any {
-    const _document = (typeof document !== "undefined") ? document : {
+    const _document = (typeof document !== 'undefined') ? document : {
       addEventListener: noop
     };
     return _document;
   }
 
   static file(): any {
-    if (typeof cordova !== "undefined") {
+    if (typeof cordova !== 'undefined') {
       return cordova.file;
     } else {
       return {
-        documentsDirectory: ""
+        documentsDirectory: ''
       };
     }
   }
@@ -231,14 +231,14 @@ export class AWProxy {
 
   static doGetFileTransfer(): FileTransferInterface {
     if (AWProxy.isDesktopEnv()) {
-      const plugin = AWProxy.getDesktopPlugin("AWFileTransfer");
+      const plugin = AWProxy.getDesktopPlugin('AWFileTransfer');
       return (plugin !== null) ? plugin : new MockFileTransfer();
     }
-    return (typeof FileTransfer !== "undefined") ? new FileTransfer() : new MockFileTransfer();
+    return (typeof FileTransfer !== 'undefined') ? new FileTransfer() : new MockFileTransfer();
   }
 
   static geolocation(): Geolocation {
-    const _geolocation = (typeof navigator !== "undefined") ? navigator.geolocation : new MockGeolocation();
+    const _geolocation = (typeof navigator !== 'undefined') ? navigator.geolocation : new MockGeolocation();
     return _geolocation;
   }
 
@@ -247,7 +247,7 @@ export class AWProxy {
   }
 
   static media(src, successHandler, errorHandler, statusChangeHandler): MediaInterface {
-    if (typeof Media !== "undefined") {
+    if (typeof Media !== 'undefined') {
       return new Media(src, successHandler, errorHandler, statusChangeHandler);
     } else {
       return new MockMedia(src, successHandler, errorHandler, statusChangeHandler);
@@ -255,7 +255,7 @@ export class AWProxy {
   }
 
   static notification(): Notification {
-    const _notification = (typeof navigator !== "undefined") ? navigator.notification : new MockNotification();
+    const _notification = (typeof navigator !== 'undefined') ? navigator.notification : new MockNotification();
     return _notification;
   }
 
@@ -269,7 +269,7 @@ export class AWProxy {
   }
 
   static vibrate(time: number): void {
-    if (typeof navigator !== "undefined" && navigator.vibrate) {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
       const _vibrate = navigator.vibrate(time);
       return _vibrate;
     } else {
@@ -278,7 +278,7 @@ export class AWProxy {
   }
 
   static webview(): any {
-    if (typeof cordova !== "undefined") {
+    if (typeof cordova !== 'undefined') {
       return (cordova as any).InAppBrowser;
     } else {
       return new DesktopWebview();
@@ -290,18 +290,18 @@ export class AWProxy {
   }
 
   static persistentStorage(): PersistentStorage {
-    const desktopPlugin = AWProxy.getDesktopPlugin("AWStorage");
+    const desktopPlugin = AWProxy.getDesktopPlugin('AWStorage');
     return desktopPlugin !== null ?
       new DesktopStorage(desktopPlugin) : (AWProxy.isMobileEnv()) ?
         new OnDeviceStorage() : new PersistentStorageMock();
   }
 
   static isDesktopEnv(): boolean {
-    return typeof __aw_plugin_proxy !== "undefined";
+    return typeof __aw_plugin_proxy !== 'undefined';
   }
 
   static isMobileEnv(): boolean {
-    return typeof cordova !== "undefined";
+    return typeof cordova !== 'undefined';
   }
 
   static getDesktopPlugin(pluginName: string): any {
@@ -327,7 +327,7 @@ export class AWProxy {
 
 function setupDeviceInitializationForMobile() {
   try {
-    document.addEventListener("deviceready", () => {
+    document.addEventListener('deviceready', () => {
       deviceReady = true;
       callbackQueue.forEach((callback) => {
         callback();
