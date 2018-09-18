@@ -101,4 +101,14 @@ export class AWNotificationManager extends AWPlugin {
             [topicName]
         );
     }
+
+    unregisterFromTopic(topicName: string) {
+        AWProxy.exec(
+            null,
+            null,
+            "AWNotificationManager",
+            "unregisterFromTopic",
+            [topicName]
+        );
+    }
 }

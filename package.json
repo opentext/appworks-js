@@ -6,7 +6,7 @@
   "bugs": "https://github.com/opentext/appworks-js/issues",
   "dependencies": {
     "@types/cordova": "0.0.34",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "@types/chai": "3.4.34",

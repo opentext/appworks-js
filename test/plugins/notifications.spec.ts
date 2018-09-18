@@ -67,4 +67,9 @@ describe("Notifications", () => {
         expect(o.registerForTopic).to.not.equal(undefined);
     });
 
+    it("should define a unregisterFromTopic function", () => {
+        let o = new AWNotificationManager();
+        expect(o.unregisterFromTopic).to.not.equal(undefined);
+    });
+
 });

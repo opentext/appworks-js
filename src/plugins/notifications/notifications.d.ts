@@ -1,4 +1,4 @@
-import { AWPlugin } from '../../common/plugin';
+import { AWPlugin } from "../../common/plugin";
 export declare class AWNotificationManager extends AWPlugin {
     constructor();
     enablePushNotifications(handler: any, errorHandler: any, includeSeqNo: boolean): void;
@@ -13,4 +13,6 @@ export declare class AWNotificationManager extends AWPlugin {
     beep(times: number): void;
     confirm(message: string, confirmCallback: any, title?: string, buttonLabels?: string[]): void;
     prompt(message: string, promptCallback: any, title?: string, buttonLabels?: string[], defaultText?: string): void;
+    registerForTopic(topicName: string): void;
+    unregisterFromTopic(topicName: string): void;
 }
