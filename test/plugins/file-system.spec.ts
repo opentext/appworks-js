@@ -71,9 +71,13 @@ describe("FileSystem", () => {
     expect(underTest.showFileSelector).to.not.equal(undefined);
   });
 
-  it("should define an onFileOpen method", () => {
-    expect(underTest.onFileOpen).to.not.equal(undefined);
-  });
+    it("should define an onFileOpen method", () => {
+        expect(underTest.onFileOpen).to.not.equal(undefined);
+    });
+
+    it("should define an remove method", () => {
+        expect(underTest.remove).to.not.equal(undefined);
+    });
 
   it("should throw an exception when a validateEnv is called outside of the Desktop environment", (done) => {
     try {

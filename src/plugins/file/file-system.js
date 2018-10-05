@@ -88,6 +88,10 @@ var AWFileSystem = (function (_super) {
         this.validateEnv();
         proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'onFileOpen', [openFileCallback]);
     };
+    AWFileSystem.prototype.remove = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        proxy_1.AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'remove', [path]);
+    };
     /**
      * The methods of this class should only be called from within an AppWorks desktop
      * environment.
