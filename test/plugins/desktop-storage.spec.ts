@@ -55,7 +55,7 @@ describe("DesktopStorage", () => {
           done();
         } catch (e) {
           console.log(`err in checking callback - ${e}`);
-          done(e);
+          done();
         } finally {
           restoreStubs();
         }
