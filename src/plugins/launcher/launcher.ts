@@ -47,4 +47,22 @@ export class AWLauncher extends AWPlugin {
       []
     );
   }
+  registerListener(successHandler: any) {
+    AWProxy.exec(
+      successHandler,
+      (() => this.errorHandler)(),
+      'AWLauncher',
+      'registerListener',
+      []
+    );
+  }
+  getCustomScheme(successHandler: any) {
+    AWProxy.exec(
+      successHandler,
+      (() => this.errorHandler)(),
+      'AWLauncher',
+      'getCustomScheme',
+      []
+    );
+  }
 }
