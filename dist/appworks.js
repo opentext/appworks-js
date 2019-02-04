@@ -1884,6 +1884,10 @@ var AWAppManager$1 = (function (_super) {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'closeActiveApp', []);
     };
+    AWAppManager.prototype.getAppName = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'getAppName', []);
+    };
     return AWAppManager;
 }(AWPlugin));
 

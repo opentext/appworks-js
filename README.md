@@ -418,13 +418,37 @@ var appManager = new Appworks.AWAppManager(
         // success
     },
     function (err) {
-        // could not complete authentication request
+        // could not complete request
         console.log(err);
     }
 );
 
 $('#click-me').click(function () {
     appManager.closeActiveApp();
+});
+````
+
+###### getAppName
+````
+getAppName()
+````
+Gets the name of the current active app.
+
+##### Example:
+
+````js
+var appManager = new Appworks.AWAppManager(
+    function (appName) {
+        console.log("This apps name is: " + appName);
+    },
+    function (err) {
+        // could not retrieve app name
+        console.log(err);
+    }
+);
+
+$('#click-me').click(function () {
+    appManager.getAppName();
 });
 ````
 
