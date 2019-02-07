@@ -32,6 +32,14 @@ var AWLauncher = (function (_super) {
         var _this = this;
         proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWLauncher', 'clearLaunchURL', []);
     };
+    AWLauncher.prototype.registerListener = function (successHandler) {
+        var _this = this;
+        proxy_1.AWProxy.exec(successHandler, (function () { return _this.errorHandler; })(), 'AWLauncher', 'registerListener', []);
+    };
+    AWLauncher.prototype.getCustomScheme = function (successHandler) {
+        var _this = this;
+        proxy_1.AWProxy.exec(successHandler, (function () { return _this.errorHandler; })(), 'AWLauncher', 'getCustomScheme', []);
+    };
     return AWLauncher;
 }(plugin_1.AWPlugin));
 exports.AWLauncher = AWLauncher;
