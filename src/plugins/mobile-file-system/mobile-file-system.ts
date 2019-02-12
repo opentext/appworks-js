@@ -104,6 +104,17 @@ export class AWMobileFileSystem extends AWPlugin {
     );
   }
 
+  removeDirectory(source: string, shared: boolean, success: any, error: any) {
+    let args = [source, shared];
+    AWProxy.exec(
+      success,
+      error,
+      'AWMobileFileSystem',
+      'removeDirectory',
+      args
+    );
+  }
+
   readFile(source: string, shared: boolean, success: any, error: any) {
     let args = [source, shared];
     AWProxy.exec(
