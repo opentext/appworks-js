@@ -51,6 +51,10 @@ describe("MobileFileSystem", () => {
     let o = new AWMobileFileSystem(noop, noop);
     expect(o.open).to.not.equal(undefined);
   });
+  it("should define an edit function", () => {
+    let o = new AWMobileFileSystem(noop, noop);
+    expect(o.edit).to.not.equal(undefined);
+  });
   it("should define an share function", () => {
     let o = new AWMobileFileSystem(noop, noop);
     expect(o.share).to.not.equal(undefined);
