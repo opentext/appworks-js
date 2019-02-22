@@ -9,8 +9,10 @@ export declare class AWMobileFileSystem extends AWPlugin {
     copy(source: string, sourceShared: boolean, destination: string, destinationShared: boolean, success: any, error: any): void;
     move(source: string, sourceShared: boolean, destination: string, destinationShared: boolean, success: any, error: any): void;
     remove(source: string, shared: boolean, success: any, error: any): void;
+    removeDirectory(source: string, shared: boolean, success: any, error: any): void;
     readFile(source: string, shared: boolean, success: any, error: any): void;
     open(source: string, shared: boolean, success: any, error: any): void;
+    edit(source: string, shared: boolean, success: any, error: any): void;
     share(source: string, shared: boolean, success: any, error: any): void;
     quicklook(source: string, shared: boolean, success: any, error: any): void;
     download(source: string, destination: string, headers: any, shared: boolean, success: any, error: any): void;
