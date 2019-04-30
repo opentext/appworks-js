@@ -2,7 +2,7 @@ import {expect} from "chai";
 import {noop} from "../../src/common/util";
 import {AWRealm, Realm} from "../../src/plugins/realm/realm";
 
-describe("QRReader", () => {
+describe("Realm", () => {
   it("should define a startRealm function", () => {
     let o = new Realm(noop, noop);
     expect(o.startRealm).to.not.equal(undefined);
