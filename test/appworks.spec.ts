@@ -30,6 +30,7 @@ import {
   AWPrint,
   AWQRReader,
   AWSecureStorage,
+  AWShake,
   AWVibration,
   AWWebView,
   Cache,
@@ -54,6 +55,7 @@ import {
   Print,
   QRReader,
   SecureStorage,
+  Shake,
   Vibration,
   WebView
 } from "../src/appworks";
@@ -177,6 +179,11 @@ describe("Appworks namespace", () => {
   it("should define SecureStorage as a global relative to the Appworks namespace", () => {
     expect(AWSecureStorage).to.not.equal(undefined);
     expect(SecureStorage).to.not.equal(undefined);
+  });
+
+  it("should define Shake as a global relative to the Appworks namespace", () => {
+    expect(AWShake).to.not.equal(undefined);
+    expect(Shake).to.not.equal(undefined);
   });
 
   it("should define Vibration as a global relative to the Appworks namespace", () => {
