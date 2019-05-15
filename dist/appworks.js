@@ -3023,9 +3023,9 @@ var QRReader$1 = (function (_super) {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'rename', []);
     };
-    QRReader.prototype.barcode = function (multiple) {
+    QRReader.prototype.barcode = function (multiple, timeout) {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'barcode', [multiple]);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'barcode', [multiple, timeout]);
     };
     return QRReader;
 }(AWPlugin));
