@@ -31,7 +31,6 @@ export { AWQRReader } from './plugins/qr-reader/index';
 export { AWRealm } from './plugins/realm';
 export { AWPrint } from './plugins/print/index';
 export { AWScanner } from './plugins/document-scanner/index';
-export { AWShake } from './plugins/shake/index';
 export { AWStorage } from './plugins/storage/index';
 export { AWVibration } from './plugins/vibration/index';
 export { AWWebView } from './plugins/webview/index';

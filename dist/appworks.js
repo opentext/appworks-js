@@ -3346,6 +3346,29 @@ var AWSecureStorage$1 = (function (_super) {
     return AWSecureStorage;
 }(SecureStorage$1));
 
+var Shake$1 = (function (_super) {
+    __extends(Shake, _super);
+    function Shake() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Shake.prototype.enableShake = function (callback) {
+        var _this = this;
+        AWProxy.exec(callback, (function () { return _this.errorHandler; })(), 'AWShake', 'enableShake', []);
+    };
+    Shake.prototype.disableShake = function (callback) {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWShake', 'disableShake', []);
+    };
+    return Shake;
+}(AWPlugin));
+var AWShake$1 = (function (_super) {
+    __extends(AWShake, _super);
+    function AWShake() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return AWShake;
+}(Shake$1));
+
 var AWVibration$1 = (function (_super) {
     __extends(AWVibration, _super);
     function AWVibration() {
@@ -3483,6 +3506,9 @@ var AWScanner$$1 = AWScanner$1;
 // SecureStorage plugin and alias -- [mobile]
 var SecureStorage$$1 = AWSecureStorage$1;
 var AWSecureStorage$$1 = AWSecureStorage$1;
+// Shake plugin and alias -- [mobile]
+var Shake$$1 = AWShake$1;
+var AWShake$$1 = AWShake$1;
 // Vibration plugin and alias -- [mobile]
 var Vibration = AWVibration$1;
 var AWVibration$$1 = AWVibration$1;
@@ -3558,6 +3584,8 @@ exports.Scanner = Scanner$$1;
 exports.AWScanner = AWScanner$$1;
 exports.SecureStorage = SecureStorage$$1;
 exports.AWSecureStorage = AWSecureStorage$$1;
+exports.Shake = Shake$$1;
+exports.AWShake = AWShake$$1;
 exports.Vibration = Vibration;
 exports.AWVibration = AWVibration$$1;
 exports.WebView = WebView;
