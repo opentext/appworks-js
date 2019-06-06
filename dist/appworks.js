@@ -1888,6 +1888,14 @@ var AWAppManager$1 = (function (_super) {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'getAppName', []);
     };
+    AWAppManager.prototype.resetShouldClearCache = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'resetShouldClearCache', []);
+    };
+    AWAppManager.prototype.shouldClearCache = function (success) {
+        var _this = this;
+        AWProxy.exec(success, (function () { return _this.errorHandler; })(), 'AWAppManager', 'shouldClearCache', []);
+    };
     return AWAppManager;
 }(AWPlugin));
 

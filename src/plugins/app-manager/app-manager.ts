@@ -20,5 +20,23 @@ export class AWAppManager extends AWPlugin {
             []
         );
     }
+    resetShouldClearCache() {
+        AWProxy.exec(
+            (() => this.successHandler)(),
+            (() => this.errorHandler)(),
+            'AWAppManager',
+            'resetShouldClearCache',
+            []
+        );
+    }
+    shouldClearCache(success) {
+        AWProxy.exec(
+            success,
+            (() => this.errorHandler)(),
+            'AWAppManager',
+            'shouldClearCache',
+            []
+        );
+    }
 }
 
