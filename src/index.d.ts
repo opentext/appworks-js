@@ -35,6 +35,7 @@ export { AWStorage } from './plugins/storage/index';
 export { AWVibration } from './plugins/vibration/index';
 export { AWWebView } from './plugins/webview/index';
 export { DesktopStorage } from './plugins/storage/index';
+export { AWShake } from './plugins/shake/index';
 export { LocalFileSystem } from './plugins/file/index';
 export { OnDeviceStorage } from './plugins/storage/index';
 export { SecureStorage, AWSecureStorage } from './plugins/storage/index';

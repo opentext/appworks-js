@@ -22,4 +22,12 @@ describe("Launcher", () => {
     let o = new AWLauncher(noop, noop);
     expect(o.clearLaunchURL).to.not.equal(undefined);
   });
+  it("should define a registerListener function", () => {
+      let o = new AWLauncher(noop, noop);
+      expect(o.registerListener).to.not.equal(undefined);
+  });
+  it("should define a getCustomScheme function", () => {
+      let o = new AWLauncher(noop, noop);
+      expect(o.getCustomScheme).to.not.equal(undefined);
+  });
 });

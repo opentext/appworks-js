@@ -5,4 +5,6 @@ export declare class AWLauncher extends AWPlugin {
     getLaunchURL(successHandler: any, errorHandler: any): void;
     clearLaunchData(): void;
     clearLaunchURL(): void;
+    registerListener(successHandler: any): void;
+    getCustomScheme(successHandler: any): void;
 }

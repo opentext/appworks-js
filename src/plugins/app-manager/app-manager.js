@@ -21,6 +21,18 @@ var AWAppManager = (function (_super) {
         var _this = this;
         proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'closeActiveApp', []);
     };
+    AWAppManager.prototype.getAppName = function () {
+        var _this = this;
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'getAppName', []);
+    };
+    AWAppManager.prototype.resetShouldClearCache = function () {
+        var _this = this;
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'resetShouldClearCache', []);
+    };
+    AWAppManager.prototype.shouldClearCache = function (success) {
+        var _this = this;
+        proxy_1.AWProxy.exec(success, (function () { return _this.errorHandler; })(), 'AWAppManager', 'shouldClearCache', []);
+    };
     return AWAppManager;
 }(plugin_1.AWPlugin));
 exports.AWAppManager = AWAppManager;

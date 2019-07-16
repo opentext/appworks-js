@@ -1884,6 +1884,18 @@ var AWAppManager$1 = (function (_super) {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'closeActiveApp', []);
     };
+    AWAppManager.prototype.getAppName = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'getAppName', []);
+    };
+    AWAppManager.prototype.resetShouldClearCache = function () {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'resetShouldClearCache', []);
+    };
+    AWAppManager.prototype.shouldClearCache = function (success) {
+        var _this = this;
+        AWProxy.exec(success, (function () { return _this.errorHandler; })(), 'AWAppManager', 'shouldClearCache', []);
+    };
     return AWAppManager;
 }(AWPlugin));
 
@@ -2374,6 +2386,10 @@ var AWFileSystem$1 = (function (_super) {
         this.validateEnv();
         AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'onFileOpen', [openFileCallback]);
     };
+    AWFileSystem.prototype.remove = function (path, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'remove', [path]);
+    };
     /**
      * The methods of this class should only be called from within an AppWorks desktop
      * environment.
@@ -2545,6 +2561,14 @@ var AWLauncher$1 = (function (_super) {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWLauncher', 'clearLaunchURL', []);
     };
+    AWLauncher.prototype.registerListener = function (successHandler) {
+        var _this = this;
+        AWProxy.exec(successHandler, (function () { return _this.errorHandler; })(), 'AWLauncher', 'registerListener', []);
+    };
+    AWLauncher.prototype.getCustomScheme = function (successHandler) {
+        var _this = this;
+        AWProxy.exec(successHandler, (function () { return _this.errorHandler; })(), 'AWLauncher', 'getCustomScheme', []);
+    };
     return AWLauncher;
 }(AWPlugin));
 
@@ -2711,6 +2735,10 @@ var AWMobileFileSystem$1 = (function (_super) {
         var args = [source, shared];
         AWProxy.exec(success, error, 'AWMobileFileSystem', 'remove', args);
     };
+    AWMobileFileSystem.prototype.removeDirectory = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'removeDirectory', args);
+    };
     AWMobileFileSystem.prototype.readFile = function (source, shared, success, error) {
         var args = [source, shared];
         AWProxy.exec(success, error, 'AWMobileFileSystem', 'read', args);
@@ -2719,6 +2747,10 @@ var AWMobileFileSystem$1 = (function (_super) {
     AWMobileFileSystem.prototype.open = function (source, shared, success, error) {
         var args = [source, shared];
         AWProxy.exec(success, error, 'AWMobileFileSystem', 'open', args);
+    };
+    AWMobileFileSystem.prototype.edit = function (source, shared, success, error) {
+        var args = [source, shared];
+        AWProxy.exec(success, error, 'AWMobileFileSystem', 'edit', args);
     };
     AWMobileFileSystem.prototype.share = function (source, shared, success, error) {
         var args = [source, shared];
@@ -2746,28 +2778,28 @@ var AWNotificationManager$1 = (function (_super) {
         return _super.call(this, noop, noop) || this;
     }
     AWNotificationManager.prototype.enablePushNotifications = function (handler, errorHandler, includeSeqNo) {
-        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'enablePushNotifications', AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]);
+        AWProxy.exec(handler, errorHandler, "AWNotificationManager", "enablePushNotifications", AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]);
     };
     AWNotificationManager.prototype.disablePushNotifications = function () {
-        AWProxy.exec(null, null, 'AWNotificationManager', 'disablePushNotifications', []);
+        AWProxy.exec(null, null, "AWNotificationManager", "disablePushNotifications", []);
     };
     AWNotificationManager.prototype.getNotifications = function (handler, errorHandler, includeSeqNo) {
-        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'getPushNotifications', [includeSeqNo]);
+        AWProxy.exec(handler, errorHandler, "AWNotificationManager", "getPushNotifications", [includeSeqNo]);
     };
     AWNotificationManager.prototype.getOpeningNotification = function (handler, errorHandler, includeSeqNo) {
-        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'getOpeningNotification', [includeSeqNo]);
+        AWProxy.exec(handler, errorHandler, "AWNotificationManager", "getOpeningNotification", [includeSeqNo]);
     };
     AWNotificationManager.prototype.notificationDidLaunchApp = function (handler, errorHandler, includeSeqNo) {
         this.getOpeningNotification(handler, errorHandler, includeSeqNo);
     };
     AWNotificationManager.prototype.openListener = function (handler, errorHandler, includeSeqNo) {
-        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'openListener', AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]);
+        AWProxy.exec(handler, errorHandler, "AWNotificationManager", "openListener", AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]);
     };
     AWNotificationManager.prototype.didTapNotificationFromActivityView = function (handler, errorHandler, includeSeqNo) {
         this.openListener(handler, errorHandler, includeSeqNo);
     };
     AWNotificationManager.prototype.removeNotification = function (seqNo, handler, errorHandler) {
-        AWProxy.exec(handler, errorHandler, 'AWNotificationManager', 'removeNotification', [seqNo]);
+        AWProxy.exec(handler, errorHandler, "AWNotificationManager", "removeNotification", [seqNo]);
     };
     AWNotificationManager.prototype.alert = function (message, alertCallback, title, buttonName) {
         AWProxy.notification().alert(message, alertCallback, title, buttonName);
@@ -2780,6 +2812,12 @@ var AWNotificationManager$1 = (function (_super) {
     };
     AWNotificationManager.prototype.prompt = function (message, promptCallback, title, buttonLabels, defaultText) {
         AWProxy.notification().prompt(message, promptCallback, title, buttonLabels, defaultText);
+    };
+    AWNotificationManager.prototype.registerForTopic = function (topicName) {
+        AWProxy.exec(null, null, "AWNotificationManager", "registerForTopic", [topicName]);
+    };
+    AWNotificationManager.prototype.unregisterFromTopic = function (topicName) {
+        AWProxy.exec(null, null, "AWNotificationManager", "unregisterFromTopic", [topicName]);
     };
     return AWNotificationManager;
 }(AWPlugin));
@@ -2993,9 +3031,9 @@ var QRReader$1 = (function (_super) {
         var _this = this;
         AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'rename', []);
     };
-    QRReader.prototype.barcode = function (multiple) {
+    QRReader.prototype.barcode = function (multiple, timeout) {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'barcode', [multiple]);
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'barcode', [multiple, timeout]);
     };
     return QRReader;
 }(AWPlugin));
@@ -3316,6 +3354,29 @@ var AWSecureStorage$1 = (function (_super) {
     return AWSecureStorage;
 }(SecureStorage$1));
 
+var Shake$1 = (function (_super) {
+    __extends(Shake, _super);
+    function Shake() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Shake.prototype.enableShake = function (callback) {
+        var _this = this;
+        AWProxy.exec(callback, (function () { return _this.errorHandler; })(), 'AWShake', 'enableShake', []);
+    };
+    Shake.prototype.disableShake = function (callback) {
+        var _this = this;
+        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWShake', 'disableShake', []);
+    };
+    return Shake;
+}(AWPlugin));
+var AWShake$1 = (function (_super) {
+    __extends(AWShake, _super);
+    function AWShake() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return AWShake;
+}(Shake$1));
+
 var AWVibration$1 = (function (_super) {
     __extends(AWVibration, _super);
     function AWVibration() {
@@ -3453,6 +3514,9 @@ var AWScanner$$1 = AWScanner$1;
 // SecureStorage plugin and alias -- [mobile]
 var SecureStorage$$1 = AWSecureStorage$1;
 var AWSecureStorage$$1 = AWSecureStorage$1;
+// Shake plugin and alias -- [mobile]
+var Shake$$1 = AWShake$1;
+var AWShake$$1 = AWShake$1;
 // Vibration plugin and alias -- [mobile]
 var Vibration = AWVibration$1;
 var AWVibration$$1 = AWVibration$1;
@@ -3528,6 +3592,8 @@ exports.Scanner = Scanner$$1;
 exports.AWScanner = AWScanner$$1;
 exports.SecureStorage = SecureStorage$$1;
 exports.AWSecureStorage = AWSecureStorage$$1;
+exports.Shake = Shake$$1;
+exports.AWShake = AWShake$$1;
 exports.Vibration = Vibration;
 exports.AWVibration = AWVibration$$1;
 exports.WebView = WebView;

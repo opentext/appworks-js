@@ -400,7 +400,7 @@ export class MyWebview {
 ```
 
 #### AWAppManager
-The AppManager plugin allows you to close the current app webview.
+The AppManager plugin allows you to close the current app webview, get the current app name and check whether you should clear the AWCache.
 
 ##### Methods:
 
@@ -418,7 +418,7 @@ var appManager = new Appworks.AWAppManager(
         // success
     },
     function (err) {
-        // could not complete authentication request
+        // could not complete request
         console.log(err);
     }
 );
@@ -426,6 +426,72 @@ var appManager = new Appworks.AWAppManager(
 $('#click-me').click(function () {
     appManager.closeActiveApp();
 });
+````
+
+###### getAppName
+````
+getAppName()
+````
+Gets the name of the current active app.
+
+##### Example:
+
+````js
+var appManager = new Appworks.AWAppManager(
+    function (appName) {
+        console.log("This apps name is: " + appName);
+    },
+    function (err) {
+        // could not retrieve app name
+        console.log(err);
+    }
+);
+
+$('#click-me').click(function () {
+    appManager.getAppName();
+});
+````
+
+###### resetShouldClearCache
+````
+resetShouldClearCache()
+````
+Inform the client that you have successfully cleared the AWCache, and you don't need to be told to do it again.
+##### Example:
+````js
+function resetShouldClearCache() {
+  var appManager = new Appworks.AWAppManager();
+  appManager.resetShouldClearCache();
+}
+````
+
+###### shouldClearCache
+````
+shouldClearCache(successHandler: any)
+````
+Informs you of whether you should clear the AWCache before proceeding to use it. 
+This will be set to true if the client has had a user switch.
+##### Example:
+````js
+document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady() {
+  shouldClearCache(function() {
+    console.log("shouldClearCache triggered, now we can safely work with the cache after a user switch");
+  });
+}
+
+function shouldClearCache(callback) {
+  var appManager = new Appworks.AWAppManager();
+  appManager.shouldClearCache(function(doClearCache) {
+    if(doClearCache) {
+      clearCache();
+      resetShouldClearCache();
+    }
+
+    callback();
+  });
+}
 ````
 
 #### AWComponent

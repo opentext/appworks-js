@@ -30,6 +30,7 @@ import {AWQRReader as _AWQRReader} from './plugins/qr-reader/qr-reader';
 import {AWRealm as _AWRealm} from './plugins/realm/realm';
 import {AWCache as _AWCache} from './plugins/storage/cache';
 import {AWSecureStorage as _AWSecureStorage} from './plugins/storage/secure-storage';
+import {AWShake as _AWShake} from './plugins/shake/shake';
 import {AWVibration as _AWVibration} from './plugins/vibration/vibration';
 import {AWWebView as _AWWebView} from './plugins/webview/webview';
 
@@ -130,6 +131,9 @@ export const AWScanner = _AWScanner;
 // SecureStorage plugin and alias -- [mobile]
 export const SecureStorage = _AWSecureStorage;
 export const AWSecureStorage = _AWSecureStorage;
+// Shake plugin and alias -- [mobile]
+export const Shake = _AWShake;
+export const AWShake = _AWShake;
 // Vibration plugin and alias -- [mobile]
 export const Vibration = _AWVibration;
 export const AWVibration = _AWVibration;
