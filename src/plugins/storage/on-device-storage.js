@@ -6,7 +6,14 @@ var proxy_1 = require("../../common/proxy");
  */
 var OnDeviceStorage = (function () {
     function OnDeviceStorage() {
+        /*
+         * Excluded specific keys from being persisted
+         */
+        this.excludedKeys = [];
     }
+    OnDeviceStorage.prototype.setExcludedKeys = function (_excludedKeys) {
+        this.excludedKeys = _excludedKeys;
+    };
     OnDeviceStorage.prototype.persistLocalStorage = function () {
         var _this = this;
         var i, data = {}, key, value;
@@ -14,7 +21,9 @@ var OnDeviceStorage = (function () {
         for (i = 0; i < storage.length; i += 1) {
             key = storage.key(i);
             value = storage.getItem(key);
-            data[key] = value;
+            if (this.excludedKeys.indexOf(key) === -1) {
+                data[key] = value;
+            }
         }
         return new Promise(function (resolve, reject) {
             _this.writeDataToPersistentStorage(JSON.stringify(data)).then(resolve, reject);

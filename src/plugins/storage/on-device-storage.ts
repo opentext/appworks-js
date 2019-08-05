@@ -6,6 +6,15 @@ import {PersistentStorage} from './index';
  */
 export class OnDeviceStorage implements PersistentStorage {
 
+  /*
+   * Excluded specific keys from being persisted
+   */
+  excludedKeys: string[] = [];
+
+  setExcludedKeys(_excludedKeys: string[]) {
+    this.excludedKeys = _excludedKeys;
+  }
+
   persistLocalStorage(): Promise<any> {
     let i,
       data = {},
@@ -16,7 +25,9 @@ export class OnDeviceStorage implements PersistentStorage {
     for (i = 0; i < storage.length; i += 1) {
       key = storage.key(i);
       value = storage.getItem(key);
-      data[key] = value;
+      if (this.excludedKeys.indexOf(key) === -1) {
+        data[key] = value;
+      }
     }
     return new Promise((resolve, reject) => {
       this.writeDataToPersistentStorage(JSON.stringify(data)).then(resolve, reject);
