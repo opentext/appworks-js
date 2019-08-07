@@ -5,9 +5,14 @@ export class DesktopStorage implements PersistentStorage {
 
   private static readonly PLUGIN_NOT_FOUND: Error = new Error('Unable to resolve AWStorage desktop plugin');
   private desktopStorage: AsyncStorage;
+  excludedKeys: string[] = [];
 
   constructor(desktopPlugin: AsyncStorage) {
     this.desktopStorage = desktopPlugin;
+  }
+
+  setExcludedKeys(_excludedKeys: string[]) {
+    this.excludedKeys = _excludedKeys;
   }
 
   persistLocalStorage(): Promise<any> {
@@ -25,7 +30,9 @@ export class DesktopStorage implements PersistentStorage {
       for (i = 0; i < storage.length; i += 1) {
         key = storage.key(i);
         value = storage.getItem(key);
-        data.push({key: key, value: value});
+        if (this.excludedKeys.indexOf(key) === -1) {
+          data.push({key: key, value: value});
+        }
       }
 
       const setter = obj => this.desktopStorage.setItem(obj.key, obj.value);

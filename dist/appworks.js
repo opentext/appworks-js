@@ -1359,6 +1359,8 @@ var es6Promise_1 = es6Promise.Promise;
 var PersistentStorageMock = (function () {
     function PersistentStorageMock() {
     }
+    PersistentStorageMock.prototype.setExcludedKeys = function (_excludedKeys) {
+    };
     PersistentStorageMock.prototype.persistLocalStorage = function () {
         return es6Promise_1.resolve();
     };
@@ -1384,8 +1386,12 @@ var LocalFileSystem;
 
 var DesktopStorage = (function () {
     function DesktopStorage(desktopPlugin) {
+        this.excludedKeys = [];
         this.desktopStorage = desktopPlugin;
     }
+    DesktopStorage.prototype.setExcludedKeys = function (_excludedKeys) {
+        this.excludedKeys = _excludedKeys;
+    };
     DesktopStorage.prototype.persistLocalStorage = function () {
         var _this = this;
         if (this.desktopStorage === null) {
@@ -1397,7 +1403,9 @@ var DesktopStorage = (function () {
             for (i = 0; i < storage.length; i += 1) {
                 key = storage.key(i);
                 value = storage.getItem(key);
-                data.push({ key: key, value: value });
+                if (_this.excludedKeys.indexOf(key) === -1) {
+                    data.push({ key: key, value: value });
+                }
             }
             var setter = function (obj) { return _this.desktopStorage.setItem(obj.key, obj.value); };
             es6Promise_1.all(data.map(setter)).then(resolve, reject);
