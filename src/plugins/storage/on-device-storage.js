@@ -6,22 +6,15 @@ var proxy_1 = require("../../common/proxy");
  */
 var OnDeviceStorage = (function () {
     function OnDeviceStorage() {
-        /*
-         * Excluded specific keys from being persisted
-         */
-        this.excludedKeys = [];
     }
-    OnDeviceStorage.prototype.setExcludedKeys = function (_excludedKeys) {
-        this.excludedKeys = _excludedKeys;
-    };
-    OnDeviceStorage.prototype.persistLocalStorage = function () {
+    OnDeviceStorage.prototype.persistLocalStorage = function (excludedKeys) {
         var _this = this;
         var i, data = {}, key, value;
         var storage = proxy_1.AWProxy.storage();
         for (i = 0; i < storage.length; i += 1) {
             key = storage.key(i);
             value = storage.getItem(key);
-            if (this.excludedKeys.indexOf(key) === -1) {
+            if (excludedKeys.indexOf(key) === -1) {
                 data[key] = value;
             }
         }

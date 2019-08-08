@@ -15,7 +15,7 @@ describe("DesktopStorage", () => {
 
   it("should reject request to persist the local storage data if desktop storage plugin is not valid", (done) => {
     underTest = new DesktopStorage(null);
-    underTest.persistLocalStorage().then(
+    underTest.persistLocalStorage([]).then(
       () => done(),
       err => {
         expect(err).to.not.equal(undefined);
@@ -43,7 +43,7 @@ describe("DesktopStorage", () => {
     };
 
     underTest = new DesktopStorage(mockAsyncStorage);
-    underTest.persistLocalStorage().then(
+    underTest.persistLocalStorage([]).then(
       () => {
         try {
           expect(proxyStorageStub.calledOnce).to.be.true;

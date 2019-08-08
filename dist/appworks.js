@@ -1386,13 +1386,9 @@ var LocalFileSystem;
 
 var DesktopStorage = (function () {
     function DesktopStorage(desktopPlugin) {
-        this.excludedKeys = [];
         this.desktopStorage = desktopPlugin;
     }
-    DesktopStorage.prototype.setExcludedKeys = function (_excludedKeys) {
-        this.excludedKeys = _excludedKeys;
-    };
-    DesktopStorage.prototype.persistLocalStorage = function () {
+    DesktopStorage.prototype.persistLocalStorage = function (excludedKeys) {
         var _this = this;
         if (this.desktopStorage === null) {
             return es6Promise_1.reject(DesktopStorage.PLUGIN_NOT_FOUND);
@@ -1403,7 +1399,7 @@ var DesktopStorage = (function () {
             for (i = 0; i < storage.length; i += 1) {
                 key = storage.key(i);
                 value = storage.getItem(key);
-                if (_this.excludedKeys.indexOf(key) === -1) {
+                if (excludedKeys.indexOf(key) === -1) {
                     data.push({ key: key, value: value });
                 }
             }
@@ -1442,22 +1438,15 @@ DesktopStorage.PLUGIN_NOT_FOUND = new Error('Unable to resolve AWStorage desktop
  */
 var OnDeviceStorage = (function () {
     function OnDeviceStorage() {
-        /*
-         * Excluded specific keys from being persisted
-         */
-        this.excludedKeys = [];
     }
-    OnDeviceStorage.prototype.setExcludedKeys = function (_excludedKeys) {
-        this.excludedKeys = _excludedKeys;
-    };
-    OnDeviceStorage.prototype.persistLocalStorage = function () {
+    OnDeviceStorage.prototype.persistLocalStorage = function (excludedKeys) {
         var _this = this;
         var i, data = {}, key, value;
         var storage = AWProxy.storage();
         for (i = 0; i < storage.length; i += 1) {
             key = storage.key(i);
             value = storage.getItem(key);
-            if (this.excludedKeys.indexOf(key) === -1) {
+            if (excludedKeys.indexOf(key) === -1) {
                 data[key] = value;
             }
         }
@@ -2843,16 +2832,20 @@ var AWCache$1 = (function (_super) {
     __extends(AWCache, _super);
     function AWCache(options) {
         var _this = _super.call(this, noop, noop) || this;
+        _this.excludedKeys = [];
         _this.options = options || { usePersistentStorage: false };
         _this.preloadCache();
         return _this;
     }
+    AWCache.prototype.setExcludedKeys = function (_excludedKeys) {
+        this.excludedKeys = _excludedKeys;
+    };
     AWCache.prototype.setItem = function (key, value) {
         var _this = this;
         return new es6Promise_1(function (resolve, reject) {
             AWProxy.storage().setItem(key, value);
             if (_this.usePersistentStorage()) {
-                AWProxy.persistentStorage().persistLocalStorage()
+                AWProxy.persistentStorage().persistLocalStorage(_this.excludedKeys)
                     .then(resolve, reject);
             }
             else {
@@ -2868,7 +2861,7 @@ var AWCache$1 = (function (_super) {
         return new es6Promise_1(function (resolve, reject) {
             AWProxy.storage().removeItem(key);
             if (_this.usePersistentStorage()) {
-                AWProxy.persistentStorage().persistLocalStorage()
+                AWProxy.persistentStorage().persistLocalStorage(_this.excludedKeys)
                     .then(resolve, reject);
             }
             else {
@@ -2881,7 +2874,7 @@ var AWCache$1 = (function (_super) {
         return new es6Promise_1(function (resolve, reject) {
             AWProxy.storage().clear();
             if (_this.usePersistentStorage()) {
-                AWProxy.persistentStorage().persistLocalStorage()
+                AWProxy.persistentStorage().persistLocalStorage(_this.excludedKeys)
                     .then(resolve, reject);
             }
             else {

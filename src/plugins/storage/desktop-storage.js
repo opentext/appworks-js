@@ -3,13 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var proxy_1 = require("../../common/proxy");
 var DesktopStorage = (function () {
     function DesktopStorage(desktopPlugin) {
-        this.excludedKeys = [];
         this.desktopStorage = desktopPlugin;
     }
-    DesktopStorage.prototype.setExcludedKeys = function (_excludedKeys) {
-        this.excludedKeys = _excludedKeys;
-    };
-    DesktopStorage.prototype.persistLocalStorage = function () {
+    DesktopStorage.prototype.persistLocalStorage = function (excludedKeys) {
         var _this = this;
         if (this.desktopStorage === null) {
             return Promise.reject(DesktopStorage.PLUGIN_NOT_FOUND);
@@ -20,7 +16,7 @@ var DesktopStorage = (function () {
             for (i = 0; i < storage.length; i += 1) {
                 key = storage.key(i);
                 value = storage.getItem(key);
-                if (_this.excludedKeys.indexOf(key) === -1) {
+                if (excludedKeys.indexOf(key) === -1) {
                     data.push({ key: key, value: value });
                 }
             }

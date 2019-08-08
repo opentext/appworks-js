@@ -5,6 +5,7 @@ import {noop} from '../../common/util';
 export class AWCache extends AWPlugin {
 
   private options: any;
+  private excludedKeys: string[] = [];
 
   constructor(options?: any) {
     super(noop, noop);
@@ -12,11 +13,15 @@ export class AWCache extends AWPlugin {
     this.preloadCache();
   }
 
+  setExcludedKeys(_excludedKeys: string[]) {
+    this.excludedKeys = _excludedKeys;
+  }
+
   setItem(key: string, value: any): Promise<any> {
     return new Promise((resolve, reject) => {
       AWProxy.storage().setItem(key, value);
       if (this.usePersistentStorage()) {
-        AWProxy.persistentStorage().persistLocalStorage()
+        AWProxy.persistentStorage().persistLocalStorage(this.excludedKeys)
           .then(resolve, reject);
       } else {
         resolve();
@@ -32,7 +37,7 @@ export class AWCache extends AWPlugin {
     return new Promise((resolve, reject) => {
       AWProxy.storage().removeItem(key);
       if (this.usePersistentStorage()) {
-        AWProxy.persistentStorage().persistLocalStorage()
+        AWProxy.persistentStorage().persistLocalStorage(this.excludedKeys)
           .then(resolve, reject);
       } else {
         resolve();
@@ -44,7 +49,7 @@ export class AWCache extends AWPlugin {
     return new Promise((resolve, reject) => {
       AWProxy.storage().clear();
       if (this.usePersistentStorage()) {
-        AWProxy.persistentStorage().persistLocalStorage()
+        AWProxy.persistentStorage().persistLocalStorage(this.excludedKeys)
           .then(resolve, reject);
       } else {
         resolve();
