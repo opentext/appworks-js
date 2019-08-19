@@ -2350,11 +2350,13 @@ The AWCache plugin allows you to temporarily cache JSON data using local storage
 ##### Methods:
 
 - setItem
+- setExcludedKeys
 - getItem
 - clear
 
-All methods are asynchronous and return a Promise. The constructor accepts an options object with a single property `usePersistentStorage`.
+The constructor accepts an options object with a single property `usePersistentStorage`.
 If the `usePersistentStorage` option is set to `true` then the on-device file system or host OS storage will be used depending on the runtime environment.
+The persistent storage can be overridden by using setExcludedKeys([string])
 ````js
 var options = {
     usePersistentStorage: true
@@ -2385,11 +2387,34 @@ cache.setItem('myKey', 1234).then(
     });
 ````
 
+###### setExcludedKeys
+````ts
+setExcludedKeys(keys: [string])
+````
+Exclude a key from being written to persistent storage
+
+parameters:
+- keys: a string array of keys to exclude
+
+Example:
+````js
+var cache = new Appworks.AWCache();
+var excluded = ['key1','key2'];
+cache.setExcludedKeys(excluded);
+cache.setItem('key1', 1234).then(
+    function() {
+        console.log('stored 1234 under key "key1", but not persisted');
+    },
+    function(err) {
+        console.error('failed to store 1234 under key "key1" in cache - ' + err);
+    });
+````
+
 ###### getItem
 ````ts
 getItem(key: string)
 ````
-get an item from the cache. this method is asynchronous.
+get an item from the cache.
 
 parameters:
 - key: the key of the item to retrieve
