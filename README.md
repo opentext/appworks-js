@@ -2397,13 +2397,7 @@ parameters:
 Example:
 ````js
 var cache = new Appworks.AWCache();
-cache.getItem('myKey').then(
-    function(item) {
-        console.log('we got the item ' + item + 'from the cache using key "myKey"');
-    },
-    function(err) {
-        console.error(`failed to get 'myKey' from cache - ` + err);
-    });
+var myValue = cache.getItem('myKey');
 ````
 
 ##### removeItem
