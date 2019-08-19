@@ -10,7 +10,7 @@ export class DesktopStorage implements PersistentStorage {
     this.desktopStorage = desktopPlugin;
   }
 
-  persistLocalStorage(): Promise<any> {
+  persistLocalStorage(excludedKeys: string[]): Promise<any> {
     if (this.desktopStorage === null) {
       return Promise.reject(DesktopStorage.PLUGIN_NOT_FOUND);
     }
@@ -25,7 +25,9 @@ export class DesktopStorage implements PersistentStorage {
       for (i = 0; i < storage.length; i += 1) {
         key = storage.key(i);
         value = storage.getItem(key);
-        data.push({key: key, value: value});
+        if (excludedKeys.indexOf(key) === -1) {
+          data.push({key: key, value: value});
+        }
       }
 
       const setter = obj => this.desktopStorage.setItem(obj.key, obj.value);

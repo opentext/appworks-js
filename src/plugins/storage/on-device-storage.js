@@ -7,14 +7,16 @@ var proxy_1 = require("../../common/proxy");
 var OnDeviceStorage = (function () {
     function OnDeviceStorage() {
     }
-    OnDeviceStorage.prototype.persistLocalStorage = function () {
+    OnDeviceStorage.prototype.persistLocalStorage = function (excludedKeys) {
         var _this = this;
         var i, data = {}, key, value;
         var storage = proxy_1.AWProxy.storage();
         for (i = 0; i < storage.length; i += 1) {
             key = storage.key(i);
             value = storage.getItem(key);
-            data[key] = value;
+            if (excludedKeys.indexOf(key) === -1) {
+                data[key] = value;
+            }
         }
         return new Promise(function (resolve, reject) {
             _this.writeDataToPersistentStorage(JSON.stringify(data)).then(resolve, reject);

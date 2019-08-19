@@ -6,7 +6,7 @@ import {PersistentStorage} from './index';
  */
 export class OnDeviceStorage implements PersistentStorage {
 
-  persistLocalStorage(): Promise<any> {
+  persistLocalStorage(excludedKeys: string[]): Promise<any> {
     let i,
       data = {},
       key,
@@ -16,7 +16,9 @@ export class OnDeviceStorage implements PersistentStorage {
     for (i = 0; i < storage.length; i += 1) {
       key = storage.key(i);
       value = storage.getItem(key);
-      data[key] = value;
+      if (excludedKeys.indexOf(key) === -1) {
+        data[key] = value;
+      }
     }
     return new Promise((resolve, reject) => {
       this.writeDataToPersistentStorage(JSON.stringify(data)).then(resolve, reject);

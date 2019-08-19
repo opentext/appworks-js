@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var PersistentStorageMock = (function () {
     function PersistentStorageMock() {
     }
+    PersistentStorageMock.prototype.setExcludedKeys = function (_excludedKeys) {
+    };
     PersistentStorageMock.prototype.persistLocalStorage = function () {
         return Promise.resolve();
     };

@@ -7,7 +7,7 @@ export * from './secure-storage';
  * Desktop persistent storage.
  */
 export interface PersistentStorage {
-    persistLocalStorage(): Promise<any>;
+    persistLocalStorage(excludedKeys: string[]): Promise<any>;
     loadPersistentData(): Promise<any>;
 }
 /**

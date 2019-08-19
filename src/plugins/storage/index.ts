@@ -9,7 +9,7 @@ export * from './secure-storage';
  */
 export interface PersistentStorage {
 
-  persistLocalStorage(): Promise<any>;
+  persistLocalStorage(excludedKeys: string[]): Promise<any>;
 
   loadPersistentData(): Promise<any>;
 

@@ -17,16 +17,20 @@ var AWCache = (function (_super) {
     __extends(AWCache, _super);
     function AWCache(options) {
         var _this = _super.call(this, util_1.noop, util_1.noop) || this;
+        _this.excludedKeys = [];
         _this.options = options || { usePersistentStorage: false };
         _this.preloadCache();
         return _this;
     }
+    AWCache.prototype.setExcludedKeys = function (_excludedKeys) {
+        this.excludedKeys = _excludedKeys;
+    };
     AWCache.prototype.setItem = function (key, value) {
         var _this = this;
         return new Promise(function (resolve, reject) {
             proxy_1.AWProxy.storage().setItem(key, value);
             if (_this.usePersistentStorage()) {
-                proxy_1.AWProxy.persistentStorage().persistLocalStorage()
+                proxy_1.AWProxy.persistentStorage().persistLocalStorage(_this.excludedKeys)
                     .then(resolve, reject);
             }
             else {
@@ -42,7 +46,7 @@ var AWCache = (function (_super) {
         return new Promise(function (resolve, reject) {
             proxy_1.AWProxy.storage().removeItem(key);
             if (_this.usePersistentStorage()) {
-                proxy_1.AWProxy.persistentStorage().persistLocalStorage()
+                proxy_1.AWProxy.persistentStorage().persistLocalStorage(_this.excludedKeys)
                     .then(resolve, reject);
             }
             else {
@@ -55,7 +59,7 @@ var AWCache = (function (_super) {
         return new Promise(function (resolve, reject) {
             proxy_1.AWProxy.storage().clear();
             if (_this.usePersistentStorage()) {
-                proxy_1.AWProxy.persistentStorage().persistLocalStorage()
+                proxy_1.AWProxy.persistentStorage().persistLocalStorage(_this.excludedKeys)
                     .then(resolve, reject);
             }
             else {

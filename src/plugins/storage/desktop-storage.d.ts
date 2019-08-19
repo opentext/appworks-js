@@ -3,6 +3,6 @@ export declare class DesktopStorage implements PersistentStorage {
     private static readonly PLUGIN_NOT_FOUND;
     private desktopStorage;
     constructor(desktopPlugin: AsyncStorage);
-    persistLocalStorage(): Promise<any>;
+    persistLocalStorage(excludedKeys: string[]): Promise<any>;
     loadPersistentData(): Promise<any>;
 }

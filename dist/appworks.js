@@ -1359,6 +1359,8 @@ var es6Promise_1 = es6Promise.Promise;
 var PersistentStorageMock = (function () {
     function PersistentStorageMock() {
     }
+    PersistentStorageMock.prototype.setExcludedKeys = function (_excludedKeys) {
+    };
     PersistentStorageMock.prototype.persistLocalStorage = function () {
         return es6Promise_1.resolve();
     };
@@ -1386,7 +1388,7 @@ var DesktopStorage = (function () {
     function DesktopStorage(desktopPlugin) {
         this.desktopStorage = desktopPlugin;
     }
-    DesktopStorage.prototype.persistLocalStorage = function () {
+    DesktopStorage.prototype.persistLocalStorage = function (excludedKeys) {
         var _this = this;
         if (this.desktopStorage === null) {
             return es6Promise_1.reject(DesktopStorage.PLUGIN_NOT_FOUND);
@@ -1397,7 +1399,9 @@ var DesktopStorage = (function () {
             for (i = 0; i < storage.length; i += 1) {
                 key = storage.key(i);
                 value = storage.getItem(key);
-                data.push({ key: key, value: value });
+                if (excludedKeys.indexOf(key) === -1) {
+                    data.push({ key: key, value: value });
+                }
             }
             var setter = function (obj) { return _this.desktopStorage.setItem(obj.key, obj.value); };
             es6Promise_1.all(data.map(setter)).then(resolve, reject);
@@ -1435,14 +1439,16 @@ DesktopStorage.PLUGIN_NOT_FOUND = new Error('Unable to resolve AWStorage desktop
 var OnDeviceStorage = (function () {
     function OnDeviceStorage() {
     }
-    OnDeviceStorage.prototype.persistLocalStorage = function () {
+    OnDeviceStorage.prototype.persistLocalStorage = function (excludedKeys) {
         var _this = this;
         var i, data = {}, key, value;
         var storage = AWProxy.storage();
         for (i = 0; i < storage.length; i += 1) {
             key = storage.key(i);
             value = storage.getItem(key);
-            data[key] = value;
+            if (excludedKeys.indexOf(key) === -1) {
+                data[key] = value;
+            }
         }
         return new es6Promise_1(function (resolve, reject) {
             _this.writeDataToPersistentStorage(JSON.stringify(data)).then(resolve, reject);
@@ -2826,16 +2832,20 @@ var AWCache$1 = (function (_super) {
     __extends(AWCache, _super);
     function AWCache(options) {
         var _this = _super.call(this, noop, noop) || this;
+        _this.excludedKeys = [];
         _this.options = options || { usePersistentStorage: false };
         _this.preloadCache();
         return _this;
     }
+    AWCache.prototype.setExcludedKeys = function (_excludedKeys) {
+        this.excludedKeys = _excludedKeys;
+    };
     AWCache.prototype.setItem = function (key, value) {
         var _this = this;
         return new es6Promise_1(function (resolve, reject) {
             AWProxy.storage().setItem(key, value);
             if (_this.usePersistentStorage()) {
-                AWProxy.persistentStorage().persistLocalStorage()
+                AWProxy.persistentStorage().persistLocalStorage(_this.excludedKeys)
                     .then(resolve, reject);
             }
             else {
@@ -2851,7 +2861,7 @@ var AWCache$1 = (function (_super) {
         return new es6Promise_1(function (resolve, reject) {
             AWProxy.storage().removeItem(key);
             if (_this.usePersistentStorage()) {
-                AWProxy.persistentStorage().persistLocalStorage()
+                AWProxy.persistentStorage().persistLocalStorage(_this.excludedKeys)
                     .then(resolve, reject);
             }
             else {
@@ -2864,7 +2874,7 @@ var AWCache$1 = (function (_super) {
         return new es6Promise_1(function (resolve, reject) {
             AWProxy.storage().clear();
             if (_this.usePersistentStorage()) {
-                AWProxy.persistentStorage().persistLocalStorage()
+                AWProxy.persistentStorage().persistLocalStorage(_this.excludedKeys)
                     .then(resolve, reject);
             }
             else {

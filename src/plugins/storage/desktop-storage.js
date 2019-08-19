@@ -5,7 +5,7 @@ var DesktopStorage = (function () {
     function DesktopStorage(desktopPlugin) {
         this.desktopStorage = desktopPlugin;
     }
-    DesktopStorage.prototype.persistLocalStorage = function () {
+    DesktopStorage.prototype.persistLocalStorage = function (excludedKeys) {
         var _this = this;
         if (this.desktopStorage === null) {
             return Promise.reject(DesktopStorage.PLUGIN_NOT_FOUND);
@@ -16,7 +16,9 @@ var DesktopStorage = (function () {
             for (i = 0; i < storage.length; i += 1) {
                 key = storage.key(i);
                 value = storage.getItem(key);
-                data.push({ key: key, value: value });
+                if (excludedKeys.indexOf(key) === -1) {
+                    data.push({ key: key, value: value });
+                }
             }
             var setter = function (obj) { return _this.desktopStorage.setItem(obj.key, obj.value); };
             Promise.all(data.map(setter)).then(resolve, reject);
