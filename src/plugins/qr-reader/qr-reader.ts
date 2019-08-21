@@ -22,13 +22,13 @@ export class QRReader extends AWPlugin {
     );
   }
 
-  barcode(multiple?: boolean, timeout?: number) {
+  barcode(multiple?: boolean, timeout?: number, finishTitle?: string, cancelTitle?: string) {
     AWProxy.exec(
       (() => this.successHandler)(),
       (() => this.errorHandler)(),
       'AWQRCodeReader',
       'barcode',
-      [multiple, timeout]
+      [multiple, timeout, finishTitle, cancelTitle]
     );
   }
 }

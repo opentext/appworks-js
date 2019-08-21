@@ -1414,7 +1414,7 @@ clearLaunchURL()
 ````
 
 #### QRReader
-The QRReader plugin allows you to scan a QR code using the device camera.
+The QRReader plugin allows you to scan a QR code using the device camera. You can also scan a barcode.
 
 ##### Methods:
 
@@ -1422,8 +1422,8 @@ The QRReader plugin allows you to scan a QR code using the device camera.
 ````
 scan()
 ````
-opens the device camera to scan a qr code. when the qr code is recognized, it is processed automatically. returns
-the data encoded by the qr code to the callback initialized upon instance creation.
+Opens the device camera to scan a QR code. When the QR code is recognized, it is processed automatically. returns
+the data encoded by the QR code to the callback initialized upon instance creation.
 
 ##### Example:
 ````js
@@ -1441,6 +1441,38 @@ var scanQRCode = function () {
 
     qrScanner.scan();
 };
+````
+
+###### barcode
+````
+barcode()
+````
+Opens the device camera to scan a single barcode or multiple barcodes. The contents of the barcode is returned in a string array.
+You can provide 4 parameters, multiple, timeout, finishTitle and cancelTitle
+
+##### Example:
+````js
+var multiple = true; // If true, scan barcodes until users taps finish. If false, scan a single barcode and finish automatically. (Defaults to false if not provided)
+var timeout = 30; // The number of seconds of idle (no barcode scan) before automatically finishing. (defaults to 30 if not provided)
+var finishTitle = 'All Done'; // A custom title for the finish button (defaults to "Finished" if not provided)
+var cancelTitle = 'End Scanning'; // A custom title for the cancel button (defaults to "Cancel" if not provided)
+scanBarcode(multiple, timeout, finishTitle, cancelTitle);
+
+// .....
+
+function scanBarcode(multiple, timeout, finishTitle, cancelTitle) {
+  var reader = new Appworks.QRReader(
+    function(result) {
+      // here, result is a string array, e.g. ['barcode1','barcode2','barcode3']
+      console.log(result);
+    },
+    function(error) {
+      // here, error is a string
+      console.log(error);
+    });
+
+  reader.barcode(multiple, timeout, finishTitle, cancelTitle);
+}
 ````
 
 #### Camera
