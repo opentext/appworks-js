@@ -25,6 +25,7 @@ var OnDeviceStorage = (function () {
     OnDeviceStorage.prototype.loadPersistentData = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
+            proxy_1.AWProxy.storage().clear();
             _this.readDataFromPersistentStorage().then(function (json) {
                 var data;
                 if (json) {
@@ -41,45 +42,12 @@ var OnDeviceStorage = (function () {
     };
     OnDeviceStorage.prototype.readDataFromPersistentStorage = function () {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.requestFileSystem(proxy_1.AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
-            function gotFS(fileSystem) {
-                fileSystem.root.getFile('appworksjs.cache.json', {
-                    create: true,
-                    exclusive: false
-                }, gotFileEntry, reject);
-            }
-            function gotFileEntry(entry) {
-                entry.file(gotFile, reject);
-            }
-            function gotFile(file) {
-                readAsText(file);
-            }
-            function readAsText(file) {
-                var reader = new FileReader();
-                reader.onloadend = function (evt) {
-                    console.log(evt);
-                    resolve(evt.target.result);
-                };
-                reader.readAsText(file);
-            }
+            proxy_1.AWProxy.exec(resolve, reject, 'AWCache', 'getAllCacheData', []);
         });
     };
     OnDeviceStorage.prototype.writeDataToPersistentStorage = function (data) {
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.requestFileSystem(proxy_1.AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
-            function gotFS(fileSystem) {
-                fileSystem.root.getFile('appworksjs.cache.json', { create: true, exclusive: false }, gotFileEntry, reject);
-            }
-            function gotFileEntry(fileEntry) {
-                fileEntry.createWriter(gotFileWriter, reject);
-            }
-            function gotFileWriter(writer) {
-                writer.onwriteend = function () {
-                    console.info('cache data backed up successfully');
-                };
-                writer.write(data);
-                resolve();
-            }
+            proxy_1.AWProxy.exec(resolve, reject, 'AWCache', 'setAllCacheData', [data]);
         });
     };
     return OnDeviceStorage;
