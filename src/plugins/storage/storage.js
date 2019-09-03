@@ -9,8 +9,15 @@ var local_storage_1 = require("../../../test/mock/local-storage");
 var AWStorage = (function () {
     function AWStorage() {
         // resolve the local storage or fall back onto a mock impl
-        this.storage = (typeof window !== 'undefined') ?
-            window.localStorage : new local_storage_1.MockLocalStorage();
+        if (typeof window !== 'undefined') {
+            if (typeof window['awcache'] === 'undefined') {
+                window['awcache'] = {};
+            }
+            this.storage = window['awcache'];
+        }
+        else {
+            this.storage = new local_storage_1.MockLocalStorage();
+        }
     }
     Object.defineProperty(AWStorage.prototype, "length", {
         get: function () {
@@ -20,19 +27,20 @@ var AWStorage = (function () {
         configurable: true
     });
     AWStorage.prototype.clear = function () {
-        this.storage.clear();
+        this.storage = null;
     };
     AWStorage.prototype.getItem = function (key) {
-        return this.storage.getItem(key);
+        return this.storage[key];
     };
     AWStorage.prototype.key = function (index) {
         return this.storage.key(index);
     };
     AWStorage.prototype.removeItem = function (key) {
-        return this.storage.removeItem(key);
+        delete this.storage[key];
+        return;
     };
     AWStorage.prototype.setItem = function (key, data) {
-        return this.storage.setItem(key, data);
+        return this.storage[key] = data;
     };
     return AWStorage;
 }());

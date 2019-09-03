@@ -10,7 +10,7 @@ export class AWCache extends AWPlugin {
   constructor(options?: any) {
     super(noop, noop);
     this.options = options || {usePersistentStorage: false};
-    this.preloadCache();
+    console.log("AWCache instantiate, don't forget to call preloadCache().then(function(){}, function(err){})");
   }
 
   setExcludedKeys(_excludedKeys: string[]) {
@@ -57,15 +57,23 @@ export class AWCache extends AWPlugin {
     });
   }
 
-  private preloadCache() {
-    if (this.usePersistentStorage())
-      AWProxy.persistentStorage().loadPersistentData()
-        .then(
-          () =>
-            console.log('AWCache: Successfully loaded persistent data into local storage'),
-          err =>
-            console.error(`AWCache: Failed to load persistent data into local storage - ${err.toString()}`)
-        );
+  preloadCache(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (this.usePersistentStorage()) {
+        AWProxy.persistentStorage().loadPersistentData()
+            .then(
+                () => {
+                  console.log('AWCache: Successfully loaded persistent data into local storage');
+                  resolve();
+                },
+                err => {
+                  let error = `AWCache: Failed to load persistent data into local storage - ${err.toString()}`
+                  console.error(error);
+                  reject(error);
+                }
+            );
+      };
+    });
   }
 
   private usePersistentStorage(): boolean {

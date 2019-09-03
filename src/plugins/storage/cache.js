@@ -19,7 +19,7 @@ var AWCache = (function (_super) {
         var _this = _super.call(this, util_1.noop, util_1.noop) || this;
         _this.excludedKeys = [];
         _this.options = options || { usePersistentStorage: false };
-        _this.preloadCache();
+        console.log("AWCache instantiate, don't forget to call preloadCache().then(function(){}, function(err){})");
         return _this;
     }
     AWCache.prototype.setExcludedKeys = function (_excludedKeys) {
@@ -68,13 +68,21 @@ var AWCache = (function (_super) {
         });
     };
     AWCache.prototype.preloadCache = function () {
-        if (this.usePersistentStorage())
-            proxy_1.AWProxy.persistentStorage().loadPersistentData()
-                .then(function () {
-                return console.log('AWCache: Successfully loaded persistent data into local storage');
-            }, function (err) {
-                return console.error("AWCache: Failed to load persistent data into local storage - " + err.toString());
-            });
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            if (_this.usePersistentStorage()) {
+                proxy_1.AWProxy.persistentStorage().loadPersistentData()
+                    .then(function () {
+                    console.log('AWCache: Successfully loaded persistent data into local storage');
+                    resolve();
+                }, function (err) {
+                    var error = "AWCache: Failed to load persistent data into local storage - " + err.toString();
+                    console.error(error);
+                    reject(error);
+                });
+            }
+            ;
+        });
     };
     AWCache.prototype.usePersistentStorage = function () {
         return this.options.usePersistentStorage;

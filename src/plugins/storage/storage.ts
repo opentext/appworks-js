@@ -19,8 +19,14 @@ export class AWStorage implements Storage {
 
   constructor() {
     // resolve the local storage or fall back onto a mock impl
-    this.storage = (typeof window !== 'undefined') ?
-      window.localStorage : new MockLocalStorage();
+    if (typeof window !== 'undefined') {
+      if (typeof window['awcache'] === 'undefined') {
+        window['awcache'] = {};
+      }
+      this.storage = window['awcache'];
+    } else {
+      this.storage = new MockLocalStorage();
+    }
   }
 
   get length(): number {
@@ -28,11 +34,11 @@ export class AWStorage implements Storage {
   }
 
   clear(): void {
-    this.storage.clear();
+    this.storage = null;
   }
 
   getItem(key: string): any {
-    return this.storage.getItem(key);
+    return this.storage[key];
   }
 
   key(index: number): string {
@@ -40,11 +46,12 @@ export class AWStorage implements Storage {
   }
 
   removeItem(key: string): void {
-    return this.storage.removeItem(key);
+    delete this.storage[key];
+    return;
   }
 
   setItem(key: string, data: any): void {
-    return this.storage.setItem(key, data);
+    return this.storage[key] = data;
   }
 
 }

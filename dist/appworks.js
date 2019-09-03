@@ -1442,10 +1442,10 @@ var OnDeviceStorage = (function () {
     OnDeviceStorage.prototype.persistLocalStorage = function (excludedKeys) {
         var _this = this;
         var i, data = {}, key, value;
-        var storage = AWProxy.storage();
-        for (i = 0; i < storage.length; i += 1) {
-            key = storage.key(i);
-            value = storage.getItem(key);
+        var storage = AWProxy.storage()['storage'];
+        for (i = 0; i < Object.keys(storage).length; i += 1) {
+            key = Object.keys(storage)[i];
+            value = storage[key];
             if (excludedKeys.indexOf(key) === -1) {
                 data[key] = value;
             }
@@ -1457,7 +1457,6 @@ var OnDeviceStorage = (function () {
     OnDeviceStorage.prototype.loadPersistentData = function () {
         var _this = this;
         return new es6Promise_1(function (resolve, reject) {
-            AWProxy.storage().clear();
             _this.readDataFromPersistentStorage().then(function (json) {
                 var data;
                 if (json) {
@@ -1513,8 +1512,15 @@ var MockLocalStorage = (function () {
 var AWStorage = (function () {
     function AWStorage() {
         // resolve the local storage or fall back onto a mock impl
-        this.storage = (typeof window !== 'undefined') ?
-            window.localStorage : new MockLocalStorage();
+        if (typeof window !== 'undefined') {
+            if (typeof window['awcache'] === 'undefined') {
+                window['awcache'] = {};
+            }
+            this.storage = window['awcache'];
+        }
+        else {
+            this.storage = new MockLocalStorage();
+        }
     }
     Object.defineProperty(AWStorage.prototype, "length", {
         get: function () {
@@ -1524,19 +1530,20 @@ var AWStorage = (function () {
         configurable: true
     });
     AWStorage.prototype.clear = function () {
-        this.storage.clear();
+        this.storage = null;
     };
     AWStorage.prototype.getItem = function (key) {
-        return this.storage.getItem(key);
+        return this.storage[key];
     };
     AWStorage.prototype.key = function (index) {
         return this.storage.key(index);
     };
     AWStorage.prototype.removeItem = function (key) {
-        return this.storage.removeItem(key);
+        delete this.storage[key];
+        return;
     };
     AWStorage.prototype.setItem = function (key, data) {
-        return this.storage.setItem(key, data);
+        return this.storage[key] = data;
     };
     return AWStorage;
 }());
@@ -2802,7 +2809,7 @@ var AWCache$1 = (function (_super) {
         var _this = _super.call(this, noop, noop) || this;
         _this.excludedKeys = [];
         _this.options = options || { usePersistentStorage: false };
-        _this.preloadCache();
+        console.log("AWCache instantiate, don't forget to call preloadCache().then(function(){}, function(err){})");
         return _this;
     }
     AWCache.prototype.setExcludedKeys = function (_excludedKeys) {
@@ -2851,13 +2858,21 @@ var AWCache$1 = (function (_super) {
         });
     };
     AWCache.prototype.preloadCache = function () {
-        if (this.usePersistentStorage())
-            AWProxy.persistentStorage().loadPersistentData()
-                .then(function () {
-                return console.log('AWCache: Successfully loaded persistent data into local storage');
-            }, function (err) {
-                return console.error("AWCache: Failed to load persistent data into local storage - " + err.toString());
-            });
+        var _this = this;
+        return new es6Promise_1(function (resolve, reject) {
+            if (_this.usePersistentStorage()) {
+                AWProxy.persistentStorage().loadPersistentData()
+                    .then(function () {
+                    console.log('AWCache: Successfully loaded persistent data into local storage');
+                    resolve();
+                }, function (err) {
+                    var error = "AWCache: Failed to load persistent data into local storage - " + err.toString();
+                    console.error(error);
+                    reject(error);
+                });
+            }
+            
+        });
     };
     AWCache.prototype.usePersistentStorage = function () {
         return this.options.usePersistentStorage;

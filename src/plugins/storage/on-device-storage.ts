@@ -12,10 +12,10 @@ export class OnDeviceStorage implements PersistentStorage {
       key,
       value;
 
-    const storage = AWProxy.storage();
-    for (i = 0; i < storage.length; i += 1) {
-      key = storage.key(i);
-      value = storage.getItem(key);
+    const storage = AWProxy.storage()['storage'];
+    for (i = 0; i < Object.keys(storage).length; i += 1) {
+      key = Object.keys(storage)[i];
+      value = storage[key];
       if (excludedKeys.indexOf(key) === -1) {
         data[key] = value;
       }
@@ -27,7 +27,6 @@ export class OnDeviceStorage implements PersistentStorage {
 
   loadPersistentData(): Promise<any> {
     return new Promise((resolve, reject) => {
-      AWProxy.storage().clear();
       this.readDataFromPersistentStorage().then(
         (json) => {
           let data;
@@ -47,11 +46,11 @@ export class OnDeviceStorage implements PersistentStorage {
   readDataFromPersistentStorage(): Promise<any> {
     return new Promise((resolve, reject) => {
       AWProxy.exec(
-          resolve,
-          reject,
-          'AWCache',
-          'getAllCacheData',
-          []
+        resolve,
+        reject,
+        'AWCache',
+        'getAllCacheData',
+        []
       );
     });
   }

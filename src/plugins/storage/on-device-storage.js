@@ -10,10 +10,10 @@ var OnDeviceStorage = (function () {
     OnDeviceStorage.prototype.persistLocalStorage = function (excludedKeys) {
         var _this = this;
         var i, data = {}, key, value;
-        var storage = proxy_1.AWProxy.storage();
-        for (i = 0; i < storage.length; i += 1) {
-            key = storage.key(i);
-            value = storage.getItem(key);
+        var storage = proxy_1.AWProxy.storage()['storage'];
+        for (i = 0; i < Object.keys(storage).length; i += 1) {
+            key = Object.keys(storage)[i];
+            value = storage[key];
             if (excludedKeys.indexOf(key) === -1) {
                 data[key] = value;
             }
@@ -25,7 +25,6 @@ var OnDeviceStorage = (function () {
     OnDeviceStorage.prototype.loadPersistentData = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            proxy_1.AWProxy.storage().clear();
             _this.readDataFromPersistentStorage().then(function (json) {
                 var data;
                 if (json) {
