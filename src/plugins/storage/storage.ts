@@ -34,7 +34,13 @@ export class AWStorage implements Storage {
   }
 
   clear(): void {
-    this.storage = null;
+    let keys = Object.keys(this.storage);
+
+    for (let key of keys) {
+      this.removeItem(key);
+    }
+
+    return;
   }
 
   getItem(key: string): any {

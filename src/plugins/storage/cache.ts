@@ -30,7 +30,8 @@ export class AWCache extends AWPlugin {
   }
 
   getItem(key: string): any {
-    return AWProxy.storage().getItem(key);
+    let item = AWProxy.storage().getItem(key);
+    return (typeof item === 'undefined' ? '' : item);
   }
 
   removeItem(key: string): Promise<any> {
@@ -60,7 +61,8 @@ export class AWCache extends AWPlugin {
   preloadCache(): Promise<any> {
     return new Promise((resolve, reject) => {
       if (this.usePersistentStorage()) {
-        AWProxy.persistentStorage().loadPersistentData()
+        this.migrateCache(this.excludedKeys).then(() => {
+          AWProxy.persistentStorage().loadPersistentData()
             .then(
                 () => {
                   console.log('AWCache: Successfully loaded persistent data into local storage');
@@ -72,7 +74,19 @@ export class AWCache extends AWPlugin {
                   reject(error);
                 }
             );
-      };
+          }, reject);
+      } else {
+        resolve();
+      }
+    });
+  }
+
+  migrateCache(excludedKeys: string[]): Promise<any> {
+    return new Promise((resolve, reject) => {
+      AWProxy
+          .persistentStorage()
+          .migrateCache(excludedKeys)
+          .then(resolve);
     });
   }
 

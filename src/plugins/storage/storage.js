@@ -27,7 +27,12 @@ var AWStorage = (function () {
         configurable: true
     });
     AWStorage.prototype.clear = function () {
-        this.storage = null;
+        var keys = Object.keys(this.storage);
+        for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
+            var key = keys_1[_i];
+            this.removeItem(key);
+        }
+        return;
     };
     AWStorage.prototype.getItem = function (key) {
         return this.storage[key];

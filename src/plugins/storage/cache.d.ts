@@ -9,5 +9,6 @@ export declare class AWCache extends AWPlugin {
     removeItem(key: string): Promise<any>;
     clear(): Promise<any>;
     preloadCache(): Promise<any>;
+    migrateCache(excludedKeys: string[]): Promise<any>;
     private usePersistentStorage();
 }

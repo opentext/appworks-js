@@ -5,4 +5,5 @@ export declare class DesktopStorage implements PersistentStorage {
     constructor(desktopPlugin: AsyncStorage);
     persistLocalStorage(excludedKeys: string[]): Promise<any>;
     loadPersistentData(): Promise<any>;
+    migrateCache(excludedKeys: string[]): Promise<any>;
 }

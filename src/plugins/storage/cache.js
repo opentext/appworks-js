@@ -39,7 +39,8 @@ var AWCache = (function (_super) {
         });
     };
     AWCache.prototype.getItem = function (key) {
-        return proxy_1.AWProxy.storage().getItem(key);
+        var item = proxy_1.AWProxy.storage().getItem(key);
+        return (typeof item === 'undefined' ? '' : item);
     };
     AWCache.prototype.removeItem = function (key) {
         var _this = this;
@@ -71,17 +72,29 @@ var AWCache = (function (_super) {
         var _this = this;
         return new Promise(function (resolve, reject) {
             if (_this.usePersistentStorage()) {
-                proxy_1.AWProxy.persistentStorage().loadPersistentData()
-                    .then(function () {
-                    console.log('AWCache: Successfully loaded persistent data into local storage');
-                    resolve();
-                }, function (err) {
-                    var error = "AWCache: Failed to load persistent data into local storage - " + err.toString();
-                    console.error(error);
-                    reject(error);
-                });
+                _this.migrateCache(_this.excludedKeys).then(function () {
+                    proxy_1.AWProxy.persistentStorage().loadPersistentData()
+                        .then(function () {
+                        console.log('AWCache: Successfully loaded persistent data into local storage');
+                        resolve();
+                    }, function (err) {
+                        var error = "AWCache: Failed to load persistent data into local storage - " + err.toString();
+                        console.error(error);
+                        reject(error);
+                    });
+                }, reject);
             }
-            ;
+            else {
+                resolve();
+            }
+        });
+    };
+    AWCache.prototype.migrateCache = function (excludedKeys) {
+        return new Promise(function (resolve, reject) {
+            proxy_1.AWProxy
+                .persistentStorage()
+                .migrateCache(excludedKeys)
+                .then(resolve);
         });
     };
     AWCache.prototype.usePersistentStorage = function () {

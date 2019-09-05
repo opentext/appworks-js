@@ -1367,6 +1367,9 @@ var PersistentStorageMock = (function () {
     PersistentStorageMock.prototype.loadPersistentData = function () {
         return es6Promise_1.resolve();
     };
+    PersistentStorageMock.prototype.migrateCache = function () {
+        return es6Promise_1.resolve();
+    };
     return PersistentStorageMock;
 }());
 
@@ -1429,6 +1432,12 @@ var DesktopStorage = (function () {
             }
         });
     };
+    DesktopStorage.prototype.migrateCache = function (excludedKeys) {
+        if (this.desktopStorage === null) {
+            return es6Promise_1.reject(DesktopStorage.PLUGIN_NOT_FOUND);
+        }
+        return es6Promise_1.resolve("Not implemented");
+    };
     return DesktopStorage;
 }());
 DesktopStorage.PLUGIN_NOT_FOUND = new Error('Unable to resolve AWStorage desktop plugin');
@@ -1469,6 +1478,63 @@ var OnDeviceStorage = (function () {
                     resolve();
                 }
             }, reject);
+        });
+    };
+    OnDeviceStorage.prototype.migrateCache = function (excludedKeys) {
+        var _this = this;
+        return new es6Promise_1(function (resolve, reject) {
+            _this.readDataAWCacheFile().then(function (json) {
+                var data;
+                if (json && json !== '') {
+                    data = JSON.parse(json);
+                    for (var item in data) {
+                        if (data.hasOwnProperty(item)) {
+                            AWProxy.storage().setItem(item, data[item]);
+                        }
+                    }
+                    AWProxy.persistentStorage().persistLocalStorage(excludedKeys)
+                        .then(function () { return _this.deleteAWCacheFile().then(resolve, reject); }, reject);
+                }
+                resolve();
+            }, function (error) {
+                resolve();
+            });
+        });
+    };
+    OnDeviceStorage.prototype.readDataAWCacheFile = function () {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.requestFileSystem(AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
+            function gotFS(fileSystem) {
+                fileSystem.root.getFile('appworksjs.cache.json', {
+                    create: false,
+                    exclusive: false
+                }, gotFileEntry, reject);
+            }
+            function gotFileEntry(entry) {
+                entry.file(gotFile, reject);
+            }
+            function gotFile(file) {
+                readAsText(file);
+            }
+            function readAsText(file) {
+                var reader = new FileReader();
+                reader.onloadend = function (evt) {
+                    console.log(evt);
+                    resolve(evt.target.result);
+                };
+                reader.readAsText(file);
+            }
+        });
+    };
+    OnDeviceStorage.prototype.deleteAWCacheFile = function () {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy.requestFileSystem(AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
+            function gotFS(fileSystem) {
+                fileSystem.root.getFile('appworksjs.cache.json', { create: false, exclusive: false }, gotFileEntry, reject);
+            }
+            function gotFileEntry(fileEntry) {
+                fileEntry.remove(resolve, reject);
+            }
         });
     };
     OnDeviceStorage.prototype.readDataFromPersistentStorage = function () {
@@ -1530,7 +1596,12 @@ var AWStorage = (function () {
         configurable: true
     });
     AWStorage.prototype.clear = function () {
-        this.storage = null;
+        var keys = Object.keys(this.storage);
+        for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
+            var key = keys_1[_i];
+            this.removeItem(key);
+        }
+        return;
     };
     AWStorage.prototype.getItem = function (key) {
         return this.storage[key];
@@ -2829,7 +2900,8 @@ var AWCache$1 = (function (_super) {
         });
     };
     AWCache.prototype.getItem = function (key) {
-        return AWProxy.storage().getItem(key);
+        var item = AWProxy.storage().getItem(key);
+        return (typeof item === 'undefined' ? '' : item);
     };
     AWCache.prototype.removeItem = function (key) {
         var _this = this;
@@ -2861,17 +2933,29 @@ var AWCache$1 = (function (_super) {
         var _this = this;
         return new es6Promise_1(function (resolve, reject) {
             if (_this.usePersistentStorage()) {
-                AWProxy.persistentStorage().loadPersistentData()
-                    .then(function () {
-                    console.log('AWCache: Successfully loaded persistent data into local storage');
-                    resolve();
-                }, function (err) {
-                    var error = "AWCache: Failed to load persistent data into local storage - " + err.toString();
-                    console.error(error);
-                    reject(error);
-                });
+                _this.migrateCache(_this.excludedKeys).then(function () {
+                    AWProxy.persistentStorage().loadPersistentData()
+                        .then(function () {
+                        console.log('AWCache: Successfully loaded persistent data into local storage');
+                        resolve();
+                    }, function (err) {
+                        var error = "AWCache: Failed to load persistent data into local storage - " + err.toString();
+                        console.error(error);
+                        reject(error);
+                    });
+                }, reject);
             }
-            
+            else {
+                resolve();
+            }
+        });
+    };
+    AWCache.prototype.migrateCache = function (excludedKeys) {
+        return new es6Promise_1(function (resolve, reject) {
+            AWProxy
+                .persistentStorage()
+                .migrateCache(excludedKeys)
+                .then(resolve);
         });
     };
     AWCache.prototype.usePersistentStorage = function () {

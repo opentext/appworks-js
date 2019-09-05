@@ -13,4 +13,7 @@ export class PersistentStorageMock implements PersistentStorage {
     return Promise.resolve();
   }
 
+  migrateCache(): Promise<any> {
+    return Promise.resolve();
+  }
 }
