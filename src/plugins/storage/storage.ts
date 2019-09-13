@@ -16,16 +16,23 @@ export class AWStorage implements Storage {
    * Storage implementation.
    */
   private storage: Storage;
+  private isMobileEnv: boolean;
 
-  constructor() {
+  constructor(isMobileEnv: boolean) {
+    this.isMobileEnv = isMobileEnv;
     // resolve the local storage or fall back onto a mock impl
-    if (typeof window !== 'undefined') {
-      if (typeof window['awcache'] === 'undefined') {
-        window['awcache'] = {};
+    if (this.isMobileEnv) {
+      if (typeof window !== 'undefined') {
+        if (typeof window['awcache'] === 'undefined') {
+          window['awcache'] = {};
+        }
+        this.storage = window['awcache'];
+      } else {
+        this.storage = new MockLocalStorage();
       }
-      this.storage = window['awcache'];
     } else {
-      this.storage = new MockLocalStorage();
+      this.storage = (typeof window !== 'undefined') ?
+          window.localStorage : new MockLocalStorage();
     }
   }
 
@@ -34,17 +41,22 @@ export class AWStorage implements Storage {
   }
 
   clear(): void {
-    let keys = Object.keys(this.storage);
-
-    for (let key of keys) {
-      this.removeItem(key);
+    if (this.isMobileEnv) {
+      let keys = Object.keys(this.storage);
+      for (let key of keys) {
+        this.removeItem(key);
+      }
+    } else {
+      this.storage.clear();
     }
-
-    return;
   }
 
   getItem(key: string): any {
-    return this.storage[key];
+    if (this.isMobileEnv) {
+      return this.storage[key];
+    } else {
+      return this.storage.getItem(key);
+    }
   }
 
   key(index: number): string {
@@ -52,12 +64,19 @@ export class AWStorage implements Storage {
   }
 
   removeItem(key: string): void {
-    delete this.storage[key];
-    return;
+    if (this.isMobileEnv) {
+      delete this.storage[key];
+    } else {
+      return this.storage.removeItem(key);
+    }
   }
 
   setItem(key: string, data: any): void {
-    return this.storage[key] = data;
+    if (this.isMobileEnv) {
+      return this.storage[key] = data;
+    } else {
+      return this.storage.setItem(key, data);
+    }
   }
 
 }

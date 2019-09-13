@@ -1576,16 +1576,23 @@ var MockLocalStorage = (function () {
  * storage always acting as the reference.
  */
 var AWStorage = (function () {
-    function AWStorage() {
+    function AWStorage(isMobileEnv) {
+        this.isMobileEnv = isMobileEnv;
         // resolve the local storage or fall back onto a mock impl
-        if (typeof window !== 'undefined') {
-            if (typeof window['awcache'] === 'undefined') {
-                window['awcache'] = {};
+        if (this.isMobileEnv) {
+            if (typeof window !== 'undefined') {
+                if (typeof window['awcache'] === 'undefined') {
+                    window['awcache'] = {};
+                }
+                this.storage = window['awcache'];
             }
-            this.storage = window['awcache'];
+            else {
+                this.storage = new MockLocalStorage();
+            }
         }
         else {
-            this.storage = new MockLocalStorage();
+            this.storage = (typeof window !== 'undefined') ?
+                window.localStorage : new MockLocalStorage();
         }
     }
     Object.defineProperty(AWStorage.prototype, "length", {
@@ -1596,25 +1603,43 @@ var AWStorage = (function () {
         configurable: true
     });
     AWStorage.prototype.clear = function () {
-        var keys = Object.keys(this.storage);
-        for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
-            var key = keys_1[_i];
-            this.removeItem(key);
+        if (this.isMobileEnv) {
+            var keys = Object.keys(this.storage);
+            for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
+                var key = keys_1[_i];
+                this.removeItem(key);
+            }
         }
-        return;
+        else {
+            this.storage.clear();
+        }
     };
     AWStorage.prototype.getItem = function (key) {
-        return this.storage[key];
+        if (this.isMobileEnv) {
+            return this.storage[key];
+        }
+        else {
+            return this.storage.getItem(key);
+        }
     };
     AWStorage.prototype.key = function (index) {
         return this.storage.key(index);
     };
     AWStorage.prototype.removeItem = function (key) {
-        delete this.storage[key];
-        return;
+        if (this.isMobileEnv) {
+            delete this.storage[key];
+        }
+        else {
+            return this.storage.removeItem(key);
+        }
     };
     AWStorage.prototype.setItem = function (key, data) {
-        return this.storage[key] = data;
+        if (this.isMobileEnv) {
+            return this.storage[key] = data;
+        }
+        else {
+            return this.storage.setItem(key, data);
+        }
     };
     return AWStorage;
 }());
@@ -1845,7 +1870,7 @@ var AWProxy = (function () {
         }
     };
     AWProxy.storage = function () {
-        return new AWStorage();
+        return new AWStorage(AWProxy.isMobileEnv());
     };
     AWProxy.persistentStorage = function () {
         var desktopPlugin = AWProxy.getDesktopPlugin('AWStorage');

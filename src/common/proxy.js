@@ -202,7 +202,7 @@ var AWProxy = (function () {
         }
     };
     AWProxy.storage = function () {
-        return new storage_1.AWStorage();
+        return new storage_1.AWStorage(AWProxy.isMobileEnv());
     };
     AWProxy.persistentStorage = function () {
         var desktopPlugin = AWProxy.getDesktopPlugin('AWStorage');
