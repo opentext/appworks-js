@@ -20,6 +20,34 @@ export class AWAppManager extends AWPlugin {
             []
         );
     }
+    getAppVersion(success, error) {
+        AWProxy.exec(
+            success,
+            error,
+            'AWAppManager',
+            'getAppVersion',
+            []
+        );
+    }
+    isFirstRun(success, error) {
+        AWProxy.exec(
+            success,
+            error,
+            'AWAppManager',
+            'isFirstRun',
+            []
+        );
+    }
+    setAppHasRun(success, error) {
+        AWProxy.exec(
+            success,
+            error,
+            'AWAppManager',
+            'setAppHasRun',
+            []
+        );
+    }
+    /* Deprecated, will be removed in the next version */
     resetShouldClearCache() {
         AWProxy.exec(
             (() => this.successHandler)(),
@@ -29,6 +57,7 @@ export class AWAppManager extends AWPlugin {
             []
         );
     }
+    /* Deprecated, will be removed in the next version */
     shouldClearCache(success) {
         AWProxy.exec(
             success,

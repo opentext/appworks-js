@@ -25,10 +25,21 @@ var AWAppManager = (function (_super) {
         var _this = this;
         proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'getAppName', []);
     };
+    AWAppManager.prototype.getAppVersion = function (success, error) {
+        proxy_1.AWProxy.exec(success, error, 'AWAppManager', 'getAppVersion', []);
+    };
+    AWAppManager.prototype.isFirstRun = function (success, error) {
+        proxy_1.AWProxy.exec(success, error, 'AWAppManager', 'isFirstRun', []);
+    };
+    AWAppManager.prototype.setAppHasRun = function (success, error) {
+        proxy_1.AWProxy.exec(success, error, 'AWAppManager', 'setAppHasRun', []);
+    };
+    /* Deprecated, will be removed in the next version */
     AWAppManager.prototype.resetShouldClearCache = function () {
         var _this = this;
         proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWAppManager', 'resetShouldClearCache', []);
     };
+    /* Deprecated, will be removed in the next version */
     AWAppManager.prototype.shouldClearCache = function (success) {
         var _this = this;
         proxy_1.AWProxy.exec(success, (function () { return _this.errorHandler; })(), 'AWAppManager', 'shouldClearCache', []);

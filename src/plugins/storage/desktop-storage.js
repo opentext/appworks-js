@@ -50,7 +50,7 @@ var DesktopStorage = (function () {
         if (this.desktopStorage === null) {
             return Promise.reject(DesktopStorage.PLUGIN_NOT_FOUND);
         }
-        return Promise.resolve("Not implemented");
+        return Promise.resolve();
     };
     return DesktopStorage;
 }());
