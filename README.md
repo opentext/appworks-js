@@ -25,6 +25,14 @@ A limited number of appworks.js plugins are available in the desktop environment
 - [AWMenu](#awmenu)
 - [AWNotificationManager](#awnotificationmanager)
 
+## Update Notes
+
+### v16.7
+
+> Import updates for AWCache, please see [AWCache changes for 16.7](#awcache) within the [AWCache](#awcache) section
+
+> New first run methods added to [AWAppManager](#awappmanager)
+
 ## Installation
 
 ### NPM:
@@ -400,7 +408,7 @@ export class MyWebview {
 ```
 
 #### AWAppManager
-The AppManager plugin allows you to close the current app webview, get the current app name and check whether you should clear the AWCache.
+The AppManager plugin allows you to close the current app webview, get the current app name, version and whether it is the first run.
 
 ##### Methods:
 
@@ -452,44 +460,59 @@ $('#click-me').click(function () {
 });
 ````
 
-###### resetShouldClearCache
+###### getAppVersion
 ````
-resetShouldClearCache()
+getAppVersion()
 ````
-Inform the client that you have successfully cleared the AWCache, and you don't need to be told to do it again.
+Get the version of the current app
 ##### Example:
 ````js
-function resetShouldClearCache() {
+function getAppVersion() {
   var appManager = new Appworks.AWAppManager();
-  appManager.resetShouldClearCache();
-}
-````
-
-###### shouldClearCache
-````
-shouldClearCache(successHandler: any)
-````
-Informs you of whether you should clear the AWCache before proceeding to use it. 
-This will be set to true if the client has had a user switch.
-##### Example:
-````js
-document.addEventListener("deviceready", onDeviceReady, false);
-
-function onDeviceReady() {
-  shouldClearCache(function() {
-    console.log("shouldClearCache triggered, now we can safely work with the cache after a user switch");
+    appManager.getAppVersion(function (version) {
+      console.log(version);
+  }, function(error) {
+      console.log(error);
   });
 }
+````
 
-function shouldClearCache(callback) {
+###### isFirstRun
+````
+isFirstRun()
+````
+Determine whether this particular app is running for the first time. Take this opportunity to display an intro carousel or other welcome dialogs.
+##### Example:
+````js
+function isFirstRun() {
   var appManager = new Appworks.AWAppManager();
-  appManager.shouldClearCache(function(doClearCache) {
-    if(doClearCache) {
-      clearCache();
-      resetShouldClearCache();
-    }
+    appManager.isFirstRun(function (isFirstRun) {
+      if(isFirstRun) {
+        console.log('This is the first run of this app');
+        // perform first run methods
+      } else {
+        console.log('This app has run before');
+        // perform normal run methods
+      }
+  }, function(error) {
+      console.log(error);
+  });
+}
+````
 
-    callback();
+###### setAppHasRun
+````
+setAppHasRun()
+````
+Tell the AppWorks container that this apps first run has been handled, so that subsequent runs are not incorrectly marked as first run.
+##### Example:
+````js
+function setAppHasRun() {
+  var appManager = new Appworks.AWAppManager();
+    appManager.setAppHasRun(function () {
+      console.log('setAppHasRun was successful');
+  }, function(error) {
+      console.log(error);
   });
 }
 ````
@@ -2377,120 +2400,187 @@ Get the current network status of the device
 #### AWCache
 <b>**_* available on desktop_**</b>
 
-The AWCache plugin allows you to temporarily cache JSON data using local storage, or permanently store it using the device/host OS file system.
+The AWCache plugin allows you to temporarily cache JSON data, and persist it within the AppWorks container if persistent is set to true.
+
+#### AWCache changes for 16.7
+> In previous versions, the persistent data was loaded into memory when a new AWCache object was instantiated.
+> 
+> For a bugfix, the particular function which performed this was changed from synchronous to asynchronous, therefore it could no longer be used in the constructor. 
+> This is the preloadCache method, which now returns a promise.
+>
+> Please include this instantiation and subsequent .preloadCache().then() call in your startup code before attempting to access your persistent data with .getItem(key)
 
 ##### Methods:
 
-- setItem
+- preloadCache
 - setExcludedKeys
+- setItem
 - getItem
+- removeItem
 - clear
 
 The constructor accepts an options object with a single property `usePersistentStorage`.
 If the `usePersistentStorage` option is set to `true` then the on-device file system or host OS storage will be used depending on the runtime environment.
 The persistent storage can be overridden by using setExcludedKeys([string])
+
+## Usage
+
+#### Instantiation and preloadCache
+````ts
+preloadCache() - Returns Promise
+````
+
 ````js
 var options = {
     usePersistentStorage: true
 };
 
+// Ideally a single global instance of AWCache is instantiated.
 var cache = new Appworks.AWCache(options);
+
+// Immediately load the persistent cache into memory
+cache.preloadCache().then(
+  // Success function
+  function() {
+      console.log("Cache is ready to use");
+
+      // Access the cached data
+      console.log(getDataFromCache('myKey'));
+  },
+  // Error function
+  function(err) {
+      console.log("Cache failed to load: " + err);
+  });
+
+function getDataFromCache(key) {
+  return cache.getItem(key);
+}
 ````
+#### setExcludedKeys
+
+````ts
+setExcludedKeys(keys: string[])
+````
+
+Prevent certain keys from being persisted.
+
++ __keys__: A string array of keys which will not be persisted along with other keys
+
+Examples
+`````javascript
+// The keys to exclude from persistent storage
+var excludedKeys = ['key1', 'key3'];
+
+cache.setExcludedKeys(excludedKeys);
+
+// Some content to store
+var content1 = "My Content 1";
+var content2 = "My Content 2";
+var content3 = "My Content 3";
+
+// Not persisted
+cache.setItem('key1', content1).then(function() {}, function(err) {});
+
+// Persisted
+cache.setItem('key2', content1).then(function() {}, function(err) {});
+
+// Not persisted
+cache.setItem('key3', content1).then(function() {}, function(err) {});
+`````
 
 ###### setItem
 ````ts
-setItem(key: string, value: any)
+setItem(key: string, value: any) - Returns Promise
 ````
-set an item in the cache. this method is asynchronous.
+Write content to the cache with a key. Returns a promise.
 
 parameters:
-- key: the key to store the item under
-- value: the data to store
++ __key__: The key to store the content against
++ __value__: The content to store
 
 Example:
 ````js
-var cache = new Appworks.AWCache();
-cache.setItem('myKey', 1234).then(
-    function() {
-        console.log('stored 1234 under key "myKey"');
-    },
-    function(err) {
-        console.error('failed to store 1234 under key "myKey" in cache - ' + err);
-    });
-````
+// The key to store the content against
+var key = "myKey";
+// The content to store
+var content = "My Content";
 
-###### setExcludedKeys
-````ts
-setExcludedKeys(keys: [string])
-````
-Exclude a key from being written to persistent storage
-
-parameters:
-- keys: a string array of keys to exclude
-
-Example:
-````js
-var cache = new Appworks.AWCache();
-var excluded = ['key1','key2'];
-cache.setExcludedKeys(excluded);
-cache.setItem('key1', 1234).then(
-    function() {
-        console.log('stored 1234 under key "key1", but not persisted');
-    },
-    function(err) {
-        console.error('failed to store 1234 under key "key1" in cache - ' + err);
-    });
+// Store the data with .then called afterwards
+cache.setItem(key, content).then(
+  // Success function
+  function() {
+      console.log("Content stored against: " + key);
+  },
+  // Error function
+  function(err) {
+      console.log("Content failed to store against " + key + ": " + err);
+  });
 ````
 
 ###### getItem
 ````ts
 getItem(key: string)
 ````
-get an item from the cache.
+Read content from the cache with a key. Returns a string value of the content set against the key, or a blank string if the key is empty or non existent.
 
 parameters:
-- key: the key of the item to retrieve
++ __key__: The key to read the content from
 
 Example:
 ````js
-var cache = new Appworks.AWCache();
-var myValue = cache.getItem('myKey');
+// The key to read the content from
+var key = "myKey";
+
+// Read the content stored against the key.
+// If the key does not exists, this will return a blank string.
+var content = cache.getItem(key);
+console.log(content);
 ````
 
 ##### removeItem
 ````ts
-removeItem(key: string)
+removeItem(key: string) - Returns Promise
 ````
-remove an item from the cache. this method is asynchronous.
+Delete content from the cache with a key. Returns a promise.
+
++ __key__: The key (and value) to be delete
 
 Example:
 ````js
-var cache = new Appworks.AWCache();
-cache.removeItem('myKey').then(
-    function() {
-        console.log('successfully removed "myKey" from the cache');
-    },
-    function(err) {
-        console.error('failed to remove "myKey" from the cache - ' + err);
-    });
+// The key to delete the content from
+var key = "myKey";
+
+// Call the remove function
+cache.removeItem(key).then(
+  // Success function
+  function(content) {
+      console.log("Deleted content stored against " + key);
+  },
+  // Error function
+  function(err) {
+      console.log("Unable to delete content stored against " + key + ": " + err);
+  });
 ````
 
 ###### clear
 ````ts
-clear()
+clear() - Returns Promise
 ````
-clear all items from the cache
+Clear all content from the cache. Returns a promise.
 
 Example:
 ````js
-var cache = new Appworks.AWCache();
+// Call the clear function to remove all content
 cache.clear().then(
-    function() {
-        console.log('successfully cleared the cache');
-    },
-    function(err) {
-        console.error('failed to clear the cache - ' + err);
-    });
+  // Success function
+  function(content) {
+      console.log("Cache cleared");
+  },
+  // Error function
+  function(err) {
+      console.log("Unable to clear cache: " + err);
+  });
+}
 ````
 
 #### options
