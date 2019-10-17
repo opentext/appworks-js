@@ -5,6 +5,9 @@ import { PersistentStorage } from './index';
 export declare class OnDeviceStorage implements PersistentStorage {
     persistLocalStorage(excludedKeys: string[]): Promise<any>;
     loadPersistentData(): Promise<any>;
-    readDataFromPersistentStorage(): Promise<any>;
+    migrateCache(excludedKeys: string[]): Promise<any>;
+    private readDataAWCacheFile();
+    private deleteAWCacheFile();
+    private readDataFromPersistentStorage();
     private writeDataToPersistentStorage(data);
 }

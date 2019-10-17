@@ -25,9 +25,9 @@ var QRReader = (function (_super) {
         var _this = this;
         proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'rename', []);
     };
-    QRReader.prototype.barcode = function (multiple, timeout) {
+    QRReader.prototype.barcode = function (multiple, timeout, finishTitle, cancelTitle) {
         var _this = this;
-        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'barcode', [multiple, timeout]);
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWQRCodeReader', 'barcode', [multiple, timeout, finishTitle, cancelTitle]);
     };
     return QRReader;
 }(plugin_1.AWPlugin));

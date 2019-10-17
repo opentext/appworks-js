@@ -56,4 +56,11 @@ export class DesktopStorage implements PersistentStorage {
     });
   }
 
+  migrateCache(excludedKeys: string[]): Promise<any> {
+    if (this.desktopStorage === null) {
+      return Promise.reject(DesktopStorage.PLUGIN_NOT_FOUND);
+    }
+
+    return Promise.resolve();
+  }
 }

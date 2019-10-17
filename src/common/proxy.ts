@@ -286,7 +286,7 @@ export class AWProxy {
   }
 
   static storage(): Storage {
-    return new AWStorage();
+    return new AWStorage(AWProxy.isMobileEnv());
   }
 
   static persistentStorage(): PersistentStorage {

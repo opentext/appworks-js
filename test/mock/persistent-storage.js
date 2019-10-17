@@ -11,6 +11,9 @@ var PersistentStorageMock = (function () {
     PersistentStorageMock.prototype.loadPersistentData = function () {
         return Promise.resolve();
     };
+    PersistentStorageMock.prototype.migrateCache = function () {
+        return Promise.resolve();
+    };
     return PersistentStorageMock;
 }());
 exports.PersistentStorageMock = PersistentStorageMock;

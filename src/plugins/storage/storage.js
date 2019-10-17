@@ -7,10 +7,24 @@ var local_storage_1 = require("../../../test/mock/local-storage");
  * storage always acting as the reference.
  */
 var AWStorage = (function () {
-    function AWStorage() {
+    function AWStorage(isMobileEnv) {
+        this.isMobileEnv = isMobileEnv;
         // resolve the local storage or fall back onto a mock impl
-        this.storage = (typeof window !== 'undefined') ?
-            window.localStorage : new local_storage_1.MockLocalStorage();
+        if (this.isMobileEnv) {
+            if (typeof window !== 'undefined') {
+                if (typeof window['awcache'] === 'undefined') {
+                    window['awcache'] = {};
+                }
+                this.storage = window['awcache'];
+            }
+            else {
+                this.storage = new local_storage_1.MockLocalStorage();
+            }
+        }
+        else {
+            this.storage = (typeof window !== 'undefined') ?
+                window.localStorage : new local_storage_1.MockLocalStorage();
+        }
     }
     Object.defineProperty(AWStorage.prototype, "length", {
         get: function () {
@@ -20,19 +34,43 @@ var AWStorage = (function () {
         configurable: true
     });
     AWStorage.prototype.clear = function () {
-        this.storage.clear();
+        if (this.isMobileEnv) {
+            var keys = Object.keys(this.storage);
+            for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
+                var key = keys_1[_i];
+                this.removeItem(key);
+            }
+        }
+        else {
+            this.storage.clear();
+        }
     };
     AWStorage.prototype.getItem = function (key) {
-        return this.storage.getItem(key);
+        if (this.isMobileEnv) {
+            return this.storage[key];
+        }
+        else {
+            return this.storage.getItem(key);
+        }
     };
     AWStorage.prototype.key = function (index) {
         return this.storage.key(index);
     };
     AWStorage.prototype.removeItem = function (key) {
-        return this.storage.removeItem(key);
+        if (this.isMobileEnv) {
+            delete this.storage[key];
+        }
+        else {
+            return this.storage.removeItem(key);
+        }
     };
     AWStorage.prototype.setItem = function (key, data) {
-        return this.storage.setItem(key, data);
+        if (this.isMobileEnv) {
+            return this.storage[key] = data;
+        }
+        else {
+            return this.storage.setItem(key, data);
+        }
     };
     return AWStorage;
 }());

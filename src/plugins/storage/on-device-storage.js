@@ -10,10 +10,10 @@ var OnDeviceStorage = (function () {
     OnDeviceStorage.prototype.persistLocalStorage = function (excludedKeys) {
         var _this = this;
         var i, data = {}, key, value;
-        var storage = proxy_1.AWProxy.storage();
-        for (i = 0; i < storage.length; i += 1) {
-            key = storage.key(i);
-            value = storage.getItem(key);
+        var storage = proxy_1.AWProxy.storage()['storage'];
+        for (i = 0; i < Object.keys(storage).length; i += 1) {
+            key = Object.keys(storage)[i];
+            value = storage[key];
             if (excludedKeys.indexOf(key) === -1) {
                 data[key] = value;
             }
@@ -39,12 +39,33 @@ var OnDeviceStorage = (function () {
             }, reject);
         });
     };
-    OnDeviceStorage.prototype.readDataFromPersistentStorage = function () {
+    OnDeviceStorage.prototype.migrateCache = function (excludedKeys) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.readDataAWCacheFile().then(function (json) {
+                var data;
+                if (json && json !== '') {
+                    data = JSON.parse(json);
+                    for (var item in data) {
+                        if (data.hasOwnProperty(item)) {
+                            proxy_1.AWProxy.storage().setItem(item, data[item]);
+                        }
+                    }
+                    proxy_1.AWProxy.persistentStorage().persistLocalStorage(excludedKeys)
+                        .then(function () { return _this.deleteAWCacheFile().then(resolve, reject); }, reject);
+                }
+                resolve();
+            }, function (error) {
+                resolve();
+            });
+        });
+    };
+    OnDeviceStorage.prototype.readDataAWCacheFile = function () {
         return new Promise(function (resolve, reject) {
             proxy_1.AWProxy.requestFileSystem(proxy_1.AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
             function gotFS(fileSystem) {
                 fileSystem.root.getFile('appworksjs.cache.json', {
-                    create: true,
+                    create: false,
                     exclusive: false
                 }, gotFileEntry, reject);
             }
@@ -64,22 +85,25 @@ var OnDeviceStorage = (function () {
             }
         });
     };
-    OnDeviceStorage.prototype.writeDataToPersistentStorage = function (data) {
+    OnDeviceStorage.prototype.deleteAWCacheFile = function () {
         return new Promise(function (resolve, reject) {
             proxy_1.AWProxy.requestFileSystem(proxy_1.AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
             function gotFS(fileSystem) {
-                fileSystem.root.getFile('appworksjs.cache.json', { create: true, exclusive: false }, gotFileEntry, reject);
+                fileSystem.root.getFile('appworksjs.cache.json', { create: false, exclusive: false }, gotFileEntry, reject);
             }
             function gotFileEntry(fileEntry) {
-                fileEntry.createWriter(gotFileWriter, reject);
+                fileEntry.remove(resolve, reject);
             }
-            function gotFileWriter(writer) {
-                writer.onwriteend = function () {
-                    console.info('cache data backed up successfully');
-                };
-                writer.write(data);
-                resolve();
-            }
+        });
+    };
+    OnDeviceStorage.prototype.readDataFromPersistentStorage = function () {
+        return new Promise(function (resolve, reject) {
+            proxy_1.AWProxy.exec(resolve, reject, 'AWCache', 'getAllCacheData', []);
+        });
+    };
+    OnDeviceStorage.prototype.writeDataToPersistentStorage = function (data) {
+        return new Promise(function (resolve, reject) {
+            proxy_1.AWProxy.exec(resolve, reject, 'AWCache', 'setAllCacheData', [data]);
         });
     };
     return OnDeviceStorage;

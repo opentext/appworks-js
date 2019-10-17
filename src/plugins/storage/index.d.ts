@@ -9,6 +9,7 @@ export * from './secure-storage';
 export interface PersistentStorage {
     persistLocalStorage(excludedKeys: string[]): Promise<any>;
     loadPersistentData(): Promise<any>;
+    migrateCache(excludedKeys: string[]): Promise<any>;
 }
 /**
  * Async version of the {@link Storage} interface supplied by the Web Storage API.

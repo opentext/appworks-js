@@ -12,10 +12,10 @@ export class OnDeviceStorage implements PersistentStorage {
       key,
       value;
 
-    const storage = AWProxy.storage();
-    for (i = 0; i < storage.length; i += 1) {
-      key = storage.key(i);
-      value = storage.getItem(key);
+    const storage = AWProxy.storage()['storage'];
+    for (i = 0; i < Object.keys(storage).length; i += 1) {
+      key = Object.keys(storage)[i];
+      value = storage[key];
       if (excludedKeys.indexOf(key) === -1) {
         data[key] = value;
       }
@@ -43,13 +43,37 @@ export class OnDeviceStorage implements PersistentStorage {
     });
   }
 
-  readDataFromPersistentStorage(): Promise<any> {
+  migrateCache(excludedKeys: string[]): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.readDataAWCacheFile().then(
+          (json) => {
+            let data;
+            if (json && json !== '') {
+              data = JSON.parse(json);
+              for (let item in data) {
+                if (data.hasOwnProperty(item)) {
+                  AWProxy.storage().setItem(item, data[item]);
+                }
+              }
+              AWProxy.persistentStorage().persistLocalStorage(excludedKeys)
+                  .then(
+                      () => this.deleteAWCacheFile().then(resolve, reject),
+                      reject);
+            }
+            resolve();
+          }, (error) => {
+            resolve();
+          });
+    });
+  }
+
+  private readDataAWCacheFile(): Promise<any> {
     return new Promise((resolve, reject) => {
       AWProxy.requestFileSystem(AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
 
       function gotFS(fileSystem: any) {
         fileSystem.root.getFile('appworksjs.cache.json', {
-          create: true,
+          create: false,
           exclusive: false
         }, gotFileEntry, reject);
       }
@@ -73,30 +97,45 @@ export class OnDeviceStorage implements PersistentStorage {
     });
   }
 
-  private writeDataToPersistentStorage(data): Promise<any> {
+  private deleteAWCacheFile(): Promise<any> {
     return new Promise((resolve, reject) => {
       AWProxy.requestFileSystem(AWProxy.localFileSystem().PERSISTENT, 0, gotFS, reject);
 
       function gotFS(fileSystem) {
         fileSystem.root.getFile(
-          'appworksjs.cache.json',
-          {create: true, exclusive: false},
-          gotFileEntry,
-          reject);
+            'appworksjs.cache.json',
+            {create: false, exclusive: false},
+            gotFileEntry,
+            reject);
       }
 
       function gotFileEntry(fileEntry) {
-        fileEntry.createWriter(gotFileWriter, reject);
+        fileEntry.remove(resolve, reject);
       }
+    });
+  }
 
-      function gotFileWriter(writer) {
-        writer.onwriteend = function () {
-          console.info('cache data backed up successfully');
-        };
-        writer.write(data);
-        resolve();
-      }
+  private readDataFromPersistentStorage(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      AWProxy.exec(
+        resolve,
+        reject,
+        'AWCache',
+        'getAllCacheData',
+        []
+      );
+    });
+  }
 
+  private writeDataToPersistentStorage(data): Promise<any> {
+    return new Promise((resolve, reject) => {
+      AWProxy.exec(
+          resolve,
+          reject,
+          'AWCache',
+          'setAllCacheData',
+          [data]
+      );
     });
   }
 

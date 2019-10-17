@@ -11,7 +11,8 @@ export declare class AWStorage implements Storage {
      * Storage implementation.
      */
     private storage;
-    constructor();
+    private isMobileEnv;
+    constructor(isMobileEnv: boolean);
     readonly length: number;
     clear(): void;
     getItem(key: string): any;

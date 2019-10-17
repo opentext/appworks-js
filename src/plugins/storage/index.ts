@@ -13,6 +13,7 @@ export interface PersistentStorage {
 
   loadPersistentData(): Promise<any>;
 
+  migrateCache(excludedKeys: string[]): Promise<any>;
 }
 
 /**

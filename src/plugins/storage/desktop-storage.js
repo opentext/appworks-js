@@ -46,6 +46,12 @@ var DesktopStorage = (function () {
             }
         });
     };
+    DesktopStorage.prototype.migrateCache = function (excludedKeys) {
+        if (this.desktopStorage === null) {
+            return Promise.reject(DesktopStorage.PLUGIN_NOT_FOUND);
+        }
+        return Promise.resolve();
+    };
     return DesktopStorage;
 }());
 DesktopStorage.PLUGIN_NOT_FOUND = new Error('Unable to resolve AWStorage desktop plugin');
