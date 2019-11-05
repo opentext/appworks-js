@@ -13,8 +13,8 @@ export class SecureStorage extends AWPlugin {
     this.onprogress = null;
   }
 
-  store(url: string, target: string, options?: any) {
-    let args = [encodeURI(url), target, false, this.seqNo, options && options.headers],
+  store(url: string, target: string, options?: any, encodeUri = true) {
+    let args = [encodeUri ? encodeURI(url) : url, target, false, this.seqNo, options && options.headers],
       completionHandler = () => this.successHandler,
       progressHandler = this.onprogress,
       progress;

@@ -20,9 +20,10 @@ var SecureStorage = (function (_super) {
         _this.onprogress = null;
         return _this;
     }
-    SecureStorage.prototype.store = function (url, target, options) {
+    SecureStorage.prototype.store = function (url, target, options, encodeUri) {
         var _this = this;
-        var args = [encodeURI(url), target, false, this.seqNo, options && options.headers], completionHandler = function () { return _this.successHandler; }, progressHandler = this.onprogress, progress;
+        if (encodeUri === void 0) { encodeUri = true; }
+        var args = [encodeUri ? encodeURI(url) : url, target, false, this.seqNo, options && options.headers], completionHandler = function () { return _this.successHandler; }, progressHandler = this.onprogress, progress;
         function newProgressEvent(result) {
             var pe = new ProgressEvent(null);
             pe.lengthComputable = result.lengthComputable;

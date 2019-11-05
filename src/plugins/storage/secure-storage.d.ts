@@ -4,7 +4,7 @@ export declare class SecureStorage extends AWPlugin {
     seqNo: number;
     onprogress: any;
     constructor(successHandler: any, errorHandler?: any);
-    store(url: string, target: string, options?: any): void;
+    store(url: string, target: string, options?: any, encodeUri?: boolean): void;
     retrieve(filename: string, options?: any): void;
     remove(target: string): void;
     fileExistsAtPath(target: string): void;
