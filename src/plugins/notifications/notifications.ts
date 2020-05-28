@@ -8,14 +8,18 @@ export class AWNotificationManager extends AWPlugin {
         super(noop, noop);
     }
 
-    enablePushNotifications(handler: any, errorHandler: any, includeSeqNo: boolean) {
+    createClientNotification(identifier: string, title: string, subtitle: string, seconds: string, success: any, error: any) {
         AWProxy.exec(
-            handler,
-            errorHandler,
-            "AWNotificationManager",
-            "enablePushNotifications",
-            AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]
+            success,
+            error,
+            'AWNotificationManager',
+            'createClientNotification',
+            [identifier, title, subtitle, seconds]
         );
+    }
+
+    didTapNotificationFromActivityView(handler: any, errorHandler: any, includeSeqNo: boolean) {
+        this.openListener(handler, errorHandler, includeSeqNo);
     }
 
     disablePushNotifications() {
@@ -25,6 +29,16 @@ export class AWNotificationManager extends AWPlugin {
             "AWNotificationManager",
             "disablePushNotifications",
             []
+        );
+    }
+
+    enablePushNotifications(handler: any, errorHandler: any, includeSeqNo: boolean) {
+        AWProxy.exec(
+            handler,
+            errorHandler,
+            "AWNotificationManager",
+            "enablePushNotifications",
+            AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]
         );
     }
 
@@ -62,8 +76,35 @@ export class AWNotificationManager extends AWPlugin {
         );
     }
 
-    didTapNotificationFromActivityView(handler: any, errorHandler: any, includeSeqNo: boolean) {
-        this.openListener(handler, errorHandler, includeSeqNo);
+
+    registerForTopic(topicName: string) {
+        AWProxy.exec(
+            null,
+            null,
+            "AWNotificationManager",
+            "registerForTopic",
+            [topicName]
+        );
+    }
+
+    removeAllClientNotifications(success: any, error: any) {
+        AWProxy.exec(
+            success,
+            error,
+            'AWNotificationManager',
+            'removeAllClientNotifications',
+            []
+        );
+    }
+
+    removeClientNotification(identifier: string, success: any, error: any) {
+        AWProxy.exec(
+            success,
+            error,
+            'AWNotificationManager',
+            'removeClientNotification',
+            [identifier]
+        );
     }
 
     removeNotification(seqNo: string, handler: any, errorHandler?: any) {
@@ -73,6 +114,16 @@ export class AWNotificationManager extends AWPlugin {
             "AWNotificationManager",
             "removeNotification",
             [seqNo]
+        );
+    }
+
+    unregisterFromTopic(topicName: string) {
+        AWProxy.exec(
+            null,
+            null,
+            "AWNotificationManager",
+            "unregisterFromTopic",
+            [topicName]
         );
     }
 
@@ -90,25 +141,5 @@ export class AWNotificationManager extends AWPlugin {
 
     prompt(message: string, promptCallback: any, title?: string, buttonLabels?: string[], defaultText?: string) {
         AWProxy.notification().prompt(message, promptCallback, title, buttonLabels, defaultText);
-    }
-
-    registerForTopic(topicName: string) {
-        AWProxy.exec(
-            null,
-            null,
-            "AWNotificationManager",
-            "registerForTopic",
-            [topicName]
-        );
-    }
-
-    unregisterFromTopic(topicName: string) {
-        AWProxy.exec(
-            null,
-            null,
-            "AWNotificationManager",
-            "unregisterFromTopic",
-            [topicName]
-        );
     }
 }

@@ -2117,6 +2117,9 @@ var notificationManager = new Appworks.AWNotificationManager();
 - openListener
 - getOpeningNotification
 - removeNotification
+- createClientNotification
+- removeClientNotification
+- removeAllClientNotifications
 
 ##### enablePushNotifications
 ````ts
@@ -2279,6 +2282,40 @@ function getOpeningNotification() {
 
 ````
 
+##### createClientNotification
+````ts
+createClientNotification(identifier: string, title: string, subtitle: string, seconds: string, success: any, error: any)
+````
+Create a client side notification with a title, subtitle and the number of seconds from now.
+
+Parameters:
+- identifier (string): used to uniquely identify a scheduled notification created locally.
+- title (string): the title to appear on the notification.
+- subtitle (string): the subtitle to appear on the notification.
+- seconds (integer): the number of seconds from now until the scheduled notification will appear.
+- success (function): the function that will be called upon successful creation of the notification.
+- error (function): the function that will be called if the notification fails to be created.
+
+##### removeClientNotification
+````ts
+removeClientNotification(identifier: string, success: any, error: any)
+````
+Remove a scheduled notification with a given identifier that was created with createClientNotification(...).
+
+Parameters:
+- identifier (string): used to uniquely identify a scheduled notification created locally.
+- success (function): the function that will be called upon successful removal of the scheduled notification.
+- error (function): the function that will be called if the scheduled notification fails to be removed.
+
+##### removeAllClientNotifications
+````ts
+removeAllClientNotifications(success: any, error: any)
+````
+Remove all scheduled notifications that were created with createClientNotification(...).
+
+Parameters:
+- success (function): the function that will be called upon successful removal of the scheduled notifications.
+- error (function): the function that will be called if the scheduled notifications fail to be removed.
 
 #### AWOfflineManager
 The AWOfflineManager plugin allows you to work offline by managing an offline queue. This queue is meant to capture

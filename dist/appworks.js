@@ -2865,11 +2865,17 @@ var AWNotificationManager$1 = (function (_super) {
     function AWNotificationManager() {
         return _super.call(this, noop, noop) || this;
     }
-    AWNotificationManager.prototype.enablePushNotifications = function (handler, errorHandler, includeSeqNo) {
-        AWProxy.exec(handler, errorHandler, "AWNotificationManager", "enablePushNotifications", AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]);
+    AWNotificationManager.prototype.createClientNotification = function (identifier, title, subtitle, seconds, success, error) {
+        AWProxy.exec(success, error, 'AWNotificationManager', 'createClientNotification', [identifier, title, subtitle, seconds]);
+    };
+    AWNotificationManager.prototype.didTapNotificationFromActivityView = function (handler, errorHandler, includeSeqNo) {
+        this.openListener(handler, errorHandler, includeSeqNo);
     };
     AWNotificationManager.prototype.disablePushNotifications = function () {
         AWProxy.exec(null, null, "AWNotificationManager", "disablePushNotifications", []);
+    };
+    AWNotificationManager.prototype.enablePushNotifications = function (handler, errorHandler, includeSeqNo) {
+        AWProxy.exec(handler, errorHandler, "AWNotificationManager", "enablePushNotifications", AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]);
     };
     AWNotificationManager.prototype.getNotifications = function (handler, errorHandler, includeSeqNo) {
         AWProxy.exec(handler, errorHandler, "AWNotificationManager", "getPushNotifications", [includeSeqNo]);
@@ -2883,11 +2889,20 @@ var AWNotificationManager$1 = (function (_super) {
     AWNotificationManager.prototype.openListener = function (handler, errorHandler, includeSeqNo) {
         AWProxy.exec(handler, errorHandler, "AWNotificationManager", "openListener", AWProxy.isDesktopEnv() ? [handler, includeSeqNo] : [includeSeqNo]);
     };
-    AWNotificationManager.prototype.didTapNotificationFromActivityView = function (handler, errorHandler, includeSeqNo) {
-        this.openListener(handler, errorHandler, includeSeqNo);
+    AWNotificationManager.prototype.registerForTopic = function (topicName) {
+        AWProxy.exec(null, null, "AWNotificationManager", "registerForTopic", [topicName]);
+    };
+    AWNotificationManager.prototype.removeAllClientNotifications = function (success, error) {
+        AWProxy.exec(success, error, 'AWNotificationManager', 'removeAllClientNotifications', []);
+    };
+    AWNotificationManager.prototype.removeClientNotification = function (identifier, success, error) {
+        AWProxy.exec(success, error, 'AWNotificationManager', 'removeClientNotification', [identifier]);
     };
     AWNotificationManager.prototype.removeNotification = function (seqNo, handler, errorHandler) {
         AWProxy.exec(handler, errorHandler, "AWNotificationManager", "removeNotification", [seqNo]);
+    };
+    AWNotificationManager.prototype.unregisterFromTopic = function (topicName) {
+        AWProxy.exec(null, null, "AWNotificationManager", "unregisterFromTopic", [topicName]);
     };
     AWNotificationManager.prototype.alert = function (message, alertCallback, title, buttonName) {
         AWProxy.notification().alert(message, alertCallback, title, buttonName);
@@ -2900,12 +2915,6 @@ var AWNotificationManager$1 = (function (_super) {
     };
     AWNotificationManager.prototype.prompt = function (message, promptCallback, title, buttonLabels, defaultText) {
         AWProxy.notification().prompt(message, promptCallback, title, buttonLabels, defaultText);
-    };
-    AWNotificationManager.prototype.registerForTopic = function (topicName) {
-        AWProxy.exec(null, null, "AWNotificationManager", "registerForTopic", [topicName]);
-    };
-    AWNotificationManager.prototype.unregisterFromTopic = function (topicName) {
-        AWProxy.exec(null, null, "AWNotificationManager", "unregisterFromTopic", [topicName]);
     };
     return AWNotificationManager;
 }(AWPlugin));
