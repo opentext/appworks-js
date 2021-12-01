@@ -17,8 +17,8 @@ export class AWCache extends AWPlugin {
     this.excludedKeys = _excludedKeys;
   }
 
-  setItem(key: string, value: any): Promise<any> {
-    return new Promise((resolve, reject) => {
+  setItem(key: string, value: any): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       AWProxy.storage().setItem(key, value);
       if (this.usePersistentStorage()) {
         AWProxy.persistentStorage().persistLocalStorage(this.excludedKeys)
@@ -34,8 +34,8 @@ export class AWCache extends AWPlugin {
     return (typeof item === 'undefined' ? '' : item);
   }
 
-  removeItem(key: string): Promise<any> {
-    return new Promise((resolve, reject) => {
+  removeItem(key: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       AWProxy.storage().removeItem(key);
       if (this.usePersistentStorage()) {
         AWProxy.persistentStorage().persistLocalStorage(this.excludedKeys)
@@ -46,8 +46,8 @@ export class AWCache extends AWPlugin {
     });
   }
 
-  clear(): Promise<any> {
-    return new Promise((resolve, reject) => {
+  clear(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       AWProxy.storage().clear();
       if (this.usePersistentStorage()) {
         AWProxy.persistentStorage().persistLocalStorage(this.excludedKeys)
@@ -58,8 +58,8 @@ export class AWCache extends AWPlugin {
     });
   }
 
-  preloadCache(): Promise<any> {
-    return new Promise((resolve, reject) => {
+  preloadCache(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       if (this.usePersistentStorage()) {
         this.migrateCache(this.excludedKeys).then(() => {
           AWProxy.persistentStorage().loadPersistentData()
