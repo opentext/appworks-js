@@ -29,6 +29,14 @@ var AWComponent = (function (_super) {
     AWComponent.prototype.close = function (successHandler, errorHandler, args) {
         proxy_1.AWProxy.exec(successHandler, errorHandler, 'AWComponent', 'close', args || []);
     };
+    AWComponent.prototype.registerAppClose = function () {
+        var _this = this;
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWComponent', 'registerAppClose', []);
+    };
+    AWComponent.prototype.closeApp = function () {
+        var _this = this;
+        proxy_1.AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWComponent', 'closeApp', []);
+    };
     return AWComponent;
 }(plugin_1.AWPlugin));
 exports.AWComponent = AWComponent;
