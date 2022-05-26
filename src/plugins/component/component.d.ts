@@ -4,4 +4,6 @@ export declare class AWComponent extends AWPlugin {
     list(successHandler: any, errorHandler?: any, args?: any[]): void;
     check(successHandler: any, errorHandler?: any, args?: any[]): void;
     close(successHandler: any, errorHandler?: any, args?: any[]): void;
+    registerAppClose(successHandler: any): void;
+    closeApp(): void;
 }
