@@ -2256,9 +2256,9 @@ var AWComponent$1 = (function (_super) {
     AWComponent.prototype.close = function (successHandler, errorHandler, args) {
         AWProxy.exec(successHandler, errorHandler, 'AWComponent', 'close', args || []);
     };
-    AWComponent.prototype.registerAppClose = function () {
+    AWComponent.prototype.registerAppClose = function (successHandler) {
         var _this = this;
-        AWProxy.exec((function () { return _this.successHandler; })(), (function () { return _this.errorHandler; })(), 'AWComponent', 'registerAppClose', []);
+        AWProxy.exec(successHandler, (function () { return _this.errorHandler; })(), 'AWComponent', 'registerAppClose', []);
     };
     AWComponent.prototype.closeApp = function () {
         var _this = this;

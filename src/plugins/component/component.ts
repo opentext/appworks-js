@@ -42,9 +42,9 @@ export class AWComponent extends AWPlugin {
     );
   }
 
-  registerAppClose() {
+  registerAppClose(successHandler: any) {
     AWProxy.exec(
-      (() => this.successHandler)(),
+      successHandler,
       (() => this.errorHandler)(),
       'AWComponent',
       'registerAppClose',
