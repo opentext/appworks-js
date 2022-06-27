@@ -3,11 +3,11 @@ import {AsyncStorage} from "../../src/plugins/storage/index";
 export class MockAsyncStorage implements AsyncStorage {
   length: number;
 
-  clear(): Promise<any> {
+  clear(): Promise<void> {
     return Promise.resolve();
   }
 
-  getItem(key: string): Promise<any> {
+  getItem(key: string): Promise<void> {
     return Promise.resolve();
   }
 
@@ -15,11 +15,11 @@ export class MockAsyncStorage implements AsyncStorage {
     return Promise.resolve("");
   }
 
-  removeItem(key: string): Promise<any> {
+  removeItem(key: string): Promise<void> {
     return Promise.resolve();
   }
 
-  setItem(key: string, data: string): Promise<any> {
+  setItem(key: string, data: string): Promise<void> {
     return Promise.resolve();
   }
 
