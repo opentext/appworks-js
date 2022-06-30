@@ -24,8 +24,15 @@ A limited number of appworks.js plugins are available in the desktop environment
 - [AWFileTransfer](#awfiletransfer)
 - [AWMenu](#awmenu)
 - [AWNotificationManager](#awnotificationmanager)
+- [AWComponent](#awcomponent)
 
 ## Update Notes
+
+### v22.3.0
+
+> Now Desktop Clients can use AWComponent to listen for close event using registerAppClose() method in AWComponent.
+
+> Only two methods of AWComponent i.e registerAppClose() and closeApp() are available to use for Desktop Clients.
 
 ### v16.7
 
@@ -518,7 +525,7 @@ function setAppHasRun() {
 ````
 
 #### AWComponent
-Open, close, list, and check components
+Open, close, list, check components and listen for app close event
 
 ##### Methods:
 
@@ -545,6 +552,18 @@ Check if a component is installed
 close(successHandler: any, errorHandler?: any, args?: any[])
 ````
 Close the current component
+
+###### registerAppClose
+````
+registerAppClose(successHandler: any)
+````
+Helps the micro app to register itself to listen for app close event.
+
+###### closeApp
+````
+closeApp()
+````
+Used to close the Desktop client after performing operations.
 
 #### Finder
 The Finder plugin allows you to browse and open files stored on the device inside of the OpenText Mobile container.
