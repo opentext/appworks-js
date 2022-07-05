@@ -565,6 +565,40 @@ closeApp()
 ````
 Used to close the Desktop client after performing operations.
 
+##### Example:
+````js
+// javascript code example
+
+var awComponent = new Appworks.Component();
+function onClose() {
+console.log(`close event from callback 1 is called`);
+setTimeout(()=>{
+    awComponent.closeApp();
+},3000); 
+}
+awComponent.registerAppClose(onClose);
+````
+
+````ts
+// TypeScript code example
+const onClose = () => {
+    console.log('Appwork Closed');
+    setTimeout(() => {
+     alert("Appwork Closed");
+     appWorks.closeApp();
+    }, 1000);
+}
+
+const onError = (error) => {
+    this.notify.error('Appwork', error)
+}
+
+const appWorks = new AWComponent(null, onError);
+
+appWorks.registerAppClose(onClose);
+
+````
+
 #### Finder
 The Finder plugin allows you to browse and open files stored on the device inside of the OpenText Mobile container.
 Files browsing can be done directly inside of your app. Files can be opened in third party iOS apps installed on the
