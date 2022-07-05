@@ -567,6 +567,8 @@ Used to close the Desktop client after performing operations.
 
 ##### Example:
 ````js
+// javascript code example
+
 var awComponent = new Appworks.Component();
 function onClose() {
 console.log(`close event from callback 1 is called`);
@@ -578,6 +580,7 @@ awComponent.registerAppClose(onClose);
 ````
 
 ````ts
+// TypeScript code example
 const onClose = () => {
     console.log('Appwork Closed');
     setTimeout(() => {
