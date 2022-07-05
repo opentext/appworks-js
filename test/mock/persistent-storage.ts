@@ -5,15 +5,15 @@ export class PersistentStorageMock implements PersistentStorage {
   setExcludedKeys(_excludedKeys: string[]) {
   }
 
-  persistLocalStorage(): Promise<any> {
+  persistLocalStorage(): Promise<void> {
     return Promise.resolve();
   }
 
-  loadPersistentData(): Promise<any> {
+  loadPersistentData(): Promise<void> {
     return Promise.resolve();
   }
 
-  migrateCache(): Promise<any> {
+  migrateCache(): Promise<void> {
     return Promise.resolve();
   }
 }

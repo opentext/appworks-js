@@ -24,8 +24,15 @@ A limited number of appworks.js plugins are available in the desktop environment
 - [AWFileTransfer](#awfiletransfer)
 - [AWMenu](#awmenu)
 - [AWNotificationManager](#awnotificationmanager)
+- [AWComponent](#awcomponent)
 
 ## Update Notes
+
+### v22.3.0
+
+> Now Desktop Clients can use AWComponent to listen for close event using registerAppClose() method in AWComponent.
+
+> Only two methods of AWComponent i.e registerAppClose() and closeApp() are available to use for Desktop Clients.
 
 ### v16.7
 
@@ -518,7 +525,7 @@ function setAppHasRun() {
 ````
 
 #### AWComponent
-Open, close, list, and check components
+Open, close, list, check components and listen for app close event
 
 ##### Methods:
 
@@ -545,6 +552,52 @@ Check if a component is installed
 close(successHandler: any, errorHandler?: any, args?: any[])
 ````
 Close the current component
+
+###### registerAppClose
+````
+registerAppClose(successHandler: any)
+````
+Helps the micro app to register itself to listen for app close event.
+
+###### closeApp
+````
+closeApp()
+````
+Used to close the Desktop client after performing operations.
+
+##### Example:
+````js
+// javascript code example
+
+var awComponent = new Appworks.Component();
+function onClose() {
+console.log(`close event from callback 1 is called`);
+setTimeout(()=>{
+    awComponent.closeApp();
+},3000); 
+}
+awComponent.registerAppClose(onClose);
+````
+
+````ts
+// TypeScript code example
+const onClose = () => {
+    console.log('Appwork Closed');
+    setTimeout(() => {
+     alert("Appwork Closed");
+     appWorks.closeApp();
+    }, 1000);
+}
+
+const onError = (error) => {
+    this.notify.error('Appwork', error)
+}
+
+const appWorks = new AWComponent(null, onError);
+
+appWorks.registerAppClose(onClose);
+
+````
 
 #### Finder
 The Finder plugin allows you to browse and open files stored on the device inside of the OpenText Mobile container.
@@ -2117,6 +2170,9 @@ var notificationManager = new Appworks.AWNotificationManager();
 - openListener
 - getOpeningNotification
 - removeNotification
+- createClientNotification
+- removeClientNotification
+- removeAllClientNotifications
 
 ##### enablePushNotifications
 ````ts
@@ -2279,6 +2335,40 @@ function getOpeningNotification() {
 
 ````
 
+##### createClientNotification
+````ts
+createClientNotification(identifier: string, title: string, subtitle: string, seconds: string, success: any, error: any)
+````
+Create a client side notification with a title, subtitle and the number of seconds from now.
+
+Parameters:
+- identifier (string): used to uniquely identify a scheduled notification created locally.
+- title (string): the title to appear on the notification.
+- subtitle (string): the subtitle to appear on the notification.
+- seconds (integer): the number of seconds from now until the scheduled notification will appear.
+- success (function): the function that will be called upon successful creation of the notification.
+- error (function): the function that will be called if the notification fails to be created.
+
+##### removeClientNotification
+````ts
+removeClientNotification(identifier: string, success: any, error: any)
+````
+Remove a scheduled notification with a given identifier that was created with createClientNotification(...).
+
+Parameters:
+- identifier (string): used to uniquely identify a scheduled notification created locally.
+- success (function): the function that will be called upon successful removal of the scheduled notification.
+- error (function): the function that will be called if the scheduled notification fails to be removed.
+
+##### removeAllClientNotifications
+````ts
+removeAllClientNotifications(success: any, error: any)
+````
+Remove all scheduled notifications that were created with createClientNotification(...).
+
+Parameters:
+- success (function): the function that will be called upon successful removal of the scheduled notifications.
+- error (function): the function that will be called if the scheduled notifications fail to be removed.
 
 #### AWOfflineManager
 The AWOfflineManager plugin allows you to work offline by managing an offline queue. This queue is meant to capture
