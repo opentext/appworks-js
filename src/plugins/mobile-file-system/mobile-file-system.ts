@@ -1,5 +1,5 @@
-import {AWPlugin} from '../../common/plugin';
-import {AWProxy} from '../../common/proxy';
+import { AWPlugin } from '../../common/plugin';
+import { AWProxy } from '../../common/proxy';
 
 export class AWMobileFileSystem extends AWPlugin {
   // File listing
@@ -115,6 +115,17 @@ export class AWMobileFileSystem extends AWPlugin {
     );
   }
 
+  createDirectory(source: string, shared: boolean, success: any, error: any) {
+    let args = [source, shared];
+    AWProxy.exec(
+      success,
+      error,
+      'AWMobileFileSystem',
+      'createDirectory',
+      args
+    );
+  }
+
   readFile(source: string, shared: boolean, success: any, error: any) {
     let args = [source, shared];
     AWProxy.exec(
@@ -141,11 +152,11 @@ export class AWMobileFileSystem extends AWPlugin {
   edit(source: string, shared: boolean, success: any, error: any) {
     let args = [source, shared];
     AWProxy.exec(
-        success,
-        error,
-        'AWMobileFileSystem',
-        'edit',
-        args
+      success,
+      error,
+      'AWMobileFileSystem',
+      'edit',
+      args
     );
   }
 

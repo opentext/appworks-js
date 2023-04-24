@@ -60,6 +60,10 @@ var AWMobileFileSystem = (function (_super) {
         var args = [source, shared];
         proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'removeDirectory', args);
     };
+    AWMobileFileSystem.prototype.createDirectory = function (source, shared, success, error) {
+        var args = [source, shared];
+        proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'createDirectory', args);
+    };
     AWMobileFileSystem.prototype.readFile = function (source, shared, success, error) {
         var args = [source, shared];
         proxy_1.AWProxy.exec(success, error, 'AWMobileFileSystem', 'read', args);

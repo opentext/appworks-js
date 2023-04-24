@@ -10,6 +10,7 @@ export declare class AWMobileFileSystem extends AWPlugin {
     move(source: string, sourceShared: boolean, destination: string, destinationShared: boolean, success: any, error: any): void;
     remove(source: string, shared: boolean, success: any, error: any): void;
     removeDirectory(source: string, shared: boolean, success: any, error: any): void;
+    createDirectory(source: string, shared: boolean, success: any, error: any): void;
     readFile(source: string, shared: boolean, success: any, error: any): void;
     open(source: string, shared: boolean, success: any, error: any): void;
     edit(source: string, shared: boolean, success: any, error: any): void;
