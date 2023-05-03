@@ -6,14 +6,14 @@ export class PersistentStorageMock implements PersistentStorage {
   }
 
   persistLocalStorage(): Promise<void> {
-    return Promise.resolve();
+    return Promise.resolve<void>();
   }
 
   loadPersistentData(): Promise<void> {
-    return Promise.resolve();
+    return Promise.resolve<void>();
   }
 
   migrateCache(): Promise<void> {
-    return Promise.resolve();
+    return Promise.resolve<void>();
   }
 }
