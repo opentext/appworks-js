@@ -156,6 +156,20 @@ export class AWFileSystem extends AWPlugin implements DesktopHostFileSystem {
     );
   }
 
+  updateLastModifiedDate(path: string,
+                         date: Date,
+                         successCallback: (result: boolean) => void,
+                         errorCallback?: (result: Error) => void ): void {
+    this.validateEnv();
+    AWProxy.exec(
+      successCallback,
+      errorCallback,
+      'AWFileSystem',
+      'updateLastModifiedDate',
+      [path, date]
+    );
+  }
+
   getDetails(path: string,
              successCallback: (result: FileDetails) => void,
              errorCallback?: (result: Error) => void): void {
