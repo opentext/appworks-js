@@ -35,7 +35,7 @@ export class DesktopStorage implements PersistentStorage {
     });
   }
 
-  loadPersistentData(): Promise<void> {
+  loadPersistentData(): Promise<any> {
     if (this.desktopStorage === null) {
       return Promise.reject(DesktopStorage.PLUGIN_NOT_FOUND);
     }
@@ -56,7 +56,7 @@ export class DesktopStorage implements PersistentStorage {
     });
   }
 
-  migrateCache(excludedKeys: string[]): Promise<void> {
+  migrateCache(excludedKeys: string[]): Promise<any> {
     if (this.desktopStorage === null) {
       return Promise.reject(DesktopStorage.PLUGIN_NOT_FOUND);
     }
