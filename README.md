@@ -28,6 +28,10 @@ A limited number of appworks.js plugins are available in the desktop environment
 
 ## Update Notes
 
+### v24.1.0
+
+> Added updateLastModifiedDate(path: string, date: Date, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void ) to update the last modified date of the specified file path with the supplied Date.
+
 ### v22.3.0
 
 > Now Desktop Clients can use AWComponent to listen for close event using registerAppClose() method in AWComponent.
@@ -808,6 +812,13 @@ Open the OS file browser at the supplied file path. <b>Relative paths should not
 
 A boolean value will be passed to the callback if the OS managed to open the file browser at the supplied location, else the error callback will be fired. <b>Relative paths should not be used.</b>
 
+###### updateLastModifiedDate
+````
+    updateLastModifiedDate(path: string, date: Date, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void ): void
+````
+Update the last modified date of the file specified in the supplied path <b>Relative paths should not be used.</b>
+- <b>path</b>: a file path
+- <b>date</b>: date using which last modified date need to be updated
 
 ###### getDetails
 ````
