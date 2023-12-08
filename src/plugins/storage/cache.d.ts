@@ -4,11 +4,11 @@ export declare class AWCache extends AWPlugin {
     private excludedKeys;
     constructor(options?: any);
     setExcludedKeys(_excludedKeys: string[]): void;
-    setItem(key: string, value: any): Promise<void>;
+    setItem(key: string, value: any): Promise<any>;
     getItem(key: string): any;
-    removeItem(key: string): Promise<void>;
-    clear(): Promise<void>;
-    preloadCache(): Promise<void>;
+    removeItem(key: string): Promise<any>;
+    clear(): Promise<any>;
+    preloadCache(): Promise<any>;
     migrateCache(excludedKeys: string[]): Promise<any>;
     private usePersistentStorage();
 }
