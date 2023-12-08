@@ -14,6 +14,7 @@ export declare class AWFileSystem extends AWPlugin implements DesktopHostFileSys
     copy(from: string, to: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     open(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     reveal(path: string, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
+    updateLastModifiedDate(path: string, date: Date, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void): void;
     getDetails(path: string, successCallback: (result: FileDetails) => void, errorCallback?: (result: Error) => void): void;
     listDirContents(path: string, successCallback: (result: FileDetails[]) => void, errorCallback?: (result: Error) => void): void;
     showSaveDialog(opts: SaveDialogOptions, successCallback: (result: string) => void, errorCallback?: (result: Error) => void): void;

@@ -2458,6 +2458,10 @@ var AWFileSystem$1 = (function (_super) {
         this.validateEnv();
         AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'reveal', [path]);
     };
+    AWFileSystem.prototype.updateLastModifiedDate = function (path, date, successCallback, errorCallback) {
+        this.validateEnv();
+        AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'updateLastModifiedDate', [path, date]);
+    };
     AWFileSystem.prototype.getDetails = function (path, successCallback, errorCallback) {
         this.validateEnv();
         AWProxy.exec(successCallback, errorCallback, 'AWFileSystem', 'getDetails', [path]);
