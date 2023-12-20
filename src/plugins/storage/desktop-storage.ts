@@ -61,6 +61,6 @@ export class DesktopStorage implements PersistentStorage {
       return Promise.reject(DesktopStorage.PLUGIN_NOT_FOUND);
     }
 
-    return Promise.resolve<void>();
+    return Promise.resolve(null);
   }
 }
