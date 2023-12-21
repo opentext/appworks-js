@@ -28,6 +28,10 @@ A limited number of appworks.js plugins are available in the desktop environment
 
 ## Update Notes
 
+### v22.3.2
+
+> Fixed return type issues in Cache, DesktopStorage, OnDeviceStorage.
+
 ### v22.3.1
 
 > Added updateLastModifiedDate(path: string, date: Date, successCallback: (result: boolean) => void, errorCallback?: (result: Error) => void ) to update the last modified date of the specified file path with the supplied Date.
