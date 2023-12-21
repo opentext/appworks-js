@@ -25,8 +25,8 @@ export class OnDeviceStorage implements PersistentStorage {
     });
   }
 
-  loadPersistentData(): Promise<any> {
-    return new Promise((resolve, reject) => {
+  loadPersistentData(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       this.readDataFromPersistentStorage().then(
         (json) => {
           let data;
@@ -43,8 +43,8 @@ export class OnDeviceStorage implements PersistentStorage {
     });
   }
 
-  migrateCache(excludedKeys: string[]): Promise<any> {
-    return new Promise((resolve, reject) => {
+  migrateCache(excludedKeys: string[]): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       this.readDataAWCacheFile().then(
           (json) => {
             let data;

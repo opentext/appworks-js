@@ -1436,7 +1436,7 @@ var DesktopStorage = (function () {
         if (this.desktopStorage === null) {
             return es6Promise_1.reject(DesktopStorage.PLUGIN_NOT_FOUND);
         }
-        return es6Promise_1.resolve();
+        return es6Promise_1.resolve(null);
     };
     return DesktopStorage;
 }());
